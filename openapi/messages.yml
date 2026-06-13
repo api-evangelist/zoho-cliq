@@ -1,0 +1,1876 @@
+openapi: 3.0.0
+info:
+  title: Messages
+  description: |
+    The Messages API is essential for communication within Zoho Cliq, allowing you to send, retrieve, and manage messages across chats, channels, and bots.<br><br>Whether you're creating automated workflows, custom integrations, or engaging messaging experiences, the v3 Messages API provides developers with precise control over every aspect of message delivery and management.
+    <br><br><b>Key Capabilities:</b><br>
+    With the latest version (v3) of the Messages API, you can:
+    <ul>
+    <li><b>Post Messages:</b> Send messages directly to a chat, broadcast them to a channel, or interact with a bot-each with specific operations designed for clear and predictable routing.</li>
+    <li><b>Retrieve & Search:</b> Fetch messages from specific conversations or search across chats using keywords, participants, or message metadata.</li>
+    <li><b>Actions:</b> Forward messages to other participants, delete multiple messages in bulk, and keep conversations clean and relevant.</li>
+    </ul>
+  contact: {}
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Zoho Cliq APIs V2
+  url: https://www.zoho.com/cliq/help/restapi/v2/
+servers:
+  - url: https://cliq.zoho.com/api/v3
+    description: Zoho Cliq US DC
+tags:
+  - name: messages
+    description: Messages Module
+paths:
+  /chats/{CHAT_ID}/messagess:
+    delete:
+      summary: Delete multiple messages
+      operationId: deleteMultipleMessagesV3
+      description: |
+        Deletes up to 25 messages in a chat in a single request. Returns a per-message result indicating success or failure for each ID.<br><br>
+        Admins deleting messages on behalf of other users must supply a <b>reason</b>(an optional <b>comment</b>) can also be provided.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 50 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">message_delete_limit_exceeded</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">You can only delete up to 25 messages at once.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">invalid_parameters</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The message_ids parameter is invalid or empty.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">invalid_delete_reason</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The provided reason for deletion is not valid.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">access_denied</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">You do not have permission to delete one or more of the selected messages.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">message_delete_timeout</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The time limit to delete one or more of these messages has expired.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">message_not_found</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Requested message could not be found.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_not_found</span></td>
+                    <td style="padding:10px 18px;">The requested chat does not exist or you are not a participant.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: The unique identifier of the chat. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+        - name: message_ids
+          in: query
+          required: true
+          schema:
+            type: string
+          description: |
+            Comma-separated list of message IDs to delete.<br>
+            <b>Maximum of 25 IDs allowed.</b>
+        - name: reason
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - irrelevant_information
+              - obscene_content
+              - others
+          description: |
+            Reason for deletion when an admin is deleting messages on behalf of other users.<br>
+            <b>Allowed values:</b><br>
+            <ul>
+              <li><code>irrelevant_information</code>: The message contains information that is no longer relevant.</li>
+              <li><code>obscene_content</code>: The message contains inappropriate or offensive content.</li>
+              <li><code>others</code>: Any other reason not covered by the above options.</li>  
+            </ul>
+        - name: comment
+          in: query
+          required: false
+          schema:
+            type: string
+            maxLength: 250
+          description: |
+            Optional comment providing additional context for the deletion reason when an admin is deleting messages on behalf of other users.<br>
+            <b>Maximum length</b>: 250 characters.
+      responses:
+        '200':
+          description: The request was successfully completed. Returns a per-message result.
+          content:
+            application/json:
+              examples:
+                all_success:
+                  summary: All messages deleted successfully
+                  value:
+                    type: message.delete_result
+                    data:
+                      - id: '1773813859592_51531973059'
+                        status: success
+                      - id: '1773813860210_51531973060'
+                        status: success
+                      - id: '1773813861300_51531973061'
+                        status: success
+                partial_failure:
+                  summary: Partial success - one message failed
+                  value:
+                    type: message.delete_result
+                    data:
+                      - id: '1773813859592_51531973059'
+                        status: success
+                      - id: '1773813860210_51531973060'
+                        status: success
+                      - id: '1773813861300_51531973061'
+                        status: failed
+                        error:
+                          code: access_denied
+                          message: You do not have permission to delete this message.
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: message.delete_result
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        status:
+                          type: string
+                          enum:
+                            - success
+                            - failed
+                        error:
+                          type: object
+                          properties:
+                            code:
+                              type: string
+                            message:
+                              type: string
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              examples:
+                limit_exceeded:
+                  summary: Too many message IDs
+                  value:
+                    code: message_delete_limit_exceeded
+                    message: You can only delete up to 25 messages at once.
+                invalid_params:
+                  summary: Invalid or empty message_ids
+                  value:
+                    code: invalid_parameters
+                    message: The message_ids parameter is invalid or empty.
+                invalid_reason:
+                  summary: Invalid delete reason
+                  value:
+                    code: invalid_delete_reason
+                    message: The provided reason for deletion is not valid.
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              examples:
+                access_denied:
+                  summary: Permission denied
+                  value:
+                    code: access_denied
+                    message: You do not have permission to delete one or more of the selected messages.
+                delete_timeout:
+                  summary: Delete time limit expired
+                  value:
+                    code: message_delete_timeout
+                    message: The time limit to delete one or more of these messages has expired.
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        '404':
+          description: Not Found.
+          content:
+            application/json:
+              examples:
+                message_not_found:
+                  summary: Message not found
+                  value:
+                    code: message_not_found
+                    message: Requested message could not be found.
+                chat_not_found:
+                  summary: Chat not found
+                  value:
+                    code: chat_not_found
+                    message: The requested chat does not exist or you are not a participant.
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Messages.DELETE
+      tags:
+        - messages
+  /channelsbyname/{CHANNEL_UNIQUE_NAME}/messages:
+    post:
+      summary: Post message in a channel with CHANNEL_UNIQUE_NAME
+      operationId: postMessageInChannelByChannelUniqueName
+      description: |
+        Use this API to post a message in a channel using its <b>CHANNEL_UNIQUE_NAME</b>.
+        <br><br>
+        You can also post a message using the following alternative endpoint:<br>
+        <ul>
+          <li><a href="#operation/postMessageInChannelByChannelId"><code>POST /channels/{CHANNEL_ID}/messages</code></a> - Use the <b>CHANNEL_ID</b> of the channel.</li>
+        </ul>
+        <br><br>  
+        <p>
+          <b>Threshold limit</b>: 50 requests per min per user<br>
+          Number of API calls allowed within a minute.<br>
+          This limit is per user, not per token — even if messages are sent using multiple OAuth tokens by the same user, all requests count toward this shared limit.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: CHANNEL_UNIQUE_NAME
+          in: path
+          description: Unique name of the channel. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME">CHANNEL_UNIQUE_NAME</a> in the Glossary page.
+          required: true
+          schema:
+            type: string
+          example: CHANNEL_UNIQUE_NAME
+        - name: bot_unique_name
+          in: query
+          description: Use this parameter to send a message in a channel as a bot. Note that the bot should already be a participant in the channel.
+          required: false
+          schema:
+            type: string
+        - name: appkey
+          in: query
+          description: |
+            Extension authentication key. Use this along with bot_unique_name when sending messages as an extension bot.
+          required: false
+          schema:
+            type: string
+        - name: mark_as_read
+          in: query
+          description: Use these APIs to mark the sent message as read for the user. By default, the message will be unread for the message posted by the user.
+          required: false
+          schema:
+            type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/post-message-in-a-channel-request'
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/post-message-in-a-channel-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Webhooks.CREATE
+      tags:
+        - messages
+  /channels/{CHANNEL_ID}/messages:
+    post:
+      summary: Post message in a channel with CHANNEL_ID
+      operationId: postMessageInChannelByChannelId
+      description: |
+        Use this API to post a message in a channel using its <b>CHANNEL_ID</b>.
+        <br><br>
+        You can also post a message using the following alternative endpoint:<br>
+        <ul>
+          <li><a href="#operation/postMessageInChannelByChannelUniqueName"><code>POST /channelsbyname/{CHANNEL_UNIQUE_NAME}/messages</code></a> - Use the <b>CHANNEL_UNIQUE_NAME</b> of the channel.</li>
+        </ul>
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 50 requests per min per user<br>
+          Number of API calls allowed within a minute.<br>
+          This limit is per user, not per token — even if messages are sent using multiple OAuth tokens by the same user, all requests count toward this shared limit.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: CHANNEL_ID
+          in: path
+          description: ID of the channel. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHANNEL_ID">CHANNEL_ID</a> in the Glossary page.
+          required: true
+          schema:
+            type: string
+          example: CHANNEL_ID
+        - name: bot_unique_name
+          in: query
+          description: Bot identifier for bot-sent messages. The bot must already be a participant in the channel.
+          required: false
+          schema:
+            type: string
+            pattern: ^[a-z]+$
+        - name: appkey
+          in: query
+          description: Extension authentication key. Use this along with bot_unique_name when sending messages as an extension bot.
+          required: false
+          schema:
+            type: string
+        - name: mark_as_read
+          in: query
+          description: Use these APIs to mark the sent message as read for the user. By default, the message will be unread for the message posted by the user.
+          required: false
+          schema:
+            type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/post-message-in-a-channel-request'
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/post-message-in-a-channel-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Webhooks.CREATE
+      tags:
+        - messages
+  /chats/{CHAT_ID}/messages:
+    post:
+      summary: Post message in chat
+      operationId: Post message in chat
+      description: |
+        To post message in a chat (or thread), the chat_id (thread_id in case of threads) can be used in the request URL.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 50 requests per min per user<br>
+          Number of API calls allowed within a minute.<br>
+          This limit is per user, not per token — even if messages are sent using multiple OAuth tokens by the same user, all requests count toward this shared limit.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>  
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: The ID of the chat where the message should be posted. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/post-message-in-chat-request'
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/post-message-in-a-chat-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Webhooks.CREATE
+      tags:
+        - messages
+  /messages:
+    post:
+      summary: Forward Messages
+      operationId: Forward Messages
+      description: |
+        Forwards one or more messages from a source chat to other chats or users.
+        <br><br>
+        <p>
+          <b>OAuth Scope</b>: ZohoCliq.Messages.CREATE<br>
+          <b>Threshold limit</b>: 50 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            examples:
+              forward_bug_report:
+                summary: Forward bug-report messages to QA team and product manager
+                value:
+                  source:
+                    chat_id: '2890538000000012345'
+                    message_ids:
+                      - '1773813859592_51531973059'
+                      - '1773813860210_51531973060'
+                  recipients:
+                    chat_ids: '2890538000000067890'
+                    user_ids: '70027934'
+                    forward_as_group: true
+                    show_original_sender: true
+                    title: Login Bug - Critical Issue (Forwarded from Engineering)
+            schema:
+              $ref: '#/components/schemas/forward-messages-request'
+      responses:
+        '200':
+          description: The request was successfully completed. The response uses a partial-success model. Successfully forwarded IDs appear under forwarded, while per-recipient failures appear in the failures array with specific error details.
+          content:
+            application/json:
+              examples:
+                partial_success:
+                  summary: Forwarded to QA chat successfully; direct message to PM failed
+                  value:
+                    data:
+                      source_chat_id: '2890538000000012345'
+                      forwarded:
+                        chat_ids:
+                          - '2890538000000067890'
+                        user_ids: []
+                      failures:
+                        - id: '70027934'
+                          status: failed
+                          error:
+                            code: chat_access_denied
+                            message: You must be a participant in this chat to perform this action.
+              schema:
+                $ref: '#/components/schemas/forward-messages-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden. You do not have permission to read from the source chat or you are not a participant of a recipient chat.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Messages.CREATE
+      tags:
+        - messages
+  /messages/search:
+    get:
+      summary: Search Messages
+      operationId: searchMessagesV3
+      description: |
+        Search for messages across chats with extensive filtering options. This endpoint supports keyword search, filtering by sender/recipient, date range, file attributes, and more to help you find specific messages efficiently.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 50 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: query
+          in: query
+          required: false
+          schema:
+            type: string
+            maxLength: 1000
+          description: |
+            Full-text search query to match message content. Supports keywords and phrases (in quotes)<br>
+            <b>Maximum length</b>: 1000 characters.
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            maximum: 50
+            default: 50
+          description: |
+            Maximum number of messages to return per page. Default is 50, maximum allowed is 50.
+        - name: next_token
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+          description: |
+            Pagination cursor returned from a previous response.
+            Pass the <code>next_token</code> value exactly as received to fetch the next page.
+            This value is a 64-bit integer cursor.
+        - name: from_user_ids
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Filter by sender ZUIDs. Provide a comma-separated list of user IDs to restrict results to messages sent by specific users.<br>
+            <b>Maximum of 5 user IDs allowed.</b>
+        - name: to_user_ids
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Filter by recipient ZUIDs. Provide a comma-separated list of user IDs to restrict results to messages sent to specific users.<br>
+            <b>Maximum of 5 user IDs allowed.</b>
+        - name: mentioned_user_ids
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Filter messages that mention specific users. Provide a comma-separated list of user IDs to find messages that contain mentions of those users.<br>
+            <b>Maximum of 5 user IDs allowed.</b>
+        - name: chat_ids
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Filter by chat IDs. Provide a comma-separated list of chat IDs to restrict results to specific chats.<br>
+            <b>Maximum of 5 chat IDs allowed.</b>
+        - name: chat_type
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Filter by chat type.<br>
+            <b>Allowed values:</b><br>
+            <ul>
+              <li><code>direct_message</code>: One-on-one chats between two users.</li>
+              <li><code>group_chat</code>: Group chats with multiple participants.</li>
+              <li><code>channel</code>: Organization-wide or team-specific channels.</li>
+              <li><code>threads</code>: Threads within channels or group chats.</li>
+              <li><code>bot</code>: Bot conversation chats.</li>
+              <li><code>guests</code>: Chats with external guest participants.</li>
+            </ul>
+            <b>Maximum of 6 values allowed.</b>
+        - name: parent_chatid
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Filter messages within a specific thread by providing the parent chat ID (thread ID). This will return messages that are part of the specified thread.
+        - name: channel_type
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Filter by channel type when searching within channels.<br>
+            <b>Allowed values:</b><br>
+            <ul>
+              <li><code>organisation</code>: Channels that are open to the entire organization.</li>
+              <li><code>team</code>: Channels that are specific to certain teams.</li>
+              <li><code>personal</code>: Private channels that are only accessible to invited members.</li>
+              <li><code>external</code>: Channels that include external users outside the organization.</li>
+            </ul>
+        - name: team_ids
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Filter by team IDs when searching within team channels. Provide a comma-separated list of team IDs to restrict results to channels associated with specific teams.<br>
+            <b>Maximum of 5 team IDs allowed.</b>
+        - name: include_allowed_channels
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: |
+            When true, include messages from channels that the user has access to, even if they are not explicitly listed in the chat_ids parameter. This allows users to find relevant messages in channels they are part of without needing to specify each channel ID.
+        - name: from_time
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Start of the date range for the search. Accepts epoch time in milliseconds (Long) or <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format (e.g., 2024-01-01T00:00:00Z). Messages sent at or after this time will be included in the results.
+        - name: to_time
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            End of the date range for the search. Accepts epoch time in milliseconds (Long) or <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format (e.g., 2024-01-01T00:00:00Z). Note: from_time must be earlier than to_time, otherwise the request fails.
+        - name: file_name
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Match by file name for messages that contain attachments. Supports partial matches and wildcards (e.g., "report*" to match "report_Q1.pdf"). Accepts a comma-separated list of file names.<br>
+            <b>Maximum of 10 values allowed. Total maximum length:</b> 500 characters.
+        - name: file_type
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Filter by file type for messages that contain attachments. Provide a comma-separated list of MIME types (e.g., <code>image/png</code>, <code>application/pdf</code>) to find messages with specific types of attached files.<br>
+            <b>Maximum of 10 values allowed. Total maximum length:</b> 500 characters.
+        - name: file_content_query
+          in: query
+          required: false
+          schema:
+            type: string
+            maxLength: 500
+          description: |
+            Full-text search query to match the content of attached files. This allows you to find messages based on the text within attachments, such as documents or PDFs. Supports keywords, phrases (in quotes), and boolean operators (AND, OR, NOT).<br>
+            <b>Maximum length:</b> 500 characters.
+        - name: message_type
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Filter by message type.<br>
+            <b>Allowed values:</b><br>
+            <ul>
+              <li><code>text</code>: Messages that contain only text content.</li>
+              <li><code>link</code>: Messages containing URLs.</li>
+              <li><code>file</code>: Messages that include file attachments.</li>
+            </ul>
+        - name: is_pinned
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: |
+            When true, only return messages that are pinned in their respective chats. Note: If this parameter is true, the chat_ids parameter must include exactly one chat ID to specify which chat's pinned messages to search within.
+        - name: has_mentions
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: |
+            When true, only return messages that contain mentions of users.
+        - name: star_types
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Filter messages by star types. Provide a comma-separated list of star types to find messages that have been starred with specific types (e.g., "important,followup").<br>
+            <b>Maximum of 5 star types allowed.</b>
+            <br><b>Allowed star types:</b><br>
+            <ul>
+              <li><code>important</code>: Messages marked as requiring attention.</li>
+              <li><code>to_do</code>: Messages flagged as action items.</li>
+              <li><code>note</code>: Messages saved for reference.</li>
+              <li><code>manager</code>: Messages related to managerial communications.</li>
+              <li><code>follow_up</code>: Messages requiring follow-up.</li>
+              <li><code>followup</code>: Messages marked for follow-up.</li>
+              <li><code>question</code>: Messages marked as questions.</li>
+              <li><code>idea</code>: Messages marked as ideas.</li>
+              <li><code>other</code>: Messages marked with a custom star type.</li>
+            </ul> 
+        - name: include_bot_messages
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: |
+            When true, include messages sent by bots in the search results. By default, bot messages are excluded from search results.
+      responses:
+        '200':
+          description: The request was successfully completed. Returns a list of matching messages.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/search-messages-response'
+              examples:
+                multiple_messages:
+                  summary: Multiple messages found
+                  value:
+                    messages:
+                      - message_id: '1710934200000'
+                        time: '2025-03-20T14:30:00.000Z'
+                        sender: 711622XXXX
+                        chat_id: 6795XXXXXXXXXXXXXX
+                        chat_title: General
+                        type: text
+                        content:
+                          text: Please review the updated proposal.
+                      - message_id: '1710920100000'
+                        time: '2025-03-20T10:35:00.000Z'
+                        sender: 711633XXXX
+                        chat_id: 6795YYYYYYYYYYYY
+                        chat_title: Project Alpha
+                        type: file
+                        content:
+                          file_name: proposal_v2.pdf
+                          file_type: application/pdf
+                          file_size: 204800
+                        channel_type: organisation
+                    next_token: 1710920099000
+                    matched_search_value: proposal
+        '400':
+          description: Bad Request. An invalid parameter value was passed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+              examples:
+                invalid_inputs:
+                  summary: Invalid input parameters
+                  value:
+                    error:
+                      code: invalid.inputs.submitted
+                      message: An invalid parameter value was passed. For is_pinned, this also means fewer or more than one chat ID was provided.
+                invalid_time:
+                  summary: Invalid timestamp
+                  value:
+                    error:
+                      code: invalid.time.submitted
+                      message: Invalid timestamp format or from_time must be earlier than to_time.
+        '401':
+          description: Unauthorized. Invalid or missing authentication token.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+              examples:
+                unauthorized:
+                  summary: Invalid auth token
+                  value:
+                    error:
+                      code: unauthorized
+                      message: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden. The user is not a member of the organisation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+              examples:
+                invalid_access:
+                  summary: Access denied
+                  value:
+                    error:
+                      code: invalid_access
+                      message: You are not a member of the organisation or do not have permission to access this resource.
+        '429':
+          description: Too many requests. Rate limit exceeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+              examples:
+                rate_limit:
+                  summary: Rate limit exceeded
+                  value:
+                    error:
+                      code: rate_limit_exceeded
+                      message: Too many requests within a certain time frame. Please try again later.
+        '500':
+          description: Internal Server Error. An unexpected error occurred while executing the search.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+              examples:
+                server_error:
+                  summary: Server error during message search
+                  value:
+                    error:
+                      code: error_message_search
+                      message: An unexpected error occurred while executing the search.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.READ
+      tags:
+        - messages
+components:
+  schemas:
+    MessageRequest:
+      type: object
+      description: Request object to send messages to one or more users.
+      required:
+        - user_ids
+        - message_details
+      properties:
+        user_ids:
+          type: array
+          description: List of user IDs to whom the message will be sent.
+          items:
+            type: string
+            description: A single user's ID.
+          example:
+            - '55743307'
+            - '55622727'
+        message_details:
+          type: object
+          description: Message details mapped per user ID.
+          additionalProperties:
+            type: object
+            description: Details for a specific user message.
+            required:
+              - chat_id
+              - message_id
+            properties:
+              chat_id:
+                type: string
+                description: Chat identifier where the message will be sent.
+                example: CT_1203304812000146098_55622663-B2
+              message_id:
+                type: string
+                description: Unique message identifier in the chat.
+                example: 1709038327622%2029706114886
+    UserMessage:
+      type: object
+      description: Represents message details for multiple users.
+      properties:
+        user_ids:
+          type: array
+          description: List of user IDs.
+          items:
+            type: string
+            description: Single user ID.
+          example:
+            - '55743307'
+            - '55622727'
+        message_details:
+          type: object
+          description: Mapping of each user ID to message details.
+          additionalProperties:
+            type: object
+            description: Individual user message details.
+            properties:
+              chat_id:
+                type: string
+                description: Chat identifier.
+                example: CT_1203304812000146098_55622663-B2
+              message_id:
+                type: string
+                description: Message ID for the chat.
+                example: 1709038327622%2029706114886
+    MessageComponents:
+      type: object
+      description: Core components of a message.
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the message.
+          example: '1542711601585_349430767610289'
+        fileMessage_id:
+          type: string
+          description: Identifier for a file message, if applicable.
+          example: '1543384891842_351840917549285'
+        time:
+          type: integer
+          description: Epoch timestamp of when the message was sent.
+          example: 1542798001273
+        type:
+          type: string
+          description: Type of the message, e.g., 'text', 'file'.
+          example: text
+    file_type:
+      type: string
+      description: Format/type of an attachment message.
+      example: file
+    senderName:
+      type: string
+      description: Name of the message sender.
+      example: Scott Fisher
+    senderID:
+      type: string
+      description: User ID of the message sender.
+      example: '1542798001273'
+    sender:
+      type: object
+      description: Information about the sender of the message.
+      properties:
+        senderName:
+          $ref: '#/components/schemas/senderName'
+        senderID:
+          $ref: '#/components/schemas/senderID'
+    messageText:
+      type: string
+      description: Text content of the message.
+      example: Hi! What time is the review meeting today?
+    content:
+      type: object
+      description: Content object containing text message.
+      properties:
+        messageText:
+          $ref: '#/components/schemas/messageText'
+    fileName:
+      type: string
+      description: Original filename of the attachment.
+      example: Feature-overview.jpg
+    contentType:
+      type: string
+      description: MIME type of the attachment.
+      example: image/jpeg
+    imageHeight:
+      type: integer
+      description: Height of the image in pixels.
+      example: 3510
+    imageSize:
+      type: integer
+      description: Size of the image file in bytes.
+      example: 559008
+    imageWidth:
+      type: integer
+      description: Width of the image in pixels.
+      example: 2552
+    dimensions:
+      type: object
+      description: Dimensions and size of a file or image.
+      properties:
+        height:
+          $ref: '#/components/schemas/imageHeight'
+        width:
+          $ref: '#/components/schemas/imageWidth'
+        size:
+          $ref: '#/components/schemas/imageSize'
+    file_id:
+      type: string
+      description: Unique identifier for the file.
+      example: f3791c2279a67f6e5cbc8e1beb41ded85da2bdc672e2496ba9af50c0c24c8e2e453862a8a28becb86f859ab142d44633b05a8fb2ff34955c9e9824527c15cd03
+    file_content:
+      type: object
+      description: File metadata and content reference.
+      properties:
+        name:
+          $ref: '#/components/schemas/fileName'
+        type:
+          $ref: '#/components/schemas/file_type'
+        dimensions:
+          $ref: '#/components/schemas/dimensions'
+        id:
+          $ref: '#/components/schemas/file_id'
+    thumbnailHeight:
+      type: integer
+      description: Height of the thumbnail image.
+      example: 230
+    thumbnailWidth:
+      type: integer
+      description: Width of the thumbnail image.
+      example: 400
+    blur_data:
+      type: string
+      description: Base64 encoded placeholder for image blur effect.
+      example: /9j/4AAQSkZJRgABAgAAAQABAAD/2wBD...
+    thumbnail:
+      type: object
+      description: Thumbnail representation of an image or file.
+      properties:
+        height:
+          $ref: '#/components/schemas/thumbnailHeight'
+        width:
+          $ref: '#/components/schemas/thumbnailWidth'
+        blur_data:
+          $ref: '#/components/schemas/blur_data'
+    comment:
+      type: string
+      description: Message sent along with a file.
+      example: Hey Emily! Hope you understand the above design
+    fileMessage_content:
+      type: object
+      description: Content structure for a file message.
+      properties:
+        thumbnail:
+          $ref: '#/components/schemas/thumbnail'
+        file:
+          $ref: '#/components/schemas/file_content'
+        comment:
+          $ref: '#/components/schemas/comment'
+    message_data:
+      type: object
+      description: Standard text message data structure.
+      properties:
+        sender:
+          $ref: '#/components/schemas/sender'
+        id:
+          type: string
+          description: Message ID.
+          example: '1542711601585_349430767610289'
+        time:
+          type: integer
+          description: Timestamp of the message.
+          example: 1542798001273
+        type:
+          type: string
+          description: Type of message.
+          example: text
+        content:
+          type: string
+          description: Text content of the message.
+          example: Hello world
+    fileMessage_data:
+      type: object
+      description: Structure for file messages.
+      properties:
+        sender:
+          type: object
+          description: Sender information for the file message.
+          properties:
+            name:
+              type: string
+              description: Name of the sender.
+              example: John Doe
+            id:
+              type: string
+              description: ID of the sender.
+              example: '55743307'
+        id:
+          type: string
+          description: Message ID.
+          example: '1542711601585_349430767610289'
+        time:
+          type: integer
+          description: Epoch timestamp of the message.
+          example: 1542798001273
+        type:
+          $ref: '#/components/schemas/file_type'
+        content:
+          $ref: '#/components/schemas/fileMessage_content'
+    get-messages-response:
+      type: object
+      description: Response object for fetching messages.
+      properties:
+        data:
+          type: array
+          description: Array containing message objects.
+          minItems: 2
+          maxItems: 2
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/fileMessage_data'
+              - $ref: '#/components/schemas/message_data'
+    post-message-in-a-chat-response:
+      type: object
+      description: Response object for posting messages in a chat/user
+      properties:
+        message_id:
+          type: string
+          description: Unique identifier of the newly posted message
+          example: '1599387839188_229293271789'
+    post-message-in-a-channel-request:
+      type: object
+      description: Request object to post a message in a channel.
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          description: 'Message text to be sent in the channel. Maximum length: 5000.'
+          maxLength: 5000
+          example: Hello team, please review the project status update and share your feedback by EOD.
+        reply_to:
+          type: string
+          description: Message ID to reply to in the channel.
+          example: '72374289911'
+        sync_message:
+          type: boolean
+          description: Whether to post the message in a synchronous thread.
+          example: true
+    post-message-in-a-channel-response:
+      type: object
+      description: Response object after posting a message in a channel.
+      properties:
+        Response Code:
+          type: string
+          description: HTTP response code for the operation.
+          example: 204 No response
+    post-message-in-chat-request:
+      type: object
+      description: Request object to send a message in a chat.
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          description: 'Text content to send in chat. Maximum length: 5000.'
+          maxLength: 5000
+          example: Hey!
+        reply_to:
+          type: string
+          description: Message ID to reply to in chat.
+          example: '55743307'
+        sync_message:
+          type: boolean
+          description: Post message in synchronous thread; returns message ID.
+          example: true
+        mark_as_read:
+          type: boolean
+          description: Mark the message as read for the user.
+          example: true
+    post-message-in-chat-response:
+      type: object
+      description: Response object after posting a message in chat.
+      properties:
+        message_id:
+          type: string
+          description: Message ID returned after posting.
+          example: '1599387839188_229293271789'
+    edit-a-message-request:
+      type: object
+      description: Request object to edit an existing message.
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          description: 'Edited text content of the message. Maximum length: 5000.'
+          maxLength: 5000
+          example: Hey! Cliq platform allows you to manage your workday tasks effectively.
+        notify_edit:
+          type: boolean
+          description: Notify participants about the edited message.
+          example: true
+    get-reactions:
+      type: object
+      description: Retrieve all reactions for messages.
+      properties:
+        data:
+          type: object
+          description: Mapping of emoji to a list of reaction details.
+          additionalProperties:
+            type: array
+            description: Array of reactions for the emoji.
+            items:
+              type: string
+              description: Reaction string formatted as timestamp:user_id:username.
+              pattern: ^\d+:\d+:.+$
+          example:
+            😍:
+              - 1710152648241:802515329:Diana
+              - 1710152690025:784333365:Celeste Liane
+              - 1710152842875:839672527:Berk Trinity
+            🔥:
+              - 1710152758419:788604182:Elizebet Tater
+              - 1710152797740:19924487:Derek
+              - 1710161571235:822083117:Mary E
+              - 1710165907573:800612880:Dipika
+            💪:
+              - 1710152692044:788608119:Velasco
+              - 1710152722572:756417177:Guru
+              - 1710152861184:785341087:Sanjna
+              - 1710155915492:1248183:Catherine
+              - 1710165906976:800612880:Elizebet Tater
+    add-a-reaction-request:
+      type: object
+      description: Request object to add a reaction to a message.
+      properties:
+        emoji_code:
+          type: string
+          description: |
+            Emoji to add to a message.
+            Allowed values:
+
+              Zomojis: Custom emojis supported by Zoho Cliq
+              Unicode smiley: Standard emojis (for example, U+1F600 or U+2764) passed as actual characters or Unicode.
+          example: ':smile:'
+    forward-messages-request:
+      type: object
+      description: Request object to forward one or more messages from a source chat to other chats or users.
+      required:
+        - source
+        - recipients
+      properties:
+        source:
+          type: object
+          description: |
+            Source chat and messages to forward. You can specify 1 to 25 message IDs from a single chat to forward in one request.
+          required:
+            - chat_id
+            - message_ids
+          properties:
+            chat_id:
+              type: string
+              description: |
+                Chat ID from which messages will be forwarded. All message IDs must belong to this chat.
+              example: C_987654321
+            message_ids:
+              type: array
+              description: |
+                List of message IDs to forward. All messages must be from the same source chat specified by <code>chat_id</code>. You can <b>forward a minimum of 1 message and a maximum of 25 messages</b> in a single request.
+              minItems: 1
+              maxItems: 25
+              items:
+                type: string
+              example:
+                - '1742000000000001'
+                - '1742000000000002'
+        recipients:
+          type: object
+          description: |
+            Recipients to forward the messages to. You can specify up to 100 chat IDs and/or user IDs as recipients. Messages will be forwarded to all specified recipients based on the provided options.
+          properties:
+            chat_ids:
+              type: string
+              description: |
+                Comma-separated list of chat IDs to forward messages to.<br>
+                <b>Maximum of 100 chat IDs allowed.</b>
+              example: C_111111111,C_222222222
+            user_ids:
+              type: string
+              description: |
+                Comma-separated list of user IDs to forward messages to.<br>
+                <b>Maximum of 100 user IDs allowed.</b>
+              example: 60025012345,60025012346
+            forward_as_group:
+              type: boolean
+              description: |
+                When true, messages will be forwarded as a single combined message in the recipient chats, rather than individual messages. The content of the forwarded message will include all original messages grouped together. If false or not provided, each message will be forwarded separately in the recipient chats.<br>
+                <b>Note:</b> If forwarding to multiple recipients, it's recommended to set this to true to avoid spamming recipients with multiple messages.
+              example: false
+            show_original_sender:
+              type: boolean
+              description: |
+                When true, the forwarded message will include the name of the original sender for each message. This is applicable when <code>forward_as_group</code> is true to provide context about who sent each message in the group forward. If false or not provided, the original sender's name will not be displayed in the forwarded message content.
+              example: true
+            title:
+              type: string
+              description: |
+                Optional title to include with the forwarded message when <code>forward_as_group</code> is true. This title will be displayed at the top of the grouped forwarded message in the recipient chats. If not provided, no title will be shown.
+                <br><b>Maximum length:</b> 255 characters.
+              maxLength: 255
+              example: Group Title 1
+    forward-messages-response:
+      type: object
+      description: Response object after forwarding messages. Uses a partial-success model.
+      properties:
+        data:
+          type: object
+          description: Forwarding results data.
+          properties:
+            source_chat_id:
+              type: string
+              description: Source chat ID from which messages were forwarded.
+              example: C_987654321
+            forwarded:
+              type: object
+              description: Successfully forwarded recipients.
+              properties:
+                chat_ids:
+                  type: array
+                  description: List of chat IDs where messages were successfully forwarded.
+                  items:
+                    type: string
+                  example:
+                    - C_111111111
+                user_ids:
+                  type: array
+                  description: List of user IDs to whom messages were successfully forwarded.
+                  items:
+                    type: string
+                  example:
+                    - '60025012345'
+            failures:
+              type: array
+              description: List of per-recipient failures with specific error details.
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Chat ID or user ID that failed.
+                    example: C_222222222
+                  status:
+                    type: string
+                    description: Status of the forward attempt.
+                    example: failed
+                  error:
+                    type: object
+                    description: Error details for the failure.
+                    properties:
+                      code:
+                        type: string
+                        description: Error code.
+                        example: chat_with_other_org_users_disabled
+                      message:
+                        type: string
+                        description: Error message.
+                        example: Chat with other org users is disabled
+    delete-multiple-messages-response:
+      type: object
+      description: Response object after deleting multiple messages.
+      properties:
+        type:
+          type: string
+          description: Response type identifier.
+          example: message_delete
+        data:
+          type: array
+          description: List of message deletion results.
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: Message ID.
+                example: '1742000000000001'
+              status:
+                type: string
+                description: Deletion status (success or failed).
+                example: success
+              error:
+                type: object
+                description: Error details (only present if status is failed).
+                properties:
+                  code:
+                    type: string
+                    description: Error code.
+                    example: message_delete_not_allowed
+                  message:
+                    type: string
+                    description: Error message.
+                    example: You do not have permission to delete this message
+    search-messages-response:
+      type: object
+      description: Response object for message search results containing matching messages and pagination information.
+      properties:
+        messages:
+          type: array
+          description: List of messages matching the search criteria.
+          items:
+            type: object
+            properties:
+              message_id:
+                type: string
+                description: Unique identifier (timestamp) of the message.
+                example: '1710934200000'
+              time:
+                type: string
+                format: date-time
+                description: When the message was sent (<a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format).
+                example: '2025-03-20T14:30:00.000Z'
+              sender:
+                type: string
+                description: ZUID of the user who sent the message.
+                example: 711622XXXX
+              chat_id:
+                type: string
+                description: ID of the chat the message belongs to.
+                example: 6795XXXXXXXXXXXXXX
+              chat_title:
+                type: string
+                description: Display name of the chat.
+                example: General
+              type:
+                type: string
+                description: 'Message type: text, file, link, etc.'
+                example: text
+                enum:
+                  - text
+                  - file
+                  - link
+                  - card
+                  - table
+                  - slides
+                  - form
+                  - poll
+                  - audio
+                  - video
+                  - image
+              content:
+                type: object
+                description: Message content - structure varies by type.
+                additionalProperties: true
+                properties:
+                  text:
+                    type: string
+                    description: Text content of the message (for text type messages).
+                    example: Please review the updated proposal.
+                  file_name:
+                    type: string
+                    description: Name of the file (for file type messages).
+                    example: proposal_v2.pdf
+                  file_type:
+                    type: string
+                    description: MIME type of the file.
+                    example: application/pdf
+                  file_size:
+                    type: integer
+                    description: Size of the file in bytes.
+                    example: 204800
+              channel_type:
+                type: string
+                description: 'Present for channel messages: organisation, team, personal, external.'
+                example: organisation
+                enum:
+                  - organisation
+                  - team
+                  - personal
+                  - external
+              channel_unique_id:
+                type: string
+                description: Unique permalink identifier of the channel, if applicable.
+              star_type:
+                type: string
+                description: Star label on the message, if any.
+                enum:
+                  - important
+                  - to_do
+                  - note
+                  - manager
+                  - follow_up
+              reply_message_id:
+                type: string
+                description: ID of the message being replied to, if this is a reply.
+              parent_chat_id:
+                type: string
+                description: For thread messages - the ID of the parent chat.
+              parent_chat_title:
+                type: string
+                description: For thread messages - the display name of the parent chat.
+              thread_message_id:
+                type: string
+                description: For thread messages - the ID of the thread head message.
+              thread_state:
+                type: string
+                description: For thread messages - the state of the thread.
+        next_token:
+          type: integer
+          format: int64
+          description: Pass this in the next request to fetch the following page of results. Absent when there are no more results.
+          example: 1710920099000
+        matched_search_value:
+          type: string
+          description: The query value that was searched. Included when query was provided.
+          example: proposal
+  securitySchemes:
+    Cliq_Auth:
+      type: oauth2
+      x-authorization-example: Bearer 1000.41d9xxxxxxxxxxxxxxxxxxxxxxxxc2d1.8fccxxxxxxxxxxxxxxxxxxxxxxxx125f
+      flows:
+        implicit:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          scopes:
+            ZohoCliq.Messages.READ: Read Messages
+            ZohoCliq.Messages.CREATE: Create and Forward Messages
+            ZohoCliq.Messages.UPDATE: Update Messages
+            ZohoCliq.Messages.DELETE: Delete Messages
+            ZohoCliq.Webhooks.CREATE: Post messages to your conversations directly or by using incoming webhooks
+            ZohoCliq.MessageActions.READ: Access message actions
+            ZohoCliq.MessageActions.CREATE: Create message actions
+            ZohoCliq.MessageActions.DELETE: Delete message actions

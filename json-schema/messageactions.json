@@ -1,0 +1,642 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Zoho Cliq Messageactions Schemas",
+  "definitions": {
+    "NoResponse": {
+      "type": "object",
+      "description": "Represents an empty successful response where no payload is returned.",
+      "properties": {
+        "Response Code": {
+          "type": "string",
+          "example": "204 No response"
+        }
+      }
+    },
+    "MessageActionResponse": {
+      "type": "object",
+      "description": "Response schema for message action create, get, and update operations.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "API endpoint URL for the message action resource.",
+          "example": "/api/v3/messageactions"
+        },
+        "type": {
+          "type": "string",
+          "description": "Resource type.",
+          "example": "messageaction"
+        },
+        "data": {
+          "type": "object",
+          "description": "Message action details.",
+          "properties": {
+            "multi_selectable": {
+              "type": "boolean",
+              "example": true
+            },
+            "name": {
+              "type": "string",
+              "example": "Create Ticket"
+            },
+            "id": {
+              "type": "string",
+              "example": "53719000002124010"
+            },
+            "handlers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "creator": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                }
+              }
+            },
+            "execution_type": {
+              "type": "string",
+              "example": "deluge"
+            },
+            "hint": {
+              "type": "string",
+              "example": "Create a helpdesk ticket"
+            },
+            "status": {
+              "type": "string",
+              "example": "enabled"
+            },
+            "type": {
+              "type": "string",
+              "example": "custom"
+            },
+            "message_types": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "scope": {
+              "type": "string",
+              "example": "organization"
+            }
+          }
+        }
+      },
+      "example": {
+        "url": "/api/v3/messageactions",
+        "type": "messageaction",
+        "data": {
+          "multi_selectable": true,
+          "name": "Create Ticket",
+          "id": "53719000002124010",
+          "handlers": [
+            {
+              "type": "execution_handler"
+            }
+          ],
+          "creator": {
+            "name": "James",
+            "id": "65113112"
+          },
+          "execution_type": "deluge",
+          "hint": "Create a helpdesk ticket",
+          "status": "enabled",
+          "type": "custom",
+          "message_types": [
+            "text",
+            "link"
+          ],
+          "scope": "organization"
+        }
+      }
+    },
+    "GenericResponse": {
+      "type": "object",
+      "description": "Generic API response envelope.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "example": "/api/v3/resource"
+        },
+        "type": {
+          "type": "string",
+          "example": "object"
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "updateMessageActionHandlerResponse": {
+      "type": "object",
+      "description": "Response schema for message action handler update operations.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "API endpoint URL for the handler resource."
+        },
+        "type": {
+          "type": "string",
+          "description": "Handler type.",
+          "example": "execution_handler"
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Handler name."
+            },
+            "script": {
+              "type": "string",
+              "description": "Updated Deluge script source code."
+            },
+            "function_id": {
+              "type": "string",
+              "description": "Unique identifier of the underlying function associated with this handler."
+            }
+          }
+        }
+      },
+      "example": {
+        "url": "/api/v3/messageactions/53719000002124010/handlers/execution_handler",
+        "type": "execution_handler",
+        "data": {
+          "name": "execution_handler",
+          "script": "response = Map();\nmessage = info.get(\"message\").get(\"text\");\nresponse.put(\"text\", \"Ticket created for: \" + message);\nreturn response;\n",
+          "function_id": "53719000002124010"
+        }
+      }
+    },
+    "MessageActionUpdateResponse": {
+      "type": "object",
+      "description": "Response schema for message action update operations.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "API endpoint URL for the updated message action resource.",
+          "example": "/api/v3/messageactions/53719000002124010"
+        },
+        "type": {
+          "type": "string",
+          "description": "Resource type.",
+          "example": "messageaction"
+        },
+        "data": {
+          "type": "object",
+          "description": "Updated message action details.",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "hint": {
+              "type": "string"
+            },
+            "scope": {
+              "type": "string"
+            },
+            "multi_selectable": {
+              "type": "boolean"
+            },
+            "message_types": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "team_ids": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "handlers": {
+              "type": "array"
+            },
+            "creator": {
+              "type": "object"
+            },
+            "execution_type": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "example": {
+        "url": "/api/v3/messageactions/53719000002124010",
+        "type": "messageaction",
+        "data": {
+          "name": "Create Ticket",
+          "id": "53719000002124010",
+          "hint": "Convert this message into a support ticket",
+          "scope": "organization",
+          "multi_selectable": false,
+          "message_types": [
+            "text",
+            "link",
+            "attachment"
+          ],
+          "handlers": [
+            {
+              "type": "execution_handler"
+            }
+          ],
+          "creator": {
+            "name": "James",
+            "id": "65113112"
+          },
+          "execution_type": "deluge",
+          "status": "enabled",
+          "type": "custom"
+        }
+      }
+    },
+    "MessageActionListItemsResponse": {
+      "type": "object",
+      "description": "Response schema for listing message actions.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "example": "/api/v3/messageactions"
+        },
+        "type": {
+          "type": "string",
+          "example": "messageaction"
+        },
+        "sync_token": {
+          "type": "string",
+          "description": "Token for incremental sync. Pass this in the next request to retrieve only message actions updated since this response."
+        },
+        "next_token": {
+          "type": "string",
+          "description": "Pagination token for the next page of results."
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "hint": {
+                "type": "string"
+              },
+              "scope": {
+                "type": "string"
+              },
+              "multi_selectable": {
+                "type": "boolean"
+              },
+              "message_types": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "handlers": {
+                "type": "array"
+              },
+              "creator": {
+                "type": "object"
+              },
+              "execution_type": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "example": {
+        "url": "/api/v3/messageactions",
+        "type": "messageaction",
+        "sync_token": "NTB8MTc3NzQzMjI3NjY1OHw1MzcxOTAwMDAwMjEyNDAxMA==",
+        "data": [
+          {
+            "multi_selectable": true,
+            "name": "Create Ticket",
+            "id": "53719000002124010",
+            "handlers": [
+              {
+                "type": "execution_handler"
+              }
+            ],
+            "creator": {
+              "name": "James",
+              "id": "65113112"
+            },
+            "execution_type": "deluge",
+            "hint": "Create a helpdesk ticket",
+            "status": "enabled",
+            "type": "custom",
+            "message_types": [
+              "text",
+              "link"
+            ],
+            "scope": "organization"
+          },
+          {
+            "multi_selectable": false,
+            "name": "Translate",
+            "id": "53719000002124013",
+            "handlers": [
+              {
+                "type": "execution_handler"
+              }
+            ],
+            "creator": {
+              "name": "James",
+              "id": "65113112"
+            },
+            "execution_type": "deluge",
+            "hint": "Translate selected message to English",
+            "status": "enabled",
+            "type": "custom",
+            "message_types": [
+              "text"
+            ],
+            "scope": "personal"
+          }
+        ]
+      }
+    },
+    "MessageActionListResponse": {
+      "type": "object",
+      "description": "Response schema for listing message actions.",
+      "properties": {
+        "deleted": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "url": {
+          "type": "string",
+          "example": "/api/v3/messageactions"
+        },
+        "next_token": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "example": "messageaction"
+        },
+        "total_count": {
+          "type": "integer"
+        },
+        "sync_token": {
+          "type": "string"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "MessageActionHandlerResponse": {
+      "type": "object",
+      "description": "Response schema for message action handler operations.",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "example": "execution_handler"
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "HANDLER_TYPE_regex": {
+      "type": "string",
+      "description": "Type of the message action handler. Message actions support only one handler type&#58; <code>execution_handler</code>, which is triggered when the action is invoked.",
+      "enum": [
+        "execution_handler"
+      ]
+    },
+    "longid_regex": {
+      "type": "string",
+      "description": "Numeric long integer identifier used to reference platform components such as Commands, Functions, Widgets, Message Actions, Schedulers, and Extensions."
+    },
+    "v3-msgaction-create": {
+      "type": "object",
+      "description": "Payload for creating a message action.",
+      "required": [
+        "name",
+        "hint"
+      ],
+      "properties": {
+        "execution_type": {
+          "type": "string",
+          "enum": [
+            "deluge",
+            "webhook"
+          ],
+          "description": "Defines how the message action executes its handler.<br>\n<ul>\n  <li><code>deluge</code>: Handler logic runs on Zoho's platform via Deluge scripts. Default when omitted.</li>\n  <li><code>webhook</code>: When the action is triggered, Cliq sends a POST request to your <code>execution_url</code>.</li>\n</ul>\n",
+          "example": "deluge"
+        },
+        "execution_url": {
+          "type": "string",
+          "maxLength": 225,
+          "description": "The URL that Zoho Cliq will POST handler events to when the message action is triggered.<br>\n<b>Required</b> when <code>execution_type</code> is <code>webhook</code>.<br>\n<b>Maximum length</b>: 225 characters.\n",
+          "example": "https://api.yourcompany.com/cliq/messageactions/handler"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 30,
+          "description": "Name of the message action. This is the text shown to users in the message action menu.<br>\n<b>Maximum length:</b> 30 characters.\n"
+        },
+        "hint": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Hint text displayed below the message action name in the menu to provide additional context to users.<br>\n<b>Maximum length:</b> 128 characters.\n"
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "organization",
+            "team",
+            "personal"
+          ],
+          "description": "Access level for the message action, determining its visibility and availability to users.<br>\nAllowed values are:<br>\n<ul>\n  <li><code>organization</code>: Visible and accessible to all users within the organization.</li>\n  <li><code>team</code>: Visible and accessible only to members of specified teams. Requires <a href=\"/cliq/help/restapi/v3/glossary/#TEAM_ID\"><code>team_ids</code></a> field.</li>\n  <li><code>personal</code>: Visible and accessible only to the creator, but can be shared with other users by adding them as collaborators.</li>\n</ul>\n"
+        },
+        "team_ids": {
+          "type": "array",
+          "maxItems": 4,
+          "description": "List of <a href=\"/cliq/help/restapi/v3/glossary/#TEAM_ID\">team_ids</a> that have access to the message action when <code>scope</code> is set to <code>team</code>. Each ID corresponds to a team within the organization.<br>\n<b>Maximum items:</b> 4 team IDs can be specified when <code>scope</code> is <code>team</code>.\n",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "multi_selectable": {
+          "type": "boolean",
+          "description": "Determines whether the message action can be applied to multiple messages at once. If set to <code>true</code>, users can select multiple messages and invoke the action on all selected messages simultaneously. If <code>false</code>, the action can only be applied to one message at a time.\n"
+        },
+        "image": {
+          "type": "string",
+          "description": "Base64-encoded string representing a custom icon image for the message action. This icon is displayed in the message action menu alongside the action name.\n"
+        },
+        "message_types": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "description": "List of message types that the message action supports. This determines which types of messages the action can be applied to. Allowed values are:<br>\n<ul>\n  <li><code>text</code>: The action can be applied to text messages.</li>\n  <li><code>link</code>: The action can be applied to messages containing links.</li>\n  <li><code>attachment</code>: The action can be applied to messages with attachments.</li>\n</ul>\n<b>Minimum items:</b> At least 1 message type must be specified.<br>\n",
+          "items": {
+            "type": "string",
+            "enum": [
+              "text",
+              "link",
+              "attachment"
+            ]
+          }
+        }
+      }
+    },
+    "textpattern_regex": {
+      "type": "string",
+      "description": "Free-text search string used to filter platform components by name in list and Marketplace search endpoints."
+    },
+    "base64_regex": {
+      "type": "string",
+      "description": "Base64-encoded pagination or sync token used for cursor-based pagination and incremental data sync."
+    },
+    "pf_component_search_scope_regex": {
+      "type": "string",
+      "description": "Scope filter for Marketplace search. Accepted values are \"organisation\" (org-created components) and \"marketplace\" (published extensions)."
+    },
+    "v3-exehandler-edit": {
+      "type": "object",
+      "description": "Payload for updating the message action execution handler. For Deluge actions, provide `script`. For Webhook actions, provide `permissions`.",
+      "properties": {
+        "script": {
+          "type": "string",
+          "description": "Updated Deluge script for the execution handler. This script is executed when the message action is invoked by users.<br>\n<b>Maximum size:</b> 250KB.<br>\n<b>Note:</b> Applicable only for <b>Deluge message actions</b>.\n"
+        },
+        "permissions": {
+          "type": "array",
+          "maxItems": 5,
+          "description": "Updated list of data attributes to forward to your server in the webhook payload.<br>\n<b>Note:</b> Applicable only for <b>Webhook message actions</b>.<br>\nMessage action handlers support all 5 permissions.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>chat</code>: Chat context (chat ID, type, participants).</li>\n  <li><code>message</code>: Message content and metadata.</li>\n  <li><code>user</code>: Sender's user profile details.</li>\n  <li><code>location</code>: Sender's location data.</li>\n  <li><code>attachments</code>: Attachment metadata and download info.</li>\n</ul>\n",
+          "items": {
+            "type": "string",
+            "enum": [
+              "chat",
+              "message",
+              "user",
+              "location",
+              "attachments"
+            ]
+          }
+        }
+      }
+    },
+    "v3-msgaction-edit": {
+      "type": "object",
+      "description": "Payload for updating a message action. All fields are optional; only the fields provided will be updated.",
+      "properties": {
+        "execution_url": {
+          "type": "string",
+          "maxLength": 225,
+          "description": "Updated server URL where Cliq will forward handler events. Applicable only for <b>Webhook message actions</b>.<br>\nThis field can be updated independently to redirect the action to a new endpoint.<br>\n<b>Maximum length</b>: 225 characters.\n",
+          "example": "https://api.yourcompany.com/cliq/messageactions/updated-handler"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 30,
+          "description": "Updated name of the message action shown to users in the message action menu.<br>\n<b>Maximum length:</b> 30 characters.\n"
+        },
+        "hint": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Updated hint text displayed below the message action name in the menu to provide additional context to users.<br>\n<b>Maximum length:</b> 128 characters.\n"
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "organization",
+            "team",
+            "personal"
+          ],
+          "description": "Updated access level for the message action, determining its visibility and availability to users.<br>\nAllowed values are:<br>\n<ul>\n  <li><code>organization</code>: Visible and accessible to all users within the organization.</li>\n  <li><code>team</code>: Visible and accessible only to members of specified teams. Requires <a href=\"/cliq/help/restapi/v3/glossary/#TEAM_ID\"><code>team_ids</code></a> field.</li>\n  <li><code>personal</code>: Visible and accessible only to the creator, but can be shared with other users by adding them as collaborators.</li>\n</ul>\n"
+        },
+        "team_ids": {
+          "type": "array",
+          "maxItems": 4,
+          "description": "Updated list of <a href=\"/cliq/help/restapi/v3/glossary/#TEAM_ID\">team_ids</a> that have access to the message action when <code>scope</code> is set to <code>team</code>. Each ID corresponds to a team within the organization.<br>\n<b>Maximum items:</b> 4 team IDs can be specified when <code>scope</code> is <code>team</code>.\n",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "multi_selectable": {
+          "type": "boolean",
+          "description": "Updated multi-selection behavior. If set to <code>true</code>, users can select multiple messages and invoke the action on all selected messages simultaneously. If <code>false</code>, the action can only be applied to one message at a time.\n"
+        },
+        "image": {
+          "type": "string",
+          "description": "Updated Base64-encoded string representing a custom icon image for the message action. This icon is displayed in the message action menu alongside the action name.\n"
+        },
+        "message_types": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "description": "Updated list of message types that the message action supports. Allowed values are:<br>\n<ul>\n  <li><code>text</code>: The action can be applied to text messages.</li>\n  <li><code>link</code>: The action can be applied to messages containing links.</li>\n  <li><code>attachment</code>: The action can be applied to messages with attachments.</li>\n</ul>\n<b>Minimum items:</b> At least 1 message type must be specified.<br>\n",
+          "items": {
+            "type": "string",
+            "enum": [
+              "text",
+              "link",
+              "attachment"
+            ]
+          }
+        }
+      },
+      "example": {
+        "name": "Create Ticket",
+        "hint": "Convert this message into a support ticket",
+        "scope": "organization",
+        "multi_selectable": false,
+        "message_types": [
+          "text",
+          "link",
+          "attachment"
+        ]
+      }
+    }
+  }
+}

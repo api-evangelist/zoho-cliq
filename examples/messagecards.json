@@ -1,0 +1,440 @@
+{
+  "postMessageCardToChannel": {
+    "path": "/channels/{CHANNEL_UNIQUE_NAME}/message",
+    "method": "post",
+    "examples": {
+      "request": {
+        "poll_card": {
+          "summary": "Poll Card - Sprint priority vote",
+          "value": {
+            "text": "Sprint 42 - Please vote on which feature we prioritize this cycle.",
+            "card": {
+              "theme": "poll",
+              "title": "Which feature should we prioritize in Sprint 42?",
+              "options": [
+                {
+                  "text": "OAuth 2.0 support for third-party integrations"
+                },
+                {
+                  "text": "Bulk export for audit logs"
+                },
+                {
+                  "text": "Dark mode for the web app"
+                },
+                {
+                  "text": "Push notifications for mobile"
+                }
+              ]
+            }
+          }
+        },
+        "modern_inline_card": {
+          "summary": "Modern Inline Card - Support ticket escalation",
+          "value": {
+            "text": "A critical support ticket has been escalated and requires immediate attention.",
+            "card": {
+              "theme": "modern-inline",
+              "title": "Ticket Escalated - Payment Gateway Timeout",
+              "buttons": [
+                {
+                  "label": "Assign to Me",
+                  "action": {
+                    "type": "invoke.function",
+                    "data": {
+                      "name": "assign_ticket"
+                    }
+                  }
+                },
+                {
+                  "label": "View Ticket",
+                  "action": {
+                    "type": "open.url",
+                    "data": {
+                      "web": "https://desk.zoho.com/tickets/TKT-00892"
+                    }
+                  }
+                }
+              ]
+            },
+            "slides": [
+              {
+                "type": "table",
+                "title": "Ticket Details",
+                "data": {
+                  "headers": [
+                    "Field",
+                    "Value"
+                  ],
+                  "rows": [
+                    {
+                      "Field": "Ticket ID",
+                      "Value": "#TKT-00892"
+                    },
+                    {
+                      "Field": "Priority",
+                      "Value": "Critical"
+                    },
+                    {
+                      "Field": "Reported By",
+                      "Value": "olivia.palmer@zylker.com"
+                    },
+                    {
+                      "Field": "Affected Module",
+                      "Value": "Payment Gateway"
+                    },
+                    {
+                      "Field": "Open Since",
+                      "Value": "2026-04-16 09:14 AM"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "prompt_card": {
+          "summary": "Prompt Card - Deployment approval request",
+          "value": {
+            "text": "Deployment approval required for release v3.6.1 to production.",
+            "card": {
+              "theme": "prompt",
+              "title": "Approve deployment of v3.6.1 to production? This release includes 4 bug fixes and 1 migration script.",
+              "buttons": [
+                {
+                  "label": "Approve",
+                  "action": {
+                    "type": "invoke.function",
+                    "data": {
+                      "name": "approve_deployment"
+                    }
+                  }
+                },
+                {
+                  "label": "Reject",
+                  "action": {
+                    "type": "invoke.function",
+                    "data": {
+                      "name": "reject_deployment"
+                    }
+                  }
+                },
+                {
+                  "label": "View Diff",
+                  "action": {
+                    "type": "open.url",
+                    "data": {
+                      "web": "https://git.zylker.com/releases/v3.6.1/diff"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "response_200": {
+        "poll_card": {
+          "summary": "Poll Card response",
+          "value": {
+            "url": "/api/v3/channels/engineering/message",
+            "type": "message",
+            "data": {
+              "id": "1701234567890_1234567890",
+              "card": {
+                "theme": "poll",
+                "title": "Which feature should we prioritize in Sprint 42?",
+                "options": [
+                  {
+                    "text": "OAuth 2.0 support for third-party integrations",
+                    "votes": 0
+                  },
+                  {
+                    "text": "Bulk export for audit logs",
+                    "votes": 0
+                  },
+                  {
+                    "text": "Dark mode for the web app",
+                    "votes": 0
+                  },
+                  {
+                    "text": "Push notifications for mobile",
+                    "votes": 0
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "modern_inline_card": {
+          "summary": "Modern Inline Card response",
+          "value": {
+            "url": "/api/v3/channels/support/message",
+            "type": "message",
+            "data": {
+              "id": "1701234567891_1234567891",
+              "card": {
+                "theme": "modern-inline",
+                "title": "Ticket Escalated - Payment Gateway Timeout"
+              },
+              "slides": [
+                {
+                  "type": "table",
+                  "title": "Ticket Details",
+                  "data": {
+                    "headers": [
+                      "Field",
+                      "Value"
+                    ],
+                    "rows": [
+                      {
+                        "Field": "Ticket ID",
+                        "Value": "#TKT-00892"
+                      },
+                      {
+                        "Field": "Priority",
+                        "Value": "Critical"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "prompt_card": {
+          "summary": "Prompt Card response",
+          "value": {
+            "url": "/api/v3/channels/devops/message",
+            "type": "message",
+            "data": {
+              "id": "1701234567892_1234567892",
+              "card": {
+                "theme": "prompt",
+                "title": "Approve deployment of v3.6.1 to production?"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "postMessageCardToChat": {
+    "path": "/chats/{CHAT_ID}/messages",
+    "method": "post",
+    "examples": {
+      "request": {
+        "poll_card": {
+          "summary": "Poll Card - Sprint priority vote",
+          "value": {
+            "text": "Sprint 42 - Please vote on which feature we prioritize this cycle.",
+            "card": {
+              "theme": "poll",
+              "title": "Which feature should we prioritize in Sprint 42?",
+              "options": [
+                {
+                  "text": "OAuth 2.0 support for third-party integrations"
+                },
+                {
+                  "text": "Bulk export for audit logs"
+                },
+                {
+                  "text": "Dark mode for the web app"
+                },
+                {
+                  "text": "Push notifications for mobile"
+                }
+              ]
+            }
+          }
+        },
+        "modern_inline_card": {
+          "summary": "Modern Inline Card - Support ticket escalation",
+          "value": {
+            "text": "A critical support ticket has been escalated and requires immediate attention.",
+            "card": {
+              "theme": "modern-inline",
+              "title": "Ticket Escalated - Payment Gateway Timeout",
+              "buttons": [
+                {
+                  "label": "Assign to Me",
+                  "action": {
+                    "type": "invoke.function",
+                    "data": {
+                      "name": "assign_ticket"
+                    }
+                  }
+                },
+                {
+                  "label": "View Ticket",
+                  "action": {
+                    "type": "open.url",
+                    "data": {
+                      "web": "https://desk.zoho.com/tickets/TKT-00892"
+                    }
+                  }
+                }
+              ]
+            },
+            "slides": [
+              {
+                "type": "table",
+                "title": "Ticket Details",
+                "data": {
+                  "headers": [
+                    "Field",
+                    "Value"
+                  ],
+                  "rows": [
+                    {
+                      "Field": "Ticket ID",
+                      "Value": "#TKT-00892"
+                    },
+                    {
+                      "Field": "Priority",
+                      "Value": "Critical"
+                    },
+                    {
+                      "Field": "Reported By",
+                      "Value": "olivia.palmer@zylker.com"
+                    },
+                    {
+                      "Field": "Affected Module",
+                      "Value": "Payment Gateway"
+                    },
+                    {
+                      "Field": "Open Since",
+                      "Value": "2026-04-16 09:14 AM"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "prompt_card": {
+          "summary": "Prompt Card - Deployment approval request",
+          "value": {
+            "text": "Deployment approval required for release v3.6.1 to production.",
+            "card": {
+              "theme": "prompt",
+              "title": "Approve deployment of v3.6.1 to production? This release includes 4 bug fixes and 1 migration script.",
+              "buttons": [
+                {
+                  "label": "Approve",
+                  "action": {
+                    "type": "invoke.function",
+                    "data": {
+                      "name": "approve_deployment"
+                    }
+                  }
+                },
+                {
+                  "label": "Reject",
+                  "action": {
+                    "type": "invoke.function",
+                    "data": {
+                      "name": "reject_deployment"
+                    }
+                  }
+                },
+                {
+                  "label": "View Diff",
+                  "action": {
+                    "type": "open.url",
+                    "data": {
+                      "web": "https://git.zylker.com/releases/v3.6.1/diff"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "response_200": {
+        "poll_card": {
+          "summary": "Poll Card response",
+          "value": {
+            "url": "/api/v3/chats/CHAT_ID/messages",
+            "type": "message",
+            "data": {
+              "id": "1701234567890_1234567890",
+              "card": {
+                "theme": "poll",
+                "title": "Which feature should we prioritize in Sprint 42?",
+                "options": [
+                  {
+                    "text": "OAuth 2.0 support for third-party integrations",
+                    "votes": 0
+                  },
+                  {
+                    "text": "Bulk export for audit logs",
+                    "votes": 0
+                  },
+                  {
+                    "text": "Dark mode for the web app",
+                    "votes": 0
+                  },
+                  {
+                    "text": "Push notifications for mobile",
+                    "votes": 0
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "modern_inline_card": {
+          "summary": "Modern Inline Card response",
+          "value": {
+            "url": "/api/v3/chats/CHAT_ID/messages",
+            "type": "message",
+            "data": {
+              "id": "1701234567891_1234567891",
+              "card": {
+                "theme": "modern-inline",
+                "title": "Ticket Escalated - Payment Gateway Timeout"
+              },
+              "slides": [
+                {
+                  "type": "table",
+                  "title": "Ticket Details",
+                  "data": {
+                    "headers": [
+                      "Field",
+                      "Value"
+                    ],
+                    "rows": [
+                      {
+                        "Field": "Ticket ID",
+                        "Value": "#TKT-00892"
+                      },
+                      {
+                        "Field": "Priority",
+                        "Value": "Critical"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "prompt_card": {
+          "summary": "Prompt Card response",
+          "value": {
+            "url": "/api/v3/chats/CHAT_ID/messages",
+            "type": "message",
+            "data": {
+              "id": "1701234567892_1234567892",
+              "card": {
+                "theme": "prompt",
+                "title": "Approve deployment of v3.6.1 to production?"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

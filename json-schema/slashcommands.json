@@ -1,0 +1,537 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Zoho Cliq Slashcommands Schemas",
+  "definitions": {
+    "SlashCommandResponse": {
+      "type": "object",
+      "description": "Slash Commands API response envelope.",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "example": {
+        "url": "/api/v3/commands/227828000000128009",
+        "type": "command",
+        "data": {
+          "name": "greet",
+          "id": "227828000000128009",
+          "handlers": [
+            {
+              "type": "execution_handler"
+            }
+          ],
+          "creator": {
+            "name": "Ryan West",
+            "id": "119440882"
+          },
+          "execution_type": "deluge",
+          "hint": "Send a greeting message",
+          "status": "enabled",
+          "max_suggestions": 5,
+          "type": "custom",
+          "description": "Sends a customizable greeting to a user or channel",
+          "scope": "organization",
+          "options": {
+            "user": "The user to greet",
+            "msg": "Custom greeting message"
+          }
+        }
+      }
+    },
+    "ExecutionRecordResponse": {
+      "type": "object",
+      "description": "Response envelope for slash command handler execution records.",
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "HTTP status text of the response.",
+          "example": "OK"
+        },
+        "code": {
+          "type": "integer",
+          "description": "HTTP status code of the response.",
+          "example": 200
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "logs": {
+              "type": "array",
+              "description": "List of execution log entries.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier of the execution record."
+                  },
+                  "time": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Epoch timestamp (ms) when the handler was executed."
+                  },
+                  "executionTime": {
+                    "type": "integer",
+                    "description": "Time taken to execute the handler, in milliseconds."
+                  },
+                  "output": {
+                    "type": "string",
+                    "description": "Output returned by the handler script (serialized as a JSON string)."
+                  },
+                  "user": {
+                    "type": "object",
+                    "description": "Details of the user who triggered the command execution.",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "zoho_user_id": {
+                        "type": "string"
+                      },
+                      "first_name": {
+                        "type": "string"
+                      },
+                      "last_name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "example": {
+        "status": "OK",
+        "code": 200,
+        "data": {
+          "logs": [
+            {
+              "user": {
+                "zoho_user_id": "697322516",
+                "last_name": "Raman",
+                "email": "priya.raman@zylker.com",
+                "first_name": "Priya",
+                "id": "697322516"
+              },
+              "output": "{}",
+              "time": 1770628936698,
+              "executionTime": 183,
+              "id": "d37d7b20-0598-11f1-8871-fb8adfa476c7"
+            },
+            {
+              "user": {
+                "zoho_user_id": "697322516",
+                "last_name": "Raman",
+                "email": "priya.raman@zylker.com",
+                "first_name": "Priya",
+                "id": "697322516"
+              },
+              "output": "{}",
+              "time": 1770628887877,
+              "executionTime": 179,
+              "id": "b66694e0-0598-11f1-b90c-55af9267af80"
+            }
+          ]
+        }
+      }
+    },
+    "v3-exehandler-create": {
+      "type": "object",
+      "description": "Payload for creating a new handler. For Deluge commands, provide `type` and `script`. For Webhook commands, provide `type` and `permissions`.",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "execution_handler",
+            "suggestion_handler"
+          ],
+          "description": "Type of the handler to create. Accepted values:<br>\n<ul>\n  <li><code>execution_handler</code>: Executes on command invocation.</li>\n  <li><code>suggestion_handler</code>: Executes to provide autocomplete suggestions as users type the command.</li>\n</ul>\n"
+        },
+        "script": {
+          "type": "string",
+          "description": "Deluge script source code for the handler.<br>\n<b>Maximum size:</b> 250KB<br>\n<b>Note:</b> Applicable only for <b>Deluge commands</b>. Do not pass <code>script</code> for Webhook commands - use <code>permissions</code> instead.\n"
+        },
+        "permissions": {
+          "type": "array",
+          "maxItems": 5,
+          "description": "List of data attributes to forward to your server in the webhook payload when the handler fires.<br>\n<b>Note:</b> Applicable only for <b>Webhook commands</b>. Do not pass <code>permissions</code> for Deluge commands - use <code>script</code> instead.<br>\n<b>Maximum:</b> 5 permissions per handler.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>attachments</code>: File attachment metadata. Not available for <code>suggestion_handler</code>.</li>\n  <li><code>chat</code>: Chat context (chat ID, type, participants).</li>\n  <li><code>location</code>: Sender's location data.</li>\n  <li><code>user</code>: Sender's user profile details.</li>\n</ul>\nRefer to the permissions availability table in the <a href=\"/cliq/help/restapi/v3/slashcommands/#createCommandHandler\">Create a handler</a> endpoint for per-handler availability.\n",
+          "items": {
+            "type": "string",
+            "enum": [
+              "attachments",
+              "chat",
+              "location",
+              "user"
+            ]
+          }
+        }
+      }
+    },
+    "longid_regex": {
+      "type": "string",
+      "description": "Numeric long integer identifier used to reference platform components such as Commands, Functions, Widgets, Message Actions, Schedulers, and Extensions."
+    },
+    "COMMAND_HANDLER_TYPE_regex": {
+      "type": "string",
+      "enum": [
+        "execution_handler",
+        "suggestion_handler"
+      ],
+      "description": "Name of a slash command handler. Accepted values: <code>execution_handler</code> (fires on command invocation), <code>suggestion_handler</code> (fires to generate autocomplete suggestions).\n"
+    },
+    "update-slash-command-request-body": {
+      "type": "object",
+      "description": "Payload for updating a slash command. All fields are optional; only the fields provided will be updated.",
+      "properties": {
+        "execution_url": {
+          "type": "string",
+          "maxLength": 225,
+          "description": "Updated server URL where Cliq will forward handler events. Applicable only for <b>Webhook commands</b>.<br>\nThis field can be updated independently to redirect the command to a new endpoint without any other changes.<br>\n<b>Maximum length</b>: 225 characters.\n",
+          "example": "https://api.yourcompany.com/cliq/commands/updated-handler"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 30,
+          "description": "Updated name of the slash command. This is the text users type after \"/\" to invoke the command. Must be unique within the command's scope.<br>\n<b>Maximum length</b>: 30 characters<br>\n<b>Allowed characters</b>: lowercase letters, numbers, and underscores only. No spaces or special characters allowed.\n"
+        },
+        "hint": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Updated hint shown in the slash command picker to help users understand the command's purpose. Should be concise and descriptive.<br>\n<b>Maximum length</b>: 128 characters\n"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "Updated detailed description of the slash command's functionality. This can provide more in-depth information than the hint and may be shown in command documentation or tooltips.<br>\n<b>Maximum length</b>: 300 characters\n"
+        },
+        "options": {
+          "type": "object",
+          "description": "Updated options map. Options are additional properties which can alter the output of a /command based on the user's requirements.<br>\n<b>Maximum size</b>: 5 key-value pairs.<br>\n<ul>\n  <li><b>Key</b>: Option name - identifies the option (e.g. <code>location</code>, <code>unit</code>).</li>\n  <li><b>Value</b>: Option description - explains what the option does (e.g. <code>\"City to check weather for\"</code>).</li>\n</ul>\n<b>Example syntax</b>:<br>\n<pre><code>{\"options\": {\"location\": \"City to check weather for\", \"unit\": \"Temperature unit: celsius or fahrenheit\"}}</code></pre>\n",
+          "additionalProperties": {
+            "type": "string",
+            "maxLength": 100
+          }
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "organization",
+            "team",
+            "personal"
+          ],
+          "description": "Updated access scope of the slash command. Determines who can see and use the command.<br>\n<b>Allowed values</b>:<br>\n<ul>\n  <li><code>organization</code>: Command is available to all users in the organization.</li>\n  <li><code>team</code>: Command is restricted to specific teams. Requires <a href=\"/cliq/help/restapi/v3/glossary/#TEAM_ID\"><code>team_ids</code></a> field.</li>\n  <li><code>personal</code>: Command is only available to the creator.</li>\n</ul>\n"
+        },
+        "team_ids": {
+          "type": "array",
+          "maxItems": 4,
+          "description": "Updated list of <a href=\"/cliq/help/restapi/v3/glossary/#TEAM_ID\">team_ids</a> that are allowed to access the command when <code>scope</code> is set to <code>team</code>. Each ID corresponds to a team within the organization.<br>\n<b>Maximum items</b>: 4 team IDs can be specified.<br>\nThis field is required if <code>scope</code> is being changed to <code>team</code>.\n",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "image": {
+          "type": "string",
+          "maxLength": 204800000,
+          "description": "Updated base64 encoded image used as the command icon. This icon will be displayed next to the command in the slash command picker.<br>\n<b>Image requirements</b>:<br>\n<ul>\n  <li>Format: PNG or JPEG</li>\n  <li>Maximum size: 100 KB</li>\n  <li>Recommended dimensions: 64x64 pixels for optimal display</li>\n</ul>\n"
+        },
+        "max_suggestions": {
+          "type": "integer",
+          "maximum": 5,
+          "description": "Updated maximum number of autocomplete suggestions that can be selected by the user when the command is typed.<br>\n<b>Maximum value</b>: 5 suggestions\n"
+        }
+      },
+      "example": {
+        "hint": "Send a personalized greeting - updated",
+        "description": "Sends a customizable greeting to a user or channel",
+        "scope": "organization",
+        "options": {
+          "user": "The user to greet",
+          "msg": "Custom greeting message"
+        },
+        "max_suggestions": 5
+      }
+    },
+    "v3-exehandler-edit": {
+      "type": "object",
+      "description": "Payload for updating an existing handler. For Deluge commands, provide `script`. For Webhook commands, provide `permissions`.",
+      "properties": {
+        "script": {
+          "type": "string",
+          "description": "Updated Deluge script source code for the handler.<br>\n<b>Maximum size:</b> 250KB<br>\n<b>Note:</b> Applicable only for <b>Deluge commands</b>.\n"
+        },
+        "permissions": {
+          "type": "array",
+          "maxItems": 5,
+          "description": "Updated list of data attributes to forward to your server in the webhook payload.<br>\n<b>Note:</b> Applicable only for <b>Webhook commands</b>.<br>\n<b>Allowed values</b>: <code>attachments</code>, <code>chat</code>, <code>location</code>, <code>user</code>. Note: <code>attachments</code> is not available for <code>suggestion_handler</code>.\n",
+          "items": {
+            "type": "string",
+            "enum": [
+              "attachments",
+              "chat",
+              "location",
+              "user"
+            ]
+          }
+        }
+      }
+    },
+    "create-slash-command-request-body": {
+      "type": "object",
+      "description": "Payload for creating a new slash command.",
+      "required": [
+        "name",
+        "hint",
+        "scope"
+      ],
+      "properties": {
+        "execution_type": {
+          "type": "string",
+          "enum": [
+            "deluge",
+            "webhook"
+          ],
+          "description": "Defines how the command executes its handlers.<br>\n<ul>\n  <li><code>deluge</code>: Handler logic runs on Zoho's platform via Deluge scripts. Default when omitted.</li>\n  <li><code>webhook</code>: Handler events are forwarded to your <code>execution_url</code> as POST requests.</li>\n</ul>\n",
+          "example": "deluge"
+        },
+        "execution_url": {
+          "type": "string",
+          "maxLength": 225,
+          "description": "The URL that Zoho Cliq will POST handler events to when the command is invoked.<br>\n<b>Required</b> when <code>execution_type</code> is <code>webhook</code>.<br>\n<b>Maximum length</b>: 225 characters.\n",
+          "example": "https://api.yourcompany.com/cliq/commands/handler"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 30,
+          "description": "Name of the slash command. This is the text that users will type after the \"/\" to invoke the command. Must be unique within the command's scope.<br>\n<b>Maximum length</b>: 30 characters<br>\n<b>Allowed characters</b>: Only lowercase letters.\n"
+        },
+        "hint": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Hint shown in the slash command picker to help users understand the command's purpose. Should be concise and descriptive.<br>\n<b>Maximum length</b>: 128 characters\n"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "Detailed description of the slash command's functionality. This can provide more in-depth information than the hint and may be shown in command documentation or tooltips.<br>\n<b>Maximum length</b>: 300 characters\n"
+        },
+        "options": {
+          "type": "object",
+          "description": "Options are additional properties which can alter the output of a /command based on the user's requirements.<br>\n<b>Maximum size</b>: 5 key-value pairs.<br>\n<ul>\n  <li><b>Key</b>: Option name - identifies the option (e.g. <code>location</code>, <code>unit</code>).</li>\n  <li><b>Value</b>: Option description - explains what the option does (e.g. <code>\"City to check weather for\"</code>).</li>\n</ul>\n<b>Example syntax</b>:<br>\n<pre><code>{\"options\": {\"location\": \"City to check weather for\", \"unit\": \"Temperature unit: celsius or fahrenheit\"}}</code></pre>\n",
+          "additionalProperties": {
+            "type": "string",
+            "maxLength": 100
+          }
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "organization",
+            "team",
+            "personal"
+          ],
+          "description": "Access scope of the slash command. Determines who can see and use the command.<br>\n<b>Allowed values</b>:<br>\n<ul>\n  <li><code>organization</code>: Command is available to all users in the organization.</li>\n  <li><code>team</code>: Command is restricted to specific teams. Requires <a href=\"/cliq/help/restapi/v3/glossary/#TEAM_ID\"><code>team_ids</code></a> field.</li>\n  <li><code>personal</code>: Command is only available to the creator.</li>\n</ul> \n"
+        },
+        "team_ids": {
+          "type": "array",
+          "maxItems": 4,
+          "description": "List of <a href=\"/cliq/help/restapi/v3/glossary/#TEAM_ID\">team_ids</a> that are allowed to access the command when <code>scope</code> is set to <code>team</code>. Each ID corresponds to a team within the organization.<br>\n<b>Maximum items</b>: 4 team IDs can be specified.<br>\nThis field is required if <code>scope</code> is <code>team</code>.\n",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "image": {
+          "type": "string",
+          "maxLength": 204800000,
+          "description": "Base64 encoded image used as the command icon. This icon will be displayed next to the command in the slash command picker and can help users visually identify the command.<br>\n<b>Image requirements</b>:<br>\n<ul>\n  <li>Format: PNG or JPEG</li>\n  <li>Maximum size: 100 KB</li>\n  <li>Recommended dimensions: 64x64 pixels for optimal display</li>\n</ul>\n"
+        },
+        "max_suggestions": {
+          "type": "integer",
+          "maximum": 5,
+          "description": "Maximum number of autocomplete suggestions that can be selected by the user when the command is typed.<br>\n<br><b>Maximum value</b>: 5 suggestions\n"
+        }
+      },
+      "example": {
+        "name": "greet",
+        "hint": "Send a greeting message",
+        "description": "Sends a customizable greeting to a user or channel",
+        "scope": "organization",
+        "options": {
+          "user": "The user to greet",
+          "msg": "Custom greeting message"
+        },
+        "max_suggestions": 5
+      }
+    },
+    "list-all-slash-commands-response": {
+      "type": "object",
+      "description": "Response schema for listing slash commands.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "example": "/api/v3/commands"
+        },
+        "type": {
+          "type": "string",
+          "example": "command"
+        },
+        "sync_token": {
+          "type": "string",
+          "description": "Token for incremental sync. Pass this in the next request to retrieve only commands updated since this response.",
+          "example": "MTB8MTc3NzM2MDM5OTQ5Mnw="
+        },
+        "next_token": {
+          "type": "string",
+          "description": "Pagination token for the next page of results."
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "handlers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "creator": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  }
+                }
+              },
+              "execution_type": {
+                "type": "string",
+                "example": "deluge"
+              },
+              "hint": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string",
+                "example": "enabled"
+              },
+              "type": {
+                "type": "string",
+                "example": "custom"
+              },
+              "description": {
+                "type": "string"
+              },
+              "scope": {
+                "type": "string",
+                "enum": [
+                  "organization",
+                  "team",
+                  "personal"
+                ]
+              },
+              "max_suggestions": {
+                "type": "integer"
+              },
+              "options": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "example": {
+        "url": "/api/v3/commands",
+        "type": "command",
+        "sync_token": "MTB8MTc3NzM2MDM5OTQ5Mnw=",
+        "data": [
+          {
+            "name": "report",
+            "id": "227828000000128011",
+            "handlers": [
+              {
+                "type": "execution_handler"
+              }
+            ],
+            "creator": {
+              "name": "Ryan West",
+              "id": "119440882"
+            },
+            "execution_type": "deluge",
+            "hint": "Generate a sales or activity report",
+            "status": "enabled",
+            "type": "custom",
+            "description": "Generates a report for the specified date range and team",
+            "scope": "organization",
+            "options": {
+              "type": "Report type (e.g. sales, activity, attendance)",
+              "period": "Date range (e.g. today, this_week, last_month)"
+            }
+          },
+          {
+            "name": "ticket",
+            "id": "227828000000128009",
+            "handlers": [
+              {
+                "type": "execution_handler"
+              },
+              {
+                "type": "suggestion_handler"
+              }
+            ],
+            "creator": {
+              "name": "Ryan West",
+              "id": "119440882"
+            },
+            "execution_type": "deluge",
+            "hint": "Create or look up a support ticket",
+            "status": "enabled",
+            "max_suggestions": 5,
+            "type": "custom",
+            "description": "Creates a new support ticket or retrieves an existing one by ID",
+            "scope": "team",
+            "options": {
+              "action": "Action to perform (create or lookup)",
+              "priority": "Ticket priority (low, medium, high, critical)"
+            }
+          }
+        ]
+      }
+    },
+    "base64_regex": {
+      "type": "string",
+      "description": "Base64-encoded pagination or sync token used for cursor-based pagination and incremental data sync."
+    }
+  }
+}

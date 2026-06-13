@@ -1,0 +1,185 @@
+{
+  "star_a_message": {
+    "path": "/stars",
+    "method": "post",
+    "examples": {
+      "request": {
+        "star_a_message": {
+          "summary": "Star a message",
+          "value": {
+            "chat_id": "CT_1894736520184930172_847291635",
+            "message_id": "1746000123456789001",
+            "star_type": "important"
+          }
+        },
+        "update_star_type": {
+          "summary": "Update star type of an already-starred message",
+          "value": {
+            "chat_id": "CT_1894736520184930172_847291635",
+            "message_id": "1746000123456789001",
+            "star_type": "follow_up"
+          }
+        }
+      },
+      "response_200": {
+        "star_a_message": {
+          "summary": "Message starred for the first time",
+          "value": {
+            "type": "text",
+            "id": "1746000123456789001",
+            "time": "2026-04-30T10:00:00Z",
+            "sender": {
+              "id": "1234567890",
+              "name": "Alice Johnson"
+            },
+            "content": {
+              "text": "Please review the Q2 report before Friday."
+            },
+            "is_pinned": false,
+            "star_information": {
+              "star_type": "important",
+              "starred_message_time": "2026-04-30T10:15:30Z"
+            },
+            "chat_information": {
+              "chat_id": "CT_1894736520184930172_847291635",
+              "chat_type": "chat",
+              "title": "Alice Johnson",
+              "joined": true
+            }
+          }
+        },
+        "update_star_type": {
+          "summary": "Star type updated - old_star_type shows the previous type",
+          "value": {
+            "type": "text",
+            "id": "1746000123456789001",
+            "time": "2026-04-30T10:00:00Z",
+            "sender": {
+              "id": "1234567890",
+              "name": "Alice Johnson"
+            },
+            "content": {
+              "text": "Please review the Q2 report before Friday."
+            },
+            "is_pinned": false,
+            "star_information": {
+              "star_type": "follow_up",
+              "starred_message_time": "2026-04-30T10:15:30Z",
+              "old_star_type": "important"
+            },
+            "chat_information": {
+              "chat_id": "CT_1894736520184930172_847291635",
+              "chat_type": "chat",
+              "title": "Alice Johnson",
+              "joined": true
+            }
+          }
+        }
+      },
+      "response_400": {
+        "code": 1012,
+        "message": "input_invalid"
+      },
+      "response_404": {
+        "chat_not_found": {
+          "value": {
+            "code": 11016,
+            "message": "chat_not_found"
+          },
+          "summary": "Chat does not exist or user cannot access it"
+        }
+      },
+      "response_500": {
+        "code": 1011,
+        "message": "operation_failed"
+      }
+    }
+  },
+  "list_starred_messages": {
+    "path": "/stars",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "starred_messages": {
+          "summary": "List of starred messages with next_token",
+          "value": {
+            "star_messages": [
+              {
+                "type": "text",
+                "id": "1746000123456789001",
+                "time": "2026-04-30T10:00:00Z",
+                "sender": {
+                  "id": "1234567890",
+                  "name": "Alice Johnson"
+                },
+                "content": {
+                  "text": "Please review the Q2 report before Friday."
+                },
+                "is_pinned": false,
+                "star_information": {
+                  "star_type": "important",
+                  "starred_message_time": "2026-04-30T10:15:30Z"
+                },
+                "chat_information": {
+                  "chat_id": "chid_abcdef123456",
+                  "chat_type": "chat",
+                  "title": "Alice Johnson",
+                  "joined": true
+                }
+              },
+              {
+                "type": "file",
+                "id": "1746000987654321002",
+                "time": "2026-04-30T09:40:00Z",
+                "sender": {
+                  "id": "9876543210",
+                  "name": "Bob Smith"
+                },
+                "content": {
+                  "file_name": "Q2_Report_Final.pdf",
+                  "file_size": 204800,
+                  "file_url": "https://cliq.zoho.com/file/download?id=enc_file_id_xyz"
+                },
+                "is_pinned": false,
+                "star_information": {
+                  "star_type": "to_do",
+                  "starred_message_time": "2026-04-30T09:45:00Z"
+                },
+                "chat_information": {
+                  "chat_id": "chid_channel_org_001",
+                  "chat_type": "channel",
+                  "title": "Engineering Announcements",
+                  "display_name": "Engineering Announcements",
+                  "joined": true
+                }
+              }
+            ],
+            "next_token": "eyJsYXN0U3RhcnJlZFRpbWUiOiIxNzQ1OTkwMDAwMDAwIiwibGltaXQiOjJ9"
+          }
+        }
+      },
+      "response_403": {
+        "code": 430002,
+        "message": "chat_access_denied"
+      }
+    }
+  },
+  "unstar_a_message": {
+    "path": "/stars/{MESSAGE_ID}",
+    "method": "delete",
+    "examples": {
+      "response_400": {
+        "code": 1012,
+        "message": "input_invalid"
+      },
+      "response_404": {
+        "code": 8004,
+        "message": "star_not_found"
+      },
+      "response_500": {
+        "code": 1011,
+        "message": "operation_failed"
+      }
+    }
+  }
+}

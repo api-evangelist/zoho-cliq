@@ -1,0 +1,270 @@
+{
+  "@context": {
+    "@vocab": "https://www.zoho.com/cliq/help/restapi/v3/#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "zoho": "https://www.zoho.com/cliq/help/restapi/v3/#",
+    "BotIncomingWebhookRequest": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#BotIncomingWebhookRequest",
+      "rdfs:comment": "Request body for the incoming webhook endpoint. Accepts any number of custom key-value parameters that are passed directly to the bot's <code>incoming_webhook_handler</code> Deluge script. Up to 50 additional parameters are supported, each with a maximum value length of 10,000 characters. There are no fixed or required fields.\n",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "BotIncomingWebhookResponse": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#BotIncomingWebhookResponse",
+      "rdfs:comment": "Response returned after a successful incoming webhook message delivery. Contains the list of user IDs that received the message.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "NoResponse": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#NoResponse",
+      "rdfs:comment": "Represents an empty successful response where no payload is returned.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "BotGetResponse": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#BotGetResponse",
+      "rdfs:comment": "Response returned when retrieving the details of a specific bot.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "BotCreateResponse": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#BotCreateResponse",
+      "rdfs:comment": "Response returned after successfully creating a bot.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "GenericResponse": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#GenericResponse",
+      "rdfs:comment": "Generic successful response envelope used for bot APIs where detailed payload schema varies.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "BotListResponse": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#BotListResponse",
+      "rdfs:comment": "Response schema for listing bots.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "BotHandlerCreateResponse": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#BotHandlerCreateResponse",
+      "rdfs:comment": "Response schema returned when a new bot handler is created successfully.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "BotHandlerDetailsResponse": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#BotHandlerDetailsResponse",
+      "rdfs:comment": "Response schema returned when fetching the full details of a specific bot handler.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "BotHandlerResponse": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#BotHandlerResponse",
+      "rdfs:comment": "Response schema for bot handler create, update, and fetch operations.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "BotHandlerLogsResponse": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#BotHandlerLogsResponse",
+      "rdfs:comment": "Response schema for bot handler execution logs.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "ErrorResponse": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#ErrorResponse",
+      "rdfs:comment": "",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "BotSubscribersResponse": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#BotSubscribersResponse",
+      "rdfs:comment": "Represents the response structure for fetching subscribers of a specific bot. Contains metadata and a list of subscriber details.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "BotSubscriber": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#BotSubscriber",
+      "rdfs:comment": "Detailed information about an individual subscriber of the bot.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "Trigger-Bot-Call-Request": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#Trigger-Bot-Call-Request",
+      "rdfs:comment": "Represents the request body for triggering a bot call with a message, recipients, retries, loops, and optional actions.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "Bot-call-response": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#Bot-call-response",
+      "rdfs:comment": "Represents the response returned after triggering a bot call, including the alert instance ID and associated users.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "BotCreate": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#BotCreate",
+      "rdfs:comment": "Payload for creating a new bot.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "BotUpdateResponse": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#BotUpdateResponse",
+      "rdfs:comment": "Response returned after successfully updating a bot.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "BotEdit": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#BotEdit",
+      "rdfs:comment": "Payload for updating an existing bot. All fields are optional.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "HandlerCreate": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#HandlerCreate",
+      "rdfs:comment": "Payload for creating a new handler.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "SubAction": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#SubAction",
+      "rdfs:comment": "Sub-action definition for menu handlers.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "HandlerEdit": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#HandlerEdit",
+      "rdfs:comment": "Payload for updating an existing handler.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "BotAssociateChannelRequest": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#BotAssociateChannelRequest",
+      "rdfs:comment": "Payload to associate bot with a channel.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "BotMessage": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#BotMessage",
+      "rdfs:comment": "Payload for sending a message from a bot. At least one of <code>text</code>, <code>card</code>, or <code>slides</code> must be provided.\nTo target specific recipients, include <code>user_ids</code> (comma-separated user IDs, up to 100) or set <code>broadcast: true</code> to reach all subscribers.\n",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/bots/"
+    },
+    "empty-response": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#empty-response",
+      "rdfs:comment": "Response returned when there is no content.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/buttons/"
+    },
+    "instant-buttons-request": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#instant-buttons-request",
+      "rdfs:comment": "",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/buttons/"
+    },
+    "instant-buttons-with-arguments-request": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#instant-buttons-with-arguments-request",
+      "rdfs:comment": "Example demonstrating instant buttons with custom arguments and system API actions.\n",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/buttons/"
+    },
+    "message-card-buttons-request": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#message-card-buttons-request",
+      "rdfs:comment": "",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/buttons/"
+    },
+    "confirmation-popup-request": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#confirmation-popup-request",
+      "rdfs:comment": "",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/buttons/"
+    },
+    "v3-chat": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#v3-chat",
+      "rdfs:comment": "Represents a chat object with comprehensive details including metadata, participants, and message information.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/chats/"
+    },
+    "v3-thread": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#v3-thread",
+      "rdfs:comment": "",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/chats/"
+    },
+    "v3-create-chat-request": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#v3-create-chat-request",
+      "rdfs:comment": "For direct chat, send `chat_type: direct_message` with `user_id`.\nFor group chat, send `chat_type: group_chat` with `user_ids` and `title`.\n",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/chats/"
+    },
+    "v3-bulk-chat-update-request": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#v3-bulk-chat-update-request",
+      "rdfs:comment": "Supports two payload modes, selected by the <code>operation</code> field:\n<ul>\n  <li><b>Mark as read</b> (<code>read_status_update</code>): Set <code>operation</code> to <code>read_status_update</code>, <code>read_status</code> to <code>read</code>, and provide a <code>chats</code> array with each chat's <code>chat_id</code> and <code>last_message_id</code>. Returns <code>200 OK</code>.</li>\n  <li><b>Clear unread</b> (<code>clear_unread</code>): Set <code>operation</code> to <code>clear_unread</code> and provide a <code>chat_ids</code> array. Returns <code>204 No Content</code>.</li>\n</ul>\n",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/chats/"
+    },
+    "v3-bulk-mark-read-request": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#v3-bulk-mark-read-request",
+      "rdfs:comment": "",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/chats/"
+    },
+    "v3-bulk-clear-unread-request": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#v3-bulk-clear-unread-request",
+      "rdfs:comment": "",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/chats/"
+    },
+    "v3-update-chat-title-request": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#v3-update-chat-title-request",
+      "rdfs:comment": "",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/chats/"
+    },
+    "v3-update-chat-history-request": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#v3-update-chat-history-request",
+      "rdfs:comment": "",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/chats/"
+    },
+    "v3-update-chat-read-status-request": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#v3-update-chat-read-status-request",
+      "rdfs:comment": "",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/chats/"
+    },
+    "v3-close-chat-request": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#v3-close-chat-request",
+      "rdfs:comment": "",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/chats/"
+    },
+    "v3-clear-local-history-request": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#v3-clear-local-history-request",
+      "rdfs:comment": "",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/chats/"
+    },
+    "v3-typing-activity-request": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#v3-typing-activity-request",
+      "rdfs:comment": "",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/chats/"
+    },
+    "v3-fork-chat-request": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#v3-fork-chat-request",
+      "rdfs:comment": "",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/chats/"
+    },
+    "v3-create-direct-chat-request": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#v3-create-direct-chat-request",
+      "rdfs:comment": "",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/chats/"
+    },
+    "v3-create-group-chat-request": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#v3-create-group-chat-request",
+      "rdfs:comment": "",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/chats/"
+    },
+    "v3-add-members-request": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#v3-add-members-request",
+      "rdfs:comment": "",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/chats/"
+    },
+    "no-response": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#no-response",
+      "rdfs:comment": "Response object returned when no content is available.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/chats/"
+    },
+    "get-chats-response": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#get-chats-response",
+      "rdfs:comment": "Response object containing details of a chat or direct message.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/chats/"
+    },
+    "UserSummary": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#UserSummary",
+      "rdfs:comment": "Basic details of a user in the chat.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/chats/"
+    },
+    "LastMessageInfo": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#LastMessageInfo",
+      "rdfs:comment": "Information about the most recent message in the chat.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/chats/"
+    },
+    "MessageStyles": {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/#MessageStyles",
+      "rdfs:comment": "Style attributes applied to a message.",
+      "rdfs:isDefinedBy": "https://www.zoho.com/cliq/help/restapi/v3/chats/"
+    }
+  },
+  "@graph": [
+    {
+      "@id": "https://www.zoho.com/cliq/help/restapi/v3/",
+      "@type": "schema:WebAPI",
+      "schema:name": "Zoho Cliq API v3",
+      "schema:description": "Zoho Cliq REST API v3 for team messaging and collaboration",
+      "schema:url": "https://www.zoho.com/cliq/",
+      "schema:version": "3.0",
+      "schema:documentation": "https://www.zoho.com/cliq/help/restapi/v3/introduction/"
+    }
+  ]
+}

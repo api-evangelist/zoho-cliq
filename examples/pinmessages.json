@@ -1,0 +1,126 @@
+{
+  "getPinnedMessages": {
+    "path": "/chats/{CHAT_ID}/pin-messages",
+    "method": "get",
+    "examples": {
+      "response_400": {
+        "operation_not_allowed": {
+          "summary": "User is not a participant of the chat",
+          "value": {
+            "message": "Uh-Oh! You are not authorized to do this operation.",
+            "code": "operation_not_allowed"
+          }
+        },
+        "operation_failed": {
+          "summary": "Unexpected error while fetching the primary pin",
+          "value": {
+            "code": "operation_failed"
+          }
+        }
+      }
+    }
+  },
+  "addPinnedMessage": {
+    "path": "/chats/{CHAT_ID}/pin-messages",
+    "method": "post",
+    "examples": {
+      "response_400": {
+        "operation_failed": {
+          "summary": "Invalid expiry time",
+          "value": {
+            "message": "Incorrect values submitted.",
+            "code": "operation_failed"
+          }
+        },
+        "operation_not_allowed": {
+          "summary": "User is not a participant of the chat",
+          "value": {
+            "message": "Uh-Oh! You are not authorized to do this operation.",
+            "code": "operation_not_allowed"
+          }
+        }
+      }
+    }
+  },
+  "reorderPinnedMessages": {
+    "path": "/chats/{CHAT_ID}/pin-messages",
+    "method": "put",
+    "examples": {
+      "response_400": {
+        "client_not_synced": {
+          "summary": "last_sync_time is stale - re-fetch pins and retry",
+          "value": {
+            "code": "client_not_synced"
+          }
+        },
+        "operation_failed": {
+          "summary": "Incorrect values submitted",
+          "value": {
+            "message": "Incorrect values submitted.",
+            "code": "operation_failed"
+          }
+        },
+        "operation_not_allowed": {
+          "summary": "Caller is not authorized to perform this operation",
+          "value": {
+            "message": "Uh-Oh! You are not authorized to do this operation.",
+            "code": "operation_not_allowed"
+          }
+        }
+      }
+    }
+  },
+  "deletePinnedMessages": {
+    "path": "/chats/{CHAT_ID}/pin-messages",
+    "method": "delete",
+    "examples": {
+      "response_400": {
+        "operation_not_allowed": {
+          "summary": "Caller is not authorized to perform this operation",
+          "value": {
+            "message": "Uh-Oh! You are not authorized to do this operation.",
+            "code": "operation_not_allowed"
+          }
+        }
+      }
+    }
+  },
+  "getPrimaryPinnedMessage": {
+    "path": "/chats/{CHAT_ID}/pin-messages?primary=true",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "type": "text",
+        "id": "1746000123456789001",
+        "time": "2026-04-30T09:00:00Z",
+        "sender": {
+          "id": "1234567890",
+          "name": "Alice Johnson"
+        },
+        "content": {
+          "text": "Please review the Q2 report before Friday."
+        },
+        "is_pinned": true,
+        "pin_information": {
+          "expiry_time": -1,
+          "creator": {
+            "id": "9876543210",
+            "name": "Bob Smith"
+          },
+          "created_time": "2026-04-30T09:15:00Z",
+          "last_modified_time": "2026-04-30T09:15:00Z",
+          "is_primary": true
+        }
+      },
+      "response_400": {
+        "operation_not_allowed": {
+          "summary": "Caller is not authorized to perform this operation",
+          "value": {
+            "message": "Uh-Oh! You are not authorized to do this operation.",
+            "code": "operation_not_allowed"
+          }
+        }
+      }
+    }
+  }
+}

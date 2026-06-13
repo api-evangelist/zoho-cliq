@@ -1,0 +1,265 @@
+{
+  "getRemindersInChatV3": {
+    "path": "/chats/{CHAT_ID}/reminders",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "channel_recurring_reminder": {
+          "summary": "Channel with recurring reminder",
+          "value": {
+            "category": "chat",
+            "time": "2026-05-29T03:57:43-07:00",
+            "list": [
+              {
+                "id": "1901318000012651019",
+                "time": "2026-05-31T19:30:00-07:00",
+                "timezone": "Asia/Kolkata",
+                "content": "Weekly Finance Sync",
+                "completed": false,
+                "creation_time": "2026-05-29T04:05:57-07:00",
+                "creator": {
+                  "name": "Priya",
+                  "id": "697322516"
+                },
+                "users": [
+                  {
+                    "name": "Priya",
+                    "id": "697322516",
+                    "completed": false,
+                    "deleted": false
+                  }
+                ],
+                "message": {
+                  "msgid": "1780052699342",
+                  "msg": "Weekly Finance Sync: Review all pending expense approvals and flag any claims older than 7 days for escalation. Ensure the expense tracker is updated before the sync.",
+                  "chat_id": "CT_1424569695482328362_631836344",
+                  "sender_id": "697322516",
+                  "dname": "Priya"
+                }
+              },
+              {
+                "id": "1901318000012651010",
+                "time": "2026-06-09T21:30:00-07:00",
+                "timezone": "Asia/Kolkata",
+                "content": "Vendor Payment Review",
+                "completed": false,
+                "creation_time": "2026-05-29T03:51:46-07:00",
+                "creator": {
+                  "name": "Priya",
+                  "id": "697322516"
+                },
+                "users": [
+                  {
+                    "name": "Priya",
+                    "id": "697322516",
+                    "completed": false,
+                    "deleted": false
+                  }
+                ],
+                "message": {
+                  "msgid": "1780051880491",
+                  "msg": "Vendor Payment Review: Review and approve all pending vendor payment requests before the monthly finance sync on June 6.",
+                  "chat_id": "CT_1424569695482328362_631836344",
+                  "sender_id": "697322516",
+                  "dname": "Priya"
+                }
+              }
+            ]
+          }
+        },
+        "group_chat_multi_user_assigned": {
+          "summary": "Group chat with multi-user assigned reminder",
+          "value": {
+            "category": "chat",
+            "time": "2026-05-29T03:57:43-07:00",
+            "list": [
+              {
+                "id": "1901318000012651028",
+                "time": "2026-06-15T04:30:00-07:00",
+                "timezone": "Asia/Kolkata",
+                "content": "Action Item followup reminder",
+                "completed": false,
+                "creation_time": "2026-05-29T04:08:17-07:00",
+                "creator": {
+                  "name": "Priya",
+                  "id": "697322516"
+                },
+                "users": [
+                  {
+                    "name": "Scott",
+                    "id": "631830848",
+                    "completed": false,
+                    "deleted": false
+                  },
+                  {
+                    "name": "Olivia Palmer",
+                    "id": "631830846",
+                    "completed": false,
+                    "deleted": false
+                  }
+                ],
+                "message": {
+                  "msgid": "1780051988899",
+                  "msg": "Action Item Follow-up: Check the status of all open action items from last week's sprint review. Update the tracker and post a summary in this channel before EOD.",
+                  "chat_id": "1608865438186287622",
+                  "sender_id": "697322516",
+                  "dname": "Priya"
+                }
+              }
+            ]
+          }
+        },
+        "empty_chat": {
+          "summary": "Empty chat",
+          "value": {
+            "category": "chat",
+            "time": "2026-05-29T03:57:42-07:00",
+            "list": []
+          }
+        }
+      }
+    }
+  },
+  "updateReminderStatusV3": {
+    "path": "/reminders/{REMINDER_ID}",
+    "method": "put",
+    "examples": {
+      "request": {
+        "status": "completed",
+        "apply_to": "all_occurrences"
+      }
+    }
+  },
+  "triggerReminderNotificationV3": {
+    "path": "/reminders/{REMINDER_ID}/notifications",
+    "method": "post",
+    "examples": {
+      "response_200": {
+        "notification_triggered": {
+          "summary": "Notification triggered successfully",
+          "value": {
+            "data": [
+              {
+                "name": "Scott",
+                "id": "631830848",
+                "completed": false,
+                "deleted": false
+              },
+              {
+                "name": "Olivia Palmer",
+                "id": "631830846",
+                "completed": false,
+                "deleted": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "batchEditRemindersV3": {
+    "path": "/reminders/edits",
+    "method": "put",
+    "examples": {
+      "request": {
+        "single_reminder": {
+          "summary": "Reschedule a single reminder",
+          "value": {
+            "reminders": [
+              {
+                "reminder_id": "1901318000012651019",
+                "time": 1749369000000
+              }
+            ]
+          }
+        },
+        "multiple_reminders": {
+          "summary": "Reschedule multiple reminders",
+          "value": {
+            "reminders": [
+              {
+                "reminder_id": "1901318000012651010",
+                "time": 1749282600000
+              },
+              {
+                "reminder_id": "1901318000012651016",
+                "time": 1748930400000
+              }
+            ]
+          }
+        }
+      },
+      "response_200": {
+        "batch_edit_success": {
+          "summary": "Multiple reminders rescheduled successfully",
+          "value": {
+            "status": "success",
+            "data": [
+              {
+                "status": "success",
+                "reminder_id": "1901318000012651010",
+                "data": {
+                  "id": "1901318000012651010",
+                  "time": "2026-06-09T21:30:00-07:00",
+                  "timezone": "Asia/Kolkata",
+                  "content": "Vendor Payment Review",
+                  "completed": false,
+                  "creation_time": "2026-05-29T03:51:46-07:00",
+                  "creator": {
+                    "name": "Priya",
+                    "id": "697322516"
+                  },
+                  "users": [
+                    {
+                      "name": "Priya",
+                      "id": "697322516",
+                      "completed": false,
+                      "deleted": false
+                    }
+                  ],
+                  "message": {
+                    "msgid": "1780051880491",
+                    "msg": "Vendor Payment Review: Review and approve all pending vendor payment requests before the monthly finance sync on June 6.",
+                    "chat_id": "CT_1424569695482328362_631836344",
+                    "sender_id": "697322516",
+                    "dname": "Priya"
+                  }
+                }
+              },
+              {
+                "status": "success",
+                "reminder_id": "1901318000012651016",
+                "data": {
+                  "id": "1901318000012651016",
+                  "time": "2026-06-04T20:30:00-07:00",
+                  "timezone": "Asia/Kolkata",
+                  "completed": false,
+                  "creation_time": "2026-05-29T03:53:32-07:00",
+                  "creator": {
+                    "name": "Priya",
+                    "id": "697322516"
+                  },
+                  "users": [
+                    {
+                      "name": "Priya",
+                      "id": "697322516",
+                      "completed": false,
+                      "deleted": false
+                    }
+                  ],
+                  "message": {
+                    "msgid": "1780051988899",
+                    "msg": "Sprint Review Prep: All team members to update their task status in the project tracker before the sprint review on June 4.",
+                    "chat_id": "1608865438186287622",
+                    "sender_id": "697322516",
+                    "dname": "Priya"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

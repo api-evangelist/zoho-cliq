@@ -1,0 +1,392 @@
+{
+  "listAllScheduledMessagesV3": {
+    "path": "/scheduledmessages",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "all_scheduled_messages": {
+          "summary": "All scheduled messages across chats",
+          "value": {
+            "url": "/api/v3/scheduledmessages",
+            "type": "scheduledmessages",
+            "sync_token": "NTB8LTF8MTkwMTMxODAwMDAxMjMxNDAyNQ==",
+            "data": [
+              {
+                "id": "84fe7397-ab35-4aef-8bf7-944d688857af",
+                "timezone": "Asia/Kolkata",
+                "created_time": "2026-05-29T04:27:40-07:00",
+                "schedule_status": "user_available",
+                "message": {
+                  "sender": {
+                    "name": "Priya",
+                    "id": "697322516"
+                  },
+                  "type": "text",
+                  "content": {
+                    "text": "Hi Benjamin, just a quick nudge. Please update the approval status for Claim #EXP-2026-0412 when you are available. No rush, respond whenever you are free!"
+                  },
+                  "is_pinned": false
+                },
+                "creator": {
+                  "name": "Priya",
+                  "id": "697322516"
+                }
+              },
+              {
+                "id": "49ba8eac-8709-478d-bab3-701466b3e270",
+                "timezone": "Asia/Kolkata",
+                "created_time": "2026-05-29T04:28:44-07:00",
+                "schedule_status": "check_in",
+                "message": {
+                  "sender": {
+                    "name": "Priya",
+                    "id": "697322516"
+                  },
+                  "type": "text",
+                  "content": {
+                    "text": "Good morning Alan! Just a check-in reminder, please update your pending expense claims before the daily finance standup. Any blockers, ping @financeTeam."
+                  },
+                  "is_pinned": false
+                },
+                "creator": {
+                  "name": "Priya",
+                  "id": "697322516"
+                }
+              },
+              {
+                "id": "de8518c4-ce33-46c1-9195-d7864b9f10ce",
+                "timezone": "Asia/Kolkata",
+                "created_time": "2026-05-29T04:31:33-07:00",
+                "time": "2026-06-06T21:00:00-07:00",
+                "message": {
+                  "sender": {
+                    "name": "Priya",
+                    "id": "697322516"
+                  },
+                  "type": "file",
+                  "content": {
+                    "file_name": "Expense Summary - Zylker.pdf",
+                    "file_size": "61.05 KB",
+                    "comment": "Please find the attached Q2 Expense Summary report. Review before the finance sync on June 6 and flag any discrepancies to @financeTeam."
+                  },
+                  "is_pinned": false
+                },
+                "creator": {
+                  "name": "Priya",
+                  "id": "697322516"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "listScheduledMessagesInChatV3": {
+    "path": "/chats/{CHAT_ID}/scheduledmessages",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "channel_with_file_message": {
+          "summary": "Channel with file attachment message",
+          "value": {
+            "url": "/api/v3/chats/CT_1424569695482328362_631836344/scheduledmessages",
+            "type": "scheduledmessages",
+            "sync_token": "NTB8MTc4MDM2NzQwMDAwMHwxOTAxMzE4MDAwMDEyNjUxMDAx",
+            "data": [
+              {
+                "id": "de8518c4-ce33-46c1-9195-d7864b9f10ce",
+                "timezone": "Asia/Kolkata",
+                "created_time": "2026-05-29T04:31:33-07:00",
+                "time": "2026-06-06T21:00:00-07:00",
+                "message": {
+                  "sender": {
+                    "name": "Priya",
+                    "id": "697322516"
+                  },
+                  "type": "file",
+                  "content": {
+                    "file_name": "Expense Summary - Zylker.pdf",
+                    "file_size": "61.05 KB",
+                    "comment": "Please find the attached Q2 Expense Summary report. Review before the finance sync on June 6 and flag any discrepancies to @financeTeam."
+                  },
+                  "is_pinned": false
+                },
+                "creator": {
+                  "name": "Priya",
+                  "id": "697322516"
+                }
+              }
+            ]
+          }
+        },
+        "dm_with_status_based_message": {
+          "summary": "DM with status-based message",
+          "value": {
+            "url": "/api/v3/chats/1424921584119739269/scheduledmessages",
+            "type": "scheduledmessages",
+            "sync_token": "NTB8MTc4MDA0OTAzNDg4MHw=",
+            "data": [
+              {
+                "id": "84fe7397-ab35-4aef-8bf7-944d688857af",
+                "timezone": "Asia/Kolkata",
+                "created_time": "2026-05-29T04:27:40-07:00",
+                "schedule_status": "user_available",
+                "message": {
+                  "sender": {
+                    "name": "Priya",
+                    "id": "697322516"
+                  },
+                  "type": "text",
+                  "content": {
+                    "text": "Hi Benjamin, just a quick nudge. Please update the approval status for Claim #EXP-2026-0412 when you are available. No rush, respond whenever you are free!"
+                  },
+                  "is_pinned": false
+                },
+                "creator": {
+                  "name": "Priya",
+                  "id": "697322516"
+                }
+              }
+            ]
+          }
+        },
+        "empty_chat": {
+          "summary": "Empty chat",
+          "value": {
+            "url": "/api/v3/chats/1608865438186287622/scheduledmessages",
+            "type": "scheduledmessages",
+            "sync_token": "NTB8MTc4MDA0OTAzNDg4MHw=",
+            "data": []
+          }
+        }
+      }
+    }
+  },
+  "sendScheduledMessagesNowV3": {
+    "path": "/chats/{CHAT_ID}/scheduledmessages",
+    "method": "post",
+    "examples": {
+      "request": {
+        "send_specific_message": {
+          "summary": "Send a specific message now",
+          "value": {
+            "status": "send",
+            "id": "76d3978e-b782-4cbb-a98b-670a5a7cbc6e"
+          }
+        },
+        "send_all_pending_messages": {
+          "summary": "Send all pending messages in the chat now",
+          "value": {
+            "status": "send",
+            "apply_to": "all"
+          }
+        }
+      }
+    }
+  },
+  "bulkRescheduleScheduledMessagesV3": {
+    "path": "/chats/{CHAT_ID}/scheduledmessages",
+    "method": "put",
+    "examples": {
+      "request": {
+        "reschedule_all_time_based": {
+          "summary": "Reschedule all time-based messages to a new time",
+          "value": {
+            "status": "reschedule",
+            "apply_to": "all_time_based",
+            "time": 1748861400000,
+            "schedule_time": 1748947800000,
+            "schedule_timezone": "Asia/Kolkata"
+          }
+        },
+        "reschedule_all_status_based": {
+          "summary": "Reschedule all status-based messages from check_in to user_available",
+          "value": {
+            "status": "reschedule",
+            "apply_to": "all_status_based",
+            "existing_status": "check_in",
+            "schedule_status": "user_available"
+          }
+        }
+      },
+      "response_200": {
+        "time_based_reschedule": {
+          "summary": "Time-based reschedule",
+          "value": {
+            "url": "/api/v3/chats/CT_1424569695482328362_631836344/scheduledmessages",
+            "type": "scheduledmessages",
+            "data": [
+              {
+                "id": "3574bbf2-77ed-4b9c-99d9-8d487d6f8d11",
+                "timezone": "Asia/Kolkata",
+                "created_time": "2026-05-29T03:15:49-07:00",
+                "time": "2026-06-02T20:30:00-07:00",
+                "message": {
+                  "sender": {
+                    "name": "Priya",
+                    "id": "697322516"
+                  },
+                  "type": "text",
+                  "content": {
+                    "text": "Q2 Expense Report Deadline [UPDATED]: Submission extended to June 6. Ensure all vendor invoices above $500 have manager approval. Contact @financeTeam for help."
+                  },
+                  "is_pinned": false
+                },
+                "creator": {
+                  "name": "Priya",
+                  "id": "697322516"
+                }
+              }
+            ]
+          }
+        },
+        "status_based_reschedule": {
+          "summary": "Status-based reschedule (check_in to user_available)",
+          "value": {
+            "url": "/api/v3/chats/2242125276857119940/scheduledmessages",
+            "type": "scheduledmessages",
+            "data": [
+              {
+                "id": "49ba8eac-8709-478d-bab3-701466b3e270",
+                "timezone": "Asia/Kolkata",
+                "created_time": "2026-05-29T04:28:44-07:00",
+                "schedule_status": "user_available",
+                "message": {
+                  "sender": {
+                    "name": "Priya",
+                    "id": "697322516"
+                  },
+                  "type": "text",
+                  "content": {
+                    "text": "Good morning Alan! Just a check-in reminder, please update your pending expense claims before the daily finance standup. Any blockers, ping @financeTeam."
+                  },
+                  "is_pinned": false
+                },
+                "creator": {
+                  "name": "Priya",
+                  "id": "697322516"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "editScheduledMessageV3": {
+    "path": "/chats/{CHAT_ID}/scheduledmessages/{SCHEDULED_MESSAGE_ID}",
+    "method": "put",
+    "examples": {
+      "request": {
+        "edit_text_and_time": {
+          "summary": "Edit message text and reschedule time",
+          "value": {
+            "text": "Q2 Expense Report Deadline [UPDATED]: Submission extended to June 6. Ensure all vendor invoices above $500 have manager approval. Contact @financeTeam for help.",
+            "schedule_time": 1748947800000,
+            "schedule_timezone": "Asia/Kolkata"
+          }
+        },
+        "change_status_trigger": {
+          "summary": "Change status trigger from user_available to call_end",
+          "value": {
+            "schedule_status": "call_end"
+          }
+        },
+        "remove_file_attachment": {
+          "summary": "Remove file attachment from scheduled message",
+          "value": {
+            "file_remove": true
+          }
+        }
+      },
+      "response_200": {
+        "text_and_time_edit": {
+          "summary": "Text and time edit",
+          "value": {
+            "url": "/api/v3/chats/CT_1424569695482328362_631836344/scheduledmessages/3574bbf2-77ed-4b9c-99d9-8d487d6f8d11",
+            "type": "scheduledmessages",
+            "data": {
+              "id": "3574bbf2-77ed-4b9c-99d9-8d487d6f8d11",
+              "timezone": "Asia/Kolkata",
+              "created_time": "2026-05-29T03:15:49-07:00",
+              "time": "2026-06-01T20:30:00-07:00",
+              "message": {
+                "sender": {
+                  "name": "Priya",
+                  "id": "697322516"
+                },
+                "type": "text",
+                "content": {
+                  "text": "Q2 Expense Report Deadline [UPDATED]: Submission extended to June 6. Ensure all vendor invoices above $500 have manager approval. Contact @financeTeam for help."
+                },
+                "is_pinned": false
+              },
+              "creator": {
+                "name": "Priya",
+                "id": "697322516"
+              }
+            }
+          }
+        },
+        "status_trigger_edit": {
+          "summary": "Status trigger edit (user_available to call_end)",
+          "value": {
+            "url": "/api/v3/chats/1424921584119739269/scheduledmessages/84fe7397-ab35-4aef-8bf7-944d688857af",
+            "type": "scheduledmessages",
+            "data": {
+              "id": "84fe7397-ab35-4aef-8bf7-944d688857af",
+              "timezone": "Asia/Kolkata",
+              "created_time": "2026-05-29T04:27:40-07:00",
+              "schedule_status": "call_end",
+              "message": {
+                "sender": {
+                  "name": "Priya",
+                  "id": "697322516"
+                },
+                "type": "text",
+                "content": {
+                  "text": "Hi Benjamin, just a quick nudge. Please update the approval status for Claim #EXP-2026-0412 when you are available. No rush, respond whenever you are free!"
+                },
+                "is_pinned": false
+              },
+              "creator": {
+                "name": "Priya",
+                "id": "697322516"
+              }
+            }
+          }
+        },
+        "file_remove": {
+          "summary": "File remove (file fields remain in response but attachment is detached)",
+          "value": {
+            "url": "/api/v3/chats/CT_1424569695482328362_631836344/scheduledmessages/de8518c4-ce33-46c1-9195-d7864b9f10ce",
+            "type": "scheduledmessages",
+            "data": {
+              "id": "de8518c4-ce33-46c1-9195-d7864b9f10ce",
+              "timezone": "Asia/Kolkata",
+              "created_time": "2026-05-29T04:31:33-07:00",
+              "time": "2026-06-06T21:00:00-07:00",
+              "message": {
+                "sender": {
+                  "id": "697322516"
+                },
+                "type": "file",
+                "content": {
+                  "file_name": "Expense Summary - Zylker.pdf",
+                  "file_size": "61.05 KB",
+                  "comment": "Please find the attached Q2 Expense Summary report. Review before the finance sync on June 6 and flag any discrepancies to @financeTeam."
+                },
+                "is_pinned": false
+              },
+              "creator": {
+                "name": "Priya",
+                "id": "697322516"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

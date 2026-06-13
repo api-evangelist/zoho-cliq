@@ -1,0 +1,1033 @@
+openapi: 3.0.0
+info:
+  title: Stars
+  description: |
+    The Stars API allows users to organize and prioritize messages by marking them with specific star types. Starred messages help users quickly access important information, track action items, and manage follow-ups efficiently. <br><br>Stars provide a flexible categorization system that enhances message organization and retrieval across all conversations in Zoho Cliq. <br><br> <b>Star Types</b><br><br> <table style="border-collapse: collapse; width: 100%; font-family: inherit;">
+      <tr>
+        <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Star Type</th>
+        <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Description</th>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;">important</td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Mark messages that require special attention or contain critical information.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;">to_do</td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Flag messages representing tasks or action items that need to be completed.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;">note</td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Save messages for future reference or as reminders of important information.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;">manager</td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Highlight messages related to managerial communications or approvals.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;">follow_up</td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Identify messages that require follow-up actions or responses.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;">all</td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Used for filtering to retrieve all starred messages regardless of type.</td>
+      </tr>
+    </table> <br><b>What you can do with the Stars API</b><br><br> With the Stars API, you can programmatically star messages with specific categories, update existing star types, unstar messages, and retrieve all starred messages with advanced filtering and pagination capabilities. This enables powerful workflow automation and message management integrations.
+  contact: {}
+  version: 3.0.0
+externalDocs:
+  description: Find out more about Zoho Cliq APIs V3
+  url: https://www.zoho.com/cliq/help/restapi/v3/
+servers:
+  - url: https://cliq.zoho.com/api/v3
+    description: Zoho Cliq US DC
+tags:
+  - name: stars
+    description: APIs for managing starred messages, including starring, unstarring, and retrieving starred messages with filtering capabilities.
+paths:
+  /stars:
+    post:
+      summary: Star a Message or Update Star Type
+      operationId: star_a_message
+      description: |
+        Stars a message with a specific star type. This enables users to categorize messages for easier retrieval and workflow management. Each message can have only one active star type at a time.
+        <br><br>
+        If the message is already starred, this operation updates the existing star type to the newly specified type and hence no separate update call is needed. 
+        When the star type is updated, the response includes <code>star_information.old_star_type</code> indicating the previous star type.
+        <br><br>
+        <p>
+          <b>OAuth Scope</b>: Messages<br>
+          <b>Threshold limit</b>: 50 requests per min<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests after exceeding the threshold.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">input_invalid</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Missing or invalid input parameters.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_not_found</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The specified chat does not exist or cannot be accessed.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_failed</span></td>
+                    <td style="padding:10px 18px;">The operation could not be completed due to a server-side issue.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      requestBody:
+        description: Provide the chat ID, message ID, and the star type to categorize the message. To update an existing star type, send the same fields with the new star type - the API will automatically update it.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StarMessageRequest'
+            examples:
+              star_a_message:
+                summary: Star a message
+                value:
+                  chat_id: CT_1894736520184930172_847291635
+                  message_id: '1746000123456789001'
+                  star_type: important
+              update_star_type:
+                summary: Update star type of an already-starred message
+                value:
+                  chat_id: CT_1894736520184930172_847291635
+                  message_id: '1746000123456789001'
+                  star_type: follow_up
+      responses:
+        '200':
+          description: Message starred successfully. If the message was already starred, the star type has been updated and the previous type is returned in `star_information.old_star_type`.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StarMessageResponse'
+              examples:
+                star_a_message:
+                  summary: Message starred for the first time
+                  value:
+                    type: text
+                    id: '1746000123456789001'
+                    time: '2026-04-30T10:00:00Z'
+                    sender:
+                      id: '1234567890'
+                      name: Alice Johnson
+                    content:
+                      text: Please review the Q2 report before Friday.
+                    is_pinned: false
+                    star_information:
+                      star_type: important
+                      starred_message_time: '2026-04-30T10:15:30Z'
+                    chat_information:
+                      chat_id: CT_1894736520184930172_847291635
+                      chat_type: chat
+                      title: Alice Johnson
+                      joined: true
+                update_star_type:
+                  summary: Star type updated - old_star_type shows the previous type
+                  value:
+                    type: text
+                    id: '1746000123456789001'
+                    time: '2026-04-30T10:00:00Z'
+                    sender:
+                      id: '1234567890'
+                      name: Alice Johnson
+                    content:
+                      text: Please review the Q2 report before Friday.
+                    is_pinned: false
+                    star_information:
+                      star_type: follow_up
+                      starred_message_time: '2026-04-30T10:15:30Z'
+                      old_star_type: important
+                    chat_information:
+                      chat_id: CT_1894736520184930172_847291635
+                      chat_type: chat
+                      title: Alice Johnson
+                      joined: true
+        '400':
+          description: Bad Request. Missing or invalid parameters submitted.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 1012
+                  message:
+                    type: string
+                    example: input_invalid
+              example:
+                code: 1012
+                message: input_invalid
+        '401':
+          description: Unauthorized. Request was rejected due to invalid authentication token.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden. User does not have sufficient permissions to access this resource.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not a user of the respective organization to access the resource.
+        '404':
+          description: Not Found. The specified message or chat does not exist or user cannot access it.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 11016
+                  message:
+                    type: string
+                    example: chat_not_found
+              examples:
+                chat_not_found:
+                  value:
+                    code: 11016
+                    message: chat_not_found
+                  summary: Chat does not exist or user cannot access it
+        '429':
+          description: Too Many Requests. Rate limit exceeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error. Unexpected error during star operation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 1011
+                  message:
+                    type: string
+                    example: operation_failed
+              example:
+                code: 1011
+                message: operation_failed
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Messages.CREATE
+    get:
+      summary: List starred messages
+      operationId: list_starred_messages
+      description: |
+        Retrieves the authenticated user's starred messages with support for advanced filtering, cursor-based pagination, and incremental synchronization.
+        <br><br>
+        This endpoint allows you to filter starred messages by chat, star type, and time range. Use pagination tokens to navigate through large result sets efficiently.
+        <br><br>
+        <p>
+          <b>OAuth Scope</b>: Messages<br>
+          <b>Threshold limit</b>: 30 requests per min<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests after exceeding the threshold.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">input_invalid</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Invalid filter inputs were provided.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_access_denied</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">You are not authorized to access one or more requested chats.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_failed</span></td>
+                    <td style="padding:10px 18px;">The operation could not be completed due to a server-side issue.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - name: chat_id
+          in: query
+          required: false
+          description: |
+            Filter starred messages to only include those from a specific chat. Provide the chat ID in the format "2000000012345_2000000067890". If omitted, starred messages from all chats will be included.
+          schema:
+            type: string
+            example: '2000000012345_2000000067890'
+        - name: star_type
+          in: query
+          required: false
+          description: |
+            Filter starred messages by a specific star type.
+              <br><br>
+              <b>Allowed values:</b><br>
+              <ul>
+                <li><code>important</code>: Mark messages that require special attention or contain critical information.</li>
+                <li><code>to_do</code>: Flag messages representing tasks or action items that need to be completed.</li>
+                <li><code>note</code>: Save messages for future reference or as reminders of important information.</li>
+                <li><code>manager</code>: Highlight messages related to managerial communications or approvals.</li>
+                <li><code>follow_up</code>: Identify messages that require follow-up actions or responses.</li>
+                <li><code>all</code>: Retrieve all starred messages regardless of star type.</li>
+              </ul>
+          schema:
+            type: string
+            enum:
+              - important
+              - to_do
+              - note
+              - manager
+              - follow_up
+              - all
+            example: important
+        - name: from_time
+          in: query
+          required: false
+          description: |
+            <ul>
+            <li>Lower bound timestamp for message time.</li>
+            <li>Accepts epoch milliseconds (for example, <code>1704067200000</code>) or <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> datetime strings (for example, <code>2024-01-01T00:00:00Z</code>).</li>
+            <li>Only messages starred after this time will be included in the results.</li>
+            <li>If omitted, there is no lower time limit on the messages returned.</li>
+            </ul>
+          schema:
+            type: string
+            example: '1704067200000'
+        - name: to_time
+          in: query
+          required: false
+          description: |
+            <ul>
+            <li>Upper bound timestamp for message time.</li>
+            <li>Accepts epoch milliseconds (for example, <code>1735689599999</code>) or <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> datetime strings (for example, <code>2024-12-31T23:59:59Z</code>).</li>
+            <li>Only messages starred before this time will be included in the results.</li>
+            <li>If omitted, there is no upper time limit on the messages returned.</li>
+            </ul>
+          schema:
+            type: string
+            example: '1735689599999'
+        - name: limit
+          in: query
+          required: false
+          description: |
+            Maximum number of starred messages to return in the response.<br>
+            <b>Maximum limit</b>:50<br>
+            <b>Default</b>:50<br>
+            If the total number of starred messages exceeds this limit, a pagination token will be included in the response to retrieve the next page of results.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 50
+            example: 25
+        - name: next_token
+          in: query
+          required: false
+          description: |
+            Opaque pagination token to retrieve the next page of results.
+            <ul>
+              <li>This token is provided in the response when there are more results available than can fit in a single response.</li>
+              <li>To retrieve the next page, include this token in the subsequent request without modifying it.</li>
+              <li>The token is base64-encoded.</li>
+              <li>If omitted, the first page of results will be returned.</li>
+            </ul>
+          schema:
+            type: string
+            example: ey5MDUzODAwMDAwMDAxMjM0NSIsInRpbWVzdGFtcCI6MTcxNDkyMDQwMDAwMH0=
+        - name: sync_token
+          in: query
+          required: false
+          description: |
+            Synchronization token for incremental updates.
+            <ul>
+              <li>This token is returned in the response to help clients sync local state.</li>
+              <li>When provided in a request, only starred message changes after that sync point are returned.</li>
+              <li>If omitted, results are returned based on the other filters.</li>
+              <li><b>Format</b>: base64 token.</li>
+              <li><b>Maximum length</b>: 200 characters.</li>
+            </ul>
+          schema:
+            type: string
+            maxLength: 200
+            example: 911083u18u3811834u
+      responses:
+        '200':
+          description: Starred messages retrieved successfully.
+          content:
+            application/json:
+              examples:
+                starred_messages:
+                  summary: List of starred messages with next_token
+                  value:
+                    star_messages:
+                      - type: text
+                        id: '1746000123456789001'
+                        time: '2026-04-30T10:00:00Z'
+                        sender:
+                          id: '1234567890'
+                          name: Alice Johnson
+                        content:
+                          text: Please review the Q2 report before Friday.
+                        is_pinned: false
+                        star_information:
+                          star_type: important
+                          starred_message_time: '2026-04-30T10:15:30Z'
+                        chat_information:
+                          chat_id: chid_abcdef123456
+                          chat_type: chat
+                          title: Alice Johnson
+                          joined: true
+                      - type: file
+                        id: '1746000987654321002'
+                        time: '2026-04-30T09:40:00Z'
+                        sender:
+                          id: '9876543210'
+                          name: Bob Smith
+                        content:
+                          file_name: Q2_Report_Final.pdf
+                          file_size: 204800
+                          file_url: https://cliq.zoho.com/file/download?id=enc_file_id_xyz
+                        is_pinned: false
+                        star_information:
+                          star_type: to_do
+                          starred_message_time: '2026-04-30T09:45:00Z'
+                        chat_information:
+                          chat_id: chid_channel_org_001
+                          chat_type: channel
+                          title: Engineering Announcements
+                          display_name: Engineering Announcements
+                          joined: true
+                    next_token: eyJsYXN0U3RhcnJlZFRpbWUiOiIxNzQ1OTkwMDAwMDAwIiwibGltaXQiOjJ9
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: star_messages
+                  next_token:
+                    type: string
+                    description: Opaque base64-encoded pagination token for the next page. Omitted if no more pages exist.
+                    example: asdhfqjdbnajdndjnadj
+                  sync_token:
+                    type: string
+                    description: Synchronization token for incremental updates.
+                    example: 911083u18u3811834u
+                  data:
+                    type: array
+                    description: Array of starred messages in V3 message hash format.
+                    items:
+                      type: object
+                      properties:
+                        star_information:
+                          type: object
+                          properties:
+                            star_type:
+                              type: string
+                              example: important
+                            starred_message_time:
+                              type: string
+                              format: date-time
+                              example: '2026-03-25T10:30:00.000Z'
+                            file_permission:
+                              type: object
+                              properties:
+                                cross_org_policy:
+                                  type: boolean
+                                  example: true
+                                file_scope:
+                                  type: string
+                                  example: '60005678901'
+                        chat_information:
+                          type: object
+                          properties:
+                            chat_id:
+                              type: string
+                              example: '2000000012345_2000000067890'
+                            chat_type:
+                              type: string
+                              example: direct
+                            title:
+                              type: string
+                              example: John Doe
+                            display_name:
+                              type: string
+                              example: John Doe
+                            joined:
+                              type: boolean
+                              example: true
+                            receiver:
+                              type: string
+                              example: '2000000012345'
+        '400':
+          description: Bad Request. Query parameter validation failed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 1012
+                  message:
+                    type: string
+                    example: input_invalid
+        '401':
+          description: Unauthorized. Request was rejected due to invalid authentication token.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden. User is not a participant of the specified chat.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 430002
+                  message:
+                    type: string
+                    example: chat_access_denied
+              example:
+                code: 430002
+                message: chat_access_denied
+        '429':
+          description: Too Many Requests. Rate limit exceeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error. Unexpected error occurred during retrieval.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 1011
+                  message:
+                    type: string
+                    example: operation_failed
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Messages.READ
+  /stars/{MESSAGE_ID}:
+    delete:
+      summary: Unstar a Message
+      operationId: unstar_a_message
+      description: |
+        Removes the star from a specified message. This operation permanently deletes the star record for the authenticated user.
+        <br><br>
+        If the message is not currently starred by the user, an error will be returned.
+        <br><br>
+        <p>
+          <b>OAuth Scope</b>: Messages<br>
+          <b>Threshold limit</b>: 50 requests per min<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests after exceeding the threshold.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">input_invalid</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Missing or invalid message identifier.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">star_not_found</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The message is not currently starred for the user.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_failed</span></td>
+                    <td style="padding:10px 18px;">The operation could not be completed due to a server-side issue.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - name: MESSAGE_ID
+          in: path
+          required: true
+          description: |
+            The unique identifier of the message to be unstarred.<br>
+            Use the <a href="/cliq/help/restapi/v3/stars/#list-starred-messages">Retrieve Starred Messages</a> endpoint to get the message IDs of starred messages.
+          schema:
+            type: string
+          example: MESSAGE_ID
+      responses:
+        '204':
+          description: Message unstarred successfully. No content returned.
+        '400':
+          description: Bad Request. Missing or invalid message ID.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 1012
+                  message:
+                    type: string
+                    example: input_invalid
+              example:
+                code: 1012
+                message: input_invalid
+        '401':
+          description: Unauthorized. Request was rejected due to invalid authentication token.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden. User does not have sufficient permissions to access this resource.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not a user of the respective organization to access the resource.
+        '404':
+          description: Not Found. Star record not found for the current user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 8004
+                  message:
+                    type: string
+                    example: star_not_found
+              example:
+                code: 8004
+                message: star_not_found
+        '429':
+          description: Too Many Requests. Rate limit exceeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error. Unexpected error during unstar operation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 1011
+                  message:
+                    type: string
+                    example: operation_failed
+              example:
+                code: 1011
+                message: operation_failed
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Messages.DELETE
+components:
+  securitySchemes:
+    Cliq_Auth:
+      type: oauth2
+      x-authorization-example: Bearer 1000.41d9xxxxxxxxxxxxxxxxxxxxxxxxc2d1.8fccxxxxxxxxxxxxxxxxxxxxxxxx125f
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          tokenUrl: https://accounts.zoho.com/oauth/v2/token
+          scopes:
+            ZohoCliq.Messages.CREATE: Create messages and star messages
+            ZohoCliq.Messages.READ: Read messages and starred messages
+            ZohoCliq.Messages.UPDATE: Update messages and star types
+            ZohoCliq.Messages.DELETE: Delete messages and unstar messages
+  schemas:
+    StarInformation:
+      type: object
+      description: Information about the star applied to a message.
+      properties:
+        star_type:
+          type: string
+          description: The category of the star.
+          enum:
+            - important
+            - to_do
+            - note
+            - manager
+            - follow_up
+          example: important
+        old_star_type:
+          type: string
+          description: The previous star type if the message was already starred (returned only on updates).
+          example: note
+        starred_message_time:
+          type: string
+          format: date-time
+          description: The timestamp when the message was starred (<a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format).
+          example: '2026-03-25T10:30:00.000Z'
+        file_permission:
+          type: object
+          description: File permissions associated with the starred message (if applicable).
+          properties:
+            cross_org_policy:
+              type: boolean
+              description: Indicates if cross-organization access is allowed.
+              example: true
+            file_scope:
+              type: string
+              description: The scope identifier for file access.
+              example: '60005678901'
+    ChatInformation:
+      type: object
+      description: Information about the chat containing the starred message.
+      properties:
+        chat_id:
+          type: string
+          description: The unique identifier of the chat.
+          example: '2000000012345_2000000067890'
+        chat_type:
+          type: string
+          description: The type of chat (e.g., direct, channel, group).
+          example: direct
+        title:
+          type: string
+          description: The title of the chat.
+          example: John Doe
+        display_name:
+          type: string
+          description: The display name shown for the chat.
+          example: John Doe
+        joined:
+          type: boolean
+          description: Indicates if the user has joined the chat.
+          example: true
+        receiver:
+          type: string
+          description: The user ID of the message receiver (for direct chats).
+          example: '2000000012345'
+    StarMessageRequest:
+      type: object
+      required:
+        - chat_id
+        - message_id
+        - star_type
+      properties:
+        chat_id:
+          type: string
+          description: The unique identifier of the chat containing the message to be starred.
+          example: CT_1894736520184930172_847291635
+        message_id:
+          type: string
+          description: The unique identifier of the message to be starred.
+          example: '1746000123456789001'
+        star_type:
+          type: string
+          description: |
+            The category of the star to apply to the message. This determines how the message will be organized and retrieved in starred messages lists.
+            <br><br>
+            <b>Allowed values:</b><br>
+            <ul>
+              <li><code>important</code>: Mark messages that require special attention or contain critical information.</li>
+              <li><code>to_do</code>: Flag messages representing tasks or action items that need to be completed.</li>
+              <li><code>note</code>: Save messages for future reference or as reminders of important information.</li>
+              <li><code>manager</code>: Highlight messages related to managerial communications or approvals.</li>
+              <li><code>follow_up</code>: Identify messages that require follow-up actions or responses.</li>
+            </ul>
+          enum:
+            - important
+            - to_do
+            - note
+            - manager
+            - follow_up
+          example: important
+    UpdateStarTypeRequest:
+      type: object
+      required:
+        - chat_id
+        - message_id
+        - star_type
+      properties:
+        chat_id:
+          type: string
+          description: The unique identifier of the chat containing the already-starred message.
+          example: CT_1894736520184930172_847291635
+        message_id:
+          type: string
+          description: The unique identifier of the starred message whose star type is to be updated.
+          example: '1746000123456789001'
+        star_type:
+          type: string
+          description: |
+            The new star type to apply. Replaces the existing star type on the message.
+            <br><br>
+            <b>Allowed values:</b><br>
+            <ul>
+              <li><code>important</code>: Mark messages that require special attention or contain critical information.</li>
+              <li><code>to_do</code>: Flag messages representing tasks or action items that need to be completed.</li>
+              <li><code>note</code>: Save messages for future reference or as reminders of important information.</li>
+              <li><code>manager</code>: Highlight messages related to managerial communications or approvals.</li>
+              <li><code>follow_up</code>: Identify messages that require follow-up actions or responses.</li>
+            </ul>
+          enum:
+            - important
+            - to_do
+            - note
+            - manager
+            - follow_up
+          example: follow_up
+    UpdateStarTypeResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          example: text
+        id:
+          type: string
+          description: The unique identifier of the message.
+          example: '1746000123456789001'
+        time:
+          type: string
+          format: date-time
+          description: The timestamp when the message was sent (<a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format).
+          example: '2026-04-30T10:00:00Z'
+        sender:
+          type: object
+          properties:
+            id:
+              type: string
+              example: '1234567890'
+            name:
+              type: string
+              example: Alice Johnson
+        content:
+          type: object
+          properties:
+            text:
+              type: string
+              example: Please review the Q2 report before Friday.
+        is_pinned:
+          type: boolean
+          example: false
+        star_information:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/StarInformation'
+          properties:
+            old_star_type:
+              type: string
+              description: The previous star type before the update.
+              example: important
+        chat_information:
+          $ref: '#/components/schemas/ChatInformation'
+      example:
+        type: text
+        id: '1746000123456789001'
+        time: '2026-04-30T10:00:00Z'
+        sender:
+          id: '1234567890'
+          name: Alice Johnson
+        content:
+          text: Please review the Q2 report before Friday.
+        is_pinned: false
+        star_information:
+          star_type: follow_up
+          starred_message_time: '2026-04-30T10:15:30Z'
+          old_star_type: important
+        chat_information:
+          chat_id: CT_1894736520184930172_847291635
+          chat_type: chat
+          title: Alice Johnson
+          joined: true
+    StarMessageResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          example: text
+        id:
+          type: string
+          description: The unique identifier of the message.
+          example: '1746000123456789001'
+        time:
+          type: string
+          format: date-time
+          description: The timestamp when the message was sent (<a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format).
+          example: '2026-04-30T10:00:00Z'
+        sender:
+          type: object
+          properties:
+            id:
+              type: string
+              example: '1234567890'
+            name:
+              type: string
+              example: Alice Johnson
+        content:
+          type: object
+          properties:
+            text:
+              type: string
+              example: Please review the Q2 report before Friday.
+        is_pinned:
+          type: boolean
+          example: false
+        star_information:
+          $ref: '#/components/schemas/StarInformation'
+        chat_information:
+          $ref: '#/components/schemas/ChatInformation'
+      example:
+        type: text
+        id: '1746000123456789001'
+        time: '2026-04-30T10:00:00Z'
+        sender:
+          id: '1234567890'
+          name: Alice Johnson
+        content:
+          text: Please review the Q2 report before Friday.
+        is_pinned: false
+        star_information:
+          star_type: important
+          starred_message_time: '2026-04-30T10:15:30Z'
+        chat_information:
+          chat_id: CT_1894736520184930172_847291635
+          chat_type: chat
+          title: Alice Johnson
+          joined: true
+    StarredMessagesListResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          example: star_messages
+        next_token:
+          type: string
+          description: Opaque base64-encoded pagination cursor for the next page of results.
+          example: asdhfqjdbnajdndjnadj
+        sync_token:
+          type: string
+          description: Synchronization token for incremental updates.
+          example: 911083u18u3811834u
+        data:
+          type: array
+          description: Array of starred messages.
+          items:
+            type: object
+            properties:
+              star_information:
+                $ref: '#/components/schemas/StarInformation'
+              chat_information:
+                $ref: '#/components/schemas/ChatInformation'
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Cliq-specific error code.
+          example: 1012
+        message:
+          type: string
+          description: Error message or error key.
+          example: invalid.inputs.submitted

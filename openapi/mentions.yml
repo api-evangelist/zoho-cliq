@@ -1,0 +1,1241 @@
+openapi: 3.0.0
+info:
+  title: Mentions
+  description: |
+    <p>
+      In Zoho Cliq, you can use mentions (by using @) to tag users and send notifications, even in muted channels. These mentions will appear in the "@" tab at the top of the bar.
+      <br>
+      When you include a mention in a message, it not only notifies the person or group referenced but also highlights it in the conversation. 
+      <br><br> 
+      To include different types of content, use the <code>slides</code> key. Any content you want to attach should be placed within the <code>slides</code> JSON object. The <code>slides</code> key is a JSON array that lets you include various textual and visual message payloads.
+      <br><br> 
+      You can use mentions to:
+      <ul>
+       <li>Notify a specific user.</li>
+       <li>Reference a channel.</li>
+       <li>Mention a team.</li>
+       <li>Notify all participants in a channel using <b>@all</b>.</li>
+       <li>Notify only available participants using <b>@available</b>.</li>
+      </ul>
+      Additionally, you can view the last 30 days of mentions in a dedicated tab.<br><br>
+      Note: Message delivery will fail if the authenticated user does not have permission to use restricted mentions like <b>@all</b> or <b>@available</b> in the specified channel.
+    </p>
+  contact: {}
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Zoho Cliq APIs V2
+  url: https://www.zoho.com/cliq/help/restapi/v2/
+servers:
+  - url: https://cliq.zoho.com/api/v3
+    description: Zoho Cliq US DC
+tags:
+  - name: mentions
+    description: Mentions Module
+paths:
+  /mentions:
+    get:
+      summary: Retrieve Mentions and Replies
+      operationId: getMentions
+      description: |
+        Fetches a list of messages in which the authenticated user has been mentioned or replied to.<br><br>
+        The results are returned in descending order (newest to oldest) and can be filtered using various query parameters such as time range, chat IDs, sender user IDs, and activity type (mentions or replies).<br><br>
+        This endpoint allows users to easily track conversations that require their attention based on mentions and replies.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 30 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: from_time
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+          description: |
+            <ul>
+              <li>Return mentions created after this epoch time (ms).</li>
+              <li>By default, mentions from the last 30 days are returned.</li>
+              <li>If both <code>from_time</code> and <code>to_time</code> are provided, the API will return mentions created within that time range.</li>
+            </ul>
+            <b>Example:</b> 1622217600000 (June 1, 2021 12:00:00 AM GMT).
+        - name: to_time
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+          description: |
+            <ul> 
+              <li>Return mentions created before this epoch time (ms).</li>
+              <li>By default, mentions up to the current time are returned.</li>
+              <li>If both <code>from_time</code> and <code>to_time</code> are provided, the API will return mentions created within that time range.</li>
+            </ul>
+            <b>Example:</b> 1624809600000 (July 1, 2021 12:00:00 AM GMT).  
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 25
+            maximum: 100
+          description: |
+            Maximum number of mentions to return in the response.<br>
+            <ul>
+              <li>Default value is 25 if not specified.</li>
+              <li>Maximum allowed value is 100.</li>
+              <li>If the total number of mentions exceeds this limit, a pagination token will be provided in the response to fetch the next set of results.</li>
+            </ul>
+        - name: next_token
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Pagination token to retrieve the next set of mentions when the total number exceeds the specified limit. This token is provided in the response when there are more mentions to fetch.
+        - name: chid
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Filter mentions by a specific chat ID.<br>
+            To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+        - name: chat_ids
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Filter mentions by multiple chat IDs (comma-separated, maximum 5).<br>
+            Example: <code>chat_ids = CT_1207124854_60002085329,CT_17960055085329-T-12915799199</code><br>
+            To learn how to retrieve these IDs, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+        - name: user_ids
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Filter mentions by sender user IDs (comma-separated, maximum 5).<br>
+            Example: <code>user_ids = 60040396507,60040376665</code><br>
+            To learn how to retrieve these IDs, see <a href="/cliq/help/restapi/v3/glossary/#USER_ID">USER_ID</a> in the Glossary page.
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - mentions
+              - replies
+              - all
+            default: mentions
+          description: |
+            Filter results by activity type.<br>
+            <ul>
+              <li><code>mentions</code>: Returns messages where the user was mentioned.</li>
+              <li><code>replies</code>: Returns messages where the user was replied to.</li>
+              <li><code>all</code>: Returns both mentions and replies.</li>
+            </ul>
+            <b>Default</b>: mentions  
+      responses:
+        '200':
+          description: Mentions retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/get-mentions-response'
+        '400':
+          description: Invalid query parameter value.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mentions-error-response'
+              example:
+                code: INVALID_PARAMS
+                message: Invalid query parameter value.
+        '401':
+          description: Missing or invalid authentication token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mentions-error-response'
+              example:
+                code: UNAUTHORIZED
+                message: Missing or invalid authentication token.
+        '500':
+          description: Internal server error while fetching mentions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mentions-error-response'
+              example:
+                code: MENTIONS_FETCH_FAILED
+                message: Internal server error while fetching mentions.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.READ
+      tags:
+        - mentions
+  /chats/{CHAT_ID}/messages:
+    post:
+      summary: Mentioning a User
+      operationId: mentioningUser
+      description: |
+        To mention a user, use the syntax <b>{@zohoid}</b> or <b>{@email}</b>.<br><br>
+        When you mention a user in any team-level or organization-level channel, the user will be notified. This syntax applies only to the <code>text</code> and <code>comments</code> fields of the payload.
+        To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: Unique identifier of the chat where the message needs to be sent.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            examples:
+              userid:
+                summary: User mention with userID
+                value:
+                  text: Hey there {@userid}, please review the latest project updates
+              email:
+                summary: User mention with user email
+                value:
+                  text: Hey there {@scott.fisher@zylker.com}, please review the latest project updates
+            schema:
+              type: object
+              required:
+                - text
+              properties:
+                text:
+                  type: string
+                  description: |
+                    The text content of the message to be sent.<br>
+                    <b>Maximum length</b>: 10,000 characters.
+                  maxLength: 10000
+                  example: Hi Team! Please find the sales performance chart for this quarter.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Webhooks.CREATE
+      tags:
+        - mentions
+  /chats/{CHAT_ID1}/messages:
+    post:
+      summary: Silent mentions
+      x-display-path: /chats/{CHAT_ID}/messages
+      x-virtual-endpoint: true
+      x-note: |
+        CHAT_ID1 is a documentation alias for CHAT_ID path parameter used in silentMentions operation. This alias is used to document the silent mention use case separately while keeping it under the same POST /chats/{CHAT_ID}/messages endpoint, because the actual API path does not change and only the message text syntax differs. The actual endpoint for silentMentions operation remains /chats/{CHAT_ID}/messages as specified in the paths object.
+      operationId: silentMentions
+      description: |
+        Silent mentions allow you to reference a user in a conversation without triggering a notification.<br><br>
+        Use the syntax <code>[User Name](zohoid:userid)</code> or <code>[User Name](mail:user_email)</code> to mention a user silently in any conversation. This will not notify the user. This format can also be used to mention a user in fields other than the <code>text</code> and <code>comments</code> keys.
+      parameters:
+        - name: CHAT_ID1
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: |
+            Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.<br><br>
+            <b>Note:</b> <code>CHAT_ID1</code> is a documentation alias for <code>CHAT_ID</code>, used to document the "Silent mentions" use case separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the message text syntax differs.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            examples:
+              userid:
+                summary: Silent mention with userID
+                value:
+                  text: Hey there [Scott Fisher](zohoid:873421), could you check the campaign details when you get a chance?
+              email:
+                summary: Silent mention with user email
+                value:
+                  text: Hey there [Scott Fisher](mail:scott.fisher@zylker.com), could you check the campaign details when you get a chance?
+            schema:
+              type: object
+              required:
+                - text
+              properties:
+                text:
+                  type: string
+                  description: |
+                    The text content of the message to be sent.<br>
+                    <b>Maximum length</b>: 10,000 characters.
+                  maxLength: 10000
+                  example: Hi Team! Please find the sales performance chart for this quarter.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Webhooks.CREATE
+      tags:
+        - mentions
+  /chats/{CHAT_ID2}/messages:
+    post:
+      summary: Mentioning a Channel
+      x-display-path: /chats/{CHAT_ID}/messages
+      x-virtual-endpoint: true
+      x-note: |
+        CHAT_ID2 is a documentation alias for CHAT_ID path parameter used in mentioningChannel operation. This alias is used to document the channel mention use case separately while keeping it under the same POST /chats/{CHAT_ID}/messages endpoint, because the actual API path does not change and only the message content pattern differs. The actual endpoint for mentioningChannel operation remains /chats/{CHAT_ID}/messages as specified in the paths object.
+      operationId: mentioningChannel
+      description: |
+        To mention a channel, use the syntax <code>{#CHANNEL_ID}</code>.<br><br>
+        When you mention a team-level or organization-level channel, all participants of that channel will be notified. Additionally, an informational message will be posted in the channel indicating that it has been mentioned.
+      parameters:
+        - name: CHAT_ID2
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: |
+            Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.<br><br>
+            <b>Note:</b> <code>CHAT_ID2</code> is a documentation alias for <code>CHAT_ID</code>, used to document the "Mentioning a Channel" use case separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the message content pattern differs.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                  description: |
+                    The text content of the message to be sent.<br>
+                     <b>Maximum length</b>: 10,000 characters.
+                  maxLength: 10000
+                  example: Please review the latest deployment updates in {#CHANNEL_ID} and share your feedback.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Webhooks.CREATE
+      tags:
+        - mentions
+  /chats/{CHAT_ID3}/messages:
+    post:
+      summary: Mentioning all users in a channel
+      x-display-path: /chats/{CHAT_ID}/messages
+      x-virtual-endpoint: true
+      x-note: |
+        CHAT_ID3 is a documentation alias for CHAT_ID path parameter used in mentioningAllUsers operation. This alias is used to document the mention-all use case separately while keeping it under the same POST /chats/{CHAT_ID}/messages endpoint, because the actual API path does not change and only the message content pattern differs. The actual endpoint for mentioningAllUsers operation remains /chats/{CHAT_ID}/messages as specified in the paths object.
+      operationId: mentioningAllUsers
+      description: |
+        To mention all users in a channel, use the syntax {@all}.<br>
+        This will notify every participant who is a member of the channel.<br>
+        <b>Note:</b> The ability to use {@all} depends on the authenticated user's role and channel permissions. If the user does not have permission to mention all participants, the message posting request will fail.
+      parameters:
+        - name: CHAT_ID3
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: |
+            Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.<br><br>
+            <b>Note:</b> <code>CHAT_ID3</code> is a documentation alias for <code>CHAT_ID</code>, used to document the "Mentioning all users in a channel" use case separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the message content pattern differs.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                  description: |
+                    The text content of the message to be sent.<br>
+                     <b>Maximum length</b>: 10,000 characters.
+                  maxLength: 10000
+                  example: Attention @all, please review the quarterly sales report and share your inputs before tomorrow’s strategy meeting.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Webhooks.CREATE
+      tags:
+        - mentions
+  /chats/{CHAT_ID4}/messages:
+    post:
+      summary: Mentioning available users in a Channel
+      x-display-path: /chats/{CHAT_ID}/messages
+      x-virtual-endpoint: true
+      x-note: |
+        CHAT_ID4 is a documentation alias for CHAT_ID path parameter used in mentioningAvailableUsers operation. This alias is used to document the available-users mention use case separately while keeping it under the same POST /chats/{CHAT_ID}/messages endpoint, because the actual API path does not change and only the message content pattern differs. The actual endpoint for mentioningAvailableUsers operation remains /chats/{CHAT_ID}/messages as specified in the paths object.
+      operationId: mentioningAvailableUsers
+      description: |
+        To mention all users who are currently available in a channel, use the syntax {@available}.<br><br>
+        This will notify only the participants whose status is set to Available at the time the message is posted.
+      parameters:
+        - name: CHAT_ID4
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: |
+            Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.<br><br>
+            <b>Note:</b> <code>CHAT_ID4</code> is a documentation alias for <code>CHAT_ID</code>, used to document the "Mentioning available users in a Channel" use case separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the message content pattern differs.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                  description: |
+                    The text content of the message to be sent.<br>
+                     <b>Maximum length</b>: 10,000 characters.
+                  maxLength: 10000
+                  example: Hello @available, we need immediate assistance with the production issue. Please respond if you can take this up.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+  /chats/{CHAT_ID5}/messages:
+    post:
+      summary: Mentioning a Team
+      x-display-path: /chats/{CHAT_ID}/messages
+      x-virtual-endpoint: true
+      x-note: |
+        CHAT_ID5 is a documentation alias for CHAT_ID path parameter used in mentioningTeam operation. This alias is used to document the team mention use case separately while keeping it under the same POST /chats/{CHAT_ID}/messages endpoint, because the actual API path does not change and only the message content pattern differs. The actual endpoint for mentioningTeam operation remains /chats/{CHAT_ID}/messages as specified in the paths object.
+      operationId: mentioningTeam
+      description: |
+        To mention a team in a message, use the syntax <code>{@team_id}</code>.<br><br>
+        You can mention a team only within team-level or organization-level channels. When a team is mentioned, all members of that team will be notified.
+        To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+      parameters:
+        - name: CHAT_ID5
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: |
+            Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.<br><br>
+            <b>Note:</b> <code>CHAT_ID5</code> is a documentation alias for <code>CHAT_ID</code>, used to document the "Mentioning a Team" use case separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the message content pattern differs.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                  description: |
+                    The text content of the message to be sent.<br>
+                     <b>Maximum length</b>: 10,000 characters.
+                  maxLength: 10000
+                  example: Hello {@1234567890}, please review the updated deployment plan and share your feedback.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Webhooks.CREATE
+      tags:
+        - mentions
+components:
+  schemas:
+    get-mentions-response:
+      type: object
+      required:
+        - type
+        - has_more
+        - url
+        - data
+      properties:
+        type:
+          type: string
+          description: Always "mention".
+          enum:
+            - mention
+          example: mention
+        has_more:
+          type: boolean
+          description: Whether more results are available.
+          example: true
+        next_token:
+          type: string
+          description: Pagination token. Present only when has_more is true.
+          example: 69db51e903077660b5bd74ba2f00a3b9ae90bd44362145d146379a451ab2b6a3
+        url:
+          type: string
+          description: Request URL.
+          example: /api/v3/mentions
+        data:
+          type: array
+          description: List of mention entries.
+          items:
+            $ref: '#/components/schemas/mention-entry'
+      example:
+        type: mention
+        has_more: true
+        next_token: 69db51e903077660b5bd74ba2f00a3b9ae90bd44362145d146379a451ab2b6a3
+        url: /api/v3/mentions
+        data:
+          - id: CT_1207124540483314854_60002085329|60040396507|1779854404814
+            status: unread
+            activity_type: mentions
+            chat:
+              id: CT_1207124540483314854_60002085329
+              title: Project Discussion
+              type: channel
+              channel_type: open
+              channel_display_name: Project Discussion
+            message:
+              id: 1.7798544048141776e+25
+              type: text
+              time: '2026-05-28T10:30:00+05:30'
+              content:
+                text: Hey @Ryan West, can you review this?
+              sender:
+                id: '60040396507'
+                name: Scott Fisher
+              replied_to:
+                id: 1.7798544048001775e+25
+                time: '2026-05-28T10:25:00+05:30'
+                content:
+                  text: I've pushed the latest changes to staging.
+                sender:
+                  id: '60040386526'
+                  name: Karen Mills
+            mention:
+              recipient_id: '60040386526'
+              mentioned_users:
+                - id: '60040386526'
+                  name: Ryan West
+                  display_name: '@Ryan West'
+                  type: user
+          - id: CT_1796005539471668330_60002085329-T-1291572812797199199|60040376665|1779778913508
+            status: read
+            activity_type: mentions
+            chat:
+              id: CT_1796005539471668330_60002085329-T-1291572812797199199
+              title: '*at office*'
+              type: thread
+              channel_display_name: '*at office*'
+            message:
+              id: 1.7797789135081024e+23
+              type: text
+              time: '2026-05-26T12:31:53+05:30'
+              content:
+                text: Hey everyone, lunch plans today? @all
+              sender:
+                id: '60040376665'
+                name: Mark Henderson
+            mention:
+              recipient_id: '12737000900495597'
+              mentioned_users:
+                - id: participants
+                  name: all
+                  display_name: '@all'
+                  type: participants
+          - id: CT_1291567033280789110_60002085329-T-1334093121532995592|b-12737000004306349|1779939003876
+            status: read
+            activity_type: mentions
+            chat:
+              id: CT_1291567033280789110_60002085329-T-1334093121532995592
+              title: 'Issue : Internal - User Management - AP'
+              type: thread
+            message:
+              id: 1.779939003876963e+23
+              type: card
+              time: '2026-05-28T09:00:03+05:30'
+              content:
+                text: Hey @Ryan West, this issue hasn't been acknowledged yet in spite of 9 daily reminders. Would you like to share your inputs now?
+                card:
+                  theme: modern-inline
+                buttons:
+                  - label: Update
+                    action:
+                      type: invoke.function
+                      data:
+                        name: cliqsupportbuttonfunction
+                    hint: Dev Acknowledgement
+              sender:
+                id: b-12737000004306349
+                name: Supportify
+            mention:
+              recipient_id: '60040386526'
+              mentioned_users:
+                - id: '60040386526'
+                  name: Ryan West
+                  display_name: '@Ryan West'
+                  type: user
+    mention-entry:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique mention entry ID.
+        status:
+          type: string
+          description: unread, read, or deleted.
+          enum:
+            - unread
+            - read
+            - deleted
+        activity_type:
+          type: string
+          description: mentions or replies.
+          enum:
+            - mentions
+            - replies
+        chat:
+          $ref: '#/components/schemas/mention-chat'
+        message:
+          $ref: '#/components/schemas/mention-message'
+        mention:
+          $ref: '#/components/schemas/mention-metadata'
+    mention-chat:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Chat ID.
+        title:
+          type: string
+          description: Chat or channel title.
+        type:
+          type: string
+          description: channel, direct, group, bot, or thread.
+          enum:
+            - channel
+            - direct
+            - group
+            - bot
+            - thread
+        channel_type:
+          type: string
+          description: open, closed, public, external, or team.
+          enum:
+            - open
+            - closed
+            - public
+            - external
+            - team
+        channel_display_name:
+          type: string
+          description: Display name of the channel.
+    mention-message:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Message ID.
+        type:
+          type: string
+          description: text, file, audio, card, etc.
+        time:
+          type: string
+          format: date-time
+          description: <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> timestamp.
+        content:
+          type: object
+          description: Message content.
+          additionalProperties: true
+        sender:
+          $ref: '#/components/schemas/mention-sender'
+        replied_to:
+          type: object
+          description: Original message details if this is a reply.
+          properties:
+            id:
+              type: string
+            time:
+              type: string
+              format: date-time
+            content:
+              type: object
+              additionalProperties: true
+            sender:
+              $ref: '#/components/schemas/mention-sender'
+    mention-sender:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Sender ID.
+        name:
+          type: string
+          description: Sender name.
+    mention-metadata:
+      type: object
+      properties:
+        recipient_id:
+          type: string
+          description: ID of the mentioned user.
+        mentioned_users:
+          type: array
+          description: List of mentioned users or entities.
+          items:
+            $ref: '#/components/schemas/mentioned-user'
+    mentioned-user:
+      type: object
+      properties:
+        id:
+          type: string
+          description: User or entity ID.
+        name:
+          type: string
+          description: Name.
+        display_name:
+          type: string
+          description: Display name (for example, @John).
+        type:
+          type: string
+          description: user, group, channel, bot, participants, or available.
+          enum:
+            - user
+            - group
+            - channel
+            - bot
+            - participants
+            - available
+    mentions-error-response:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code identifier.
+          example: INVALID_PARAMS
+        message:
+          type: string
+          description: Human-readable error message.
+          example: Invalid query parameter value.
+    empty-response:
+      type: object
+      description: Response returned when there is no content.
+      properties:
+        Response_Code:
+          type: string
+          example: 204 No response
+  securitySchemes:
+    Cliq_Auth:
+      type: oauth2
+      x-authorization-example: Bearer 1000.41d9xxxxxxxxxxxxxxxxxxxxxxxxc2d1.8fccxxxxxxxxxxxxxxxxxxxxxxxx125f
+      flows:
+        implicit:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          scopes:
+            ZohoCliq.Chats.READ: Read Chats
+            ZohoCliq.Webhooks.CREATE: Send messages

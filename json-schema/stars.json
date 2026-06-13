@@ -1,0 +1,363 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Zoho Cliq Stars Schemas",
+  "definitions": {
+    "StarInformation": {
+      "type": "object",
+      "description": "Information about the star applied to a message.",
+      "properties": {
+        "star_type": {
+          "type": "string",
+          "description": "The category of the star.",
+          "enum": [
+            "important",
+            "to_do",
+            "note",
+            "manager",
+            "follow_up"
+          ],
+          "example": "important"
+        },
+        "old_star_type": {
+          "type": "string",
+          "description": "The previous star type if the message was already starred (returned only on updates).",
+          "example": "note"
+        },
+        "starred_message_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the message was starred (<a href=\"https://en.wikipedia.org/wiki/ISO_8601\">ISO 8601</a> format).",
+          "example": "2026-03-25T10:30:00.000Z"
+        },
+        "file_permission": {
+          "type": "object",
+          "description": "File permissions associated with the starred message (if applicable).",
+          "properties": {
+            "cross_org_policy": {
+              "type": "boolean",
+              "description": "Indicates if cross-organization access is allowed.",
+              "example": true
+            },
+            "file_scope": {
+              "type": "string",
+              "description": "The scope identifier for file access.",
+              "example": "60005678901"
+            }
+          }
+        }
+      }
+    },
+    "ChatInformation": {
+      "type": "object",
+      "description": "Information about the chat containing the starred message.",
+      "properties": {
+        "chat_id": {
+          "type": "string",
+          "description": "The unique identifier of the chat.",
+          "example": "2000000012345_2000000067890"
+        },
+        "chat_type": {
+          "type": "string",
+          "description": "The type of chat (e.g., direct, channel, group).",
+          "example": "direct"
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the chat.",
+          "example": "John Doe"
+        },
+        "display_name": {
+          "type": "string",
+          "description": "The display name shown for the chat.",
+          "example": "John Doe"
+        },
+        "joined": {
+          "type": "boolean",
+          "description": "Indicates if the user has joined the chat.",
+          "example": true
+        },
+        "receiver": {
+          "type": "string",
+          "description": "The user ID of the message receiver (for direct chats).",
+          "example": "2000000012345"
+        }
+      }
+    },
+    "StarMessageRequest": {
+      "type": "object",
+      "required": [
+        "chat_id",
+        "message_id",
+        "star_type"
+      ],
+      "properties": {
+        "chat_id": {
+          "type": "string",
+          "description": "The unique identifier of the chat containing the message to be starred.",
+          "example": "CT_1894736520184930172_847291635"
+        },
+        "message_id": {
+          "type": "string",
+          "description": "The unique identifier of the message to be starred.",
+          "example": "1746000123456789001"
+        },
+        "star_type": {
+          "type": "string",
+          "description": "The category of the star to apply to the message. This determines how the message will be organized and retrieved in starred messages lists.\n<br><br>\n<b>Allowed values:</b><br>\n<ul>\n  <li><code>important</code>: Mark messages that require special attention or contain critical information.</li>\n  <li><code>to_do</code>: Flag messages representing tasks or action items that need to be completed.</li>\n  <li><code>note</code>: Save messages for future reference or as reminders of important information.</li>\n  <li><code>manager</code>: Highlight messages related to managerial communications or approvals.</li>\n  <li><code>follow_up</code>: Identify messages that require follow-up actions or responses.</li>\n</ul>\n",
+          "enum": [
+            "important",
+            "to_do",
+            "note",
+            "manager",
+            "follow_up"
+          ],
+          "example": "important"
+        }
+      }
+    },
+    "UpdateStarTypeRequest": {
+      "type": "object",
+      "required": [
+        "chat_id",
+        "message_id",
+        "star_type"
+      ],
+      "properties": {
+        "chat_id": {
+          "type": "string",
+          "description": "The unique identifier of the chat containing the already-starred message.",
+          "example": "CT_1894736520184930172_847291635"
+        },
+        "message_id": {
+          "type": "string",
+          "description": "The unique identifier of the starred message whose star type is to be updated.",
+          "example": "1746000123456789001"
+        },
+        "star_type": {
+          "type": "string",
+          "description": "The new star type to apply. Replaces the existing star type on the message.\n<br><br>\n<b>Allowed values:</b><br>\n<ul>\n  <li><code>important</code>: Mark messages that require special attention or contain critical information.</li>\n  <li><code>to_do</code>: Flag messages representing tasks or action items that need to be completed.</li>\n  <li><code>note</code>: Save messages for future reference or as reminders of important information.</li>\n  <li><code>manager</code>: Highlight messages related to managerial communications or approvals.</li>\n  <li><code>follow_up</code>: Identify messages that require follow-up actions or responses.</li>\n</ul>\n",
+          "enum": [
+            "important",
+            "to_do",
+            "note",
+            "manager",
+            "follow_up"
+          ],
+          "example": "follow_up"
+        }
+      }
+    },
+    "UpdateStarTypeResponse": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "text"
+        },
+        "id": {
+          "type": "string",
+          "description": "The unique identifier of the message.",
+          "example": "1746000123456789001"
+        },
+        "time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the message was sent (<a href=\"https://en.wikipedia.org/wiki/ISO_8601\">ISO 8601</a> format).",
+          "example": "2026-04-30T10:00:00Z"
+        },
+        "sender": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "example": "1234567890"
+            },
+            "name": {
+              "type": "string",
+              "example": "Alice Johnson"
+            }
+          }
+        },
+        "content": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string",
+              "example": "Please review the Q2 report before Friday."
+            }
+          }
+        },
+        "is_pinned": {
+          "type": "boolean",
+          "example": false
+        },
+        "star_information": {
+          "type": "object",
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/StarInformation"
+            }
+          ],
+          "properties": {
+            "old_star_type": {
+              "type": "string",
+              "description": "The previous star type before the update.",
+              "example": "important"
+            }
+          }
+        },
+        "chat_information": {
+          "$ref": "#/components/schemas/ChatInformation"
+        }
+      },
+      "example": {
+        "type": "text",
+        "id": "1746000123456789001",
+        "time": "2026-04-30T10:00:00Z",
+        "sender": {
+          "id": "1234567890",
+          "name": "Alice Johnson"
+        },
+        "content": {
+          "text": "Please review the Q2 report before Friday."
+        },
+        "is_pinned": false,
+        "star_information": {
+          "star_type": "follow_up",
+          "starred_message_time": "2026-04-30T10:15:30Z",
+          "old_star_type": "important"
+        },
+        "chat_information": {
+          "chat_id": "CT_1894736520184930172_847291635",
+          "chat_type": "chat",
+          "title": "Alice Johnson",
+          "joined": true
+        }
+      }
+    },
+    "StarMessageResponse": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "text"
+        },
+        "id": {
+          "type": "string",
+          "description": "The unique identifier of the message.",
+          "example": "1746000123456789001"
+        },
+        "time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the message was sent (<a href=\"https://en.wikipedia.org/wiki/ISO_8601\">ISO 8601</a> format).",
+          "example": "2026-04-30T10:00:00Z"
+        },
+        "sender": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "example": "1234567890"
+            },
+            "name": {
+              "type": "string",
+              "example": "Alice Johnson"
+            }
+          }
+        },
+        "content": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string",
+              "example": "Please review the Q2 report before Friday."
+            }
+          }
+        },
+        "is_pinned": {
+          "type": "boolean",
+          "example": false
+        },
+        "star_information": {
+          "$ref": "#/components/schemas/StarInformation"
+        },
+        "chat_information": {
+          "$ref": "#/components/schemas/ChatInformation"
+        }
+      },
+      "example": {
+        "type": "text",
+        "id": "1746000123456789001",
+        "time": "2026-04-30T10:00:00Z",
+        "sender": {
+          "id": "1234567890",
+          "name": "Alice Johnson"
+        },
+        "content": {
+          "text": "Please review the Q2 report before Friday."
+        },
+        "is_pinned": false,
+        "star_information": {
+          "star_type": "important",
+          "starred_message_time": "2026-04-30T10:15:30Z"
+        },
+        "chat_information": {
+          "chat_id": "CT_1894736520184930172_847291635",
+          "chat_type": "chat",
+          "title": "Alice Johnson",
+          "joined": true
+        }
+      }
+    },
+    "StarredMessagesListResponse": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "star_messages"
+        },
+        "next_token": {
+          "type": "string",
+          "description": "Opaque base64-encoded pagination cursor for the next page of results.",
+          "example": "asdhfqjdbnajdndjnadj"
+        },
+        "sync_token": {
+          "type": "string",
+          "description": "Synchronization token for incremental updates.",
+          "example": "911083u18u3811834u"
+        },
+        "data": {
+          "type": "array",
+          "description": "Array of starred messages.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "star_information": {
+                "$ref": "#/components/schemas/StarInformation"
+              },
+              "chat_information": {
+                "$ref": "#/components/schemas/ChatInformation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "description": "Cliq-specific error code.",
+          "example": 1012
+        },
+        "message": {
+          "type": "string",
+          "description": "Error message or error key.",
+          "example": "invalid.inputs.submitted"
+        }
+      }
+    }
+  }
+}

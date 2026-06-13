@@ -1,0 +1,471 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Zoho Cliq Mobilesettings Schemas",
+  "definitions": {
+    "NoResponse": {
+      "type": "object",
+      "description": "Response envelope for successful operations with no payload.",
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "success"
+        },
+        "message": {
+          "type": "string",
+          "example": "Operation completed successfully."
+        }
+      }
+    },
+    "notification-settings": {
+      "type": "object",
+      "description": "Notification controls by conversation type and notification mode (alert, sound, and preview).",
+      "x-enum-descriptions": [
+        {
+          "enabled": "Enables the notification behavior for the setting."
+        },
+        {
+          "disabled": "Disables the notification behavior for the setting."
+        }
+      ],
+      "properties": {
+        "direct_message": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles alert notifications for direct messages.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Direct message notifications are turned on.</li>\n  <li><code>disabled</code>: Direct message notifications are turned off.</li>\n</ul>\n"
+        },
+        "direct_message_sound": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles sound for direct message notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Sound plays for direct message notifications.</li>\n  <li><code>disabled</code>: Sound is muted for direct message notifications.</li>\n</ul>\n"
+        },
+        "direct_message_preview": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles message preview for direct message notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Message content is shown in the notification preview.</li>\n  <li><code>disabled</code>: Message content is hidden in the notification preview.</li>\n</ul>\n"
+        },
+        "channel": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles alert notifications for channel messages.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Channel notifications are turned on.</li>\n  <li><code>disabled</code>: Channel notifications are turned off.</li>\n</ul>\n"
+        },
+        "channel_sound": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles sound for channel message notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Sound plays for channel notifications.</li>\n  <li><code>disabled</code>: Sound is muted for channel notifications.</li>\n</ul>\n"
+        },
+        "channel_preview": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles message preview for channel notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Message content is shown in the channel notification preview.</li>\n  <li><code>disabled</code>: Message content is hidden in the channel notification preview.</li>\n</ul>\n"
+        },
+        "group": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles alert notifications for group messages.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Group notifications are turned on.</li>\n  <li><code>disabled</code>: Group notifications are turned off.</li>\n</ul>\n"
+        },
+        "group_sound": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles sound for group message notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Sound plays for group notifications.</li>\n  <li><code>disabled</code>: Sound is muted for group notifications.</li>\n</ul>\n"
+        },
+        "group_preview": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles message preview for group notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Message content is shown in the group notification preview.</li>\n  <li><code>disabled</code>: Message content is hidden in the group notification preview.</li>\n</ul>\n"
+        },
+        "atmentions": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles alert notifications for @mention messages.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: @mention notifications are turned on.</li>\n  <li><code>disabled</code>: @mention notifications are turned off.</li>\n</ul>\n"
+        },
+        "atmentions_sound": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles sound for @mention notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Sound plays for @mention notifications.</li>\n  <li><code>disabled</code>: Sound is muted for @mention notifications.</li>\n</ul>\n"
+        },
+        "atmentions_preview": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles message preview for @mention notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Message content is shown in the @mention notification preview.</li>\n  <li><code>disabled</code>: Message content is hidden in the @mention notification preview.</li>\n</ul>\n"
+        },
+        "bot": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles alert notifications for bot messages.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Bot notifications are turned on.</li>\n  <li><code>disabled</code>: Bot notifications are turned off.</li>\n</ul>\n"
+        },
+        "bot_sound": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles sound for bot message notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Sound plays for bot notifications.</li>\n  <li><code>disabled</code>: Sound is muted for bot notifications.</li>\n</ul>\n"
+        },
+        "bot_preview": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles message preview for bot notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Message content is shown in the bot notification preview.</li>\n  <li><code>disabled</code>: Message content is hidden in the bot notification preview.</li>\n</ul>\n"
+        },
+        "reactions": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles alert notifications for message reactions.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Reaction notifications are turned on.</li>\n  <li><code>disabled</code>: Reaction notifications are turned off.</li>\n</ul>\n"
+        },
+        "reactions_sound": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles sound for reaction notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Sound plays for reaction notifications.</li>\n  <li><code>disabled</code>: Sound is muted for reaction notifications.</li>\n</ul>\n"
+        },
+        "reactions_preview": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles message preview for reaction notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Message content is shown in the reaction notification preview.</li>\n  <li><code>disabled</code>: Message content is hidden in the reaction notification preview.</li>\n</ul>\n"
+        },
+        "hashtags": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles alert notifications for hashtag mentions.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Hashtag notifications are turned on.</li>\n  <li><code>disabled</code>: Hashtag notifications are turned off.</li>\n</ul>\n"
+        },
+        "hashtags_sound": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles sound for hashtag notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Sound plays for hashtag notifications.</li>\n  <li><code>disabled</code>: Sound is muted for hashtag notifications.</li>\n</ul>\n"
+        },
+        "hashtags_preview": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles message preview for hashtag notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Message content is shown in the hashtag notification preview.</li>\n  <li><code>disabled</code>: Message content is hidden in the hashtag notification preview.</li>\n</ul>\n"
+        },
+        "MT": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles alert notifications for mentions and tags (MT).<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: MT notifications are turned on.</li>\n  <li><code>disabled</code>: MT notifications are turned off.</li>\n</ul>\n"
+        },
+        "MT_sound": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles sound for MT notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Sound plays for MT notifications.</li>\n  <li><code>disabled</code>: Sound is muted for MT notifications.</li>\n</ul>\n"
+        },
+        "MT_preview": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles message preview for MT notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Message content is shown in the MT notification preview.</li>\n  <li><code>disabled</code>: Message content is hidden in the MT notification preview.</li>\n</ul>\n"
+        }
+      }
+    },
+    "media-gallery-settings": {
+      "type": "object",
+      "description": "Controls whether downloaded media is saved to the device gallery.",
+      "x-enum-descriptions": [
+        {
+          "enabled": "Enables saving media to gallery."
+        },
+        {
+          "disabled": "Disables saving media to gallery."
+        }
+      ],
+      "properties": {
+        "images": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Controls whether downloaded images are saved to the device gallery.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Downloaded images are automatically saved to the gallery.</li>\n  <li><code>disabled</code>: Downloaded images are not saved to the gallery.</li>\n</ul>\n"
+        },
+        "camera_captures": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Controls whether photos taken within the app are saved to the device gallery.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Camera captures are automatically saved to the gallery.</li>\n  <li><code>disabled</code>: Camera captures are not saved to the gallery.</li>\n</ul>\n"
+        },
+        "videos": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Controls whether downloaded videos are saved to the device gallery.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Downloaded videos are automatically saved to the gallery.</li>\n  <li><code>disabled</code>: Downloaded videos are not saved to the gallery.</li>\n</ul>\n"
+        }
+      }
+    },
+    "media-auto-download-settings": {
+      "type": "object",
+      "description": "Controls automatic media download behavior based on media type or network mode.",
+      "properties": {
+        "images": {
+          "type": "string",
+          "example": "enabled",
+          "description": "Controls automatic download behavior for image files.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Images are downloaded automatically.</li>\n  <li><code>disabled</code>: Images are not downloaded automatically.</li>\n  <li><code>wifi</code>: Images are downloaded automatically only when connected to Wi-Fi.</li>\n  <li><code>mobile</code>: Images are downloaded automatically only when on mobile data.</li>\n</ul>\n"
+        },
+        "videos": {
+          "type": "string",
+          "example": "disabled",
+          "description": "Controls automatic download behavior for video files.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Videos are downloaded automatically.</li>\n  <li><code>disabled</code>: Videos are not downloaded automatically.</li>\n  <li><code>wifi</code>: Videos are downloaded automatically only when connected to Wi-Fi.</li>\n  <li><code>mobile</code>: Videos are downloaded automatically only when on mobile data.</li>\n</ul>\n"
+        },
+        "others": {
+          "type": "string",
+          "example": "mobile",
+          "description": "Controls automatic download behavior for all other file types.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Other files are downloaded automatically.</li>\n  <li><code>disabled</code>: Other files are not downloaded automatically.</li>\n  <li><code>wifi</code>: Other files are downloaded automatically only when connected to Wi-Fi.</li>\n  <li><code>mobile</code>: Other files are downloaded automatically only when on mobile data.</li>\n</ul>\n"
+        }
+      }
+    },
+    "mobile-settings-response": {
+      "type": "object",
+      "description": "Full mobile settings object returned by the GET endpoint.",
+      "x-enum-descriptions": [
+        {
+          "enabled": "Setting is turned on."
+        },
+        {
+          "disabled": "Setting is turned off."
+        }
+      ],
+      "properties": {
+        "av_noise_cancellation": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ]
+        },
+        "media_to_gallery": {
+          "$ref": "#/components/schemas/media-gallery-settings"
+        },
+        "conference_recording": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ]
+        },
+        "last_seen": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ]
+        },
+        "file_summary": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ]
+        },
+        "media_upload_quality": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ]
+        },
+        "notification": {
+          "$ref": "#/components/schemas/notification-settings"
+        },
+        "media_auto_download": {
+          "$ref": "#/components/schemas/media-auto-download-settings"
+        },
+        "media_auto_download_android": {
+          "$ref": "#/components/schemas/media-auto-download-settings"
+        },
+        "huddle_join_video_muted": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ]
+        },
+        "av_hd_video": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ]
+        },
+        "av_speech_detection": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ]
+        },
+        "unread_summary": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ]
+        },
+        "chat_summary": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ]
+        }
+      }
+    },
+    "update-mobile-settings-request": {
+      "type": "object",
+      "description": "Provide only the settings to update. For nested settings, send the nested object with intended values.",
+      "x-enum-descriptions": [
+        {
+          "enabled": "Turn this setting on."
+        },
+        {
+          "disabled": "Turn this setting off."
+        }
+      ],
+      "properties": {
+        "av_noise_cancellation": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Controls noise cancellation during audio/video calls.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Noise cancellation is active.</li>\n  <li><code>disabled</code>: Noise cancellation is turned off.</li>\n</ul>\n"
+        },
+        "media_to_gallery": {
+          "$ref": "#/components/schemas/media-gallery-settings",
+          "description": "Controls whether downloaded media is saved to the device gallery."
+        },
+        "conference_recording": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Controls whether conference call recording is allowed.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Conference recording is permitted.</li>\n  <li><code>disabled</code>: Conference recording is not permitted.</li>\n</ul>\n"
+        },
+        "last_seen": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Controls the visibility of the user's last seen status.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Last seen is visible to others.</li>\n  <li><code>disabled</code>: Last seen is hidden from others.</li>\n</ul>\n"
+        },
+        "file_summary": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Controls whether file summaries are shown for shared files.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: File summaries are displayed.</li>\n  <li><code>disabled</code>: File summaries are hidden.</li>\n</ul>\n"
+        },
+        "media_upload_quality": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Controls whether media is uploaded in high quality.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Media is uploaded at high quality.</li>\n  <li><code>disabled</code>: Media is uploaded at reduced quality.</li>\n</ul>\n"
+        },
+        "notification": {
+          "$ref": "#/components/schemas/notification-settings",
+          "description": "Notification controls by conversation type and notification mode (alert, sound, and preview)."
+        },
+        "media_auto_download": {
+          "$ref": "#/components/schemas/media-auto-download-settings",
+          "description": "Controls automatic media download behavior based on media type or network mode."
+        },
+        "huddle_join_video_muted": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Controls whether the camera is muted by default when joining a huddle.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Camera is muted on huddle join.</li>\n  <li><code>disabled</code>: Camera is active on huddle join.</li>\n</ul>\n"
+        },
+        "av_hd_video": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Controls whether HD video is used during audio/video calls.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: HD video is active.</li>\n  <li><code>disabled</code>: HD video is turned off.</li>\n</ul>\n"
+        },
+        "chat_summary": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Controls whether chat summaries are shown for conversations.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Chat summaries are displayed.</li>\n  <li><code>disabled</code>: Chat summaries are hidden.</li>\n</ul>\n"
+        }
+      }
+    }
+  }
+}

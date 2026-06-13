@@ -1,0 +1,1150 @@
+openapi: 3.0.0
+info:
+  title: Pin Messages
+  description: |
+    The Pin Messages API allows teams to highlight and manage important messages within a chat, ensuring that critical information remains visible to all participants and is not lost in the flow of conversation. <br><br> The latest version, v3, is designed to give developers precise control over what gets highlighted from meeting links and deadlines to key announcements, helping every participant stay aligned without the need to scroll through chat history. <br><br> <b>Key Capabilities</b><br> With the v3 version of the Pin Messages API, you can: <ul>
+      <li><b>Pin Management:</b> Pin any message within a chat to make it immediately visible to all participants, including new members who join after the message was originally sent.</li>
+      <li><b>Pin Ordering:</b> Reorder pinned messages to reflect current priorities, ensuring that the most relevant information always appears first.</li>
+      <li><b>Pin Retrieval:</b> Fetch all pinned messages within a chat for a consolidated view of highlighted content across the conversation.</li>
+      <li><b>Pin Removal:</b> Remove pinned messages that are no longer relevant, keeping the pinned list focused and clutter-free.</li>
+    </ul>
+  contact: {}
+  version: 3.0.0
+externalDocs:
+  description: Find out more about Zoho Cliq APIs V3
+  url: https://www.zoho.com/cliq/help/restapi/v2/
+servers:
+  - url: https://cliq.zoho.com/api/v3
+    description: Zoho Cliq US DC
+tags:
+  - name: pinmessages
+    description: Pin Messages Module
+paths:
+  /chats/{CHAT_ID}/pin-messages:
+    get:
+      summary: Get pinned messages
+      operationId: getPinnedMessages
+      description: |
+        Returns the list of pinned messages in a chat, sorted by pin time with the most recent first. Optionally, you can fetch only the <b>primary pinned message</b> or use <b>pagination</b> for efficient retrieval.
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_not_allowed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">User might not be a participant of that chat.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_failed</span></td>
+                    <td style="padding:10px 18px;">Unexpected error while fetching the primary pin.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      tags:
+        - pinmessages
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          description: Unique identifier of the chat. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+          schema:
+            type: string
+          example: CHAT_ID
+        - name: primary
+          in: query
+          required: false
+          description: Pass this parameter (no value needed) to fetch the primary pinned message instead of the full list.
+          schema:
+            type: boolean
+        - name: limit
+          in: query
+          required: false
+          description: |
+            Maximum number of pinned messages to return.
+            <br>Defaults to 20 if not specified.
+          schema:
+            type: integer
+        - name: next_token
+          in: query
+          required: false
+          description: |
+            Token from a previous response to fetch the next page of results. Omit to fetch the first page.
+          schema:
+            type: string
+        - name: sync_token
+          in: query
+          required: false
+          description: |
+            Synchronization token for incremental sync of pinned messages.<br>
+            Pass the <code>sync_token</code> received in an earlier response to fetch only updates after that sync point.<br>
+            <b>Format</b>: base64 token.<br>
+            <b>Maximum length</b>: 100 characters.
+          schema:
+            type: string
+            maxLength: 100
+      responses:
+        '200':
+          description: Successful response. Returns the list of pinned messages (or the primary pinned message when <code>primary=true</code>).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/get-pinned-messages-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+              examples:
+                operation_not_allowed:
+                  summary: User is not a participant of the chat
+                  value:
+                    message: Uh-Oh! You are not authorized to do this operation.
+                    code: operation_not_allowed
+                operation_failed:
+                  summary: Unexpected error while fetching the primary pin
+                  value:
+                    code: operation_failed
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.READ
+    post:
+      summary: Add a pinned message
+      operationId: addPinnedMessage
+      description: |
+        Pins a message in a chat.
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_failed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Invalid expiry time - the specified time is in the past.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_not_allowed</span></td>
+                    <td style="padding:10px 18px;">User might not be a participant of that chat.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      tags:
+        - pinmessages
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          description: Unique identifier of the chat. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+          schema:
+            type: string
+          example: CHAT_ID
+      requestBody:
+        required: true
+        description: Provide the message ID, expiry time, and notification preference to pin a message.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/add-pinned-message-request'
+      responses:
+        '200':
+          description: Message pinned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/add-pinned-message-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+              examples:
+                operation_failed:
+                  summary: Invalid expiry time
+                  value:
+                    message: Incorrect values submitted.
+                    code: operation_failed
+                operation_not_allowed:
+                  summary: User is not a participant of the chat
+                  value:
+                    message: Uh-Oh! You are not authorized to do this operation.
+                    code: operation_not_allowed
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.CREATE
+    put:
+      summary: Reorder pinned messages
+      operationId: reorderPinnedMessages
+      description: |
+        Changes the position of a pinned message in the list. If the message is reordered above the current primary pin, it automatically becomes the new primary.
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">client_not_synced</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The provided sync timestamp is stale. Re-fetch pins and retry.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_failed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Incorrect values submitted.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_not_allowed</span></td>
+                    <td style="padding:10px 18px;">Caller is not authorized to perform this operation.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      tags:
+        - pinmessages
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          description: Unique identifier of the chat. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+          schema:
+            type: string
+          example: CHAT_ID
+      requestBody:
+        required: true
+        description: Provide the message ID to move and optionally the message above which to position it.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reorder-pinned-message-request'
+      responses:
+        '204':
+          description: Pinned message reordered successfully. No response body.
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+              examples:
+                client_not_synced:
+                  summary: last_sync_time is stale - re-fetch pins and retry
+                  value:
+                    code: client_not_synced
+                operation_failed:
+                  summary: Incorrect values submitted
+                  value:
+                    message: Incorrect values submitted.
+                    code: operation_failed
+                operation_not_allowed:
+                  summary: Caller is not authorized to perform this operation
+                  value:
+                    message: Uh-Oh! You are not authorized to do this operation.
+                    code: operation_not_allowed
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+    delete:
+      summary: Delete pinned messages
+      operationId: deletePinnedMessages
+      description: |
+        Removes one or more pinned messages from a chat.
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_not_allowed</span></td>
+                    <td style="padding:10px 18px;">Caller is not authorized to perform this operation.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      tags:
+        - pinmessages
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          description: Unique identifier of the chat. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+          schema:
+            type: string
+          example: CHAT_ID
+      requestBody:
+        required: false
+        description: Supply <code>message_ids</code> to remove specific pinned messages. If omitted, all pinned messages in the chat are removed.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/delete-pinned-messages-request'
+      responses:
+        '204':
+          description: Pinned message(s) deleted successfully. No response body.
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+              examples:
+                operation_not_allowed:
+                  summary: Caller is not authorized to perform this operation
+                  value:
+                    message: Uh-Oh! You are not authorized to do this operation.
+                    code: operation_not_allowed
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.DELETE
+  /chats/{CHAT_ID}/pin-messages?primary=true:
+    get:
+      summary: Get primary pinned message
+      operationId: getPrimaryPinnedMessage
+      description: |
+        Fetches the primary pinned message in a chat. The primary pin is the most prominently displayed pinned message, typically shown at the top of the pinned list and highlighted in the UI.
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_not_allowed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">User might not be a participant of that chat.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_failed</span></td>
+                    <td style="padding:10px 18px;">Unexpected error while fetching the primary pin.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      tags:
+        - pinmessages
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          description: |
+            Unique identifier of the chat. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+          schema:
+            type: string
+          example: CHAT_ID
+        - name: primary
+          in: query
+          required: true
+          description: |
+            Pass this parameter without a value to retrieve only the primary pinned message of the chat, instead of the full list of pinned messages.
+          schema:
+            type: boolean
+          allowEmptyValue: true
+          example: true
+      responses:
+        '200':
+          description: Successfully retrieved the primary pinned message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/get-primary-pinned-message-response'
+              example:
+                type: text
+                id: '1746000123456789001'
+                time: '2026-04-30T09:00:00Z'
+                sender:
+                  id: '1234567890'
+                  name: Alice Johnson
+                content:
+                  text: Please review the Q2 report before Friday.
+                is_pinned: true
+                pin_information:
+                  expiry_time: -1
+                  creator:
+                    id: '9876543210'
+                    name: Bob Smith
+                  created_time: '2026-04-30T09:15:00Z'
+                  last_modified_time: '2026-04-30T09:15:00Z'
+                  is_primary: true
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+              examples:
+                operation_not_allowed:
+                  summary: Caller is not authorized to perform this operation
+                  value:
+                    message: Uh-Oh! You are not authorized to do this operation.
+                    code: operation_not_allowed
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.READ
+components:
+  schemas:
+    NoResponse:
+      type: object
+      description: Represents an empty successful response where no payload is returned.
+      properties:
+        Response Code:
+          type: string
+          description: HTTP response code indicating no content is returned.
+          example: 204 No response
+    GenericResponse:
+      type: object
+      description: Generic successful response envelope.
+      properties:
+        url:
+          type: string
+          description: Endpoint URL associated with the response.
+        type:
+          type: string
+          description: Resource type returned by the API.
+        data:
+          type: object
+          description: Resource payload.
+          additionalProperties: true
+      additionalProperties: true
+    pin-information:
+      type: object
+      description: Metadata about the pin itself.
+      properties:
+        expiry_time:
+          description: |
+            When the pin expires. <code>-1</code> means no expiry. <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> datetime string when an expiry is set.
+          oneOf:
+            - type: integer
+              example: -1
+            - type: string
+              example: '2026-04-19T19:09:44+05:30'
+        creator:
+          type: object
+          properties:
+            name:
+              type: string
+            id:
+              type: string
+        created_time:
+          type: string
+          format: date-time
+        last_modified_time:
+          type: string
+          format: date-time
+        is_primary:
+          type: boolean
+          description: <code>true</code> if this is the primary (top) pinned message.
+    pinned-message:
+      type: object
+      description: A pinned message object. Contains the original message fields (id, type, content, sender, time, mentions) along with pin-specific fields.
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          example: text
+        content:
+          type: object
+          properties:
+            text:
+              type: string
+        sender:
+          type: object
+          properties:
+            name:
+              type: string
+            id:
+              type: string
+        time:
+          type: string
+          format: date-time
+        mentions:
+          type: array
+          description: Present only when the message contains mentions.
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              id:
+                type: string
+              type:
+                type: string
+        is_pinned:
+          type: boolean
+          description: Always <code>true</code> for pinned messages.
+        pin_information:
+          $ref: '#/components/schemas/pin-information'
+    get-pinned-messages-response:
+      type: object
+      description: Response envelope for listing all pinned messages.
+      properties:
+        url:
+          type: string
+        type:
+          type: string
+          example: pinmessages
+        sync_token:
+          type: string
+          description: Pass in subsequent requests to fetch only pins updated since the last sync.
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/pinned-message'
+      example:
+        url: /company/16557244/v3/chats/1488288613043522033/pin-messages
+        type: pinmessages
+        sync_token: NTB8MTc3MzkyNzUxMjcwNnw0MDAwMDAwMDExMDAz
+        data:
+          - is_pinned: true
+            pin_information:
+              expiry_time: -1
+              creator:
+                name: Tim Harrison
+                id: '16557777'
+              created_time: '2026-03-19T19:08:32+05:30'
+              last_modified_time: '2026-03-19T19:08:32+05:30'
+              is_primary: true
+            sender:
+              name: Tim Harrison
+              id: '16557777'
+            type: text
+            content:
+              text: '{@16557498}'
+            time: '2026-03-19T10:02:52+05:30'
+            id: 1.7738947728961294e+23
+            mentions:
+              - name: '@sharan 203'
+                id: '16557498'
+                type: user
+    get-primary-pinned-message-response:
+      type: object
+      description: Response envelope when fetching the primary pinned message.
+      properties:
+        url:
+          type: string
+        type:
+          type: string
+          example: pinmessages
+        data:
+          $ref: '#/components/schemas/pinned-message'
+      example:
+        url: /company/16557244/v3/chats/1488288613043522033/pin-messages
+        type: pinmessages
+        data:
+          type: text
+          id: '1746000123456789001'
+          time: '2026-04-30T09:00:00Z'
+          sender:
+            id: '1234567890'
+            name: Alice Johnson
+          content:
+            text: Please review the Q2 report before Friday.
+          is_pinned: true
+          pin_information:
+            expiry_time: -1
+            creator:
+              id: '9876543210'
+              name: Bob Smith
+            created_time: '2026-04-30T09:15:00Z'
+            last_modified_time: '2026-04-30T09:15:00Z'
+            is_primary: true
+    add-pinned-message-request:
+      type: object
+      description: Request body for pinning a message in a chat.
+      required:
+        - message_id
+        - expiry_time
+        - notify
+      properties:
+        message_id:
+          type: string
+          description: |
+            ID of the message to pin. This message must already exist in the chat and cannot be deleted.
+        expiry_time:
+          description: |
+            When the pin should expire. Accepts <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> datetime strings (e.g., <code>"2026-04-19T19:09:44+05:30"</code>) or epoch timestamps (e.g., <code>1745068184000</code>). Use <code>-1</code> for no expiry.
+          oneOf:
+            - type: string
+            - type: integer
+        notify:
+          type: boolean
+          description: |
+            Set to <code>true</code> to send a notification to chat participants about the new pin. Defaults to <code>false</code>.
+        primary:
+          type: boolean
+          description: |
+            Set to <code>true</code> to pin as the primary (top) message. Defaults to <code>false</code>. If this is the first pin in the chat, it automatically becomes primary regardless of this value.
+      example:
+        message_id: '1773894772896_12958180473'
+        expiry_time: '2026-04-19T19:09:44+05:30'
+        notify: false
+    add-pinned-message-response:
+      type: object
+      description: Response envelope after pinning a message.
+      properties:
+        url:
+          type: string
+        type:
+          type: string
+          example: pinmessages
+        data:
+          $ref: '#/components/schemas/pinned-message'
+      example:
+        url: /v3/chats/1488288613043522033/pin-messages
+        type: pinmessages
+        data:
+          pin_information:
+            expiry_time: '2026-04-19T19:09:44+05:30'
+            creator:
+              name: Tim Harrison
+              id: '16557777'
+            created_time: '2026-03-19T19:08:32+05:30'
+            last_modified_time: '2026-03-19T19:08:32+05:30'
+            is_primary: false
+          is_pinned: true
+          sender:
+            name: Tim Harrison
+            id: '16557777'
+          type: text
+          content:
+            text: Please review the deployment checklist before the release.
+          time: '2026-03-19T10:02:52+05:30'
+          id: '1773894772896_12958180473'
+    reorder-pinned-message-request:
+      type: object
+      description: Request body for reordering a pinned message in the list.
+      required:
+        - message_id
+        - last_sync_time
+      properties:
+        message_id:
+          type: string
+          description: ID of the pinned message to move.
+        pin_above:
+          type: string
+          description: ID of the message above which to position. If omitted, the message is moved to the last position.
+        last_sync_time:
+          description: |
+            Required for reorder operation. Accepts <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> datetime strings (e.g., <code>"2026-04-19T19:09:44+05:30"</code>) or epoch timestamps (e.g., <code>1745068184000</code>). The server rejects the request if this is stale.
+          oneOf:
+            - type: string
+            - type: integer
+      example:
+        message_id: '1773894772896_12958180473'
+        pin_above: '1773895219462_47318365091'
+        last_sync_time: 1745068184000
+    delete-pinned-messages-request:
+      type: object
+      description: Request body for deleting specific pinned messages.
+      required:
+        - message_ids
+      properties:
+        message_ids:
+          type: array
+          description: |
+            List of message IDs to unpin. These messages must currently be pinned in the chat. If this field is omitted or an empty array is provided, all pinned messages in the chat are removed.
+            <br><b>Maximum 25 message IDs can be provided in a single request.</b>
+          minItems: 1
+          maxItems: 25
+          items:
+            type: string
+      example:
+        message_ids:
+          - '17719462_4731836509'
+          - '17737286_1295818047'
+          - '17732346_9876543210'
+    error-response:
+      type: object
+      description: Error response returned by the Pin Messages API.
+      properties:
+        message:
+          type: string
+          description: Human-readable error description.
+        code:
+          type: string
+          description: Machine-readable error code.
+          enum:
+            - operation_not_allowed
+            - operation_failed
+            - client_not_synced
+            - pinned_message_limit_reached
+  securitySchemes:
+    Cliq_Auth:
+      type: oauth2
+      x-authorization-example: Bearer 1000.41d9xxxxxxxxxxxxxxxxxxxxxxxxc2d1.8fccxxxxxxxxxxxxxxxxxxxxxxxx125f
+      flows:
+        implicit:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          scopes:
+            ZohoCliq.Chats.CREATE: Create Chats
+            ZohoCliq.Chats.READ: Read Chats
+            ZohoCliq.Chats.UPDATE: Modify Chats
+            ZohoCliq.Chats.DELETE: Delete Chats

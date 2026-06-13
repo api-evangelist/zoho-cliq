@@ -1,0 +1,1730 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Zoho Cliq Bots Schemas",
+  "definitions": {
+    "BotIncomingWebhookRequest": {
+      "type": "object",
+      "description": "Request body for the incoming webhook endpoint. Accepts any number of custom key-value parameters that are passed directly to the bot's <code>incoming_webhook_handler</code> Deluge script. Up to 50 additional parameters are supported, each with a maximum value length of 10,000 characters. There are no fixed or required fields.\n",
+      "properties": {
+        "custom_parameters": {
+          "type": "object",
+          "description": "Pass additional key-value pairs in the request body to provide context to the bot's handler. These parameters are user-defined and can carry any metadata relevant to your integration.\n<br><br>\n<b>Rules for Custom Parameters</b>\n<ul>\n  <li>Up to 50 custom parameters are supported per request.</li>\n  <li>Each parameter value can be up to 10,000 characters.</li>\n  <li>All values must be of type string.</li>\n  <li>Parameter keys should be unique to avoid overwriting values in the bot handler.</li>\n</ul>\n<b>Common Use Cases</b>\n<ul>\n  <li>Webhook Verification: Some platforms send a challenge_key during webhook registration to confirm that the endpoint is reachable. Your bot handler should echo it back in the response to complete the handshake.</li>\n  <li>CI/CD & Monitoring:  Pass parameters like alert_type, build_status, or environment to notify teams about pipeline failures or infrastructure incidents in real time.</li>\n  <li>CRM & E-commerce: Send deal updates, order status changes, and customer activity metadata to keep sales and support teams informed without manual intervention.</li>\n</ul>\n"
+        }
+      },
+      "additionalProperties": {
+        "type": "string"
+      },
+      "example": {
+        "alert_type": "deployment",
+        "environment": "production",
+        "service_name": "payment-gateway",
+        "severity": "critical",
+        "triggered_by": "CI/CD pipeline"
+      }
+    },
+    "BotIncomingWebhookResponse": {
+      "type": "object",
+      "description": "Response returned after a successful incoming webhook message delivery. Contains the list of user IDs that received the message.",
+      "properties": {
+        "user_ids": {
+          "type": "array",
+          "description": "List of user IDs to whom the bot message was successfully delivered.",
+          "items": {
+            "type": "string"
+          },
+          "example": [
+            "55743307",
+            "55622727"
+          ]
+        }
+      },
+      "example": {
+        "user_ids": [
+          "55743307",
+          "55622727"
+        ]
+      }
+    },
+    "NoResponse": {
+      "type": "object",
+      "description": "Represents an empty successful response where no payload is returned.",
+      "properties": {
+        "Response Code": {
+          "type": "string",
+          "description": "HTTP response code indicating no content is returned.",
+          "example": "204 No response"
+        }
+      }
+    },
+    "BotGetResponse": {
+      "type": "object",
+      "description": "Response returned when retrieving the details of a specific bot.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "API endpoint URL for the retrieved bot resource.",
+          "example": "/api/v3/bots/b-53719000001878011"
+        },
+        "type": {
+          "type": "string",
+          "description": "Resource type.",
+          "example": "bot"
+        },
+        "data": {
+          "type": "object",
+          "description": "Full configuration and details of the bot.",
+          "properties": {
+            "unique_name": {
+              "type": "string",
+              "description": "Unique identifier of the bot.",
+              "example": "supportbot"
+            },
+            "name": {
+              "type": "string",
+              "description": "Display name of the bot.",
+              "example": "Support Bot"
+            },
+            "id": {
+              "type": "string",
+              "description": "Numeric ID of the bot.",
+              "example": "53719000001878011"
+            },
+            "description": {
+              "type": "string",
+              "description": "Description of the bot.",
+              "example": "Handles support workflows"
+            },
+            "scope": {
+              "type": "string",
+              "description": "Access level of the bot.",
+              "example": "organization"
+            },
+            "channel_participation": {
+              "type": "array",
+              "description": "Channel interaction capabilities of the bot.",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "listen_message",
+                "send_message",
+                "auto_follow_thread"
+              ]
+            },
+            "handlers": {
+              "type": "array",
+              "description": "Handlers configured for the bot.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "description": "Handler type.",
+                    "example": "menu_handler"
+                  },
+                  "id": {
+                    "type": "string",
+                    "description": "Unique ID of the handler (present for menu_handler).",
+                    "example": "53719000001878017"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Display name of the menu action (present for menu_handler).",
+                    "example": "Action"
+                  },
+                  "icon": {
+                    "type": "string",
+                    "description": "Icon reference for the menu action (present for menu_handler).",
+                    "example": "wand/627282"
+                  },
+                  "position": {
+                    "type": "integer",
+                    "description": "Display position of the menu action (present for menu_handler).",
+                    "example": 1
+                  },
+                  "sub_actions": {
+                    "type": "array",
+                    "description": "Sub-actions under the menu handler.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "Sub Action"
+                        },
+                        "icon": {
+                          "type": "string",
+                          "example": "wand/627282"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "creator": {
+              "type": "object",
+              "description": "User who created the bot.",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the creator.",
+                  "example": "James"
+                },
+                "id": {
+                  "type": "string",
+                  "description": "ZUID of the creator.",
+                  "example": "65113112"
+                }
+              }
+            },
+            "execution_type": {
+              "type": "string",
+              "description": "Script execution engine used by the bot.",
+              "example": "deluge"
+            },
+            "status": {
+              "type": "string",
+              "description": "Current operational status of the bot.",
+              "example": "enabled"
+            },
+            "type": {
+              "type": "string",
+              "description": "Bot category. Always custom for user-created bots.",
+              "example": "custom"
+            },
+            "default": {
+              "type": "boolean",
+              "description": "Indicates whether this is the default bot.",
+              "example": false
+            },
+            "subscriber_count": {
+              "type": "integer",
+              "description": "Number of users subscribed to the bot.",
+              "example": 1
+            },
+            "calls": {
+              "type": "string",
+              "description": "Indicates whether bot calls are enabled or disabled.",
+              "example": "disabled"
+            }
+          }
+        }
+      }
+    },
+    "BotCreateResponse": {
+      "type": "object",
+      "description": "Response returned after successfully creating a bot.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "API endpoint URL for the created bot resource.",
+          "example": "/api/v3/bots"
+        },
+        "type": {
+          "type": "string",
+          "description": "Resource type.",
+          "example": "bot"
+        },
+        "data": {
+          "type": "object",
+          "description": "The created bot object.",
+          "properties": {
+            "unique_name": {
+              "type": "string",
+              "description": "System-generated unique identifier for the bot (derived from name, cannot be changed).",
+              "example": "clientcarebot"
+            },
+            "name": {
+              "type": "string",
+              "description": "Display name of the bot as provided in the request.",
+              "example": "Clientcare Bot"
+            },
+            "id": {
+              "type": "string",
+              "description": "Unique numeric ID assigned to the bot.",
+              "example": "53719000002124012"
+            },
+            "description": {
+              "type": "string",
+              "description": "Description of the bot as provided in the request.",
+              "example": "Your client care co-pilot streamlining support by providing instant customer context and easy access to critical resources."
+            },
+            "scope": {
+              "type": "string",
+              "description": "Access level of the bot as provided in the request.",
+              "example": "team"
+            },
+            "team_ids": {
+              "type": "array",
+              "description": "Team IDs mapped to the bot (present when scope is team).",
+              "items": {
+                "type": "integer"
+              },
+              "example": [
+                12345678
+              ]
+            },
+            "status_messages": {
+              "type": "array",
+              "description": "Status messages assigned to the bot.",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "Here to help you with client support!"
+              ]
+            },
+            "channel_participation": {
+              "type": "array",
+              "description": "Channel interaction capabilities of the bot.",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "send_message"
+              ]
+            },
+            "calls": {
+              "type": "string",
+              "description": "Indicates whether bot calls are enabled or disabled.",
+              "example": "enable"
+            },
+            "handlers": {
+              "type": "array",
+              "description": "List of handlers configured for the bot. Empty at creation time.",
+              "items": {
+                "type": "object"
+              }
+            },
+            "creator": {
+              "type": "object",
+              "description": "Details of the user who created the bot.",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the creator.",
+                  "example": "James"
+                },
+                "id": {
+                  "type": "string",
+                  "description": "ZUID of the creator.",
+                  "example": "65113112"
+                }
+              }
+            },
+            "execution_type": {
+              "type": "string",
+              "description": "Script execution engine used by the bot.",
+              "example": "deluge"
+            },
+            "status": {
+              "type": "string",
+              "description": "Current operational status of the bot.",
+              "example": "enabled"
+            },
+            "type": {
+              "type": "string",
+              "description": "Bot category. Always custom for user-created bots.",
+              "example": "custom"
+            },
+            "default": {
+              "type": "boolean",
+              "description": "Indicates whether this is the default bot for the organization.",
+              "example": false
+            },
+            "subscriber_count": {
+              "type": "integer",
+              "description": "Number of users subscribed to the bot.",
+              "example": 1
+            }
+          }
+        }
+      }
+    },
+    "GenericResponse": {
+      "type": "object",
+      "description": "Generic successful response envelope used for bot APIs where detailed payload schema varies.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "Endpoint URL associated with the response."
+        },
+        "type": {
+          "type": "string",
+          "description": "Resource type returned by the API."
+        },
+        "data": {
+          "type": "object",
+          "description": "Resource payload.",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "BotListResponse": {
+      "type": "object",
+      "description": "Response schema for listing bots.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "API endpoint URL for the listed resources.",
+          "example": "/api/v3/bots"
+        },
+        "type": {
+          "type": "string",
+          "description": "Resource type.",
+          "example": "bot"
+        },
+        "next_token": {
+          "type": "string",
+          "description": "Pagination token to fetch the next page of results.",
+          "example": "NTB8MTc1NjM2MjA5MzQ5OHw1MzcxOTAwMDAwMTYyMDAwMw=="
+        },
+        "sync_token": {
+          "type": "string",
+          "description": "Token used for incremental synchronization to fetch changes since the last sync.",
+          "example": "NTB8MTc3NzM0MjEyNzQ3OHw1MzcxOTAwMDAwMTg3ODAxMQ=="
+        },
+        "deleted": {
+          "type": "array",
+          "description": "IDs of deleted bots returned during incremental sync.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "data": {
+          "type": "array",
+          "description": "List of bot objects.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "unique_name": {
+                "type": "string",
+                "description": "Unique identifier of the bot.",
+                "example": "supportbot"
+              },
+              "name": {
+                "type": "string",
+                "description": "Display name of the bot.",
+                "example": "Support Bot"
+              },
+              "id": {
+                "type": "string",
+                "description": "Numeric ID of the bot.",
+                "example": "53719000001878011"
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the bot.",
+                "example": "Handles support workflows"
+              },
+              "scope": {
+                "type": "string",
+                "description": "Access level of the bot.",
+                "example": "organization"
+              },
+              "channel_participation": {
+                "type": "array",
+                "description": "Channel interaction capabilities of the bot.",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "listen_message",
+                  "send_message",
+                  "auto_follow_thread"
+                ]
+              },
+              "handlers": {
+                "type": "array",
+                "description": "Handlers configured for the bot.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "description": "Handler type.",
+                      "example": "menu_handler"
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "Unique ID of the handler (present for menu_handler).",
+                      "example": "53719000001878017"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Display name of the menu action (present for menu_handler).",
+                      "example": "Action"
+                    },
+                    "icon": {
+                      "type": "string",
+                      "description": "Icon reference for the menu action (present for menu_handler).",
+                      "example": "wand/627282"
+                    },
+                    "position": {
+                      "type": "integer",
+                      "description": "Display position of the menu action (present for menu_handler).",
+                      "example": 1
+                    },
+                    "sub_actions": {
+                      "type": "array",
+                      "description": "Sub-actions under the menu handler.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "example": "Sub Action"
+                          },
+                          "icon": {
+                            "type": "string",
+                            "example": "wand/627282"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "creator": {
+                "type": "object",
+                "description": "User who created the bot.",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the creator.",
+                    "example": "James"
+                  },
+                  "id": {
+                    "type": "string",
+                    "description": "ZUID of the creator.",
+                    "example": "65113112"
+                  }
+                }
+              },
+              "execution_type": {
+                "type": "string",
+                "description": "Script execution engine used by the bot.",
+                "example": "deluge"
+              },
+              "status": {
+                "type": "string",
+                "description": "Current operational status of the bot.",
+                "example": "enabled"
+              },
+              "type": {
+                "type": "string",
+                "description": "Bot category. Always custom for user-created bots.",
+                "example": "custom"
+              },
+              "default": {
+                "type": "boolean",
+                "description": "Indicates whether this is the default bot.",
+                "example": false
+              },
+              "subscriber_count": {
+                "type": "integer",
+                "description": "Number of users subscribed to the bot.",
+                "example": 1
+              },
+              "calls": {
+                "type": "string",
+                "description": "Indicates whether bot calls are enabled or disabled.",
+                "example": "disabled"
+              }
+            }
+          }
+        }
+      }
+    },
+    "BotHandlerCreateResponse": {
+      "type": "object",
+      "description": "Response schema returned when a new bot handler is created successfully.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "Endpoint URL of the newly created handler resource."
+        },
+        "type": {
+          "type": "string",
+          "description": "Resource type identifier.",
+          "example": "execution_handler"
+        },
+        "data": {
+          "type": "object",
+          "description": "Configuration details of the created handler.",
+          "properties": {
+            "script": {
+              "type": "string",
+              "description": "Deluge source code of the handler."
+            },
+            "return_type": {
+              "type": "string",
+              "description": "Return type expected from the handler script.",
+              "example": "MAP"
+            },
+            "params": {
+              "type": "array",
+              "description": "List of runtime parameters passed to the handler script.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "param_name": {
+                    "type": "string",
+                    "description": "Name of the parameter."
+                  },
+                  "param_type": {
+                    "type": "string",
+                    "description": "Data type of the parameter (e.g., MAP, STRING, BOOLEAN)."
+                  }
+                }
+              }
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "example": {
+        "url": "/api/v3/bots/b-53719000001887001/handlers",
+        "type": "execution_handler",
+        "data": {
+          "script": "response = Map();\nresponse.put(\"text\", \"Welcome! I'm your assistant bot. Send me a message to get started.\");\nreturn response;",
+          "return_type": "MAP",
+          "params": [
+            {
+              "param_name": "access",
+              "param_type": "MAP"
+            },
+            {
+              "param_name": "environment",
+              "param_type": "MAP"
+            },
+            {
+              "param_name": "user",
+              "param_type": "MAP"
+            },
+            {
+              "param_name": "newuser",
+              "param_type": "BOOLEAN"
+            }
+          ]
+        }
+      }
+    },
+    "BotHandlerDetailsResponse": {
+      "type": "object",
+      "description": "Response schema returned when fetching the full details of a specific bot handler.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "Endpoint URL of the handler resource."
+        },
+        "type": {
+          "type": "string",
+          "description": "Resource type identifier.",
+          "example": "execution_handler"
+        },
+        "data": {
+          "type": "object",
+          "description": "Full configuration and metadata of the handler.",
+          "properties": {
+            "script": {
+              "type": "string",
+              "description": "Deluge source code of the handler."
+            },
+            "handler_id": {
+              "type": "string",
+              "description": "Unique identifier of the handler."
+            },
+            "name": {
+              "type": "string",
+              "description": "Display name of the handler (used for menu-type handlers)."
+            },
+            "type": {
+              "type": "string",
+              "description": "Type of the handler.",
+              "enum": [
+                "welcome_handler",
+                "message_handler",
+                "mention_handler",
+                "context_handler",
+                "participation_handler",
+                "incoming_webhook_handler",
+                "menu_handler",
+                "call_handler"
+              ]
+            },
+            "icon": {
+              "type": "string",
+              "description": "Icon reference for the handler, applicable for menu handlers."
+            },
+            "return_type": {
+              "type": "string",
+              "description": "Return type expected from the handler script.",
+              "example": "MAP"
+            },
+            "params": {
+              "type": "array",
+              "description": "List of parameters passed to the handler script at runtime.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "param_name": {
+                    "type": "string",
+                    "description": "Name of the parameter."
+                  },
+                  "param_type": {
+                    "type": "string",
+                    "description": "Data type of the parameter (e.g., MAP, STRING)."
+                  }
+                }
+              }
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "example": {
+        "url": "/api/v3/bots/b-53719000001887001/handlers/menu_handler",
+        "type": "execution_handler",
+        "data": {
+          "script": "response = Map();\nresponse.put(\"text\", \"\ud83d\udc4b Hi! Choose an option below to get started with the IT Help Desk bot.\");\nreturn response;",
+          "handler_id": "53719000002155003",
+          "name": "IT Help Desk",
+          "type": "menu_handler",
+          "icon": "wand/627282",
+          "return_type": "MAP",
+          "params": [
+            {
+              "param_name": "access",
+              "param_type": "MAP"
+            },
+            {
+              "param_name": "environment",
+              "param_type": "MAP"
+            },
+            {
+              "param_name": "chat",
+              "param_type": "MAP"
+            },
+            {
+              "param_name": "user",
+              "param_type": "MAP"
+            },
+            {
+              "param_name": "location",
+              "param_type": "MAP"
+            },
+            {
+              "param_name": "sub_action",
+              "param_type": "STRING"
+            }
+          ]
+        }
+      }
+    },
+    "BotHandlerResponse": {
+      "type": "object",
+      "description": "Response schema for bot handler create, update, and fetch operations.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "Endpoint URL for the handler resource."
+        },
+        "type": {
+          "type": "string",
+          "description": "Resource type.",
+          "example": "execution_handler"
+        },
+        "data": {
+          "type": "object",
+          "description": "Handler payload.",
+          "additionalProperties": true
+        }
+      },
+      "example": {
+        "url": "/api/v3/bots/b-4000000010001/handlers/menu",
+        "type": "execution_handler",
+        "data": {
+          "display_props": {
+            "position": 2,
+            "name": "a123",
+            "icon": "wand/627282"
+          },
+          "id": "53719000001973033"
+        }
+      }
+    },
+    "BotHandlerLogsResponse": {
+      "type": "object",
+      "description": "Response schema for bot handler execution logs.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "Endpoint URL for the execution log resource."
+        },
+        "type": {
+          "type": "string",
+          "description": "Resource type.",
+          "example": "execution_handler"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "logs": {
+              "type": "array",
+              "description": "Execution logs containing debug information.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "debugInfo": {
+                    "type": "array",
+                    "description": "Debug information entries as serialized JSON strings.",
+                    "items": {
+                      "type": "string",
+                      "description": "Serialized JSON string containing debug trace information with timestamp and message details."
+                    }
+                  }
+                },
+                "additionalProperties": true
+              }
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "example": {
+        "url": "/api/v3/commands/4000000011005/handlers/welcome/logs",
+        "type": "execution_handler",
+        "data": {
+          "logs": [
+            {
+              "debugInfo": [
+                "{\"time\":1772868058306,\"message\":{\"mentions\":[],\"text\":\"asf\",\"type\":\"text\",\"content\":{\"text\":\"asf\"}}}"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "The request cannot be performed. Usually because of malformed parameter or missing parameter."
+        }
+      }
+    },
+    "BotSubscribersResponse": {
+      "type": "object",
+      "description": "Represents the response structure for fetching subscribers of a specific bot. Contains metadata and a list of subscriber details.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "The API endpoint URL to retrieve the list of subscribers for the specified bot.",
+          "example": "/api/v3/bots/{BOT_UNIQUE_NAME}/subscribers"
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of the response object. Typically indicates the resource or entity being described.",
+          "example": "bot_subscriber"
+        },
+        "sync_token": {
+          "type": "string",
+          "description": "A token used to synchronize and track the state of the subscribers list across requests.",
+          "example": "NTB8MTcyMjcwMDXwxNzIyNzA5MzQ0NDM5"
+        },
+        "data": {
+          "type": "array",
+          "description": "An array containing subscriber details associated with the bot.",
+          "items": {
+            "$ref": "#/components/schemas/BotSubscriber"
+          }
+        }
+      }
+    },
+    "BotSubscriber": {
+      "type": "object",
+      "description": "Detailed information about an individual subscriber of the bot.",
+      "properties": {
+        "email_id": {
+          "type": "string",
+          "description": "The email address of the subscriber, used for identification and communication.",
+          "example": "scott.fisher@zylker.com"
+        },
+        "user_id": {
+          "type": "string",
+          "description": "A unique identifier assigned to the subscriber within the system.",
+          "example": "19183988"
+        },
+        "name": {
+          "type": "string",
+          "description": "The full name of the subscriber.",
+          "example": "Scott Fisher"
+        }
+      }
+    },
+    "Trigger-Bot-Call-Request": {
+      "type": "object",
+      "description": "Represents the request body for triggering a bot call with a message, recipients, retries, loops, and optional actions.",
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "The message to be dictated during the call.<br> <b>Limit:</b> 500 characters.\n"
+        },
+        "user_ids": {
+          "type": "array",
+          "maxItems": 10,
+          "description": "List of user ZUIDs or emails.<br> <b>Limit:</b> 10 entries.\n",
+          "items": {
+            "type": "string",
+            "description": "User identifier, which can be either a ZUID or an email address."
+          }
+        },
+        "retry": {
+          "type": "integer",
+          "maximum": 3,
+          "description": "Number of retries if the user misses the call. System will retry after 2 minutes.<br> <b>Maximum Attempts:</b> 3\n"
+        },
+        "loop": {
+          "type": "integer",
+          "maximum": 3,
+          "description": "Number of times the message will be dictated.<br> <b>Maximum:</b> 3\n"
+        },
+        "actions": {
+          "type": "array",
+          "maxItems": 5,
+          "description": "List of actions to be displayed as buttons during the call. <br>Each action includes a label, icon, and a specific action with its associated data. <br><b>Limit:</b> 5\n",
+          "items": {
+            "type": "object",
+            "description": "Defines the structure of an action button shown during the bot call.",
+            "required": [
+              "label",
+              "action"
+            ],
+            "properties": {
+              "label": {
+                "type": "string",
+                "description": "Text displayed on the button.<br>\n<b>Maximum Length:</b> 20 characters.\n"
+              },
+              "icon": {
+                "type": "string",
+                "description": "Icon identifier for the button. Can be an image URL or a supported icon keyword (e.g., <code>tick</code>, <code>preview</code>, <code>url</code>).\n<a href=\"../icons/#overview\">View supported icons</a>\n"
+              },
+              "hint": {
+                "type": "string",
+                "maxLength": 100,
+                "description": "Tooltip or additional message (optional).<br>\n <b>Maximum Length:</b> 100 characters.\n"
+              },
+              "key": {
+                "type": "string",
+                "maxLength": 100,
+                "description": "Optional key reference.\nThis can be used to identify the button in the bot handler when the action is triggered.\n<b>Maximum Length:</b> 100 characters.\n"
+              },
+              "action": {
+                "type": "object",
+                "description": "An object containing the type of action the button should perform.\n",
+                "required": [
+                  "type",
+                  "data"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "description": "The action type for a button.<br>Refer to <a href=\"../buttons/#message-card-buttons\">Message Card Buttons</a> for allowed action types and their corresponding data requirements.\n"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": true,
+                    "description": "An object with properties for each action type. The required properties depend on the action type specified.<br>\nRefer to <a href=\"../buttons/#message-card-buttons\">Message Card Buttons</a> for details on the expected data structure for each action type.\n"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "example": {
+        "text": "We've detected an issue with Zylker Servers. Our team is working to resolve it at the earliest.",
+        "user_ids": [
+          "55743327",
+          "55642727"
+        ],
+        "retry": 3,
+        "loop": 2,
+        "actions": [
+          {
+            "label": "View details",
+            "icon": "url",
+            "action": {
+              "type": "open.url",
+              "data": {
+                "web": "https://cliq.zoho.com"
+              }
+            }
+          },
+          {
+            "label": "Acknowledge",
+            "icon": "tick",
+            "hint": "",
+            "action": {
+              "type": "invoke.function",
+              "data": {
+                "name": "test"
+              }
+            },
+            "key": ""
+          },
+          {
+            "label": "Delegate",
+            "icon": "preview",
+            "hint": "",
+            "action": {
+              "type": "system.api",
+              "data": {
+                "api": "audiocall/1234"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "Bot-call-response": {
+      "type": "object",
+      "description": "Represents the response returned after triggering a bot call, including the alert instance ID and associated users.",
+      "properties": {
+        "user_ids": {
+          "type": "array",
+          "description": "List of user ZUIDs associated with the alert instance",
+          "items": {
+            "type": "string",
+            "description": "User identifier represented as a ZUID."
+          }
+        },
+        "id": {
+          "type": "string",
+          "description": "Unique ID of the alert instance"
+        }
+      },
+      "example": {
+        "user_ids": [
+          "55622727",
+          "55743307"
+        ],
+        "id": "dfb91610-296f-4f7a-b2b2-3b4436f2f5f0"
+      }
+    },
+    "BotCreate": {
+      "type": "object",
+      "description": "Payload for creating a new bot.",
+      "required": [
+        "name",
+        "description"
+      ],
+      "properties": {
+        "execution_type": {
+          "type": "string",
+          "enum": [
+            "deluge",
+            "webhook"
+          ],
+          "description": "Defines how the created bot will execute its handlers. The execution type determines the scripting environment for the bot's logic.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>deluge</code>: Bot handlers will be implemented using Deluge scripts, allowing for complex logic and integration with Zoho services.</li>\n  <li><code>webhook</code>: Bot handlers will trigger external webhooks, enabling integration with third-party services and custom backend logic.</li>\n</ul>\n<b>Default value</b>: deluge\n",
+          "example": "deluge"
+        },
+        "execution_url": {
+          "type": "string",
+          "description": "Required if <b>execution_type</b> is set to <code>webhook</code>. \n<ul>\n  <li>The URL that will be called when the bot's handlers are triggered.</li>\n  <li>This should be a publicly accessible endpoint that can receive POST requests from the Cliq platform.</li>\n</ul>\n",
+          "example": "https://api.example.com/webhooks/messages"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 20,
+          "description": "Display name of the bot. Must be unique across the platform and can be updated later.<br>\n<b>Note:</b> The <code>unique_name</code> (used to identify the bot in API calls) is auto-assigned by Cliq on creation and cannot be changed, even if the display name is updated.<br>\n<b>Maximum Length</b>: 20 characters.\n",
+          "example": "Clientcare Bot"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "Description of the bot. Provides details about the bot's functionality and purpose.<br>\n<b>Maximum Length</b>: 300 characters.\n",
+          "example": "Your client care co-pilot streamlining support by providing instant customer context and easy access to critical resources."
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "organization",
+            "team",
+            "personal"
+          ],
+          "description": "Access level for the bot. Determines the visibility and availability of the bot within the organization.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>organization</code>: Bot is available to all users in the organization.</li>\n  <li><code>team</code>: Bot is available only to specified teams within the organization.</li>\n  <li><code>personal</code>: Bot is available only to the creator but can be shared with other users.</li>\n</ul>\n",
+          "example": "team"
+        },
+        "team_ids": {
+          "type": "array",
+          "maxItems": 4,
+          "description": "List of <a href=\"/cliq/help/restapi/v3/glossary/#TEAM_ID\">team_ids</a> that are allowed to access the bot when <code>scope</code> is set to <code>team</code>.<br>\n<b>Maximum limit</b>: 4 team IDs can be provided, and this is mandatory when the bot's <b>scope</b> is set to <code>team</code>.\n",
+          "items": {
+            "type": "integer",
+            "example": 12345678
+          }
+        },
+        "status_messages": {
+          "type": "array",
+          "maxItems": 10,
+          "description": "Status messages shown for the bot. These messages will be displayed in the bot's profile or when users interact with the bot.<br>\n<b>Maximum limit</b>: 10 messages.\n",
+          "items": {
+            "type": "string",
+            "maxLength": 50,
+            "example": "Here to help you with client support!"
+          }
+        },
+        "image": {
+          "type": "string",
+          "description": "Base64-encoded avatar image for the bot. This image will represent the bot in conversations and the list of bots.<br>\n",
+          "example": "https://www.zoho.com/cliq/help/restapi/images/poll_icon.png"
+        },
+        "channel_participation": {
+          "type": "array",
+          "maxItems": 10,
+          "description": "Channel participation capabilities of the bot. Defines how the bot can interact in channels.<br>\n<b>Maximum limit</b>: 3.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>listen_message</code>: Bot can listen to messages in channels.</li>\n  <li><code>send_message</code>: Bot can send messages to channels.</li>\n  <li><code>auto_follow_thread</code>: Bot will automatically follow threads it participates in.</li>\n</ul>\n",
+          "items": {
+            "type": "string",
+            "enum": [
+              "listen_message",
+              "send_message",
+              "auto_follow_thread"
+            ],
+            "example": "send_message"
+          }
+        },
+        "calls": {
+          "type": "string",
+          "enum": [
+            "enable",
+            "disable"
+          ],
+          "description": "Enables or disables the Bot Calls feature for this bot. Bot Calls let the bot initiate voice alerts to targeted users for urgent, high-priority notifications.\nWhen set to <code>enabled</code>, the bot's <b>Call Handler</b> becomes active and triggers on call state events: <code>ringing</code>, <code>answered</code>, <code>ended</code>, <code>declined</code>, <code>missed</code>, <code>offline</code>, and <code>busy</code>.<br><br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Bot can initiate voice calls to users. Bot calls override the recipient's Do Not Disturb setting, ensuring delivery of critical alerts.</li>\n  <li><code>disabled</code>: Bot cannot initiate voice calls.</li>\n</ul>\n<b>Notes</b>:\n<ul>\n  <li>Individual subscribers can toggle bot calls on or off from their own Bots and Tools settings.</li>\n  <li>Organization admins can override and lock this setting for all users via Resource Management in the Admin Panel.</li>\n  <li>When <code>calls</code> is <code>enabled</code>, you can optionally add a <code>call_handler</code> to the bot to handle call state events programmatically.</li>\n</ul>\n",
+          "example": "enable"
+        }
+      }
+    },
+    "BotUpdateResponse": {
+      "type": "object",
+      "description": "Response returned after successfully updating a bot.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "API endpoint URL for the updated bot resource.",
+          "example": "/api/v3/bots/b-53719000002124012"
+        },
+        "type": {
+          "type": "string",
+          "description": "Resource type.",
+          "example": "bot"
+        },
+        "data": {
+          "type": "object",
+          "description": "The updated bot object reflecting all applied changes.",
+          "properties": {
+            "unique_name": {
+              "type": "string",
+              "description": "Unique identifier of the bot (cannot be changed after creation).",
+              "example": "crmbot"
+            },
+            "name": {
+              "type": "string",
+              "description": "Updated display name of the bot.",
+              "example": "CRM Bot"
+            },
+            "id": {
+              "type": "string",
+              "description": "Numeric ID of the bot.",
+              "example": "53719000002124012"
+            },
+            "description": {
+              "type": "string",
+              "description": "Updated description of the bot.",
+              "example": "Your CRM co-pilot providing instant access to customer data and insights within Cliq."
+            },
+            "scope": {
+              "type": "string",
+              "description": "Updated access level of the bot.",
+              "example": "organization"
+            },
+            "status_messages": {
+              "type": "array",
+              "description": "Updated status messages for the bot.",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "Here to help you with CRM support!"
+              ]
+            },
+            "channel_participation": {
+              "type": "array",
+              "description": "Updated channel interaction capabilities.",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "listen_message"
+              ]
+            },
+            "calls": {
+              "type": "string",
+              "description": "Indicates whether bot calls are enabled or disabled.",
+              "example": "enable"
+            },
+            "handlers": {
+              "type": "array",
+              "description": "Handlers currently configured for the bot.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "description": "Handler type.",
+                    "example": "welcome_handler"
+                  }
+                }
+              }
+            },
+            "creator": {
+              "type": "object",
+              "description": "User who created the bot.",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the creator.",
+                  "example": "James"
+                },
+                "id": {
+                  "type": "string",
+                  "description": "ZUID of the creator.",
+                  "example": "65113112"
+                }
+              }
+            },
+            "execution_type": {
+              "type": "string",
+              "description": "Script execution engine used by the bot.",
+              "example": "deluge"
+            },
+            "status": {
+              "type": "string",
+              "description": "Current operational status of the bot.",
+              "example": "enabled"
+            },
+            "type": {
+              "type": "string",
+              "description": "Bot category. Always custom for user-created bots.",
+              "example": "custom"
+            },
+            "default": {
+              "type": "boolean",
+              "description": "Indicates whether this is the default bot.",
+              "example": false
+            },
+            "subscriber_count": {
+              "type": "integer",
+              "description": "Number of users subscribed to the bot.",
+              "example": 1
+            }
+          }
+        }
+      }
+    },
+    "BotEdit": {
+      "type": "object",
+      "description": "Payload for updating an existing bot. All fields are optional.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 20,
+          "description": "Updated display name of the bot. Must be unique across the platform.<br>\n<b>Note:</b> Updating the display name does not affect the <code>unique_name</code>, which is permanently assigned by Cliq and cannot be changed.<br>\n<b>Maximum length:</b> 20 characters.\n",
+          "example": "CRM Bot"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "Updated bot description.<br>\n<b>Maximum length:</b> 300 characters.\n",
+          "example": "Your CRM co-pilot providing instant access to customer data and insights within Cliq."
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "organization",
+            "team",
+            "personal"
+          ],
+          "description": "Updated access level.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>organization</code>: Bot is available to all users in the organization.</li>\n  <li><code>team</code>: Bot is available only to specified teams within the organization.</li>\n  <li><code>personal</code>: Bot is available only to the creator but can be shared with other users.</li>  \n</ul> \n",
+          "example": "organization"
+        },
+        "team_ids": {
+          "type": "array",
+          "maxItems": 4,
+          "description": "List of <a href=\"/cliq/help/restapi/v3/glossary/#TEAM_ID\">team_ids</a> that are allowed to access the bot when <code>scope</code> is set to <code>team</code>.<br>\n<b>Maximum limit:</b> 4 team IDs can be provided, and this is mandatory when the bot's scope is set to <code>team</code>.\n",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "status_messages": {
+          "type": "array",
+          "maxItems": 10,
+          "description": "Status messages shown for the bot. These messages will be displayed in the bot's profile or when users interact with the bot.<br>\n<b>Maximum limit:</b> 10 messages.\n<b>Maximum length:</b> Each message can be up to 50 characters long.\n",
+          "items": {
+            "type": "string",
+            "maxLength": 50,
+            "example": "Here to help you with CRM support!"
+          }
+        },
+        "image": {
+          "type": "string",
+          "description": "Updated Base64-encoded avatar image.\n",
+          "example": "https://www.zoho.com/cliq/help/restapi/images/poll_icon.png"
+        },
+        "channel_participation": {
+          "type": "array",
+          "maxItems": 10,
+          "description": "Updated channel participation capabilities of the bot. Defines how the bot can interact in channels.<br>\n<b>Maximum limit</b>: 3.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>listen_message</code>: Bot can listen to messages in channels.</li>\n  <li><code>send_message</code>: Bot can send messages to channels.</li>\n  <li><code>auto_follow_thread</code>: Bot will automatically follow threads it participates in.</li>\n</ul>\n",
+          "items": {
+            "type": "string",
+            "enum": [
+              "listen_message",
+              "send_message",
+              "auto_follow_thread"
+            ]
+          }
+        },
+        "execution_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "The server URL where the bot's webhook events are sent. Applicable only for <b>Webhook bots</b>.<br>\nThis field can be updated independently to redirect the bot to a new endpoint without modifying any other configuration.\n",
+          "example": "https://example.com/webhook/bot-handler"
+        },
+        "calls": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Enables or disables the Bot Calls feature for this bot. When set to <code>enable</code>, the bot can initiate voice alerts to users and its <b>Call Handler</b> becomes active, firing on call state events: <code>ringing</code>, <code>answered</code>, <code>ended</code>, <code>declined</code>, <code>missed</code>, <code>offline</code>, and <code>busy</code>.<br><br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Bot can initiate voice calls. Calls override the recipient's Do Not Disturb setting.</li>\n  <li><code>disabled</code>: Bot cannot initiate voice calls.</li>\n</ul>\n<b>Notes</b>:\n<ul>\n  <li>Individual subscribers can toggle bot calls on or off from their Bots and Tools settings.</li>\n  <li>Org admins can override and lock this setting for all users via the Admin Panel.</li>\n</ul>\n"
+        }
+      },
+      "example": {
+        "name": "CRM Bot",
+        "description": "Your CRM co-pilot providing instant access to customer data and insights within Cliq.",
+        "scope": "organization",
+        "status_messages": [
+          "Here to help you with CRM support!"
+        ],
+        "image": "https://www.zoho.com/cliq/help/restapi/images/poll_icon.png",
+        "channel_participation": [
+          "listen_message"
+        ],
+        "calls": "enabled"
+      }
+    },
+    "HandlerCreate": {
+      "type": "object",
+      "description": "Payload for creating a new handler.",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "welcome_handler",
+            "message_handler",
+            "mention_handler",
+            "context_handler",
+            "participation_handler",
+            "incoming_webhook_handler",
+            "menu_handler",
+            "call_handler"
+          ],
+          "description": "Handler type to create.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>welcome_handler</code>: Executes when a user subscribes to the bot, providing a personalized greeting or onboarding message.</li>\n  <li><code>message_handler</code>: Triggers on incoming messages to the bot, enabling dynamic responses based on message content.</li>\n  <li><code>mention_handler</code>: Fires when the bot is mentioned in a conversation, allowing it to respond contextually.</li>\n  <li><code>context_handler</code>: Executes based on specific contextual triggers defined by the bot's logic.</li>\n  <li><code>participation_handler</code>: Activates when users interact with the bot in channels, such as joining or leaving.</li>\n  <li><code>incoming_webhook_handler</code>: Handles events from external systems via incoming webhooks.</li>\n  <li><code>menu_handler</code>: Defines custom menu actions for the bot, providing interactive options to users.</li>\n  <li><code>call_handler</code>: Responds to bot call events, such as ringing, answered, ended, etc.</li> \n</ul>\n"
+        },
+        "script": {
+          "type": "string",
+          "description": "Deluge script source code to execute for the handler.<br>\n<b>Maximum size is 250KB.</b><br>\n<b>Note:</b> Applicable only for <b>Deluge bots</b>. Do not pass <code>script</code> for Webhook bots - use <code>permissions</code> instead.\n",
+          "maxLength": 2147483648
+        },
+        "permissions": {
+          "type": "array",
+          "maxItems": 5,
+          "description": "List of data attributes to forward to your server in the webhook payload when the handler fires.<br>\n<b>Note:</b> Applicable only for <b>Webhook bots</b>. Do not pass <code>permissions</code> for Deluge bots - use <code>script</code> instead.<br>\n<b>Maximum:</b> 5 permissions per handler.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>chat</code>: Chat context (chat ID, type, participants).</li>\n  <li><code>message</code>: Message content and metadata.</li>\n  <li><code>user</code>: Sender's user profile details.</li>\n  <li><code>location</code>: Sender's location data.</li>\n  <li><code>attachments</code>: Attachment metadata and download info.</li>\n</ul>\nNot all permissions are valid for every handler type. Refer to the permissions availability table in the <a href=\"#create_a_handler_for_a_bot\">Create a handler</a> endpoint description.\n",
+          "items": {
+            "type": "string",
+            "enum": [
+              "chat",
+              "message",
+              "user",
+              "location",
+              "attachments"
+            ]
+          }
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 15,
+          "description": "Display name for the menu action, where this name will be shown as the menu action label.<br>\n<b>Maximum length:</b> 15 characters.<br>\n<b>Note:</b> Applicable only for <code>menu_handler</code> type.\n    \n"
+        },
+        "icon": {
+          "type": "string",
+          "description": "<ul>\n  <li>Custom icon reference for bot menu actions. This icon will be displayed alongside the menu action in the UI.</li>\n  <li>Refer to <b><a href=\"icons/#overview\">icons</a></b> for supported menu action icons that can be used to enhance the UI of the handler's menu action.</li>\n</ul> \n<b>Note:</b> Applicable only for <code>menu_handler</code> type.\n"
+        },
+        "sub_actions": {
+          "type": "array",
+          "maxItems": 5,
+          "description": "List of sub-actions for menu handlers.\n<ul>\n<li>Sub-actions allow you to create nested menu options under a main menu action, providing a structured and organized way to present multiple related actions to users.</li>\n<li><b>Maximum limit:</b> 5 sub-actions can be defined for a menu handler.</li>\n<li>Each sub-action includes a name, optional icon, and its own action definition, allowing for complex interaction flows within the bot's menu system.</li>\n</ul>\n<b>Note:</b> Applicable only for <code>menu_handler</code> type.\n",
+          "items": {
+            "$ref": "#/components/schemas/SubAction"
+          }
+        }
+      },
+      "example": {
+        "name": "Bot Menu Action",
+        "icon": "wand/#FFFFFF",
+        "script": "response = Map();\nresponse.put(\"text\",\"This is a bot menu action\");\nreturn response;",
+        "sub_actions": [
+          {
+            "name": "Sub Action 1",
+            "icon": "wand/#FFFFFF"
+          }
+        ]
+      }
+    },
+    "SubAction": {
+      "type": "object",
+      "description": "Sub-action definition for menu handlers.",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 15,
+          "description": "Sub-action name.<br>\n<b>Maximum length:</b> 15 characters.\n"
+        },
+        "icon": {
+          "type": "string",
+          "description": "Custom icon reference for the sub-action.<br>\nRefer to <b><a href=\"icons/#overview\">icons</a></b> for supported icons that can be used to enhance the UI of the sub-action.\n"
+        }
+      }
+    },
+    "HandlerEdit": {
+      "type": "object",
+      "description": "Payload for updating an existing handler.",
+      "properties": {
+        "script": {
+          "type": "string",
+          "description": "Updated Deluge script source code for the handler.<br>\n<b>Maximum size is 250KB.</b><br>\n<b>Note:</b> Applicable only for <b>Deluge bots</b>.\n"
+        },
+        "permissions": {
+          "type": "array",
+          "maxItems": 5,
+          "description": "Updated list of data attributes to forward to your server in the webhook payload.<br>\n<b>Note:</b> Applicable only for <b>Webhook bots</b>.<br>\n<b>Maximum:</b> 5 permissions per handler.<br>\n<b>Allowed values</b>: \n<ul>\n  <li><code>chat</code>: Chat context (chat ID, type, participants).</li>\n  <li><code>message</code>: Message content and metadata.</li>\n  <li><code>user</code>: Sender's user profile details.</li>\n  <li><code>location</code>: Sender's location data.</li>\n  <li><code>attachments</code>: Attachment metadata and download info.</li>\n</ul>\nNot all permissions are valid for every handler type. Refer to the permissions availability table in the <a href=\"#create_a_handler_for_a_bot\">Create a handler</a> endpoint description.\n",
+          "items": {
+            "type": "string",
+            "enum": [
+              "chat",
+              "message",
+              "user",
+              "location",
+              "attachments"
+            ]
+          }
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 15,
+          "description": "Updated display name for the menu action.<br>\n<b>Maximum length:</b> 15 characters.<br>\n<b>Note:</b> Applicable only for <code>menu_handler</code> type.\n"
+        },
+        "icon": {
+          "type": "string",
+          "description": "Updated custom icon reference for menu handler variants.<br>\n<b>Note:</b> Applicable only for <code>menu_handler</code> type.\n"
+        },
+        "sub_actions": {
+          "type": "array",
+          "maxItems": 5,
+          "description": "Updated list of sub-actions for menu handlers.\n<ul>\n<li>Sub-actions allow you to create nested menu options under a main menu action, providing a structured and organized way to present multiple related actions to users.</li>\n<li><b>Maximum limit:</b> 5 sub-actions can be defined for a menu handler.</li>\n<li>Each sub-action includes a name, optional icon, and its own action definition, allowing for complex interaction flows within the bot's menu system.</li>\n</ul>\n<b>Note:</b> Applicable only for <code>menu_handler</code> type.\n",
+          "items": {
+            "$ref": "#/components/schemas/SubAction"
+          }
+        }
+      },
+      "example": {
+        "script": "response = Map();\nresponse.put(\"text\", \"\ud83d\udc4b Welcome to the IT Help Desk! Select an option to get started.\");\nreturn response;",
+        "name": "IT Help Desk",
+        "icon": "wand/627282",
+        "sub_actions": [
+          {
+            "name": "Raise Ticket",
+            "icon": "wand/627290"
+          },
+          {
+            "name": "Track Status",
+            "icon": "wand/627291"
+          },
+          {
+            "name": "Request Access",
+            "icon": "wand/627292"
+          }
+        ]
+      }
+    },
+    "BotAssociateChannelRequest": {
+      "type": "object",
+      "description": "Payload to associate bot with a channel.",
+      "properties": {
+        "channel_unique_name": {
+          "type": "string",
+          "description": "Unique name of the channel to associate with the bot. This is the identifier used in API calls to specify the channel for bot association.<br>\nTo retrieve the unique name of a channel, refer to <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary.\n"
+        }
+      },
+      "additionalProperties": true,
+      "example": {
+        "channel_unique_name": "announcements"
+      }
+    },
+    "BotMessage": {
+      "type": "object",
+      "description": "Payload for sending a message from a bot. At least one of <code>text</code>, <code>card</code>, or <code>slides</code> must be provided.\nTo target specific recipients, include <code>user_ids</code> (comma-separated user IDs, up to 100) or set <code>broadcast: true</code> to reach all subscribers.\n",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Plain-text or rich-text message content.<br>\n<b>Maximum length:</b> 5000 characters.\n",
+          "minLength": 1,
+          "maxLength": 5000,
+          "example": "Hello! Here's your daily summary."
+        },
+        "buttons": {
+          "type": "array",
+          "description": "Array of action buttons attached to the message. Each button executes an action when clicked.<br>\n<b>Maximum:</b> 5 buttons.<br>\nFor the full button object structure and supported action types, refer to the <a href=\"/cliq/help/restapi/v3/buttons/#overview\"><b>Buttons documentation</b></a>.\n",
+          "maxItems": 5,
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "example": [
+            {
+              "label": "View Report",
+              "action": {
+                "type": "open.url",
+                "data": {
+                  "web": "https://reports.zylker.com/latest"
+                }
+              }
+            },
+            {
+              "label": "Acknowledge",
+              "action": {
+                "type": "invoke.function",
+                "data": {
+                  "name": "ack_alert"
+                }
+              }
+            }
+          ]
+        },
+        "slides": {
+          "type": "array",
+          "description": "Array of structured content blocks (slides) rendered below the card inside the message.\nSits at the top level alongside <code>text</code> and <code>card</code> - not nested inside <code>card</code>.\nMost commonly paired with the <code>modern-inline</code> card theme.\nMaximum 20 slides. Maximum total size: 10,000 characters.\n<br><br><b>Supported slide types:</b>\n<ul>\n  <li><b>table</b> - Renders a data table. Requires <code>data.headers</code> (array of strings) and <code>data.rows</code> (array of objects).</li>\n  <li><b>list</b> - Renders a bulleted list. <code>data</code> is an array of strings.</li>\n  <li><b>label</b> - Renders labelled key-value pairs. <code>data</code> is an array of objects with <code>label</code> and <code>value</code>.</li>\n  <li><b>images</b> - Renders images inline. <code>data</code> is an array of image URL strings.</li>\n</ul>\n",
+          "maxItems": 20,
+          "items": {
+            "type": "object",
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Slide content type.\n<br><b>Allowed values</b>: <code>table</code> | <code>list</code> | <code>label</code> | <code>images</code> | <code>text</code>\n",
+                "enum": [
+                  "table",
+                  "list",
+                  "label",
+                  "images",
+                  "text"
+                ],
+                "example": "table"
+              },
+              "title": {
+                "type": "string",
+                "description": "Optional heading displayed above the slide content.",
+                "example": "Ticket Details"
+              },
+              "data": {
+                "description": "Content payload for the slide. Structure depends on <code>type</code>:\n<ul>\n  <li><b>table</b>: Object with <code>headers</code> (array of strings) and <code>rows</code> (array of objects).</li>\n  <li><b>list</b>: Array of strings.</li>\n  <li><b>label</b>: Array of objects, each with <code>label</code> and <code>value</code>.</li>\n  <li><b>images</b>: Array of image URL strings.</li>\n  <li><b>text</b>: A string containing the text content to display.</li>\n</ul>\n",
+                "example": {
+                  "headers": [
+                    "Field",
+                    "Value"
+                  ],
+                  "rows": [
+                    {
+                      "Field": "Build",
+                      "Value": "#42"
+                    },
+                    {
+                      "Field": "Status",
+                      "Value": "Passed"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "example": [
+            {
+              "type": "table",
+              "title": "Build Summary",
+              "data": {
+                "headers": [
+                  "Field",
+                  "Value"
+                ],
+                "rows": [
+                  {
+                    "Field": "Build",
+                    "Value": "#42"
+                  },
+                  {
+                    "Field": "Status",
+                    "Value": "Passed"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "card": {
+          "type": "object",
+          "description": "Message card object. Use to render a structured interactive card - poll, modern-inline, or prompt.\nFor the full card object structure, available themes, and field definitions, refer to the <a href=\"/cliq/help/restapi/v3/messagecards/#overview\"><b>Message Cards documentation</b></a>.\n",
+          "additionalProperties": true,
+          "example": {
+            "theme": "modern-inline",
+            "title": "Deployment v3.6.1 - Approval Required"
+          }
+        },
+        "bot": {
+          "type": "object",
+          "description": "Custom sender details to override the bot's default display name and avatar for this message.\n",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Display name shown as the message sender instead of the bot's default name.",
+              "example": "Deployment Bot"
+            },
+            "image": {
+              "type": "string",
+              "description": "Publicly accessible HTTPS URL of the avatar image to use for this message.",
+              "example": "https://example.com/bot-avatar.png"
+            }
+          },
+          "example": {
+            "name": "Deployment Bot",
+            "image": "https://example.com/bot-avatar.png"
+          }
+        },
+        "styles": {
+          "type": "object",
+          "description": "Style settings for the message. Controls visual rendering such as background highlight colour and markdown processing.\n",
+          "properties": {
+            "background": {
+              "type": "string",
+              "description": "Background highlight colour for the message bubble.\n<br><b>Allowed values</b>: <code>red</code> | <code>yellow</code> | <code>green</code> | <code>blue</code> | <code>grey</code>\n",
+              "enum": [
+                "red",
+                "yellow",
+                "green",
+                "blue",
+                "grey"
+              ],
+              "example": "yellow"
+            },
+            "markdown": {
+              "type": "boolean",
+              "description": "Set to <code>true</code> to enable Markdown parsing in the <code>text</code> field.\n",
+              "example": true
+            }
+          },
+          "example": {
+            "background": "yellow",
+            "markdown": true
+          }
+        },
+        "user_ids": {
+          "type": "string",
+          "description": "Comma-separated list of user ZUIDs or emails to send the message to specific recipients.<br>\n<b>Maximum 100 user IDs can be provided.</b>\n",
+          "example": "55743307,55622727"
+        },
+        "reply_to": {
+          "type": "string",
+          "description": "Message ID to reply to. The new message will be posted as a reply to the specified message.<br>\n<b>Maximum length:</b> 100 characters.\n",
+          "example": "1709038327622%2029706114886"
+        },
+        "notify_edit": {
+          "type": "boolean",
+          "description": "Set to <code>true</code> to send a notification to recipients if the message is edited after being sent.\n",
+          "example": false
+        },
+        "message_topic": {
+          "type": "string",
+          "description": "Topic string used as the thread title when a thread is created from this message. Maximum length: 255 characters.\n",
+          "maxLength": 255,
+          "example": "Daily Standup Updates"
+        },
+        "mark_as_read": {
+          "type": "boolean",
+          "description": "Set to <code>true</code> to automatically mark this message as read for the recipient.\n",
+          "example": false
+        },
+        "sync_message": {
+          "type": "boolean",
+          "description": "Set to <code>true</code> to send the message synchronously. The response will include <code>chat_id</code> and <code>message_id</code>.\n",
+          "example": false
+        },
+        "thread_chat_id": {
+          "type": "string",
+          "description": "Chat ID of an existing thread to post the message into. Maximum length: 100 characters.\n",
+          "maxLength": 100,
+          "example": "CT_1207124526552602256_60002085329-T-1291567019566818579"
+        },
+        "thread_message_id": {
+          "type": "string",
+          "description": "Message UID from which a thread has been originated. Used to associate the message with a specific thread.\n",
+          "example": "1727333520582%2047588994306224"
+        },
+        "post_in_parent": {
+          "type": "boolean",
+          "description": "Set to <code>true</code> to also post the message in the parent chat or channel when sending to a thread.\n",
+          "example": false
+        },
+        "thread_title": {
+          "type": "string",
+          "description": "Custom title for a newly created thread.<br>\n<b>Maximum length:</b> 100 characters.\n",
+          "maxLength": 100,
+          "example": "PROCESS_DOWN alert thread"
+        }
+      },
+      "example": {
+        "text": "Hello! Here's your daily summary.",
+        "broadcast": false,
+        "user_ids": "55743307,55622727",
+        "sync_message": true
+      }
+    }
+  }
+}

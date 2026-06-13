@@ -1,0 +1,22 @@
+{
+  "getDNDPreferences": {
+    "path": "/settings/dnd-preferences",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "quiet_hours": "18:00-09:00",
+        "quiet_days": "sunday,monday"
+      }
+    }
+  },
+  "updateDNDPreferences": {
+    "path": "/settings/dnd-preferences",
+    "method": "put",
+    "examples": {
+      "request": {
+        "quiet_days": "monday,tuesday",
+        "quiet_hours": "18:00-21:00"
+      }
+    }
+  }
+}

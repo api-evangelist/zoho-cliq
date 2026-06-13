@@ -1,0 +1,386 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Zoho Cliq Mentions Schemas",
+  "definitions": {
+    "get-mentions-response": {
+      "type": "object",
+      "required": [
+        "type",
+        "has_more",
+        "url",
+        "data"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Always \"mention\".",
+          "enum": [
+            "mention"
+          ],
+          "example": "mention"
+        },
+        "has_more": {
+          "type": "boolean",
+          "description": "Whether more results are available.",
+          "example": true
+        },
+        "next_token": {
+          "type": "string",
+          "description": "Pagination token. Present only when has_more is true.",
+          "example": "69db51e903077660b5bd74ba2f00a3b9ae90bd44362145d146379a451ab2b6a3"
+        },
+        "url": {
+          "type": "string",
+          "description": "Request URL.",
+          "example": "/api/v3/mentions"
+        },
+        "data": {
+          "type": "array",
+          "description": "List of mention entries.",
+          "items": {
+            "$ref": "#/components/schemas/mention-entry"
+          }
+        }
+      },
+      "example": {
+        "type": "mention",
+        "has_more": true,
+        "next_token": "69db51e903077660b5bd74ba2f00a3b9ae90bd44362145d146379a451ab2b6a3",
+        "url": "/api/v3/mentions",
+        "data": [
+          {
+            "id": "CT_1207124540483314854_60002085329|60040396507|1779854404814",
+            "status": "unread",
+            "activity_type": "mentions",
+            "chat": {
+              "id": "CT_1207124540483314854_60002085329",
+              "title": "Project Discussion",
+              "type": "channel",
+              "channel_type": "open",
+              "channel_display_name": "Project Discussion"
+            },
+            "message": {
+              "id": 1.7798544048141776e+25,
+              "type": "text",
+              "time": "2026-05-28T10:30:00+05:30",
+              "content": {
+                "text": "Hey @Ryan West, can you review this?"
+              },
+              "sender": {
+                "id": "60040396507",
+                "name": "Scott Fisher"
+              },
+              "replied_to": {
+                "id": 1.7798544048001775e+25,
+                "time": "2026-05-28T10:25:00+05:30",
+                "content": {
+                  "text": "I've pushed the latest changes to staging."
+                },
+                "sender": {
+                  "id": "60040386526",
+                  "name": "Karen Mills"
+                }
+              }
+            },
+            "mention": {
+              "recipient_id": "60040386526",
+              "mentioned_users": [
+                {
+                  "id": "60040386526",
+                  "name": "Ryan West",
+                  "display_name": "@Ryan West",
+                  "type": "user"
+                }
+              ]
+            }
+          },
+          {
+            "id": "CT_1796005539471668330_60002085329-T-1291572812797199199|60040376665|1779778913508",
+            "status": "read",
+            "activity_type": "mentions",
+            "chat": {
+              "id": "CT_1796005539471668330_60002085329-T-1291572812797199199",
+              "title": "*at office*",
+              "type": "thread",
+              "channel_display_name": "*at office*"
+            },
+            "message": {
+              "id": 1.7797789135081024e+23,
+              "type": "text",
+              "time": "2026-05-26T12:31:53+05:30",
+              "content": {
+                "text": "Hey everyone, lunch plans today? @all"
+              },
+              "sender": {
+                "id": "60040376665",
+                "name": "Mark Henderson"
+              }
+            },
+            "mention": {
+              "recipient_id": "12737000900495597",
+              "mentioned_users": [
+                {
+                  "id": "participants",
+                  "name": "all",
+                  "display_name": "@all",
+                  "type": "participants"
+                }
+              ]
+            }
+          },
+          {
+            "id": "CT_1291567033280789110_60002085329-T-1334093121532995592|b-12737000004306349|1779939003876",
+            "status": "read",
+            "activity_type": "mentions",
+            "chat": {
+              "id": "CT_1291567033280789110_60002085329-T-1334093121532995592",
+              "title": "Issue : Internal - User Management - AP",
+              "type": "thread"
+            },
+            "message": {
+              "id": 1.779939003876963e+23,
+              "type": "card",
+              "time": "2026-05-28T09:00:03+05:30",
+              "content": {
+                "text": "Hey @Ryan West, this issue hasn't been acknowledged yet in spite of 9 daily reminders. Would you like to share your inputs now?",
+                "card": {
+                  "theme": "modern-inline"
+                },
+                "buttons": [
+                  {
+                    "label": "Update",
+                    "action": {
+                      "type": "invoke.function",
+                      "data": {
+                        "name": "cliqsupportbuttonfunction"
+                      }
+                    },
+                    "hint": "Dev Acknowledgement"
+                  }
+                ]
+              },
+              "sender": {
+                "id": "b-12737000004306349",
+                "name": "Supportify"
+              }
+            },
+            "mention": {
+              "recipient_id": "60040386526",
+              "mentioned_users": [
+                {
+                  "id": "60040386526",
+                  "name": "Ryan West",
+                  "display_name": "@Ryan West",
+                  "type": "user"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "mention-entry": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique mention entry ID."
+        },
+        "status": {
+          "type": "string",
+          "description": "unread, read, or deleted.",
+          "enum": [
+            "unread",
+            "read",
+            "deleted"
+          ]
+        },
+        "activity_type": {
+          "type": "string",
+          "description": "mentions or replies.",
+          "enum": [
+            "mentions",
+            "replies"
+          ]
+        },
+        "chat": {
+          "$ref": "#/components/schemas/mention-chat"
+        },
+        "message": {
+          "$ref": "#/components/schemas/mention-message"
+        },
+        "mention": {
+          "$ref": "#/components/schemas/mention-metadata"
+        }
+      }
+    },
+    "mention-chat": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Chat ID."
+        },
+        "title": {
+          "type": "string",
+          "description": "Chat or channel title."
+        },
+        "type": {
+          "type": "string",
+          "description": "channel, direct, group, bot, or thread.",
+          "enum": [
+            "channel",
+            "direct",
+            "group",
+            "bot",
+            "thread"
+          ]
+        },
+        "channel_type": {
+          "type": "string",
+          "description": "open, closed, public, external, or team.",
+          "enum": [
+            "open",
+            "closed",
+            "public",
+            "external",
+            "team"
+          ]
+        },
+        "channel_display_name": {
+          "type": "string",
+          "description": "Display name of the channel."
+        }
+      }
+    },
+    "mention-message": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Message ID."
+        },
+        "type": {
+          "type": "string",
+          "description": "text, file, audio, card, etc."
+        },
+        "time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "<a href=\"https://en.wikipedia.org/wiki/ISO_8601\">ISO 8601</a> timestamp."
+        },
+        "content": {
+          "type": "object",
+          "description": "Message content.",
+          "additionalProperties": true
+        },
+        "sender": {
+          "$ref": "#/components/schemas/mention-sender"
+        },
+        "replied_to": {
+          "type": "object",
+          "description": "Original message details if this is a reply.",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "content": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "sender": {
+              "$ref": "#/components/schemas/mention-sender"
+            }
+          }
+        }
+      }
+    },
+    "mention-sender": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Sender ID."
+        },
+        "name": {
+          "type": "string",
+          "description": "Sender name."
+        }
+      }
+    },
+    "mention-metadata": {
+      "type": "object",
+      "properties": {
+        "recipient_id": {
+          "type": "string",
+          "description": "ID of the mentioned user."
+        },
+        "mentioned_users": {
+          "type": "array",
+          "description": "List of mentioned users or entities.",
+          "items": {
+            "$ref": "#/components/schemas/mentioned-user"
+          }
+        }
+      }
+    },
+    "mentioned-user": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "User or entity ID."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name."
+        },
+        "display_name": {
+          "type": "string",
+          "description": "Display name (for example, @John)."
+        },
+        "type": {
+          "type": "string",
+          "description": "user, group, channel, bot, participants, or available.",
+          "enum": [
+            "user",
+            "group",
+            "channel",
+            "bot",
+            "participants",
+            "available"
+          ]
+        }
+      }
+    },
+    "mentions-error-response": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Error code identifier.",
+          "example": "INVALID_PARAMS"
+        },
+        "message": {
+          "type": "string",
+          "description": "Human-readable error message.",
+          "example": "Invalid query parameter value."
+        }
+      }
+    },
+    "empty-response": {
+      "type": "object",
+      "description": "Response returned when there is no content.",
+      "properties": {
+        "Response_Code": {
+          "type": "string",
+          "example": "204 No response"
+        }
+      }
+    }
+  }
+}

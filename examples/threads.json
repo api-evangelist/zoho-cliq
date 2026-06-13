@@ -1,0 +1,146 @@
+{
+  "getThreadDetailsV3": {
+    "path": "/threads/{THREAD_CHAT_ID}",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "get_thread": {
+          "summary": "Thread details",
+          "value": {
+            "url": "/api/v3/threads/CT_1207124526552602256_60002085329-T-1291567019566818579",
+            "type": "chat_thread",
+            "data": {
+              "chat_id": "CT_1207124526552602256_60002085329-T-1291567019566818579",
+              "parent_chat_id": "CT_1207124526552602256_60002085329",
+              "thread_message_id": "1727333520582%2047588994306224",
+              "title": "Email campaign strategy discussion",
+              "follower_count": 26,
+              "is_follower": true,
+              "parent_participant": true,
+              "thread_state": "open"
+            }
+          }
+        }
+      },
+      "response_400": {
+        "thread_chatid_invalid": {
+          "summary": "Invalid thread chat ID format",
+          "value": {
+            "code": "thread_chatid_invalid",
+            "message": "The thread chat ID given is not according to the format."
+          }
+        }
+      },
+      "response_403": {
+        "external_communication_not_supported": {
+          "summary": "External communication not allowed",
+          "value": {
+            "code": "external_communication_not_supported",
+            "message": "Sorry, external communication is not supported as per the organization policy."
+          }
+        }
+      },
+      "response_500": {
+        "operation_failed": {
+          "summary": "Server-side error",
+          "value": {
+            "code": "operation_failed",
+            "message": "Sorry, we couldn't process your request due to a technical error. Please try again later."
+          }
+        }
+      }
+    }
+  },
+  "Get main message of a thread": {
+    "path": "/threads/{THREAD_CHAT_ID}/messages/main",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "main_thread_message": {
+          "summary": "Main message for a customer escalation thread",
+          "value": {
+            "parent_resource_id": "engineering-updates",
+            "sender": {
+              "name": "Ryan West",
+              "id": "855727961"
+            },
+            "mentions": [
+              {
+                "name": "@Scott Fisher",
+                "id": "855727962",
+                "type": "user"
+              },
+              {
+                "name": "@Tim Harrison",
+                "id": "855727963",
+                "type": "user"
+              }
+            ],
+            "thread_information": {
+              "thread_message_id": "1760000012345%201234567890",
+              "title": "Customer onboarding latency issue",
+              "follower_count": 3,
+              "message_count": 18,
+              "chat_id": "CT_2242125513190139257_855711548-T-2263887074117538898"
+            },
+            "id": "1760000012345_1234567890",
+            "time": "2026-05-28T10:36:48+00:00",
+            "thread_state_information": {
+              "thread_state": "open"
+            },
+            "type": "text",
+            "content": {
+              "text": "The customer onboarding workflow is intermittently delayed. Please share logs and mitigation updates in this thread."
+            },
+            "is_pinned": false
+          }
+        }
+      }
+    }
+  },
+  "Get thread followers": {
+    "path": "/threads/{THREAD_CHAT_ID}/followers",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "followers_list": {
+          "summary": "Thread followers in Zylker",
+          "value": {
+            "data": [
+              {
+                "user_id": "855727961",
+                "email_id": "ryan.west@zylker.com",
+                "name": "Ryan West"
+              },
+              {
+                "user_id": "855727962",
+                "email_id": "scott.fisher@zylker.com",
+                "name": "Scott Fisher"
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "Get non-followers of a thread": {
+    "path": "/threads/{THREAD_CHAT_ID}/nonfollowers",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "nonfollowers_list": {
+          "summary": "Channel members not following the thread",
+          "value": {
+            "data": [
+              {
+                "user_id": "855727963",
+                "email_id": "tim.harrison@zylker.com",
+                "name": "Tim Harrison"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

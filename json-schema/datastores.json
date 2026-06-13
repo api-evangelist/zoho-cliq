@@ -1,0 +1,771 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Zoho Cliq Datastores Schemas",
+  "definitions": {
+    "updaterecord_response": {
+      "type": "object",
+      "description": "Response envelope returned when a datastore record is retrieved or updated.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "API endpoint URL for the record resource.",
+          "example": "/api/v3/datastores/shejbwfz/records/227828000000128010"
+        },
+        "type": {
+          "type": "string",
+          "description": "Resource type identifier.",
+          "example": "datastore_record"
+        },
+        "data": {
+          "type": "object",
+          "description": "The record's field values along with system-managed metadata fields.",
+          "properties": {
+            "modified_time": {
+              "type": "string",
+              "description": "Unix epoch timestamp (ms) when the record was last modified.",
+              "example": "1777360403455"
+            },
+            "added_time": {
+              "type": "string",
+              "description": "Unix epoch timestamp (ms) when the record was first created.",
+              "example": "1777360402254"
+            },
+            "id": {
+              "type": "string",
+              "description": "Unique numeric identifier of the record.",
+              "example": "227828000000128010"
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "example": {
+        "url": "/api/v3/datastores/shejbwfz/records/227828000000128010",
+        "type": "datastore_record",
+        "data": {
+          "modified_time": "1777360403455",
+          "empid": "1001",
+          "isactive": false,
+          "salary": "0",
+          "department": "",
+          "id": "227828000000128010",
+          "empname": "John Doe Jr.",
+          "added_time": "1777360402254",
+          "notes": "Senior Engineer in Platform Team"
+        }
+      }
+    },
+    "DatastoreResponse": {
+      "type": "object",
+      "description": "Datastores API response envelope.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "example": "/api/v3/datastores"
+        },
+        "type": {
+          "type": "string",
+          "example": "datastore"
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "example": {
+        "url": "/api/v3/datastores",
+        "type": "datastore",
+        "data": {
+          "unique_name": "empdir",
+          "name": "Employee Directory",
+          "id": "227828000000132001",
+          "creator": {
+            "name": "NP NTC",
+            "id": "119440882"
+          },
+          "status": "enabled",
+          "fields": [
+            {
+              "default_value": "",
+              "masked": false,
+              "name": "Notes",
+              "unique_name": "notes",
+              "type": "large-text",
+              "mandatory": false,
+              "id": "17202020414617773604009000"
+            },
+            {
+              "default_value": "0",
+              "masked": false,
+              "name": "Employee ID",
+              "unique_name": "empid",
+              "type": "number",
+              "mandatory": true,
+              "id": "17202020414617773604009001"
+            },
+            {
+              "default_value": "",
+              "masked": false,
+              "name": "Employee Name",
+              "unique_name": "empname",
+              "type": "limited-text",
+              "mandatory": true,
+              "id": "17202020414617773604009002"
+            },
+            {
+              "default_value": "true",
+              "masked": false,
+              "name": "Active Status",
+              "unique_name": "isactive",
+              "type": "boolean",
+              "mandatory": false,
+              "id": "17202020414617773604009003"
+            }
+          ],
+          "type": "custom",
+          "description": "V3 API test datastore",
+          "unique_keys": [
+            [
+              "empid"
+            ]
+          ],
+          "scope": "personal"
+        }
+      }
+    },
+    "no-response": {
+      "type": "object",
+      "description": "Represents an empty server response where no content is returned.",
+      "properties": {
+        "Response Code": {
+          "type": "string",
+          "description": "HTTP response code indicating no content is returned.",
+          "example": "204 No response"
+        }
+      }
+    },
+    "AddRecordRequest": {
+      "type": "object",
+      "description": "Request body schema to add a new record to the products database.",
+      "required": [
+        "values"
+      ],
+      "properties": {
+        "values": {
+          "type": "object",
+          "description": "Key-value pairs representing the product attributes to be added as a new record.",
+          "additionalProperties": true
+        }
+      },
+      "example": {
+        "values": {
+          "productid": "1001",
+          "productcategory": "zylker",
+          "instock": true,
+          "productsecretcode": "secretkey123",
+          "productdescription": "zylker description"
+        }
+      }
+    },
+    "UpdateRecordRequest": {
+      "type": "object",
+      "description": "Request body schema to update an existing record in the products database.",
+      "required": [
+        "values"
+      ],
+      "properties": {
+        "values": {
+          "type": "object",
+          "description": "Key-value pairs representing the fields to be updated in the record.",
+          "additionalProperties": true
+        }
+      },
+      "example": {
+        "values": {
+          "instock": false,
+          "productdescription": "zylker products"
+        }
+      }
+    },
+    "Products-DatabaseResponse": {
+      "type": "object",
+      "description": "Response schema representing a single product record in the database.",
+      "properties": {
+        "productcateogry": {
+          "type": "string",
+          "description": "Category of the product.",
+          "example": "zylker"
+        },
+        "id": {
+          "type": "string",
+          "description": "Unique identifier of the product record in the database.",
+          "example": "14756000888008001"
+        },
+        "productid": {
+          "type": "string",
+          "description": "Product identifier code.",
+          "example": "1001"
+        },
+        "instock": {
+          "type": "boolean",
+          "description": "Indicates whether the product is in stock.",
+          "example": true
+        },
+        "productsecretcode": {
+          "type": "string",
+          "description": "Secret code assigned to the product.",
+          "example": "secretkey123"
+        },
+        "productdescription": {
+          "type": "string",
+          "description": "Detailed description of the product.",
+          "example": "zylker description"
+        }
+      },
+      "additionalProperties": true
+    },
+    "product-database-list-records": {
+      "type": "object",
+      "description": "Response schema containing a list of product records from the database.",
+      "properties": {
+        "list": {
+          "type": "array",
+          "description": "Array of product record objects.",
+          "items": {
+            "type": "object",
+            "description": "A single product record object.",
+            "properties": {
+              "productcateogry": {
+                "type": "string",
+                "description": "Category of the product."
+              },
+              "id": {
+                "type": "string",
+                "description": "Unique identifier of the product record."
+              },
+              "productid": {
+                "type": "string",
+                "description": "Product identifier code."
+              },
+              "instock": {
+                "type": "boolean",
+                "description": "Indicates whether the product is in stock."
+              },
+              "productsecretcode": {
+                "type": "string",
+                "description": "Secret code assigned to the product."
+              },
+              "productdescription": {
+                "type": "string",
+                "description": "Detailed description of the product."
+              }
+            }
+          },
+          "example": [
+            {
+              "productcateogry": "zylker",
+              "id": "14756000000008008",
+              "productid": "1004",
+              "instock": true,
+              "productsecretcode": "secretkey234",
+              "productdescription": "zylker description"
+            },
+            {
+              "productcateogry": "zylcal",
+              "id": "14756000000008003",
+              "productid": "1003",
+              "instock": false,
+              "productsecretcode": "secretkey123",
+              "productdescription": "zylcal description"
+            },
+            {
+              "productcateogry": "zylker",
+              "id": "14756000000008004",
+              "productid": "1002",
+              "instock": true,
+              "productsecretcode": "secretkey123",
+              "productdescription": "zylker description"
+            },
+            {
+              "productcateogry": "zylker",
+              "id": "14756000000008005",
+              "productid": "1001",
+              "instock": true,
+              "productsecretcode": "secretkey897",
+              "productdescription": "zylker description"
+            }
+          ]
+        }
+      }
+    },
+    "base64_regex": {
+      "type": "string",
+      "description": "Base64-encoded pagination or sync token used for cursor-based pagination and incremental data sync."
+    },
+    "editplatformdatabase_v2": {
+      "type": "object",
+      "description": "Payload for updating datastore metadata.",
+      "properties": {
+        "unique_name": {
+          "type": "string",
+          "maxLength": 20,
+          "description": "Updated datastore unique name.<br>\nAccepts lowercase letters, numbers, and underscores only, and must start with a letter. This is used in API endpoints and should be unique across datastores.<br>\n<b>Maximum length</b>: 20 characters.\n"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 20,
+          "description": "Updated datastore display name.<br>\nCan contain letters, numbers, and spaces. This is used for display purposes in the UI and can be non-unique.<br>\n<b>Maximum length</b>: 20 characters.\n"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 250,
+          "description": "Updated datastore description.<br>\nA brief description about the datastore's purpose or contents.<br>\n<b>Maximum length</b>: 250 characters.\n"
+        },
+        "unique_keys": {
+          "type": "array",
+          "maxItems": 4,
+          "description": "Updated unique key constraints for the datastore. Replaces the existing set of constraints entirely.<br>\n<ul>\n  <li>A maximum of <b>4</b> unique key constraints can be defined per datastore.</li>\n  <li>Each constraint is an array of one or more field <code>unique_name</code> values that must be collectively unique across all records.</li>\n  <li>Fields of type <b>encrypted-text</b> or <b>large-text</b> cannot be included in a unique key constraint.</li>\n</ul>\n",
+          "items": {
+            "type": "array",
+            "description": "An array of field unique_names that form a single unique key constraint. Each unique key constraint ensures that the combination of values in the specified fields is unique across all records in the datastore.\n",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "example": {
+        "unique_name": "empdir",
+        "name": "Employee Directory",
+        "description": "Tracks employee records and department data",
+        "unique_keys": [
+          [
+            "empid",
+            "empname"
+          ]
+        ]
+      }
+    },
+    "createplatformdatabase_v2": {
+      "type": "object",
+      "description": "Payload for creating a new datastore.",
+      "required": [
+        "unique_name",
+        "name",
+        "description",
+        "fields"
+      ],
+      "properties": {
+        "unique_name": {
+          "type": "string",
+          "maxLength": 20,
+          "description": "Datastore unique name.<br>\nAccepts lowercase letters, numbers, and underscores only, and must start with a letter. This is used in API endpoints and should be unique across datastores.<br>\n<b>Maximum length</b>: 20 characters.\n"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 20,
+          "description": "Datastore display name.<br>\nCan contain letters, numbers, and spaces. This is used for display purposes in the UI and can be non-unique.<br>\n<b>Maximum length</b>: 20 characters.\n"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 250,
+          "description": "Datastore description.<br>\nA brief description about the datastore's purpose or contents.<br>\n<b>Maximum length</b>: 250 characters.\n"
+        },
+        "fields": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 19,
+          "description": "List of field definitions for the datastore schema.<br>\nEach field defines a column in the datastore with specific attributes and constraints.<br>\nA datastore can have a maximum of 20 fields including the default record ID field.\n",
+          "items": {
+            "type": "object",
+            "required": [
+              "unique_name",
+              "name",
+              "type"
+            ],
+            "properties": {
+              "unique_name": {
+                "type": "string",
+                "maxLength": 20,
+                "description": "Unique name of the field.<br>\nAccepts lowercase letters, numbers, and underscores only, and must start with a letter. This is used in API endpoints to reference the field.<br>\n<b>Maximum length</b>: 20 characters.\n"
+              },
+              "name": {
+                "type": "string",
+                "maxLength": 20,
+                "description": "Display name of the field.<br>\nCan contain letters, numbers, and spaces. This is used for display purposes in the UI.<br>\n<b>Maximum length</b>: 20 characters.\n"
+              },
+              "type": {
+                "type": "string",
+                "description": "Data type of the field.<br>\nDetermines the kind of data that can be stored in this field and the operations that can be performed on it.<br>\n Allowed values:\n <ul>\n   <li><b>boolean</b>: Stores true/false values.</li>\n   <li><b>number</b>: Stores numeric values. Can be used for mathematical operations.</li>\n   <li><b>limited-text</b>: Stores short text up to 250 characters. Cannot be used for full-text search.</li>\n   <li><b>encrypted-text</b>: Stores sensitive text data in encrypted form. Cannot be included in unique key constraints and does not support masking. Maximum length: 1000 characters.</li>\n   <li><b>large-text</b>: Stores long text data up to 65,535 characters. Suitable for descriptions, comments, etc. Cannot be included in unique key constraints.</li>\n </ul>\n <b>Note</b>: The field type cannot be changed after the datastore is created\n",
+                "enum": [
+                  "boolean",
+                  "number",
+                  "limited-text",
+                  "encrypted-text",
+                  "large-text"
+                ]
+              },
+              "mandatory": {
+                "type": "boolean",
+                "description": "Indicates whether this field is mandatory for each record. If true, a value must be provided for this field when creating or updating records.\n"
+              },
+              "masked": {
+                "type": "boolean",
+                "description": "Indicates whether this field's value should be masked (e.g., for sensitive information).<br>\n<b>Note</b>: Masking is not supported for <b>encrypted-text</b> fields. Encrypted fields are already stored in protected form and cannot be additionally masked.\n"
+              },
+              "default_value": {
+                "type": "string",
+                "maxLength": 100,
+                "description": "Default value for the field when creating new records. Must be a string representation of a value compatible with the field's data type. For example, \"true\" for boolean, \"123\" for number, etc.<br>\n<b>Maximum length</b>: 100 characters.\n"
+              }
+            }
+          }
+        },
+        "unique_keys": {
+          "type": "array",
+          "maxItems": 4,
+          "description": "Defines unique key constraints for the datastore. Each constraint is an array of field <code>unique_name</code> values that must be collectively unique across all records.<br>\n<ul>\n  <li>A maximum of <b>4</b> unique key constraints can be defined per datastore.</li>\n  <li>Each constraint is an array of one or more field <code>unique_name</code> values.</li>\n  <li>Fields of type <b>encrypted-text</b> or <b>large-text</b> cannot be included in a unique key constraint.</li>\n</ul>\n",
+          "items": {
+            "type": "array",
+            "description": "An array of field unique_names that form a single unique key constraint.",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "example": {
+        "unique_name": "empdir",
+        "name": "Employee Directory",
+        "description": "V3 API test datastore",
+        "fields": [
+          {
+            "name": "Notes",
+            "unique_name": "notes",
+            "type": "large-text",
+            "mandatory": false
+          },
+          {
+            "name": "Employee ID",
+            "unique_name": "empid",
+            "type": "number",
+            "mandatory": true
+          },
+          {
+            "name": "Employee Name",
+            "unique_name": "empname",
+            "type": "limited-text",
+            "mandatory": true
+          },
+          {
+            "name": "Active Status",
+            "unique_name": "isactive",
+            "type": "boolean",
+            "mandatory": false
+          }
+        ],
+        "unique_keys": [
+          [
+            "empid"
+          ]
+        ]
+      }
+    },
+    "datastores_records_add": {
+      "type": "object",
+      "description": "Payload for inserting or updating a single datastore record.",
+      "required": [
+        "values"
+      ],
+      "properties": {
+        "values": {
+          "type": "object",
+          "description": "Key-value pairs of field unique_name and the new value to update.\n",
+          "additionalProperties": true,
+          "example": {
+            "empid": "1001",
+            "empname": "John Doe",
+            "isactive": true,
+            "salary": "50000",
+            "department": "Engineering",
+            "notes": "Senior Engineer in Platform Team"
+          }
+        }
+      }
+    },
+    "encryptedappkey_regex": {
+      "type": "string",
+      "description": "Encrypted application key (appkey or EXTENSION_KEY) issued to a bot or extension, used as an alternative to OAuth for webhook-style authentication."
+    },
+    "platformstorage_records_export": {
+      "type": "object",
+      "description": "Configuration payload for a Datastore bulk export operation. Specifies the fields to include, filter criteria, and output format.",
+      "required": [
+        "file_type"
+      ],
+      "properties": {
+        "file_type": {
+          "type": "string",
+          "description": "Format of the exported file.<br>\n<ul>\n <li><b>csv</b>: Comma-separated values format, suitable for spreadsheets and data analysis tools.</li>\n <li><b>xlsx</b>: Microsoft Excel format, supports multiple sheets, formatting, and larger data volumes.</li>\n <li><b>pdf</b>: Portable Document Format, ideal for sharing and printing.</li>\n</ul>\n",
+          "enum": [
+            "csv",
+            "xlsx",
+            "pdf"
+          ]
+        },
+        "password_protected": {
+          "type": "boolean",
+          "description": "Indicates whether the exported file should be protected with a password. If true, the <code>password</code> field must be provided to specify the password to use for protecting the file.\n"
+        },
+        "password": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 20,
+          "description": "Password to protect the exported file. This field is required if <code>password_protected</code> is true.<br>\nMust be between 8 and 20 characters in length and should include a mix of letters, numbers, and special characters for better security.\n<br><b>Minimum length</b>: 8 characters<br>\n<b>Maximum length</b>: 20 characters\n"
+        }
+      }
+    },
+    "datastores_records_update": {
+      "type": "object",
+      "description": "Payload for bulk updating datastore records by criteria.",
+      "required": [
+        "values",
+        "criteria"
+      ],
+      "properties": {
+        "values": {
+          "type": "object",
+          "description": "Field name to new value map. All records matching the criteria will have the specified fields updated to these new values. Fields not included in this map will remain unchanged in the matching records.\n",
+          "additionalProperties": true
+        },
+        "criteria": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Expression to identify which records to update. Use field <code>unique_name</code>s as keys. Supported comparison operators: <code>=</code>, <code>==</code>, <code>!=</code>, <code>&gt;</code>, <code>&gt;=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>like</code>, <code>not like</code>, <code>in</code> (max 10 values), <code>not in</code> (max 10 values). Combine conditions with <code>&&</code> (AND) or <code>||</code> (OR), and use parentheses for grouping. Max 10 clauses.<br>\n<b>Maximum length</b>: 500 characters.\n"
+        }
+      }
+    },
+    "orderbyfield_regex": {
+      "type": "string",
+      "description": "Field name (optionally suffixed with \" asc\" or \" desc\") used to sort Datastore records in query results."
+    },
+    "multiplelong_regex": {
+      "type": "string",
+      "description": "Comma-separated list of numeric long integer IDs (e.g. record IDs or field IDs) used in bulk delete operations."
+    },
+    "edit_platform_db_fields": {
+      "type": "object",
+      "description": "Payload for editing existing datastore fields.",
+      "required": [
+        "fields"
+      ],
+      "properties": {
+        "fields": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10,
+          "description": "<ul>\n  <li>List of existing fields to edit in the datastore schema.</li>\n  <li>Each field must be identified by its numeric ID and can have its name, mandatory status, masked status, and default value updated. The field type cannot be changed.</li>\n  <li><b>Maximum of 10 fields</b> can be edited in a single request.</li>\n</ul>\n",
+          "items": {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Unique identifier of the field to be edited. This is assigned by the system when the field is created and cannot be changed.\n"
+              },
+              "unique_name": {
+                "type": "string",
+                "maxLength": 20,
+                "description": "Unique name of the field.<br>\nAccepts lowercase letters, numbers, and underscores only, and must start with a letter. This is used in API endpoints to reference the field.<br>\n<b>Maximum length</b>: 20 characters.\n"
+              },
+              "name": {
+                "type": "string",
+                "maxLength": 20,
+                "description": "Display name of the field.<br>\nCan contain letters, numbers, and spaces. This is used for display purposes in the UI.<br>\n<b>Maximum length</b>: 20 characters.\n"
+              },
+              "mandatory": {
+                "type": "boolean",
+                "description": "Indicates whether this field is mandatory for each record. If true, a value must be provided for this field when creating or updating records.\n"
+              },
+              "masked": {
+                "type": "boolean",
+                "description": "Indicates whether this field's value should be masked (e.g., for sensitive information).<br>\n<b>Note</b>: Masking is not supported for <b>encrypted-text</b> fields. Encrypted fields are already stored in protected form and cannot be additionally masked.\n"
+              },
+              "default_value": {
+                "type": "string",
+                "maxLength": 100,
+                "description": "Default value for the field when creating new records. Must be a string representation of a value compatible with the field's data type. For example, \"true\" for boolean, \"123\" for number, etc.<br>\n<b>Maximum length</b>: 100 characters.\n"
+              }
+            }
+          }
+        }
+      },
+      "example": {
+        "fields": [
+          {
+            "id": "17202020414617773604009000",
+            "name": "Notes",
+            "unique_name": "notes",
+            "mandatory": false,
+            "default_value": ""
+          },
+          {
+            "id": "17202020414617773604009001",
+            "name": "Employee ID",
+            "unique_name": "empid",
+            "mandatory": true,
+            "default_value": "0"
+          }
+        ]
+      }
+    },
+    "add_platform_db_fields": {
+      "type": "object",
+      "description": "Payload for adding new fields to a datastore schema.",
+      "required": [
+        "fields"
+      ],
+      "properties": {
+        "fields": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10,
+          "description": "<ul>\n  <li>List of new fields to add to the datastore.</li>\n  <li>Each field must have a unique_name, name, and type. The new fields will be appended to the existing schema and can be used in subsequent record operations.</li>\n  <li><b>Maximum of 10 fields</b> can be added in a single request.</li>\n</ul>\n",
+          "items": {
+            "type": "object",
+            "required": [
+              "unique_name",
+              "name",
+              "type"
+            ],
+            "properties": {
+              "unique_name": {
+                "type": "string",
+                "maxLength": 20,
+                "description": "Unique name of the field.<br>\nAccepts lowercase letters, numbers, and underscores only, and must start with a letter. This is used in API endpoints to reference the field.<br>\n<b>Maximum length</b>: 20 characters.\n"
+              },
+              "name": {
+                "type": "string",
+                "maxLength": 20,
+                "description": "Display name of the field.<br>\nCan contain letters, numbers, and spaces. This is used for display purposes in the UI.<br>\n<b>Maximum length</b>: 20 characters.\n"
+              },
+              "type": {
+                "type": "string",
+                "description": "Data type of the field.<br>\nDetermines the kind of data that can be stored in this field and the operations that can be performed on it.<br>\n Allowed values:\n <ul>\n   <li><b>boolean</b>: Stores true/false values.</li>\n   <li><b>number</b>: Stores numeric values. Can be used for mathematical operations.</li>\n   <li><b>limited-text</b>: Stores short text up to 250 characters. Cannot be used for full-text search.</li>\n   <li><b>encrypted-text</b>: Stores sensitive text data in encrypted form. Cannot be included in unique key constraints and does not support masking. Maximum length: 1000 characters.</li>\n   <li><b>large-text</b>: Stores long text data up to 65,535 characters. Suitable for descriptions, comments, etc. Cannot be included in unique key constraints.</li>\n </ul>\n <b>Note</b>: The field type cannot be changed after the datastore is created\n",
+                "enum": [
+                  "boolean",
+                  "number",
+                  "limited-text",
+                  "encrypted-text",
+                  "large-text"
+                ]
+              },
+              "mandatory": {
+                "type": "boolean",
+                "description": "Indicates whether this field is mandatory for each record. If true, a value must be provided for this field when creating or updating records.\n"
+              },
+              "masked": {
+                "type": "boolean",
+                "description": "Indicates whether this field's value should be masked (e.g., for sensitive information).<br>\n<b>Note</b>: Masking is not supported for <b>encrypted-text</b> fields. Encrypted fields are already stored in protected form and cannot be additionally masked.\n"
+              },
+              "default_value": {
+                "type": "string",
+                "maxLength": 100,
+                "description": "Default value for the field when creating new records. Must be a string representation of a value compatible with the field's data type. For example, \"true\" for boolean, \"123\" for number, etc.<br>\n<b>Maximum length</b>: 100 characters.\n"
+              }
+            }
+          }
+        }
+      },
+      "example": {
+        "fields": [
+          {
+            "unique_name": "join_date",
+            "name": "Join Date",
+            "type": "limited-text",
+            "mandatory": false,
+            "default_value": ""
+          },
+          {
+            "unique_name": "location",
+            "name": "Location",
+            "type": "limited-text",
+            "mandatory": false,
+            "default_value": ""
+          }
+        ]
+      }
+    },
+    "longid_regex": {
+      "type": "string",
+      "description": "Numeric long integer identifier used to reference platform components such as Commands, Functions, Widgets, Message Actions, Schedulers, and Extensions."
+    },
+    "listrecords_response": {
+      "type": "object",
+      "description": "Response schema for listing records from a datastore, including pagination information and a list of records.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "API endpoint URL for the records resource."
+        },
+        "type": {
+          "type": "string",
+          "description": "Resource type identifier."
+        },
+        "sync_token": {
+          "type": "string",
+          "description": "Opaque token encoding the current sync position; pass as next_token in subsequent requests for incremental sync."
+        },
+        "list": {
+          "type": "array",
+          "description": "Array of record objects returned from the datastore.",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "example": {
+        "url": "/api/v3/datastores/empdir/records",
+        "type": "datastore_record",
+        "sync_token": "MTB8MTc3NzM2MDQwMzQ1NXw=",
+        "list": [
+          {
+            "productcateogry": "zylker",
+            "id": "14756000000008008",
+            "productid": "1004",
+            "instock": true,
+            "productsecretcode": "secretkey234",
+            "productdescription": "zylker description"
+          },
+          {
+            "productcateogry": "zylcal",
+            "id": "14756000000008003",
+            "productid": "1003",
+            "instock": false,
+            "productsecretcode": "secretkey123",
+            "productdescription": "zylcal description"
+          },
+          {
+            "productcateogry": "zylker",
+            "id": "14756000000008004",
+            "productid": "1002",
+            "instock": true,
+            "productsecretcode": "secretkey123",
+            "productdescription": "zylker description"
+          },
+          {
+            "productcateogry": "zylker",
+            "id": "14756000000008005",
+            "productid": "1001",
+            "instock": true,
+            "productsecretcode": "secretkey897",
+            "productdescription": "zylker description"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,531 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Zoho Cliq Threads Schemas",
+  "definitions": {
+    "no-response": {
+      "type": "object",
+      "description": "Response object returned when no content is available.",
+      "properties": {
+        "Response Code": {
+          "type": "string",
+          "description": "HTTP response code and message indicating no content.",
+          "example": "204 No response"
+        }
+      }
+    },
+    "v3-thread": {
+      "type": "object",
+      "properties": {
+        "chat_id": {
+          "type": "string"
+        },
+        "parent_chat_id": {
+          "type": "string"
+        },
+        "thread_message_id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "follower_count": {
+          "type": "integer"
+        },
+        "is_follower": {
+          "type": "boolean"
+        },
+        "thread_state": {
+          "type": "string"
+        },
+        "parent_message_sender": {
+          "type": "string"
+        },
+        "last_message_information": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "post-message-in-a-channel-response": {
+      "type": "object",
+      "description": "Response returned when a message is posted in a channel. A '204 No response' indicates successful posting without returning any content.",
+      "properties": {
+        "Response Code": {
+          "type": "string",
+          "description": "HTTP response code when message is posted.",
+          "example": "204 No response"
+        }
+      }
+    },
+    "get-thread-followers-response": {
+      "type": "object",
+      "description": "Response containing the list of followers for a particular thread.",
+      "properties": {
+        "data": {
+          "type": "array",
+          "description": "List of users following the thread.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "user_id": {
+                "type": "string",
+                "description": "Unique identifier of the user.",
+                "example": "855727961"
+              },
+              "email_id": {
+                "type": "string",
+                "format": "email",
+                "description": "Email ID of the user.",
+                "example": "ryan.west@zylker.com"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the user.",
+                "example": "Ryan West"
+              }
+            }
+          },
+          "example": [
+            {
+              "user_id": "855727961",
+              "email_id": "ryan.west@zylker.com",
+              "name": "Ryan West"
+            },
+            {
+              "user_id": "855727962",
+              "email_id": "scott.fisher@zylker.com",
+              "name": "Scott Fisher"
+            },
+            {
+              "user_id": "855727963",
+              "email_id": "tim.harrison@zylker.com",
+              "name": "Tim Harrison"
+            }
+          ]
+        }
+      }
+    },
+    "retrieve-chat-members": {
+      "type": "object",
+      "description": "Response object containing members of a chat.",
+      "properties": {
+        "members": {
+          "type": "array",
+          "description": "List of members in the chat with detailed user information.",
+          "items": {
+            "$ref": "#/components/schemas/Members"
+          }
+        }
+      }
+    },
+    "Members": {
+      "type": "object",
+      "description": "Detailed information about a chat member.",
+      "properties": {
+        "user_id": {
+          "type": "string",
+          "description": "Unique identifier of the user.",
+          "example": "431930546"
+        },
+        "email_id": {
+          "type": "string",
+          "format": "email",
+          "description": "Email address of the user.",
+          "example": "olivia.palmer@zylcal.com"
+        },
+        "name": {
+          "type": "string",
+          "description": "Full name of the user.",
+          "example": "Olivia - Content Writer"
+        }
+      }
+    },
+    "thread-creation-payload": {
+      "type": "object",
+      "description": "Request body to create a new thread from an existing message.",
+      "required": [
+        "text",
+        "thread_message_id"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Text to post as the initial message in the thread. Maximum length: 5000 characters.",
+          "example": "Follow this thread for daily updates on ticket resolutions."
+        },
+        "thread_message_id": {
+          "type": "string",
+          "description": "ID of the parent message from which the thread should be created.",
+          "example": "1599044334698_117280617320"
+        },
+        "reply_to": {
+          "type": "string",
+          "description": "Optional. ID of a message to reply to within the thread."
+        },
+        "post_in_parent": {
+          "type": "boolean",
+          "description": "Optional. If true, posts the thread message in the parent chat as well.",
+          "example": true
+        },
+        "thread_title": {
+          "type": "string",
+          "description": "Optional. Title for the thread.",
+          "example": "Ticket Resolution Summary for the Day"
+        },
+        "sync_message": {
+          "type": "boolean",
+          "description": "Optional. If true, posts the message synchronously and returns the message ID.",
+          "example": true
+        }
+      }
+    },
+    "send-message-in-thread-payload": {
+      "type": "object",
+      "description": "Request body to send a message in an existing thread.",
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Text to post in the thread. Maximum length: 5000 characters.",
+          "example": "Let's automate these cases so we can address them during testing."
+        },
+        "reply_to": {
+          "type": "string",
+          "description": "Optional. Message ID to reply to within the thread."
+        },
+        "post_in_parent": {
+          "type": "boolean",
+          "description": "Optional. If true, posts the message in the parent chat as well.",
+          "example": true
+        },
+        "sync_message": {
+          "type": "boolean",
+          "description": "Optional. If true, posts the message synchronously and returns the message ID.",
+          "example": true
+        }
+      }
+    },
+    "thread-creation-response": {
+      "type": "object",
+      "description": "Response returned after creating a thread.",
+      "properties": {
+        "message_id": {
+          "type": "string",
+          "description": "ID of the created thread message.",
+          "example": "1275417686584_20804595296"
+        }
+      }
+    },
+    "get-threads-payload": {
+      "type": "object",
+      "description": "Request parameters to retrieve threads from a channel.",
+      "properties": {
+        "next_token": {
+          "type": "string",
+          "description": "Used for pagination. Pass the next_token received in the previous API response to get the next page.",
+          "example": "MTV8MTYxNjEzNTI3ODYzNnwxNzc1OTk4MDAxMTcwMDczMzAx"
+        },
+        "limit": {
+          "type": "string",
+          "description": "Maximum number of threads to return in the response.",
+          "example": "50"
+        }
+      }
+    },
+    "auto-follow-threads-payload": {
+      "type": "object",
+      "description": "Request body to enable or disable auto-follow for threads in a channel.",
+      "properties": {
+        "auto_follow_threads": {
+          "type": "string",
+          "description": "Set the auto-follow status for threads in the channel.<br>\n<b>Allowed values</b>:<br>\n <ul>\n  <li>enable - Automatically follow all threads created in the channel.</li>\n  <li>disable - Do not automatically follow threads. Users will need to manually follow threads they are interested in.</li>\n</ul>\n",
+          "example": "enable"
+        }
+      }
+    },
+    "add-followers-payload": {
+      "type": "object",
+      "description": "Request body to add followers to a thread.",
+      "required": [
+        "user_ids"
+      ],
+      "properties": {
+        "user_ids": {
+          "type": "array",
+          "description": "List of user IDs to add as followers to the thread.",
+          "items": {
+            "type": "string",
+            "description": "Unique identifier of a user to be added as a follower."
+          },
+          "example": [
+            "15067889",
+            "35068981",
+            "5120923"
+          ]
+        }
+      }
+    },
+    "remove-followers-payload": {
+      "type": "object",
+      "description": "Request body to remove followers from a thread.",
+      "required": [
+        "user_ids"
+      ],
+      "properties": {
+        "user_ids": {
+          "type": "array",
+          "description": "List of user IDs to remove from followers of the thread.",
+          "items": {
+            "type": "string",
+            "description": "Unique identifier of a user to be removed from the thread."
+          },
+          "example": [
+            "15067889",
+            "35068981",
+            "5120923"
+          ]
+        }
+      }
+    },
+    "update-state-of-thread-request": {
+      "type": "object",
+      "description": "Request body to update the state of a thread (open or closed).",
+      "required": [
+        "action"
+      ],
+      "properties": {
+        "action": {
+          "type": "string",
+          "description": "Action to update the thread state.<br>\n<b>Allowed values</b>:<br>\n <ul>\n  <li>reopen - Reopen a closed thread.</li>\n  <li>close - Close an open thread to prevent new messages from being added.</li>\n  <li>follow - Follow the thread to receive notifications for new messages.</li>\n  <li>unfollow - Unfollow the thread to stop receiving notifications for new messages.</li>\n</ul> \n",
+          "example": "close"
+        }
+      }
+    },
+    "auto-follow-threads-response": {
+      "type": "object",
+      "description": "Response returned after updating auto-follow settings for threads.",
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "Current auto-follow status of the channel.",
+          "example": "enabled"
+        }
+      }
+    },
+    "get-threads-response": {
+      "type": "object",
+      "description": "Response containing the list of threads in a channel.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "API endpoint for fetching threads.",
+          "example": "/api/v3/threads"
+        },
+        "next_token": {
+          "type": "string",
+          "description": "Token for pagination to retrieve next set of threads.",
+          "example": "MTV8MTYxNjEzNTI3ODYzNnwxNzc1OTk4MDAxMTcwMDczMzAx"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of response.",
+          "example": "chat_thread"
+        },
+        "sync_token": {
+          "type": "string",
+          "description": "Token for synchronizing thread data.",
+          "example": "MTV8MTYyODgzNTQ3OTkyOHwxNzc1OTk4MDAxMTg2NzU5NDUx"
+        },
+        "data": {
+          "type": "array",
+          "description": "List of threads.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "parent_chat_id": {
+                "type": "string",
+                "description": "ID of the parent chat.",
+                "example": "CT_9001245010012354810_3467821"
+              },
+              "is_follower": {
+                "type": "boolean",
+                "description": "Indicates if the current user is following this thread.",
+                "example": true
+              },
+              "follower_count": {
+                "type": "integer",
+                "description": "Number of followers of the thread.",
+                "example": 5
+              },
+              "chat_id": {
+                "type": "string",
+                "description": "ID of the thread chat.",
+                "example": "CT_9001245010012354810_3467821-T-9001245010938461210"
+              },
+              "last_message_information": {
+                "type": "object",
+                "description": "Details of the last message in the thread.",
+                "properties": {
+                  "sender_id": {
+                    "type": "string",
+                    "example": "45321098"
+                  },
+                  "message_type": {
+                    "type": "string",
+                    "example": "text"
+                  },
+                  "time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2024-12-12T10:45:00+05:30"
+                  },
+                  "text": {
+                    "type": "string",
+                    "example": "Final report has been uploaded to the portal."
+                  },
+                  "sender_name": {
+                    "type": "string",
+                    "example": "Olivia Palmer"
+                  }
+                }
+              },
+              "title": {
+                "type": "string",
+                "description": "Thread title.",
+                "example": "Final Report Submission"
+              },
+              "thread_message_id": {
+                "type": "string",
+                "description": "Unique message ID for the thread.",
+                "example": "1702119024356%2097654301123490"
+              },
+              "parent_message_sender": {
+                "type": "string",
+                "description": "User ID of the parent message sender.",
+                "example": "673892104"
+              },
+              "thread_state": {
+                "type": "string",
+                "enum": [
+                  "open",
+                  "closed"
+                ],
+                "description": "State of the thread.",
+                "example": "open"
+              }
+            }
+          }
+        }
+      }
+    },
+    "get-main-message-response": {
+      "type": "object",
+      "description": "Response containing the details of a main message and its thread information.",
+      "properties": {
+        "parent_resource_id": {
+          "type": "string",
+          "description": "Resource ID of the parent entity.",
+          "example": "engineering-updates"
+        },
+        "sender": {
+          "type": "object",
+          "description": "Information about the sender of the message.",
+          "properties": {
+            "name": {
+              "type": "string",
+              "example": "Ryan West"
+            },
+            "id": {
+              "type": "string",
+              "example": "855727961"
+            }
+          }
+        },
+        "mentions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "@Scott Fisher"
+              },
+              "id": {
+                "type": "string",
+                "example": "855727962"
+              },
+              "type": {
+                "type": "string",
+                "example": "user"
+              }
+            }
+          }
+        },
+        "thread_information": {
+          "type": "object",
+          "description": "Additional thread information.",
+          "properties": {
+            "thread_message_id": {
+              "type": "string",
+              "example": "1760000012345%201234567890"
+            },
+            "title": {
+              "type": "string",
+              "example": "Customer onboarding latency issue"
+            },
+            "follower_count": {
+              "type": "integer",
+              "example": 3
+            },
+            "message_count": {
+              "type": "integer",
+              "example": 18
+            },
+            "chat_id": {
+              "type": "string",
+              "example": "CT_2242125513190139257_855711548-T-2263887074117538898"
+            }
+          }
+        },
+        "id": {
+          "type": "string",
+          "example": "1760000012345_1234567890"
+        },
+        "time": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2026-05-28T10:36:48+00:00"
+        },
+        "thread_state_information": {
+          "type": "object",
+          "description": "State information of the thread.",
+          "properties": {
+            "thread_state": {
+              "type": "string",
+              "example": "open"
+            }
+          }
+        },
+        "type": {
+          "type": "string",
+          "example": "text"
+        },
+        "content": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string",
+              "example": "The customer onboarding workflow is intermittently delayed. Please share logs and mitigation updates in this thread."
+            }
+          }
+        },
+        "is_pinned": {
+          "type": "boolean",
+          "example": false
+        }
+      }
+    }
+  }
+}

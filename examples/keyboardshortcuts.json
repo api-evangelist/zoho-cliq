@@ -1,0 +1,220 @@
+{
+  "fetchKeyboardShortcuts": {
+    "path": "/settings/keyboard-shortcuts",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "keyboard_shortcuts": {
+          "basic": {
+            "search": {
+              "mac": "cmd+k",
+              "windows": "ctrl+k"
+            },
+            "mute": {
+              "mac": "cmd+shift+m",
+              "windows": "ctrl+shift+m"
+            },
+            "go_to_mentions": {
+              "mac": "g+m",
+              "windows": "g+m"
+            },
+            "conversation_history": {
+              "mac": "cmd+shift+h",
+              "windows": "ctrl+shift+h"
+            },
+            "go_home": {
+              "mac": "g+h",
+              "windows": "g+h"
+            },
+            "zia_search": {
+              "mac": "cmd+slash",
+              "windows": "ctrl+slash"
+            },
+            "add_event": {
+              "mac": "cmd+shift+e",
+              "windows": "ctrl+shift+e"
+            }
+          },
+          "composer": {
+            "bold": {
+              "mac": "cmd+b",
+              "windows": "ctrl+b"
+            },
+            "italic": {
+              "mac": "cmd+i",
+              "windows": "ctrl+i"
+            },
+            "underline": {
+              "mac": "cmd+u",
+              "windows": "ctrl+u"
+            },
+            "strikethrough": {
+              "mac": "cmd+shift+x",
+              "windows": "ctrl+shift+x"
+            },
+            "schedule_message": {
+              "mac": "cmd+shift+s",
+              "windows": "ctrl+shift+s"
+            },
+            "link": {
+              "mac": "cmd+l",
+              "windows": "ctrl+l"
+            }
+          },
+          "message_action": {
+            "reply": {
+              "mac": "right",
+              "windows": "right"
+            },
+            "forward": {
+              "mac": "f",
+              "windows": "f"
+            },
+            "pin": {
+              "mac": "p",
+              "windows": "p"
+            },
+            "copy": {
+              "mac": "c",
+              "windows": "c"
+            },
+            "delete": {
+              "mac": "delete",
+              "windows": "delete"
+            },
+            "mark_unread": {
+              "mac": "u",
+              "windows": "u"
+            }
+          },
+          "media": {
+            "pip": {
+              "mac": "i",
+              "windows": "i"
+            },
+            "add_participant": {
+              "mac": "shift+equal",
+              "windows": "shift+equal"
+            },
+            "go_to_chat": {
+              "mac": "g+c",
+              "windows": "g+c"
+            }
+          },
+          "annotate": {
+            "rotate": {
+              "mac": "r",
+              "windows": "r"
+            },
+            "annotate": {
+              "mac": "cmd+e",
+              "windows": "ctrl+e"
+            }
+          },
+          "networks": {},
+          "custom": {
+            "chat": [
+              {
+                "id": "support-team",
+                "name": "Support Team",
+                "mac": "cmd+option+c",
+                "windows": "ctrl+alt+c"
+              }
+            ],
+            "widget": [],
+            "snippet": []
+          }
+        }
+      }
+    }
+  },
+  "updateKeyboardShortcuts": {
+    "path": "/settings/keyboard-shortcuts",
+    "method": "put",
+    "examples": {
+      "request": {
+        "update_default_shortcut": {
+          "summary": "Update a default shortcut key mapping",
+          "value": {
+            "keyboard_shortcuts": {
+              "basic": {
+                "search": {
+                  "mac": "cmd+k",
+                  "windows": "ctrl+k"
+                }
+              },
+              "composer": {
+                "bold": {
+                  "mac": "cmd+b",
+                  "windows": "ctrl+b"
+                }
+              }
+            }
+          }
+        },
+        "add_custom_chat_shortcut": {
+          "summary": "Add a custom chat shortcut",
+          "value": {
+            "custom": {
+              "chat": [
+                {
+                  "id": "support-team",
+                  "name": "Support Team",
+                  "mac": "cmd+option+c",
+                  "windows": "ctrl+alt+c"
+                }
+              ]
+            }
+          }
+        },
+        "add_custom_widget_shortcut": {
+          "summary": "Add a custom widget shortcut",
+          "value": {
+            "custom": {
+              "widget": [
+                {
+                  "id": "calendar-widget",
+                  "name": "Calendar Widget",
+                  "mac": "cmd+option+w",
+                  "windows": "ctrl+alt+w"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "deleteKeyboardShortcuts": {
+    "path": "/settings/keyboard-shortcuts",
+    "method": "delete",
+    "examples": {
+      "request": {
+        "delete_specific_custom": {
+          "summary": "Delete a specific custom chat shortcut",
+          "value": {
+            "custom": {
+              "chat": [
+                {
+                  "id": "support-team"
+                }
+              ]
+            }
+          }
+        },
+        "delete_all_custom": {
+          "summary": "Delete all custom shortcuts in bulk",
+          "value": {
+            "type": "custom"
+          }
+        },
+        "reset_all_defaults": {
+          "summary": "Reset all default shortcuts to system defaults",
+          "value": {
+            "type": "default"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,616 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Zoho Cliq Buttons Schemas",
+  "definitions": {
+    "empty-response": {
+      "type": "object",
+      "description": "Response returned when there is no content.",
+      "properties": {
+        "Response_Code": {
+          "type": "string",
+          "example": "204 No response"
+        }
+      }
+    },
+    "instant-buttons-request": {
+      "type": "object",
+      "required": [
+        "text",
+        "references"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "The text content of the message with inline button references.<br>\nUse the format <code>[Button Label]($reference-key)</code> to embed buttons within the text.<br>\n<b>Maximum length</b>: 10,000 characters.\n",
+          "maxLength": 10000,
+          "example": "Who's up for lunch after the match on Friday? [Yes]($1)  [Call Support]($2)  [Copy Details]($3)"
+        },
+        "references": {
+          "type": "object",
+          "description": "An object containing button definitions referenced in the message text.<br>\n<ul>\n  <li>Each key in this object corresponds to a reference key used in the text (e.g., \"1\", \"2\", \"3\").</li>\n  <li>The value for each key is a button definition object containing the button's properties.</li>\n  <li>Reference keys are embedded in the message text using the format <code>[Button Label]($reference-key)</code>.</li>\n  <li>When the message is displayed, the references are rendered as interactive buttons.</li>\n</ul>\n",
+          "properties": {
+            "reference_key": {
+              "type": "object",
+              "description": "Each reference key (e.g., \"1\", \"2\", \"3\") maps to a button definition object.<br>\n<ul>\n  <li>The reference key must match the key used in the message text within <code>$reference-key</code>.</li>\n  <li>Each button definition contains a <code>type</code> (must be \"button\") and an <code>object</code> with button properties.</li>\n  <li>You can define multiple buttons by creating multiple reference keys.</li>\n</ul>\n",
+              "required": [
+                "type",
+                "object"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "button"
+                  ],
+                  "description": "The type of reference. For buttons, this must be \"button\".\n",
+                  "example": "button"
+                },
+                "object": {
+                  "type": "object",
+                  "description": "The button object containing the button's configuration.\n",
+                  "required": [
+                    "label",
+                    "action"
+                  ],
+                  "properties": {
+                    "label": {
+                      "type": "string",
+                      "maxLength": 20,
+                      "description": "The display name of the button.<br>\n<b>Maximum number of characters allowed</b>: 20\n",
+                      "example": "Yes"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "+",
+                        "-"
+                      ],
+                      "description": "The visual style of the button.<br>\n\"+\" renders a positive (green outline) button.<br>\n\"-\" renders a negative (red outline) button.\n",
+                      "example": "+"
+                    },
+                    "action": {
+                      "type": "object",
+                      "description": "An object containing the type of action the button should perform.\n",
+                      "required": [
+                        "type",
+                        "data"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "description": "The action type for the button.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><a href=\"#instant-invoke-function\"><b>invoke.function</b></a>: Executes a predefined function created in Cliq Developer Console or Bots and tools.</li>\n  <li><a href=\"#instant-system-api\"><b>system.api</b></a>: Calls a predefined system API to perform specific actions within Cliq (audiocall, videocall, startchat, invite, locationpermission).</li>\n  <li><a href=\"#instant-copy\"><b>copy</b></a>: Copies specified text to the user's clipboard.</li>\n</ul>\n",
+                          "enum": [
+                            "invoke.function",
+                            "system.api",
+                            "copy"
+                          ],
+                          "example": "invoke.function"
+                        },
+                        "data": {
+                          "type": "object",
+                          "description": "An object with properties for each action type.<br><br>\n<div id=\"instant-invoke-function\">Data object when the button action type is <b>invoke.function</b>:</div><br>\n<table>\n  <thead>\n    <tr>\n      <th>Attribute</th>\n      <th>Type</th>\n      <th>Description</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>name*</td>\n      <td>string</td>\n      <td>The unique name of the function to be invoked.</td>\n    </tr>\n    <tr>\n      <td>owner</td>\n      <td>string</td>\n      <td>The email ID of the function owner (optional if the function is created by the same user).</td>\n    </tr>\n  </tbody>\n</table>\n<br>\n<div id=\"instant-system-api\">Data object when the button action type is <b>system.api</b>:</div><br>\n<table>\n  <thead>\n    <tr>\n      <th>Attribute</th>\n      <th>Type</th>\n      <th>Description</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>api*</td>\n      <td>string</td>\n      <td>\n        Specifies the system action to be executed.<br><br>\n        <b>Allowed values:</b> audiocall | videocall | startchat | invite | locationpermission<br><br>\n        <b>Format:</b> system_action/{zuid}<br>\n        Where {zuid} is the Zoho User ID of the user to whom the system action should be performed.\n      </td>\n    </tr>\n  </tbody>\n</table>\n<br>\n<div id=\"instant-copy\">Data object when the button action type is <b>copy</b>:</div><br>\n<table>\n  <thead>\n    <tr>\n      <th>Attribute</th>\n      <th>Type</th>\n      <th>Description</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>text*</td>\n      <td>string</td>\n      <td>\n        The text that will be copied to the user's clipboard when the button is clicked.<br><br>\n        <b>Maximum length:</b> 200 characters.\n      </td>\n    </tr>\n  </tbody>\n</table>\n",
+                          "example": {
+                            "name": "teammatch"
+                          }
+                        }
+                      }
+                    },
+                    "arguments": {
+                      "type": "object",
+                      "description": "Optional custom arguments to be passed to the invoked function.<br>\nThis can contain any key-value pairs required by your function.\n",
+                      "additionalProperties": true,
+                      "example": {
+                        "key_1": "value_1",
+                        "key_2": "value_2",
+                        "key_3": "value_3"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "example": {
+        "text": "Who's up for lunch after the match on Friday? [Yes]($1)  [Call Support]($2)  [Copy Details]($3)",
+        "references": {
+          "1": {
+            "type": "button",
+            "object": {
+              "label": "Yes",
+              "action": {
+                "type": "invoke.function",
+                "data": {
+                  "name": "teammatch"
+                }
+              },
+              "type": "+"
+            }
+          },
+          "2": {
+            "type": "button",
+            "object": {
+              "label": "Call Support",
+              "action": {
+                "type": "system.api",
+                "data": {
+                  "api": "videocall/12345678"
+                }
+              },
+              "type": "+"
+            }
+          },
+          "3": {
+            "type": "button",
+            "object": {
+              "label": "Copy Details",
+              "action": {
+                "type": "copy",
+                "data": {
+                  "text": "Match Details: Friday 6 PM at Central Stadium"
+                }
+              },
+              "type": "+"
+            }
+          }
+        }
+      }
+    },
+    "instant-buttons-with-arguments-request": {
+      "type": "object",
+      "description": "Example demonstrating instant buttons with custom arguments and system API actions.\n",
+      "required": [
+        "text",
+        "references"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "example": "[Help]($1)  [Call Support]($2)"
+        },
+        "references": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "example": {
+        "text": "[Help]($1)  [Call Support]($2)",
+        "references": {
+          "1": {
+            "type": "button",
+            "object": {
+              "label": "Help",
+              "type": "+",
+              "action": {
+                "type": "invoke.function",
+                "data": {
+                  "name": "HelpMessageFunctionName",
+                  "owner": "user@email.com"
+                }
+              },
+              "arguments": {
+                "key_1": "value_1",
+                "key_2": "value_2",
+                "key_3": "value_3"
+              }
+            }
+          },
+          "2": {
+            "type": "button",
+            "object": {
+              "label": "Call Support",
+              "type": "+",
+              "action": {
+                "type": "system.api",
+                "data": {
+                  "api": "videocall/12345678"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "message-card-buttons-request": {
+      "type": "object",
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "The text content of the message to be sent.<br>\n<b>Maximum length</b>: 10,000 characters.\n",
+          "maxLength": 10000,
+          "example": "New interns will be joining these teams from July."
+        },
+        "card": {
+          "type": "object",
+          "description": "An optional object that defines the visual presentation of the message card.\n",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "The title of the message card.\n",
+              "example": "ANNOUNCEMENT"
+            },
+            "theme": {
+              "type": "string",
+              "description": "The visual theme of the message card.<br>\n<b>Allowed values</b>: modern-inline | poll | prompt\n",
+              "example": "modern-inline"
+            },
+            "thumbnail": {
+              "type": "string",
+              "format": "uri",
+              "description": "The URL of the thumbnail image for the message card.\n",
+              "example": "https://www.zoho.com/cliq/help/restapi/images/announce_icon.png"
+            }
+          }
+        },
+        "buttons": {
+          "type": "array",
+          "maxItems": 5,
+          "description": "An array of button objects that define the interactive buttons to be attached to the message card.<br>\nA <b>maximum of 5 buttons</b> can be included.\n",
+          "items": {
+            "type": "object",
+            "required": [
+              "label",
+              "type",
+              "action"
+            ],
+            "properties": {
+              "label": {
+                "type": "string",
+                "maxLength": 20,
+                "description": "The display name of the button.<br>\n<b>Maximum number of characters allowed</b>: 20 \n"
+              },
+              "hint": {
+                "type": "string",
+                "maxLength": 100,
+                "description": "A tool tip indicating the button's function while hovering over.<br>\n<b>Maximum number of characters allowed</b>: 100\n"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "+",
+                  "-"
+                ],
+                "description": "\"+\" renders a positive (green outline) button. \"-\" renders a negative (red outline) button.    \n"
+              },
+              "key": {
+                "type": "string",
+                "maxLength": 100,
+                "description": "Unique identifier for each button. This key can be defined to easily identify and differentiate the buttons clicked and execute the functionality. \n<b>Maximum number of characters allowed</b>: 100\n"
+              },
+              "action": {
+                "type": "object",
+                "description": "An object containing the type of action the button should perform.\n",
+                "required": [
+                  "type",
+                  "data"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "description": "The action type for a button. \n<b>Allowed values</b>:\n<ul>\n  <li><a href=\"#invoke-function\"><b>invoke.function</b></a>: Executes a predefined function created in Cliq Developer Console or Bots and tools.</li>\n  <li><a href=\"#open-url\"><b>open.url</b></a>: Opens a specified URL in a new browser tab or window.</li>\n  <li><a href=\"#system-api\"><b>system.api</b></a>: Calls a predefined system API to perform specific actions within Cliq</li>\n  <li><a href=\"#preview-url\"><b>preview.url</b></a>: Displays a preview of the specified URL within Cliq.</li>\n  <li><a href=\"#copy\"><b>copy</b></a>: Copies specified text to the user's clipboard.</li>\n</ul>\n",
+                    "enum": [
+                      "invoke.function",
+                      "open.url",
+                      "system.api",
+                      "preview.url",
+                      "copy"
+                    ]
+                  },
+                  "data": {
+                    "type": "object",
+                    "description": "An object with properties for each action type. The required properties depend on the action type specified.<br>\n<div id=\"invoke-function\">Data object when the button action type is <b>invoke.function</b>:</div><br>\n<table>\n  <thead>\n    <tr>\n      <th>Attribute</th>\n      <th>Type</th>\n      <th>Description</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>name*</td>\n      <td>string</td>\n      <td>Name of the function to be invoked.</td>\n    </tr>\n    <tr>\n      <td>owner*</td>\n      <td>string</td>\n      <td>The email address of the function creator.</td>\n    </tr>\n  </tbody>\n</table>\n\n<div id=\"open-url\">Data object when the button action type is <b>open.url</b>:</div><br>\n<table>\n  <thead>\n    <tr>\n      <th>Attribute</th>\n      <th>Type</th>\n      <th>Description</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>web</td>\n      <td>string (URL)</td>\n      <td>\n        The URL to be opened when the button is clicked.<br><br>\n        <b>Supported protocols:</b> http | https | tel | sms | sip<br><br>\n        <b>Maximum length:</b> 256 characters.\n      </td>\n    </tr>\n    <tr>\n      <td>windows</td>\n      <td>string (URL)</td>\n      <td>\n        The URL to be opened on Windows mobile devices.<br><br>\n        <b>Maximum length:</b> 256 characters.\n      </td>\n    </tr>\n    <tr>\n      <td>iOS</td>\n      <td>string (URL)</td>\n      <td>\n        The URL to be opened on iOS mobile devices.<br><br>\n        <b>Maximum length:</b> 256 characters.\n      </td>\n    </tr>\n    <tr>\n      <td>android</td>\n      <td>string (URL)</td>\n      <td>\n        The URL to be opened on Android mobile devices.<br><br>\n        <b>Maximum length:</b> 256 characters.\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<div id=\"preview-url\">Data object when the button action type is <b>preview.url</b>:</div>\n<table>\n  <thead>\n    <tr>\n      <th>Attribute</th>\n      <th>Type</th>\n      <th>Description</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>url*</td>\n      <td>string</td>\n      <td>\n        Iframe URL used to play a video or render a webpage within the chat interface.<br><br>\n        <b>Maximum length:</b> 500 characters.\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<div id=\"system-api\">Data object when the button action type is <b>system.api</b>:</div>\n<table>\n  <thead>\n    <tr>\n      <th>Attribute</th>\n      <th>Type</th>\n      <th>Description</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>api*</td>\n      <td>string</td>\n      <td>\n        Specifies the system action to be executed.<br><br>\n        <b>Allowed values:</b> audiocall | videocall | startchat | invite | locationpermission<br><br>\n        <b>Supported system actions and formats:</b><br><br>\n        \u2022 <b>audiocall/zuid</b> \u2013 Initiates an audio call with the specified user.<br><br>\n        \u2022 <b>videocall/zuid</b> \u2013 Initiates a video call with the specified user.<br><br>\n        \u2022 <b>startchat/zuid</b> \u2013 Starts a direct chat with the specified user.<br><br>\n        \u2022 <b>invite/zuid</b> \u2013 Sends a contact invitation to the specified user.<br><br>\n        \u2022 <b>locationpermission</b> \u2013 Requests location access permission from the user.<br><br>\n        <b>Format:</b> system action/{zuid}\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<div id=\"copy\">Data object when the button action type is <b>copy</b>:</div><br>\n<table>\n  <thead>\n    <tr>\n      <th>Attribute</th>\n      <th>Type</th>\n      <th>Description</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>text*</td>\n      <td>string</td>\n      <td>\n        The text that will be copied to the user's clipboard when the button is clicked.<br><br>\n        <b>Maximum length:</b> 200 characters.\n      </td>\n    </tr>\n  </tbody>\n</table>\n"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "confirm": {
+          "type": "object",
+          "description": "Properties of the confirmation dialog box before the action is executed. It can be included based on the requirement.\n",
+          "required": [
+            "title",
+            "input",
+            "button_label"
+          ],
+          "properties": {
+            "title": {
+              "type": "string",
+              "maxLength": 100,
+              "description": "Confirmation dialog box title before the action is executed. Maximum number of characters allowed : 100\n"
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 100,
+              "description": "Confirmation message displayed before the action is executed. Maximum number of characters allowed : 100\n"
+            },
+            "input": {
+              "type": "string",
+              "maxLength": 300,
+              "description": "The input text prompt present in the confirmation dialog box. Maximum number of characters allowed : 300\nThis input field is used to collect user input ( For example : authentication key or feedback ) during confirmation or cancellation action.\n"
+            },
+            "emotion": {
+              "type": "string",
+              "enum": [
+                "positive",
+                "neutral",
+                "negative"
+              ],
+              "description": "(Optional) To set the visual style of the confirmation dialog box. Allowed Values : positive | neutral | negative If key is not provided, the theme of the dialog box will be set as positive by default.\n"
+            },
+            "button_label": {
+              "type": "string",
+              "maxLength": 100,
+              "description": "Label of the button present in the confirmation box. Maximum number of characters allowed : 100\n"
+            },
+            "cancel_button_label": {
+              "type": "string",
+              "maxLength": 100,
+              "description": "Label of the cancel button present in the confirmation box. Maximum number of characters allowed : 100\n"
+            },
+            "mandatory": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ],
+              "description": "(Optional) To specify whether the input field is required or not. Allowed Values : true | false When set to true, an error must be thrown if the user does not provide any input.\n"
+            }
+          }
+        }
+      },
+      "example": {
+        "text": "You are invited to the Sales Annual Strategy Meet 2024. Please review the agenda and confirm your participation.",
+        "card": {
+          "theme": "modern-inline",
+          "thumbnail": "/cliq/help/restapi/images/cliq_icon.png"
+        },
+        "buttons": [
+          {
+            "label": "View Agenda",
+            "type": "+",
+            "key": "view_agenda",
+            "action": {
+              "type": "open.url",
+              "data": {
+                "web": "https://events.zylker.com/sales-meet-2024"
+              }
+            }
+          },
+          {
+            "label": "Add to Calendar",
+            "type": "+",
+            "key": "calendar_invite",
+            "action": {
+              "type": "invoke.function",
+              "data": {
+                "name": "add_sales_meet_calendar",
+                "owner": "events@zylker.com"
+              }
+            }
+          },
+          {
+            "label": "Join Virtual Meet",
+            "type": "+",
+            "key": "join_meet",
+            "action": {
+              "type": "system.api",
+              "data": {
+                "api": "videocall/9876543210"
+              }
+            }
+          },
+          {
+            "label": "Watch Promo",
+            "type": "+",
+            "key": "preview_video",
+            "action": {
+              "type": "preview.url",
+              "data": {
+                "url": "https://media.zylker.com/sales-meet-promo"
+              }
+            }
+          },
+          {
+            "label": "Copy Event ID",
+            "type": "+",
+            "key": "copy_event_id",
+            "action": {
+              "type": "copy",
+              "data": {
+                "text": "SALES-MEET-2024"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "confirmation-popup-request": {
+      "type": "object",
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "The text content of the message to be sent.<br>\n<b>Maximum length</b>: 10,000 characters.\n",
+          "maxLength": 10000,
+          "example": "New interns will be joining these teams from July."
+        },
+        "card": {
+          "type": "object",
+          "description": "An optional object that defines the visual presentation of the message card.\n",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "The title of the message card.\n",
+              "example": "ANNOUNCEMENT"
+            },
+            "theme": {
+              "type": "string",
+              "description": "The visual theme of the message card.<br>\n<b>Allowed values</b>: modern-inline | poll | prompt\n",
+              "example": "modern-inline"
+            },
+            "thumbnail": {
+              "type": "string",
+              "format": "uri",
+              "description": "The URL of the thumbnail image for the message card.\n",
+              "example": "https://www.zoho.com/cliq/help/restapi/images/announce_icon.png"
+            }
+          }
+        },
+        "buttons": {
+          "type": "array",
+          "maxItems": 5,
+          "description": "An array of button objects that define the interactive buttons to be attached to the message card.<br>\nA <b>maximum of 5 buttons</b> can be included.\n",
+          "items": {
+            "type": "object",
+            "required": [
+              "label",
+              "type",
+              "action"
+            ],
+            "properties": {
+              "label": {
+                "type": "string",
+                "maxLength": 20,
+                "description": "The display name of the button.<br>\n<b>Maximum number of characters allowed</b>: 20 \n"
+              },
+              "hint": {
+                "type": "string",
+                "maxLength": 100,
+                "description": "A tool tip indicating the button's function while hovering over.<br>\n<b>Maximum number of characters allowed</b>: 100\n"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "+",
+                  "-"
+                ],
+                "description": "\"+\" renders a positive (green outline) button. \"-\" renders a negative (red outline) button.    \n"
+              },
+              "key": {
+                "type": "string",
+                "maxLength": 100,
+                "description": "Unique identifier for each button. This key can be defined to easily identify and differentiate the buttons clicked and execute the functionality. \n<b>Maximum number of characters allowed</b>: 100\n"
+              },
+              "action": {
+                "type": "object",
+                "description": "An object containing the type of action the button should perform.\n",
+                "required": [
+                  "type",
+                  "data"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "description": "The action type for a button. \n<b>Allowed values</b>: invoke.function | open.url | system.api | preview.url | copy\n",
+                    "enum": [
+                      "invoke.function",
+                      "open.url",
+                      "system.api",
+                      "preview.url",
+                      "copy"
+                    ]
+                  },
+                  "data": {
+                    "type": "object",
+                    "description": "An object with properties for each action type. The required properties depend on the action type specified.<br> \n"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "confirm": {
+          "type": "object",
+          "description": "Properties of the confirmation dialog box before the action is executed. It can be included based on the requirement.\n",
+          "required": [
+            "title",
+            "input",
+            "button_label"
+          ],
+          "properties": {
+            "title": {
+              "type": "string",
+              "maxLength": 100,
+              "description": "Confirmation dialog box title before the action is executed. Maximum number of characters allowed : 100\n"
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 100,
+              "description": "Confirmation message displayed before the action is executed. Maximum number of characters allowed : 100\n"
+            },
+            "input": {
+              "type": "string",
+              "maxLength": 300,
+              "description": "The input text prompt present in the confirmation dialog box. Maximum number of characters allowed : 300\nThis input field is used to collect user input ( For example : authentication key or feedback ) during confirmation or cancellation action.\n"
+            },
+            "emotion": {
+              "type": "string",
+              "enum": [
+                "positive",
+                "neutral",
+                "negative"
+              ],
+              "description": "(Optional) To set the visual style of the confirmation dialog box. Allowed Values : positive | neutral | negative If key is not provided, the theme of the dialog box will be set as positive by default.\n"
+            },
+            "button_label": {
+              "type": "string",
+              "maxLength": 100,
+              "description": "Label of the button present in the confirmation box. Maximum number of characters allowed : 100\n"
+            },
+            "cancel_button_label": {
+              "type": "string",
+              "maxLength": 100,
+              "description": "Label of the cancel button present in the confirmation box. Maximum number of characters allowed : 100\n"
+            },
+            "mandatory": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ],
+              "description": "(Optional) To specify whether the input field is required or not. Allowed Values : true | false When set to true, an error must be thrown if the user does not provide any input.             \n"
+            }
+          }
+        }
+      },
+      "example": {
+        "text": "The Q4 marketing budget is ready for review.",
+        "card": {
+          "title": "Q4 Budget Proposal",
+          "theme": "modern-inline"
+        },
+        "hint": "Please review the allocation details before approval.",
+        "buttons": [
+          {
+            "label": "Approve Budget",
+            "type": "+",
+            "key": "approve_budget_q4",
+            "action": {
+              "type": "invoke.function",
+              "data": {
+                "name": "approve_q4_budget",
+                "owner": "finance@zylker.com"
+              },
+              "confirm": {
+                "title": "Finalize Budget Approval",
+                "description": "Please provide approval remarks before proceeding.",
+                "input": "Enter approval remarks",
+                "emotion": "positive",
+                "button_label": "Confirm Approval",
+                "cancel_button_label": "Review Again",
+                "mandatory": "true"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

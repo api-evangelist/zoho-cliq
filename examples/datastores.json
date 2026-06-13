@@ -1,0 +1,523 @@
+{
+  "creating_datastores_for_an_org": {
+    "path": "/datastores",
+    "method": "post",
+    "examples": {
+      "response_200": {
+        "url": "/api/v3/datastores",
+        "type": "datastore",
+        "data": {
+          "unique_name": "empdir",
+          "name": "Employee Directory",
+          "id": "227828000000132001",
+          "creator": {
+            "name": "NP NTC",
+            "id": "119440882"
+          },
+          "status": "enabled",
+          "fields": [
+            {
+              "default_value": "",
+              "masked": false,
+              "name": "Notes",
+              "unique_name": "notes",
+              "type": "large-text",
+              "mandatory": false,
+              "id": "17202020414617773604009000"
+            },
+            {
+              "default_value": "0",
+              "masked": false,
+              "name": "Employee ID",
+              "unique_name": "empid",
+              "type": "number",
+              "mandatory": true,
+              "id": "17202020414617773604009001"
+            },
+            {
+              "default_value": "",
+              "masked": false,
+              "name": "Employee Name",
+              "unique_name": "empname",
+              "type": "limited-text",
+              "mandatory": true,
+              "id": "17202020414617773604009002"
+            },
+            {
+              "default_value": "true",
+              "masked": false,
+              "name": "Active Status",
+              "unique_name": "isactive",
+              "type": "boolean",
+              "mandatory": false,
+              "id": "17202020414617773604009003"
+            }
+          ],
+          "type": "custom",
+          "description": "V3 API test datastore",
+          "unique_keys": [
+            [
+              "empid"
+            ]
+          ],
+          "scope": "personal"
+        }
+      }
+    }
+  },
+  "get_list_of_datastores": {
+    "path": "/datastores",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "url": "/api/v3/datastores",
+        "type": "datastore",
+        "sync_token": "MTB8MTc3NzM2MDM5OTc0OXw=",
+        "data": [
+          {
+            "unique_name": "empdir",
+            "name": "Employee Directory",
+            "id": "227828000000132001",
+            "creator": {
+              "name": "NP NTC",
+              "id": "119440882"
+            },
+            "status": "enabled",
+            "fields": [
+              {
+                "default_value": "",
+                "masked": false,
+                "name": "Notes",
+                "unique_name": "notes",
+                "type": "large-text",
+                "mandatory": false,
+                "id": "17202020414617773604009000"
+              },
+              {
+                "default_value": "0",
+                "masked": false,
+                "name": "Employee ID",
+                "unique_name": "empid",
+                "type": "number",
+                "mandatory": true,
+                "id": "17202020414617773604009001"
+              },
+              {
+                "default_value": "",
+                "masked": false,
+                "name": "Employee Name",
+                "unique_name": "empname",
+                "type": "limited-text",
+                "mandatory": true,
+                "id": "17202020414617773604009002"
+              },
+              {
+                "default_value": "true",
+                "masked": false,
+                "name": "Active Status",
+                "unique_name": "isactive",
+                "type": "boolean",
+                "mandatory": false,
+                "id": "17202020414617773604009003"
+              }
+            ],
+            "type": "custom",
+            "description": "V3 API test datastore",
+            "unique_keys": [
+              [
+                "empid"
+              ]
+            ],
+            "scope": "personal"
+          }
+        ]
+      }
+    }
+  },
+  "edit_datastores": {
+    "path": "/datastores/{DATASTORE_ID}",
+    "method": "patch",
+    "examples": {
+      "request": {
+        "unique_name": "empdir",
+        "name": "Employee Directory",
+        "description": "Tracks employee records and department data",
+        "unique_keys": [
+          [
+            "empid",
+            "empname"
+          ]
+        ]
+      },
+      "response_200": {
+        "url": "/api/v3/datastores/227828000000132001",
+        "type": "datastore",
+        "data": {
+          "unique_name": "empdir",
+          "name": "Employee Directory",
+          "id": "227828000000132001",
+          "creator": {
+            "name": "NP NTC",
+            "id": "119440882"
+          },
+          "status": "enabled",
+          "fields": [
+            {
+              "default_value": "",
+              "masked": false,
+              "name": "Department",
+              "unique_name": "department",
+              "type": "limited-text",
+              "mandatory": false,
+              "id": "17202020414617773604018030"
+            },
+            {
+              "default_value": "",
+              "masked": false,
+              "name": "Notes",
+              "unique_name": "notes",
+              "type": "large-text",
+              "mandatory": false,
+              "id": "17202020414617773604009000"
+            },
+            {
+              "default_value": "0",
+              "masked": false,
+              "name": "Salary",
+              "unique_name": "salary",
+              "type": "number",
+              "mandatory": false,
+              "id": "17202020414617773604018070"
+            },
+            {
+              "default_value": "",
+              "masked": false,
+              "name": "Employee Name",
+              "unique_name": "empname",
+              "type": "limited-text",
+              "mandatory": true,
+              "id": "17202020414617773604009002"
+            },
+            {
+              "default_value": "0",
+              "masked": false,
+              "name": "Employee ID",
+              "unique_name": "empid",
+              "type": "number",
+              "mandatory": true,
+              "id": "17202020414617773604009001"
+            },
+            {
+              "default_value": "true",
+              "masked": false,
+              "name": "Active Status",
+              "unique_name": "isactive",
+              "type": "boolean",
+              "mandatory": false,
+              "id": "17202020414617773604009003"
+            }
+          ],
+          "type": "custom",
+          "description": "Tracks employee records and department data",
+          "unique_keys": [
+            [
+              "empid",
+              "empname"
+            ]
+          ],
+          "scope": "personal"
+        }
+      }
+    }
+  },
+  "get_a_datastores": {
+    "path": "/datastores/{DATASTORE_ID}",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "url": "/api/v3/datastores/227828000000132001",
+        "type": "datastore",
+        "data": {
+          "unique_name": "empdir",
+          "name": "Employee Directory",
+          "id": "227828000000132001",
+          "creator": {
+            "name": "NP NTC",
+            "id": "119440882"
+          },
+          "status": "enabled",
+          "fields": [
+            {
+              "default_value": "",
+              "masked": false,
+              "name": "Notes",
+              "unique_name": "notes",
+              "type": "large-text",
+              "mandatory": false,
+              "id": "17202020414617773604009000"
+            },
+            {
+              "default_value": "0",
+              "masked": false,
+              "name": "Employee ID",
+              "unique_name": "empid",
+              "type": "number",
+              "mandatory": true,
+              "id": "17202020414617773604009001"
+            },
+            {
+              "default_value": "",
+              "masked": false,
+              "name": "Employee Name",
+              "unique_name": "empname",
+              "type": "limited-text",
+              "mandatory": true,
+              "id": "17202020414617773604009002"
+            },
+            {
+              "default_value": "true",
+              "masked": false,
+              "name": "Active Status",
+              "unique_name": "isactive",
+              "type": "boolean",
+              "mandatory": false,
+              "id": "17202020414617773604009003"
+            }
+          ],
+          "type": "custom",
+          "description": "V3 API test datastore",
+          "unique_keys": [
+            [
+              "empid"
+            ]
+          ],
+          "scope": "personal"
+        }
+      }
+    }
+  },
+  "edit_datastore_fields": {
+    "path": "/datastores/{DATASTORE_ID}/fields",
+    "method": "patch",
+    "examples": {
+      "request": {
+        "fields": [
+          {
+            "id": "17202020414617773604009000",
+            "name": "Employee Notes",
+            "mandatory": false
+          },
+          {
+            "id": "17202020414617773604009003",
+            "name": "Is Active",
+            "mandatory": true
+          }
+        ]
+      },
+      "response_200": {
+        "url": "/api/v3/datastores/227828000000132001/fields",
+        "type": "datastore",
+        "data": {
+          "unique_name": "empdir",
+          "name": "Employee Directory",
+          "id": "227828000000132001",
+          "creator": {
+            "name": "NP NTC",
+            "id": "119440882"
+          },
+          "status": "enabled",
+          "fields": [
+            {
+              "default_value": "",
+              "masked": false,
+              "name": "Employee Notes",
+              "unique_name": "notes",
+              "type": "large-text",
+              "mandatory": false,
+              "id": "17202020414617773604009000"
+            },
+            {
+              "default_value": "0",
+              "masked": false,
+              "name": "Employee ID",
+              "unique_name": "empid",
+              "type": "number",
+              "mandatory": true,
+              "id": "17202020414617773604009001"
+            },
+            {
+              "default_value": "",
+              "masked": false,
+              "name": "Employee Name",
+              "unique_name": "empname",
+              "type": "limited-text",
+              "mandatory": true,
+              "id": "17202020414617773604009002"
+            },
+            {
+              "default_value": "true",
+              "masked": false,
+              "name": "Is Active",
+              "unique_name": "isactive",
+              "type": "boolean",
+              "mandatory": true,
+              "id": "17202020414617773604009003"
+            }
+          ],
+          "type": "custom",
+          "description": "Tracks employee records and department data",
+          "unique_keys": [
+            [
+              "empid"
+            ]
+          ],
+          "scope": "personal"
+        }
+      }
+    }
+  },
+  "add_datastore_fields": {
+    "path": "/datastores/{DATASTORE_ID}/fields",
+    "method": "post",
+    "examples": {
+      "request": {
+        "fields": [
+          {
+            "unique_name": "join_date",
+            "name": "Join Date",
+            "type": "limited-text",
+            "mandatory": false,
+            "default_value": ""
+          },
+          {
+            "unique_name": "location",
+            "name": "Location",
+            "type": "limited-text",
+            "mandatory": false,
+            "default_value": ""
+          }
+        ]
+      },
+      "response_200": {
+        "url": "/api/v3/datastores/227828000000132001/fields",
+        "type": "datastore",
+        "data": {
+          "unique_name": "empdir",
+          "name": "Employee Directory",
+          "id": "227828000000132001",
+          "creator": {
+            "name": "NP NTC",
+            "id": "119440882"
+          },
+          "status": "enabled",
+          "fields": [
+            {
+              "default_value": "",
+              "masked": false,
+              "name": "Notes",
+              "unique_name": "notes",
+              "type": "large-text",
+              "mandatory": false,
+              "id": "17202020414617773604009000"
+            },
+            {
+              "default_value": "0",
+              "masked": false,
+              "name": "Employee ID",
+              "unique_name": "empid",
+              "type": "number",
+              "mandatory": true,
+              "id": "17202020414617773604009001"
+            },
+            {
+              "default_value": "",
+              "masked": false,
+              "name": "Employee Name",
+              "unique_name": "empname",
+              "type": "limited-text",
+              "mandatory": true,
+              "id": "17202020414617773604009002"
+            },
+            {
+              "default_value": "true",
+              "masked": false,
+              "name": "Active Status",
+              "unique_name": "isactive",
+              "type": "boolean",
+              "mandatory": false,
+              "id": "17202020414617773604009003"
+            },
+            {
+              "default_value": "",
+              "masked": false,
+              "name": "Join Date",
+              "unique_name": "join_date",
+              "type": "limited-text",
+              "mandatory": false,
+              "id": "17202020414617773604018031"
+            },
+            {
+              "default_value": "",
+              "masked": false,
+              "name": "Location",
+              "unique_name": "location",
+              "type": "limited-text",
+              "mandatory": false,
+              "id": "17202020414617773604018032"
+            }
+          ],
+          "type": "custom",
+          "description": "Tracks employee records and department data",
+          "unique_keys": [
+            [
+              "empid"
+            ]
+          ],
+          "scope": "personal"
+        }
+      }
+    }
+  },
+  "insert_record_in_storage": {
+    "path": "/datastores/{DATASTORE_UNIQUE_NAME}/records",
+    "method": "post",
+    "examples": {
+      "response_200": {
+        "url": "/api/v3/datastores/empdir/records",
+        "type": "datastore_record",
+        "data": {
+          "modified_time": "1777360402254",
+          "empid": "1001",
+          "isactive": true,
+          "id": "227828000000128010",
+          "empname": "John Doe",
+          "added_time": "1777360402254",
+          "notes": "Senior Engineer in Platform Team"
+        }
+      }
+    }
+  },
+  "export_datastore_records": {
+    "path": "/datastores/{DATASTORE_ID}/export",
+    "method": "post",
+    "examples": {
+      "request": {
+        "without_password": {
+          "summary": "Export without password",
+          "value": {
+            "file_type": "csv",
+            "password_protected": false
+          }
+        },
+        "with_password": {
+          "summary": "Export with password",
+          "value": {
+            "file_type": "xlsx",
+            "password_protected": true,
+            "password": "MyS3cureP@ss"
+          }
+        }
+      }
+    }
+  }
+}

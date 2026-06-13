@@ -1,0 +1,668 @@
+openapi: 3.0.0
+info:
+  title: User Preferences
+  description: The User Preferences API allows users to retrieve and update personal Zoho Cliq preferences, including interface behavior, notifications, AV settings, and accessibility options.
+  contact: {}
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Zoho Cliq APIs
+  url: https://www.zoho.com/cliq/help/restapi/v2/
+servers:
+  - url: https://cliq.zoho.com/api/v3
+    description: Zoho Cliq US DC
+tags:
+  - name: userpreferences
+    description: User Preferences Module
+paths:
+  /settings/user-preferences:
+    get:
+      summary: Get user preferences
+      operationId: getUserPreferences
+      description: |
+        Returns the full preference set for the authenticated user.
+        This includes interface settings, notification controls, AV behavior, and accessibility-related options.
+        <br><br>
+        <p>
+          <b>OAuth Scope</b>: ZohoCliq.Profile.READ<br>
+        </p>
+      parameters:
+        - name: keys
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Comma-separated preference key names to fetch.
+      responses:
+        '200':
+          description: User preferences were retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user-preferences-response'
+              example:
+                userpreferences:
+                  dark_mode: disabled
+                  ui_theme: '4'
+                  lhs_theme: enabled
+                  smileys: enabled
+                  smileypreference: enabled
+                  translation_mode: enabled
+                  show_translate_option: enabled
+                  av_noise_cancellation: disabled
+                  av_hd_video: enabled
+                  av_speech_detection: enabled
+                  av_auto_pip: enabled
+                  av_livetranscript_always_on: disabled
+                  av_livetranscript_fontsize: '2'
+                  av_translate_livetranscript: disabled
+                  sound_notification: enabled
+                  global_sound_notify: enabled
+                  desktop_notification: disabled
+                  toast_notification: disabled
+                  reading_mask: disabled
+                  vision_assistive: disabled
+                  cliq_font: '-1'
+                  cliq_font_size: '2'
+                  cliq_font_spacing: '2'
+                  reminder_notification: enabled
+                  reactions_notification: enabled
+                  quick_reactions: ':thumbsup:,:super:,:heavy-plus-sign:/#x2795'
+                  conference_recording: disabled
+                  conference_theme: none
+                  video_background: none
+                  video_filter: none
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Profile.READ
+      tags:
+        - userpreferences
+    put:
+      summary: Update user preferences
+      operationId: updateUserPreferences
+      description: |
+        Updates one or more user preferences for the authenticated user.
+        Send only the fields you want to modify.
+        <br><br>
+        <p>
+          <b>OAuth Scope</b>: ZohoCliq.Profile.UPDATE<br>
+        </p>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update-user-preferences-request'
+            example:
+              dark_mode: enabled
+      responses:
+        '204':
+          description: No Content. User preferences were updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoResponse'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Profile.UPDATE
+      tags:
+        - userpreferences
+components:
+  schemas:
+    NoResponse:
+      type: object
+      description: Response envelope for successful operations with no payload.
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Operation completed successfully.
+    user-preferences-response:
+      type: object
+      properties:
+        userpreferences:
+          $ref: '#/components/schemas/user-preferences-object'
+    user-preferences-object:
+      type: object
+      description: Complete user preference object returned by the API.
+      x-enum-descriptions:
+        - enabled: Setting is enabled.
+        - disabled: Setting is disabled.
+      properties:
+        dark_mode:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Enable or disable dark mode.
+        ui_theme:
+          type: string
+          description: Active UI theme identifier.
+          example: '4'
+        lhs_theme:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Left-hand sidebar theme toggle.
+        smileys:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Enable emoji display in messages.
+        smileypreference:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Emoji preference toggle.
+        translation_mode:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Auto-translation toggle.
+        show_translate_option:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Show the Translate option on messages.
+        av_noise_cancellation:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Enable noise cancellation during AV calls.
+        av_hd_video:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Enable HD video for calls.
+        av_speech_detection:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Enable speech detection during calls.
+        av_auto_pip:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Automatically switch to picture-in-picture during calls.
+        av_livetranscript_always_on:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Keep live transcript always visible during calls.
+        av_livetranscript_fontsize:
+          type: string
+          description: Font size setting for live transcripts.
+          example: '2'
+        av_translate_livetranscript:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Translate live transcripts during calls.
+        sound_notification:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Master toggle for sound notifications.
+        global_sound_notify:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Global sound notification switch.
+        desktop_notification:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Desktop push notification toggle.
+        toast_notification:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Toast (pop-up) notification toggle.
+        reading_mask:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Enable reading mask for accessibility.
+        reading_mask_type:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Type of reading mask.
+        vision_assistive:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Enable vision assistive features.
+        vision_assistive_type:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Type of vision assistive mode.
+        cliq_font:
+          type: string
+          description: Selected font identifier. -1 means default.
+          example: '-1'
+        cliq_font_size:
+          type: string
+          description: Font size level.
+          example: '2'
+        cliq_font_spacing:
+          type: string
+          description: Font spacing level.
+          example: '2'
+        reminder_notification:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Toggle reminder notifications.
+        reactions_notification:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Toggle reaction notifications.
+        quick_reactions:
+          type: string
+          description: Comma-separated list of quick reaction emojis.
+          example: ':thumbsup:,:super:,:heavy-plus-sign:'
+        conference_recording:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Enable conference call recording.
+        conference_theme:
+          type: string
+          description: Theme used during conference calls.
+          example: none
+        video_background:
+          type: string
+          description: Virtual background for video calls.
+          example: none
+        video_filter:
+          type: string
+          description: Video filter applied during calls.
+          example: none
+        contact_photo:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Show contact photos in the chat list.
+        linkpreview_status:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Show URL link previews in messages.
+        underlinelinks:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Underline hyperlinks in messages.
+        magnify_text:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Magnify text for accessibility.
+        focus_indicator:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Show focus indicator for keyboard navigation.
+        last_seen:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Show last seen timestamp to contacts.
+        message_in_notification:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Show message content in notifications.
+        huddle_mirror_video:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Mirror own video feed in huddle.
+        huddle_pane_status:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Show huddle pane status.
+        huddle_sticky_info:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Show sticky info bar in huddle.
+        huddle_screenshare_layout:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Layout preference during screen share in huddle.
+        huddle_notify_msg:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: Notify participants when a huddle message is sent.
+    update-user-preferences-request:
+      type: object
+      description: Provide only the preference fields that must be updated.
+      properties:
+        dark_mode:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: |
+            Toggles dark mode for the Cliq interface.<br>
+            <b>Allowed values</b>:
+            <ul>
+              <li><code>enabled</code>: Dark mode is active.</li>
+              <li><code>disabled</code>: Dark mode is turned off.</li>
+            </ul>
+        ui_theme:
+          type: string
+          description: Active UI theme identifier.
+          example: '4'
+        lhs_theme:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: |
+            Toggles the left-hand sidebar theme.<br>
+            <b>Allowed values</b>:
+            <ul>
+              <li><code>enabled</code>: Left-hand sidebar theme is applied.</li>
+              <li><code>disabled</code>: Left-hand sidebar theme is turned off.</li>
+            </ul>
+        smileys:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: |
+            Toggles emoji display in messages.<br>
+            <b>Allowed values</b>:
+            <ul>
+              <li><code>enabled</code>: Emojis are rendered in messages.</li>
+              <li><code>disabled</code>: Emojis are shown as text.</li>
+            </ul>
+        translation_mode:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: |
+            Toggles automatic message translation.<br>
+            <b>Allowed values</b>:
+            <ul>
+              <li><code>enabled</code>: Auto-translation is active.</li>
+              <li><code>disabled</code>: Auto-translation is turned off.</li>
+            </ul>
+        av_noise_cancellation:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: |
+            Toggles noise cancellation during audio/video calls.<br>
+            <b>Allowed values</b>:
+            <ul>
+              <li><code>enabled</code>: Noise cancellation is active.</li>
+              <li><code>disabled</code>: Noise cancellation is turned off.</li>
+            </ul>
+        av_hd_video:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: |
+            Toggles HD video during calls.<br>
+            <b>Allowed values</b>:
+            <ul>
+              <li><code>enabled</code>: HD video is active.</li>
+              <li><code>disabled</code>: HD video is turned off.</li>
+            </ul>
+        sound_notification:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: |
+            Master toggle for all sound notifications.<br>
+            <b>Allowed values</b>:
+            <ul>
+              <li><code>enabled</code>: Sound notifications are active.</li>
+              <li><code>disabled</code>: All sound notifications are muted.</li>
+            </ul>
+        desktop_notification:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: |
+            Toggles desktop push notifications.<br>
+            <b>Allowed values</b>:
+            <ul>
+              <li><code>enabled</code>: Desktop notifications are active.</li>
+              <li><code>disabled</code>: Desktop notifications are turned off.</li>
+            </ul>
+        reading_mask:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: |
+            Toggles reading mask for accessibility.<br>
+            <b>Allowed values</b>:
+            <ul>
+              <li><code>enabled</code>: Reading mask is active.</li>
+              <li><code>disabled</code>: Reading mask is turned off.</li>
+            </ul>
+        vision_assistive:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: |
+            Toggles vision assistive features.<br>
+            <b>Allowed values</b>:
+            <ul>
+              <li><code>enabled</code>: Vision assistive features are active.</li>
+              <li><code>disabled</code>: Vision assistive features are turned off.</li>
+            </ul>
+        cliq_font:
+          type: string
+          description: Selected font identifier. -1 means default.
+          example: '-1'
+        cliq_font_size:
+          type: string
+          description: Font size level.
+          example: '2'
+        conference_recording:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: |
+            Toggles conference call recording.<br>
+            <b>Allowed values</b>:
+            <ul>
+              <li><code>enabled</code>: Conference recording is permitted.</li>
+              <li><code>disabled</code>: Conference recording is not permitted.</li>
+            </ul>
+        video_background:
+          type: string
+          description: Virtual background identifier for video calls.
+          example: none
+        video_filter:
+          type: string
+          description: Video filter identifier applied during calls.
+          example: none
+        last_seen:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: |
+            Controls the visibility of the user's last seen status.<br>
+            <b>Allowed values</b>:
+            <ul>
+              <li><code>enabled</code>: Last seen is visible to contacts.</li>
+              <li><code>disabled</code>: Last seen is hidden from contacts.</li>
+            </ul>
+        linkpreview_status:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          description: |
+            Toggles URL link previews in messages.<br>
+            <b>Allowed values</b>:
+            <ul>
+              <li><code>enabled</code>: Link previews are shown in messages.</li>
+              <li><code>disabled</code>: Link previews are hidden.</li>
+            </ul>
+  securitySchemes:
+    Cliq_Auth:
+      type: oauth2
+      x-authorization-example: Bearer 1000.41d9xxxxxxxxxxxxxxxxxxxxxxxxc2d1.8fccxxxxxxxxxxxxxxxxxxxxxxxx125f
+      flows:
+        implicit:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          scopes:
+            ZohoCliq.Profile.READ: Read user profile settings
+            ZohoCliq.Profile.UPDATE: Update user profile settings

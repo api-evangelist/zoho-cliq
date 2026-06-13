@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Zoho Cliq Dndsettings Schemas",
+  "definitions": {
+    "NoResponse": {
+      "type": "object",
+      "description": "Response envelope for successful operations with no payload.",
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "success"
+        },
+        "message": {
+          "type": "string",
+          "example": "Operation completed successfully."
+        }
+      }
+    },
+    "dnd-preferences-response": {
+      "type": "object",
+      "description": "Current DND preference settings for the user.",
+      "properties": {
+        "quiet_hours": {
+          "type": "string",
+          "description": "Time range for quiet hours in HH:MM-HH:MM format.",
+          "example": "18:00-09:00"
+        },
+        "quiet_days": {
+          "type": "string",
+          "description": "Comma-separated list of days when DND is active.",
+          "example": "sunday,monday"
+        }
+      }
+    },
+    "update-dnd-preferences-request": {
+      "type": "object",
+      "description": "Request payload for updating DND preferences. Omitted fields remain unchanged.",
+      "properties": {
+        "quiet_hours": {
+          "type": "string",
+          "description": "'Time range for quiet hours in HH:MM-HH:MM format. For example, \"18:00-09:00\" means DND is active from 6 PM to 9 AM the next day.'\n",
+          "example": "18:00-21:00"
+        },
+        "quiet_days": {
+          "type": "string",
+          "description": "Comma-separated list of days when DND is active.<br>\n<b>Allowed values</b>:\n<ul>\n   <li>sunday</li>\n   <li>monday</li>\n   <li>tuesday</li>\n   <li>wednesday</li>\n   <li>thursday</li>\n   <li>friday</li>\n   <li>saturday</li>\n</ul>\nFor example, \"monday,tuesday\" means DND is active on Mondays and Tuesdays.\n",
+          "example": "monday,tuesday"
+        }
+      }
+    }
+  }
+}

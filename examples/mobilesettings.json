@@ -1,0 +1,70 @@
+{
+  "getMobileSettings": {
+    "path": "/settings/mobile",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "av_noise_cancellation": "disabled",
+        "media_to_gallery": {
+          "images": "disabled",
+          "camera_captures": "disabled",
+          "videos": "disabled"
+        },
+        "conference_recording": "disabled",
+        "last_seen": "disabled",
+        "file_summary": "disabled",
+        "media_upload_quality": "enabled",
+        "notification": {
+          "direct_message": "enabled",
+          "direct_message_sound": "enabled",
+          "direct_message_preview": "enabled",
+          "channel": "enabled",
+          "channel_sound": "enabled",
+          "channel_preview": "enabled",
+          "group": "enabled",
+          "group_sound": "enabled",
+          "group_preview": "enabled",
+          "atmentions": "enabled",
+          "atmentions_sound": "enabled",
+          "atmentions_preview": "enabled",
+          "bot": "enabled",
+          "bot_sound": "enabled",
+          "bot_preview": "enabled",
+          "reactions": "enabled",
+          "reactions_sound": "enabled",
+          "reactions_preview": "enabled",
+          "hashtags": "enabled",
+          "hashtags_sound": "enabled",
+          "hashtags_preview": "enabled"
+        },
+        "media_auto_download": {
+          "images": "enabled",
+          "videos": "enabled",
+          "others": "enabled"
+        },
+        "media_auto_download_android": {
+          "images": "wifi",
+          "videos": "disabled",
+          "others": "mobile"
+        },
+        "huddle_join_video_muted": "enabled",
+        "av_hd_video": "enabled",
+        "av_speech_detection": "enabled",
+        "unread_summary": "enabled",
+        "chat_summary": "disabled"
+      }
+    }
+  },
+  "updateMobileSettings": {
+    "path": "/settings/mobile",
+    "method": "put",
+    "examples": {
+      "request": {
+        "notification": {
+          "hashtags_sound": "enabled"
+        },
+        "file_summary": "disabled"
+      }
+    }
+  }
+}

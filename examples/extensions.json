@@ -1,0 +1,88 @@
+{
+  "install_an_extension": {
+    "path": "/extensions/{EXTENSION_ID}/installation",
+    "method": "post",
+    "examples": {
+      "request": {
+        "install_organization": {
+          "summary": "Install for entire organization",
+          "value": {
+            "scope": "organization"
+          }
+        },
+        "install_team": {
+          "summary": "Install for specific teams",
+          "value": {
+            "scope": "team",
+            "team_ids": [
+              1234567890,
+              9876543210
+            ]
+          }
+        }
+      }
+    }
+  },
+  "update_extension": {
+    "path": "/extensions/{EXTENSION_ID}/installation",
+    "method": "put",
+    "examples": {
+      "request": {
+        "upgrade_keep_team": {
+          "summary": "Upgrade while keeping team scope",
+          "value": {
+            "scope": "team"
+          }
+        },
+        "upgrade_to_organization": {
+          "summary": "Upgrade and expand to organization scope",
+          "value": {
+            "scope": "organization"
+          }
+        }
+      }
+    }
+  },
+  "add_or_update_extension_proper": {
+    "path": "/extensions/{EXTENSION_ID}/properties",
+    "method": "patch",
+    "examples": {
+      "request": {
+        "set_single": {
+          "summary": "Set a single property",
+          "value": {
+            "properties": {
+              "api_key": "my_secret_api_key_value"
+            }
+          }
+        },
+        "set_multiple": {
+          "summary": "Set multiple properties",
+          "value": {
+            "properties": {
+              "api_key": "my_secret_api_key_value",
+              "region": "us-east",
+              "max_retries": "3"
+            }
+          }
+        }
+      },
+      "response_200": {
+        "set_single": {
+          "summary": "Single property set",
+          "value": {
+            "api_key": "my_secret_api_key_value"
+          }
+        },
+        "set_multiple": {
+          "summary": "Multiple properties set",
+          "value": {
+            "api_key": "my_secret_api_key_value",
+            "region": "us-east",
+            "max_retries": "3"
+          }
+        }
+      }
+    }
+  }
+}

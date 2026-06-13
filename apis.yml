@@ -31,6 +31,62 @@ apis:
         url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
       - type: Authentication
         url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+      - type: OpenAPI
+        url: openapi/chats.yml
+      - type: OpenAPI
+        url: openapi/messages.yml
+      - type: OpenAPI
+        url: openapi/threads.yml
+      - type: OpenAPI
+        url: openapi/scheduledmessages.yml
+      - type: OpenAPI
+        url: openapi/reminders.yml
+      - type: OpenAPI
+        url: openapi/pinmessages.yml
+      - type: OpenAPI
+        url: openapi/mypins.yml
+      - type: OpenAPI
+        url: openapi/stars.yml
+      - type: OpenAPI
+        url: openapi/messageformat.yml
+      - type: OpenAPI
+        url: openapi/mentions.yml
+      - type: OpenAPI
+        url: openapi/buttons.yml
+      - type: OpenAPI
+        url: openapi/messagecards.yml
+      - type: OpenAPI
+        url: openapi/bots.yml
+      - type: OpenAPI
+        url: openapi/slashcommands.yml
+      - type: OpenAPI
+        url: openapi/messageactions.yml
+      - type: OpenAPI
+        url: openapi/functions.yml
+      - type: OpenAPI
+        url: openapi/datastores.yml
+      - type: OpenAPI
+        url: openapi/extensions.yml
+      - type: OpenAPI
+        url: openapi/dndsettings.yml
+      - type: OpenAPI
+        url: openapi/mobilesettings.yml
+      - type: OpenAPI
+        url: openapi/userpreferences.yml
+      - type: OpenAPI
+        url: openapi/keyboardshortcuts.yml
+      - type: JSONSchema
+        url: json-schema/chats.json
+      - type: JSONSchema
+        url: json-schema/messages.json
+      - type: JSONSchema
+        url: json-schema/bots.json
+      - type: JSONSchema
+        url: json-schema/datastores.json
+      - type: JSONLd
+        url: json-ld/zoho-cliq.jsonld
+      - type: Vocabulary
+        url: vocabulary/zoho-cliq.yml
 common:
   - type: Website
     url: https://www.zoho.com/cliq/

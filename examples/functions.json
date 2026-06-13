@@ -1,0 +1,549 @@
+{
+  "create_a_new_function": {
+    "path": "/functions",
+    "method": "post",
+    "examples": {
+      "request": {
+        "button_function_deluge": {
+          "summary": "Deluge button function",
+          "value": {
+            "name": "ApproveRequest",
+            "description": "Handles approval button clicks in messages",
+            "function_type": "button",
+            "execution_type": "deluge"
+          }
+        },
+        "button_function_webhook": {
+          "summary": "Webhook button function",
+          "value": {
+            "name": "ApproveExpense",
+            "description": "Forwards approval clicks to external HR system",
+            "function_type": "button",
+            "execution_type": "webhook",
+            "execution_url": "https://api.yourcompany.com/cliq/functions/handler"
+          }
+        },
+        "form_function": {
+          "summary": "Form function",
+          "value": {
+            "name": "SubmitFeedback",
+            "description": "Processes feedback form submissions from users",
+            "function_type": "form"
+          }
+        },
+        "widget_button_function": {
+          "summary": "Widget button function",
+          "value": {
+            "name": "RefreshWidget",
+            "description": "Handles button clicks inside widgets",
+            "function_type": "widget_button"
+          }
+        }
+      },
+      "response_200": {
+        "button_function_deluge": {
+          "summary": "Deluge button function response",
+          "value": {
+            "url": "/api/v3/functions",
+            "type": "function",
+            "data": {
+              "name": "ApproveRequest",
+              "id": "53719000002124011",
+              "function_type": "button",
+              "handlers": [
+                {
+                  "type": "button_handler"
+                }
+              ],
+              "creator": {
+                "name": "James",
+                "id": "65113112"
+              },
+              "execution_type": "deluge",
+              "status": "enabled",
+              "type": "custom",
+              "description": "Handles approval button clicks in messages",
+              "scope": "personal"
+            }
+          }
+        },
+        "button_function_webhook": {
+          "summary": "Webhook button function response",
+          "value": {
+            "url": "/api/v3/functions",
+            "type": "function",
+            "data": {
+              "name": "ApproveExpense",
+              "id": "53719000002124014",
+              "function_type": "button",
+              "handlers": [
+                {
+                  "type": "button_handler"
+                }
+              ],
+              "creator": {
+                "name": "James",
+                "id": "65113112"
+              },
+              "execution_type": "webhook",
+              "execution_url": "https://api.yourcompany.com/cliq/functions/handler",
+              "status": "enabled",
+              "type": "custom",
+              "description": "Forwards approval clicks to external HR system",
+              "scope": "personal"
+            }
+          }
+        },
+        "form_function": {
+          "summary": "Form function response",
+          "value": {
+            "url": "/api/v3/functions",
+            "type": "function",
+            "data": {
+              "name": "SubmitFeedback",
+              "id": "53719000002124012",
+              "function_type": "form",
+              "handlers": [
+                {
+                  "type": "form_submit_handler"
+                }
+              ],
+              "creator": {
+                "name": "James",
+                "id": "65113112"
+              },
+              "execution_type": "deluge",
+              "status": "enabled",
+              "type": "custom",
+              "description": "Processes feedback form submissions from users",
+              "scope": "personal"
+            }
+          }
+        }
+      }
+    }
+  },
+  "list_all_functions": {
+    "path": "/functions",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "url": "/api/v3/functions",
+        "next_token": "NTB8LTF8NTM3MTkwMDAwMDAyNDUwMTE=",
+        "type": "function",
+        "sync_token": "NTB8MTc3NzQzMjg2NjI1MXw1MzcxOTAwMDAwMjEyNDAxMQ==",
+        "data": [
+          {
+            "name": "createTask",
+            "id": "53719000002124011",
+            "function_type": "button",
+            "handlers": [
+              {
+                "type": "button_handler"
+              }
+            ],
+            "creator": {
+              "name": "James",
+              "id": "65113112"
+            },
+            "execution_type": "deluge",
+            "status": "enabled",
+            "type": "custom",
+            "description": "Creates a task in integrated system",
+            "scope": "personal"
+          },
+          {
+            "name": "SubmitFeedback",
+            "id": "53719000002124012",
+            "function_type": "form",
+            "handlers": [
+              {
+                "type": "form_submit_handler"
+              }
+            ],
+            "creator": {
+              "name": "James",
+              "id": "65113112"
+            },
+            "execution_type": "deluge",
+            "status": "enabled",
+            "type": "custom",
+            "description": "Processes feedback form submissions from users",
+            "scope": "personal"
+          }
+        ]
+      }
+    }
+  },
+  "update_an_existing_function": {
+    "path": "/functions/{FUNCTION_ID}",
+    "method": "patch",
+    "examples": {
+      "request": {
+        "update_details": {
+          "summary": "Update function details",
+          "value": {
+            "name": "createTaskUpdated",
+            "description": "Updated function description"
+          }
+        },
+        "update_webhook_url": {
+          "summary": "Update webhook execution URL",
+          "value": {
+            "execution_url": "https://api.yourcompany.com/cliq/functions/updated-handler"
+          }
+        }
+      },
+      "response_200": {
+        "update_details": {
+          "summary": "Deluge function updated",
+          "value": {
+            "url": "/api/v3/functions/53719000002124011",
+            "type": "function",
+            "data": {
+              "name": "createTaskUpdated",
+              "id": "53719000002124011",
+              "function_type": "button",
+              "handlers": [
+                {
+                  "type": "button_handler"
+                }
+              ],
+              "creator": {
+                "name": "James",
+                "id": "65113112"
+              },
+              "execution_type": "deluge",
+              "status": "enabled",
+              "type": "custom",
+              "description": "Updated function description",
+              "scope": "personal"
+            }
+          }
+        },
+        "update_webhook_url": {
+          "summary": "Webhook function execution URL updated",
+          "value": {
+            "url": "/api/v3/functions/53719000002124014",
+            "type": "function",
+            "data": {
+              "name": "ApproveExpense",
+              "id": "53719000002124014",
+              "function_type": "button",
+              "handlers": [
+                {
+                  "type": "button_handler"
+                }
+              ],
+              "creator": {
+                "name": "James",
+                "id": "65113112"
+              },
+              "execution_type": "webhook",
+              "execution_url": "https://api.yourcompany.com/cliq/functions/updated-handler",
+              "status": "enabled",
+              "type": "custom",
+              "description": "Forwards approval clicks to external HR system",
+              "scope": "personal"
+            }
+          }
+        }
+      }
+    }
+  },
+  "get_details_of_a_specific_func": {
+    "path": "/functions/{FUNCTION_ID}",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "url": "/api/v3/functions/53719000002124011",
+        "type": "function",
+        "data": {
+          "name": "createTask",
+          "id": "53719000002124011",
+          "function_type": "button",
+          "handlers": [
+            {
+              "type": "button_handler"
+            }
+          ],
+          "creator": {
+            "name": "James",
+            "id": "65113112"
+          },
+          "execution_type": "deluge",
+          "status": "enabled",
+          "type": "custom",
+          "description": "Creates a task in integrated system",
+          "scope": "personal"
+        }
+      }
+    }
+  },
+  "createFunctionHandler": {
+    "path": "/functions/{FUNCTION_ID}/handlers",
+    "method": "post",
+    "examples": {
+      "request": {
+        "button_handler_deluge": {
+          "summary": "Button handler - Deluge",
+          "value": {
+            "type": "button_handler",
+            "script": "response = Map();\nresponse.put(\"text\", \"Button clicked!\");\nreturn response;"
+          }
+        },
+        "button_handler_webhook": {
+          "summary": "Button handler - Webhook",
+          "value": {
+            "type": "button_handler",
+            "permissions": [
+              "chat",
+              "message",
+              "user"
+            ]
+          }
+        },
+        "form_submit_handler_deluge": {
+          "summary": "Form submit handler - Deluge",
+          "value": {
+            "type": "form_submit_handler",
+            "script": "values = form.values;\ninfo values;\nreturn {\"type\": \"banner\", \"text\": \"Form submitted!\", \"status\": \"success\"};"
+          }
+        },
+        "form_submit_handler_webhook": {
+          "summary": "Form submit handler - Webhook",
+          "value": {
+            "type": "form_submit_handler",
+            "permissions": [
+              "chat",
+              "user"
+            ]
+          }
+        },
+        "form_view_handler": {
+          "summary": "Form view handler - Deluge",
+          "value": {
+            "type": "form_view_handler",
+            "script": "form = Map();\nform.put(\"title\", \"Feedback Form\");\nactions = Map();\nsubmit = Map();\nsubmit.put(\"type\", \"invoke.function\");\nactions.put(\"submit\", submit);\nform.put(\"actions\", actions);\nreturn form;"
+          }
+        }
+      },
+      "response_200": {
+        "button_handler_deluge": {
+          "summary": "Button handler created - Deluge",
+          "value": {
+            "url": "/api/v3/functions",
+            "type": "function",
+            "data": {
+              "name": "ApproveRequest",
+              "id": "53719000002124011",
+              "function_type": "button",
+              "handlers": [
+                {
+                  "type": "button_handler"
+                }
+              ],
+              "creator": {
+                "name": "James",
+                "id": "65113112"
+              },
+              "execution_type": "deluge",
+              "status": "enabled",
+              "type": "custom",
+              "description": "Creates a task in integrated system",
+              "scope": "personal"
+            }
+          }
+        },
+        "button_handler_webhook": {
+          "summary": "Button handler created - Webhook",
+          "value": {
+            "url": "/api/v3/functions",
+            "type": "function",
+            "data": {
+              "name": "ApproveExpense",
+              "id": "53719000002124014",
+              "function_type": "button",
+              "handlers": [
+                {
+                  "type": "button_handler"
+                }
+              ],
+              "creator": {
+                "name": "James",
+                "id": "65113112"
+              },
+              "execution_type": "webhook",
+              "execution_url": "https://api.yourcompany.com/cliq/functions/handler",
+              "status": "enabled",
+              "type": "custom",
+              "description": "Forwards approval clicks to external HR system",
+              "scope": "personal"
+            }
+          }
+        },
+        "form_submit_handler_deluge": {
+          "summary": "Form submit handler created - Deluge",
+          "value": {
+            "url": "/api/v3/functions",
+            "type": "function",
+            "data": {
+              "name": "SubmitFeedback",
+              "id": "53719000002124012",
+              "function_type": "form",
+              "handlers": [
+                {
+                  "type": "form_submit_handler"
+                }
+              ],
+              "creator": {
+                "name": "James",
+                "id": "65113112"
+              },
+              "execution_type": "deluge",
+              "status": "enabled",
+              "type": "custom",
+              "description": "Processes feedback form submissions from users",
+              "scope": "personal"
+            }
+          }
+        }
+      }
+    }
+  },
+  "updateFunctionHandler": {
+    "path": "/functions/{FUNCTION_ID}/handlers/{FUNCTION_HANDLER_TYPE}",
+    "method": "patch",
+    "examples": {
+      "request": {
+        "update_script_deluge_button": {
+          "summary": "Update script - Deluge button handler",
+          "value": {
+            "script": "response = Map();\nresponse.put(\"text\", \"Task approved successfully!\");\nreturn response;"
+          }
+        },
+        "update_permissions_webhook_button": {
+          "summary": "Update permissions - Webhook button handler",
+          "value": {
+            "permissions": [
+              "chat",
+              "message",
+              "user"
+            ]
+          }
+        },
+        "update_script_form_submit": {
+          "summary": "Update script - Form submit handler",
+          "value": {
+            "script": "values = form.get(\"values\");\ntask_name = values.get(\"task_name\");\nresponse = Map();\nresponse.put(\"type\", \"banner\");\nresponse.put(\"text\", \"Task '\" + task_name + \"' created.\");\nresponse.put(\"status\", \"success\");\nreturn response;"
+          }
+        },
+        "update_permissions_webhook_form": {
+          "summary": "Update permissions - Webhook form handler",
+          "value": {
+            "permissions": [
+              "chat",
+              "user"
+            ]
+          }
+        },
+        "form_change_handler": {
+          "summary": "Update script - Form change handler",
+          "value": {
+            "script": "changed_field = form.get(\"changed_field\");\nform_response = Map();\nif(changed_field == \"priority\") {\n  priority_val = form.get(\"values\").get(\"priority\");\n  options = List();\n  if(priority_val == \"high\") {\n    options.add(\"Escalate\");\n    options.add(\"Notify Manager\");\n  } else {\n    options.add(\"Standard Process\");\n  }\n  form_response.put(\"action_field\", Map());\n}\nreturn form_response;"
+          }
+        },
+        "form_view_handler": {
+          "summary": "Update script - Form view handler",
+          "value": {
+            "script": "form = Map();\nform.put(\"title\", \"Create Task\");\nfields = List();\ntask_field = Map();\ntask_field.put(\"name\", \"task_name\");\ntask_field.put(\"label\", \"Task Name\");\ntask_field.put(\"type\", \"text\");\ntask_field.put(\"mandatory\", true);\nfields.add(task_field);\ndue_field = Map();\ndue_field.put(\"name\", \"due_date\");\ndue_field.put(\"label\", \"Due Date\");\ndue_field.put(\"type\", \"date\");\nfields.add(due_field);\nform.put(\"fields\", fields);\nactions = Map();\nsubmit = Map();\nsubmit.put(\"type\", \"invoke.function\");\nactions.put(\"submit\", submit);\nform.put(\"actions\", actions);\nreturn form;"
+          }
+        },
+        "widget_button_handler": {
+          "summary": "Update script - Widget button handler",
+          "value": {
+            "script": "button_name = action.get(\"name\");\nwidget = Map();\nwidget.put(\"type\", \"zhtml\");\nwidget.put(\"body\", \"<p>Button '\" + button_name + \"' clicked. Widget refreshed at \" + zoho.currenttime + \"</p>\");\nreturn widget;"
+          }
+        }
+      },
+      "response_200": {
+        "update_script_deluge": {
+          "summary": "Script updated - Deluge function",
+          "value": {
+            "url": "/api/v3/functions/53719000002124011/handlers/button_handler",
+            "type": "execution_handler",
+            "data": {
+              "name": "button_handler",
+              "script": "response = Map();\nresponse.put(\"text\", \"Task approved successfully!\");\nreturn response;",
+              "function_id": "53719000002124011"
+            }
+          }
+        },
+        "update_permissions_webhook": {
+          "summary": "Permissions updated - Webhook function",
+          "value": {
+            "url": "/api/v3/functions/53719000002124014/handlers/button_handler",
+            "type": "execution_handler",
+            "data": {
+              "name": "button_handler",
+              "permissions": [
+                "chat",
+                "message",
+                "user"
+              ],
+              "function_id": "53719000002124014"
+            }
+          }
+        },
+        "form_submit_handler": {
+          "summary": "Form submit handler response",
+          "value": {
+            "url": "/api/v3/functions/53719000002124012/handlers/form_submit_handler",
+            "type": "execution_handler",
+            "data": {
+              "name": "form_submit_handler",
+              "script": "values = form.get(\"values\");\ntask_name = values.get(\"task_name\");\ndue_date = values.get(\"due_date\");\nresponse = Map();\nresponse.put(\"type\", \"banner\");\nresponse.put(\"text\", \"Task '\" + task_name + \"' created with due date: \" + due_date);\nresponse.put(\"status\", \"success\");\nreturn response;",
+              "function_id": "53719000002124012"
+            }
+          }
+        },
+        "form_change_handler": {
+          "summary": "Form change handler response",
+          "value": {
+            "url": "/api/v3/functions/53719000002124012/handlers/form_change_handler",
+            "type": "execution_handler",
+            "data": {
+              "name": "form_change_handler",
+              "script": "changed_field = form.get(\"changed_field\");\nform_response = Map();\nif(changed_field == \"priority\") {\n  priority_val = form.get(\"values\").get(\"priority\");\n  options = List();\n  if(priority_val == \"high\") {\n    options.add(\"Escalate\");\n    options.add(\"Notify Manager\");\n  } else {\n    options.add(\"Standard Process\");\n  }\n  form_response.put(\"action_field\", Map());\n}\nreturn form_response;",
+              "function_id": "53719000002124012"
+            }
+          }
+        },
+        "form_view_handler": {
+          "summary": "Form view handler response",
+          "value": {
+            "url": "/api/v3/functions/53719000002124012/handlers/form_view_handler",
+            "type": "execution_handler",
+            "data": {
+              "name": "form_view_handler",
+              "script": "form = Map();\nform.put(\"title\", \"Create Task\");\nfields = List();\ntask_field = Map();\ntask_field.put(\"name\", \"task_name\");\ntask_field.put(\"label\", \"Task Name\");\ntask_field.put(\"type\", \"text\");\ntask_field.put(\"mandatory\", true);\nfields.add(task_field);\ndue_field = Map();\ndue_field.put(\"name\", \"due_date\");\ndue_field.put(\"label\", \"Due Date\");\ndue_field.put(\"type\", \"date\");\nfields.add(due_field);\nform.put(\"fields\", fields);\nactions = Map();\nsubmit = Map();\nsubmit.put(\"type\", \"invoke.function\");\nactions.put(\"submit\", submit);\nform.put(\"actions\", actions);\nreturn form;",
+              "function_id": "53719000002124012"
+            }
+          }
+        },
+        "widget_button_handler": {
+          "summary": "Widget button handler response",
+          "value": {
+            "url": "/api/v3/functions/53719000002124013/handlers/widget_button_handler",
+            "type": "execution_handler",
+            "data": {
+              "name": "widget_button_handler",
+              "script": "button_name = action.get(\"name\");\nwidget = Map();\nwidget.put(\"type\", \"zhtml\");\nwidget.put(\"body\", \"<p>Button '\" + button_name + \"' clicked. Widget refreshed at \" + zoho.currenttime + \"</p>\");\nreturn widget;",
+              "function_id": "53719000002124013"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,434 @@
+{
+  "creating_extension_command": {
+    "path": "/commands",
+    "method": "post",
+    "examples": {
+      "request": {
+        "deluge_command": {
+          "summary": "Deluge slash command",
+          "value": {
+            "name": "support",
+            "hint": "Raise a support ticket",
+            "scope": "organization",
+            "execution_type": "deluge",
+            "description": "Creates a ZohoDesk ticket from the chat interface"
+          }
+        },
+        "webhook_command": {
+          "summary": "Webhook slash command",
+          "value": {
+            "name": "deploy",
+            "hint": "Trigger a deployment pipeline",
+            "scope": "organization",
+            "execution_type": "webhook",
+            "execution_url": "https://api.yourcompany.com/cliq/commands/handler",
+            "description": "Triggers a Jenkins deployment from Cliq"
+          }
+        }
+      },
+      "response_200": {
+        "deluge_command": {
+          "summary": "Deluge slash command response",
+          "value": {
+            "url": "/api/v3/commands",
+            "type": "command",
+            "data": {
+              "name": "support",
+              "id": "227828000000128009",
+              "handlers": [
+                {
+                  "type": "execution_handler"
+                }
+              ],
+              "creator": {
+                "name": "Ryan West",
+                "id": "119440882"
+              },
+              "execution_type": "deluge",
+              "hint": "Raise a support ticket",
+              "status": "enabled",
+              "type": "custom",
+              "description": "Creates a ZohoDesk ticket from the chat interface",
+              "scope": "organization"
+            }
+          }
+        },
+        "webhook_command": {
+          "summary": "Webhook slash command response",
+          "value": {
+            "url": "/api/v3/commands",
+            "type": "command",
+            "data": {
+              "name": "deploy",
+              "id": "227828000000129001",
+              "handlers": [
+                {
+                  "type": "execution_handler"
+                }
+              ],
+              "creator": {
+                "name": "Ryan West",
+                "id": "119440882"
+              },
+              "execution_type": "webhook",
+              "execution_url": "https://api.yourcompany.com/cliq/commands/handler",
+              "hint": "Trigger a deployment pipeline",
+              "status": "enabled",
+              "type": "custom",
+              "description": "Triggers a Jenkins deployment from Cliq",
+              "scope": "organization"
+            }
+          }
+        }
+      }
+    }
+  },
+  "get_list_of_commands": {
+    "path": "/commands",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "url": "/api/v3/commands",
+        "type": "command",
+        "sync_token": "MTB8MTc3NzM2MDM5OTQ5Mnw=",
+        "data": [
+          {
+            "name": "report",
+            "id": "227828000000128011",
+            "handlers": [
+              {
+                "type": "execution_handler"
+              }
+            ],
+            "creator": {
+              "name": "Ryan West",
+              "id": "119440882"
+            },
+            "execution_type": "deluge",
+            "hint": "Generate a sales or activity report",
+            "status": "enabled",
+            "type": "custom",
+            "description": "Generates a report for the specified date range and team",
+            "scope": "organization",
+            "options": {
+              "type": "Report type (e.g. sales, activity, attendance)",
+              "period": "Date range (e.g. today, this_week, last_month)"
+            }
+          },
+          {
+            "name": "ticket",
+            "id": "227828000000128009",
+            "handlers": [
+              {
+                "type": "execution_handler"
+              },
+              {
+                "type": "suggestion_handler"
+              }
+            ],
+            "creator": {
+              "name": "Ryan West",
+              "id": "119440882"
+            },
+            "execution_type": "deluge",
+            "hint": "Create or look up a support ticket",
+            "status": "enabled",
+            "max_suggestions": 5,
+            "type": "custom",
+            "description": "Creates a new support ticket or retrieves an existing one by ID",
+            "scope": "team",
+            "options": {
+              "action": "Action to perform (create or lookup)",
+              "priority": "Ticket priority (low, medium, high, critical)"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "editing_extension_command": {
+    "path": "/commands/{SLASH_COMMAND_ID}",
+    "method": "patch",
+    "examples": {
+      "request": {
+        "update_details": {
+          "summary": "Update command details",
+          "value": {
+            "hint": "Raise a support ticket - updated",
+            "description": "Updated description via API",
+            "scope": "organization",
+            "max_suggestions": 5
+          }
+        },
+        "update_webhook_url": {
+          "summary": "Update webhook execution URL",
+          "value": {
+            "execution_url": "https://api.yourcompany.com/cliq/commands/updated-handler"
+          }
+        }
+      },
+      "response_200": {
+        "update_details": {
+          "summary": "Deluge command updated",
+          "value": {
+            "url": "/api/v3/commands/227828000000128009",
+            "type": "command",
+            "data": {
+              "name": "support",
+              "id": "227828000000128009",
+              "handlers": [
+                {
+                  "type": "execution_handler"
+                }
+              ],
+              "creator": {
+                "name": "Ryan West",
+                "id": "119440882"
+              },
+              "execution_type": "deluge",
+              "hint": "Raise a support ticket - updated",
+              "status": "enabled",
+              "type": "custom",
+              "description": "Updated description via API",
+              "scope": "organization"
+            }
+          }
+        },
+        "update_webhook_url": {
+          "summary": "Webhook command execution URL updated",
+          "value": {
+            "url": "/api/v3/commands/227828000000129001",
+            "type": "command",
+            "data": {
+              "name": "deploy",
+              "id": "227828000000129001",
+              "handlers": [
+                {
+                  "type": "execution_handler"
+                }
+              ],
+              "creator": {
+                "name": "Ryan West",
+                "id": "119440882"
+              },
+              "execution_type": "webhook",
+              "execution_url": "https://api.yourcompany.com/cliq/commands/updated-handler",
+              "hint": "Trigger a deployment pipeline",
+              "status": "enabled",
+              "type": "custom",
+              "description": "Triggers a Jenkins deployment from Cliq",
+              "scope": "organization"
+            }
+          }
+        }
+      }
+    }
+  },
+  "get_a_command": {
+    "path": "/commands/{SLASH_COMMAND_ID}",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "url": "/api/v3/commands/227828000000128009",
+        "type": "command",
+        "data": {
+          "name": "greet",
+          "id": "227828000000128009",
+          "handlers": [
+            {
+              "type": "execution_handler"
+            }
+          ],
+          "creator": {
+            "name": "Ryan West",
+            "id": "119440882"
+          },
+          "execution_type": "deluge",
+          "hint": "Send a greeting message",
+          "status": "enabled",
+          "max_suggestions": 5,
+          "type": "custom",
+          "description": "Sends a customizable greeting to a user or channel",
+          "scope": "organization",
+          "options": {
+            "user": "The user to greet",
+            "msg": "Custom greeting message"
+          }
+        }
+      }
+    }
+  },
+  "createCommandHandler": {
+    "path": "/commands/{SLASH_COMMAND_ID}/handlers",
+    "method": "post",
+    "examples": {
+      "request": {
+        "execution_handler_deluge": {
+          "summary": "Execution handler - Deluge command",
+          "description": "Provide `script` with the Deluge source code. Runs directly on Zoho's platform.",
+          "value": {
+            "type": "execution_handler",
+            "script": "response = Map();\nuser = info.get(\"user_info\").get(\"name\");\nresponse.put(\"text\", \"Hello, \" + user + \"! Support ticket created.\");\nreturn response;\n"
+          }
+        },
+        "execution_handler_webhook": {
+          "summary": "Execution handler - Webhook command",
+          "description": "Provide `permissions` to specify the data your server needs. Cliq will forward these to your `execution_url`.",
+          "value": {
+            "type": "execution_handler",
+            "permissions": [
+              "chat",
+              "user"
+            ]
+          }
+        },
+        "suggestion_handler_deluge": {
+          "summary": "Suggestion handler - Deluge command",
+          "description": "Runs to generate autocomplete suggestions as users type the command.",
+          "value": {
+            "type": "suggestion_handler",
+            "script": "suggestions = List();\nsuggestions.add({\"value\": \"create\", \"label\": \"Create a new ticket\"});\nsuggestions.add({\"value\": \"lookup\", \"label\": \"Look up an existing ticket\"});\nreturn {\"suggestions\": suggestions};\n"
+          }
+        },
+        "suggestion_handler_webhook": {
+          "summary": "Suggestion handler - Webhook command",
+          "description": "Webhook commands route suggestion requests to your `execution_url` with the configured permissions.",
+          "value": {
+            "type": "suggestion_handler",
+            "permissions": [
+              "chat",
+              "user"
+            ]
+          }
+        }
+      },
+      "response_200": {
+        "execution_handler_deluge": {
+          "summary": "Execution handler created - Deluge",
+          "value": {
+            "url": "/api/v3/commands/227828000000128009/handlers/execution_handler",
+            "type": "execution_handler",
+            "data": {
+              "name": "execution_handler",
+              "script": "response = Map();\nuser = info.get(\"user_info\").get(\"name\");\nresponse.put(\"text\", \"Hello, \" + user + \"! Support ticket created.\");\nreturn response;\n",
+              "function_id": "227828000000128009"
+            }
+          }
+        },
+        "execution_handler_webhook": {
+          "summary": "Execution handler created - Webhook",
+          "value": {
+            "url": "/api/v3/commands/227828000000129001/handlers/execution_handler",
+            "type": "execution_handler",
+            "data": {
+              "name": "execution_handler",
+              "permissions": [
+                "chat",
+                "user"
+              ],
+              "function_id": "227828000000129001"
+            }
+          }
+        },
+        "suggestion_handler_deluge": {
+          "summary": "Suggestion handler created - Deluge",
+          "value": {
+            "url": "/api/v3/commands/227828000000128009/handlers/suggestion_handler",
+            "type": "suggestion_handler",
+            "data": {
+              "name": "suggestion_handler",
+              "script": "suggestions = List();\nsuggestions.add({\"value\": \"create\", \"label\": \"Create a new ticket\"});\nsuggestions.add({\"value\": \"lookup\", \"label\": \"Look up an existing ticket\"});\nreturn {\"suggestions\": suggestions};\n",
+              "function_id": "227828000000128009"
+            }
+          }
+        },
+        "suggestion_handler_webhook": {
+          "summary": "Suggestion handler created - Webhook",
+          "value": {
+            "url": "/api/v3/commands/227828000000129001/handlers/suggestion_handler",
+            "type": "suggestion_handler",
+            "data": {
+              "name": "suggestion_handler",
+              "permissions": [
+                "chat",
+                "user"
+              ],
+              "function_id": "227828000000129001"
+            }
+          }
+        }
+      }
+    }
+  },
+  "updateCommandHandler": {
+    "path": "/commands/{SLASH_COMMAND_ID}/handlers/{COMMAND_HANDLER_TYPE}",
+    "method": "patch",
+    "examples": {
+      "request": {
+        "update_script_deluge": {
+          "summary": "Update script - Deluge command",
+          "description": "Update the Deluge script that runs when the command is invoked.",
+          "value": {
+            "script": "response = Map();\nuser = info.get(\"user_info\").get(\"name\");\nresponse.put(\"text\", \"Hello, \" + user + \"! Updated ticket handler.\");\nreturn response;\n"
+          }
+        },
+        "update_permissions_webhook": {
+          "summary": "Update permissions - Webhook command",
+          "description": "Update the data attributes sent to your server when the handler fires.",
+          "value": {
+            "permissions": [
+              "chat",
+              "location",
+              "user"
+            ]
+          }
+        }
+      },
+      "response_200": {
+        "update_script_deluge": {
+          "summary": "Script updated - Deluge command",
+          "value": {
+            "url": "/api/v3/commands/227828000000128009/handlers/execution_handler",
+            "type": "execution_handler",
+            "data": {
+              "name": "execution_handler",
+              "script": "response = Map();\nuser = info.get(\"user_info\").get(\"name\");\nresponse.put(\"text\", \"Hello, \" + user + \"! Updated ticket handler.\");\nreturn response;\n",
+              "function_id": "227828000000128009"
+            }
+          }
+        },
+        "update_permissions_webhook": {
+          "summary": "Permissions updated - Webhook command",
+          "value": {
+            "url": "/api/v3/commands/227828000000129001/handlers/execution_handler",
+            "type": "execution_handler",
+            "data": {
+              "name": "execution_handler",
+              "permissions": [
+                "chat",
+                "location",
+                "user"
+              ],
+              "function_id": "227828000000129001"
+            }
+          }
+        }
+      }
+    }
+  },
+  "get_details_of_a_specific_comm": {
+    "path": "/commands/{SLASH_COMMAND_ID}/handlers/{COMMAND_HANDLER_TYPE}",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "url": "/api/v3/commands/227828000000128009/handlers/execution_handler",
+        "type": "execution_handler",
+        "data": {
+          "name": "execution_handler",
+          "script": "response = Map();\nuser = info.get(\"user_info\").get(\"name\");\nresponse.put(\"text\", \"Hello, \" + user + \"! Command executed successfully.\");\nreturn response;\n",
+          "function_id": "227828000000128009"
+        }
+      }
+    }
+  }
+}

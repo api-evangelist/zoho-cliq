@@ -1,0 +1,60 @@
+{
+  "getMentions": {
+    "path": "/mentions",
+    "method": "get",
+    "examples": {
+      "response_400": {
+        "code": "INVALID_PARAMS",
+        "message": "Invalid query parameter value."
+      },
+      "response_401": {
+        "code": "UNAUTHORIZED",
+        "message": "Missing or invalid authentication token."
+      },
+      "response_500": {
+        "code": "MENTIONS_FETCH_FAILED",
+        "message": "Internal server error while fetching mentions."
+      }
+    }
+  },
+  "mentioningUser": {
+    "path": "/chats/{CHAT_ID}/messages",
+    "method": "post",
+    "examples": {
+      "request": {
+        "userid": {
+          "summary": "User mention with userID",
+          "value": {
+            "text": "Hey there {@userid}, please review the latest project updates"
+          }
+        },
+        "email": {
+          "summary": "User mention with user email",
+          "value": {
+            "text": "Hey there {@scott.fisher@zylker.com}, please review the latest project updates"
+          }
+        }
+      }
+    }
+  },
+  "silentMentions": {
+    "path": "/chats/{CHAT_ID1}/messages",
+    "method": "post",
+    "examples": {
+      "request": {
+        "userid": {
+          "summary": "Silent mention with userID",
+          "value": {
+            "text": "Hey there [Scott Fisher](zohoid:873421), could you check the campaign details when you get a chance?"
+          }
+        },
+        "email": {
+          "summary": "Silent mention with user email",
+          "value": {
+            "text": "Hey there [Scott Fisher](mail:scott.fisher@zylker.com), could you check the campaign details when you get a chance?"
+          }
+        }
+      }
+    }
+  }
+}

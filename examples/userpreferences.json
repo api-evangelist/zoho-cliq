@@ -1,0 +1,51 @@
+{
+  "getUserPreferences": {
+    "path": "/settings/user-preferences",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "userpreferences": {
+          "dark_mode": "disabled",
+          "ui_theme": "4",
+          "lhs_theme": "enabled",
+          "smileys": "enabled",
+          "smileypreference": "enabled",
+          "translation_mode": "enabled",
+          "show_translate_option": "enabled",
+          "av_noise_cancellation": "disabled",
+          "av_hd_video": "enabled",
+          "av_speech_detection": "enabled",
+          "av_auto_pip": "enabled",
+          "av_livetranscript_always_on": "disabled",
+          "av_livetranscript_fontsize": "2",
+          "av_translate_livetranscript": "disabled",
+          "sound_notification": "enabled",
+          "global_sound_notify": "enabled",
+          "desktop_notification": "disabled",
+          "toast_notification": "disabled",
+          "reading_mask": "disabled",
+          "vision_assistive": "disabled",
+          "cliq_font": "-1",
+          "cliq_font_size": "2",
+          "cliq_font_spacing": "2",
+          "reminder_notification": "enabled",
+          "reactions_notification": "enabled",
+          "quick_reactions": ":thumbsup:,:super:,:heavy-plus-sign:/#x2795",
+          "conference_recording": "disabled",
+          "conference_theme": "none",
+          "video_background": "none",
+          "video_filter": "none"
+        }
+      }
+    }
+  },
+  "updateUserPreferences": {
+    "path": "/settings/user-preferences",
+    "method": "put",
+    "examples": {
+      "request": {
+        "dark_mode": "enabled"
+      }
+    }
+  }
+}

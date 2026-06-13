@@ -1,0 +1,854 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Zoho Cliq Messages Schemas",
+  "definitions": {
+    "MessageRequest": {
+      "type": "object",
+      "description": "Request object to send messages to one or more users.",
+      "required": [
+        "user_ids",
+        "message_details"
+      ],
+      "properties": {
+        "user_ids": {
+          "type": "array",
+          "description": "List of user IDs to whom the message will be sent.",
+          "items": {
+            "type": "string",
+            "description": "A single user's ID."
+          },
+          "example": [
+            "55743307",
+            "55622727"
+          ]
+        },
+        "message_details": {
+          "type": "object",
+          "description": "Message details mapped per user ID.",
+          "additionalProperties": {
+            "type": "object",
+            "description": "Details for a specific user message.",
+            "required": [
+              "chat_id",
+              "message_id"
+            ],
+            "properties": {
+              "chat_id": {
+                "type": "string",
+                "description": "Chat identifier where the message will be sent.",
+                "example": "CT_1203304812000146098_55622663-B2"
+              },
+              "message_id": {
+                "type": "string",
+                "description": "Unique message identifier in the chat.",
+                "example": "1709038327622%2029706114886"
+              }
+            }
+          }
+        }
+      }
+    },
+    "UserMessage": {
+      "type": "object",
+      "description": "Represents message details for multiple users.",
+      "properties": {
+        "user_ids": {
+          "type": "array",
+          "description": "List of user IDs.",
+          "items": {
+            "type": "string",
+            "description": "Single user ID."
+          },
+          "example": [
+            "55743307",
+            "55622727"
+          ]
+        },
+        "message_details": {
+          "type": "object",
+          "description": "Mapping of each user ID to message details.",
+          "additionalProperties": {
+            "type": "object",
+            "description": "Individual user message details.",
+            "properties": {
+              "chat_id": {
+                "type": "string",
+                "description": "Chat identifier.",
+                "example": "CT_1203304812000146098_55622663-B2"
+              },
+              "message_id": {
+                "type": "string",
+                "description": "Message ID for the chat.",
+                "example": "1709038327622%2029706114886"
+              }
+            }
+          }
+        }
+      }
+    },
+    "MessageComponents": {
+      "type": "object",
+      "description": "Core components of a message.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the message.",
+          "example": "1542711601585_349430767610289"
+        },
+        "fileMessage_id": {
+          "type": "string",
+          "description": "Identifier for a file message, if applicable.",
+          "example": "1543384891842_351840917549285"
+        },
+        "time": {
+          "type": "integer",
+          "description": "Epoch timestamp of when the message was sent.",
+          "example": 1542798001273
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of the message, e.g., 'text', 'file'.",
+          "example": "text"
+        }
+      }
+    },
+    "file_type": {
+      "type": "string",
+      "description": "Format/type of an attachment message.",
+      "example": "file"
+    },
+    "senderName": {
+      "type": "string",
+      "description": "Name of the message sender.",
+      "example": "Scott Fisher"
+    },
+    "senderID": {
+      "type": "string",
+      "description": "User ID of the message sender.",
+      "example": "1542798001273"
+    },
+    "sender": {
+      "type": "object",
+      "description": "Information about the sender of the message.",
+      "properties": {
+        "senderName": {
+          "$ref": "#/components/schemas/senderName"
+        },
+        "senderID": {
+          "$ref": "#/components/schemas/senderID"
+        }
+      }
+    },
+    "messageText": {
+      "type": "string",
+      "description": "Text content of the message.",
+      "example": "Hi! What time is the review meeting today?"
+    },
+    "content": {
+      "type": "object",
+      "description": "Content object containing text message.",
+      "properties": {
+        "messageText": {
+          "$ref": "#/components/schemas/messageText"
+        }
+      }
+    },
+    "fileName": {
+      "type": "string",
+      "description": "Original filename of the attachment.",
+      "example": "Feature-overview.jpg"
+    },
+    "contentType": {
+      "type": "string",
+      "description": "MIME type of the attachment.",
+      "example": "image/jpeg"
+    },
+    "imageHeight": {
+      "type": "integer",
+      "description": "Height of the image in pixels.",
+      "example": 3510
+    },
+    "imageSize": {
+      "type": "integer",
+      "description": "Size of the image file in bytes.",
+      "example": 559008
+    },
+    "imageWidth": {
+      "type": "integer",
+      "description": "Width of the image in pixels.",
+      "example": 2552
+    },
+    "dimensions": {
+      "type": "object",
+      "description": "Dimensions and size of a file or image.",
+      "properties": {
+        "height": {
+          "$ref": "#/components/schemas/imageHeight"
+        },
+        "width": {
+          "$ref": "#/components/schemas/imageWidth"
+        },
+        "size": {
+          "$ref": "#/components/schemas/imageSize"
+        }
+      }
+    },
+    "file_id": {
+      "type": "string",
+      "description": "Unique identifier for the file.",
+      "example": "f3791c2279a67f6e5cbc8e1beb41ded85da2bdc672e2496ba9af50c0c24c8e2e453862a8a28becb86f859ab142d44633b05a8fb2ff34955c9e9824527c15cd03"
+    },
+    "file_content": {
+      "type": "object",
+      "description": "File metadata and content reference.",
+      "properties": {
+        "name": {
+          "$ref": "#/components/schemas/fileName"
+        },
+        "type": {
+          "$ref": "#/components/schemas/file_type"
+        },
+        "dimensions": {
+          "$ref": "#/components/schemas/dimensions"
+        },
+        "id": {
+          "$ref": "#/components/schemas/file_id"
+        }
+      }
+    },
+    "thumbnailHeight": {
+      "type": "integer",
+      "description": "Height of the thumbnail image.",
+      "example": 230
+    },
+    "thumbnailWidth": {
+      "type": "integer",
+      "description": "Width of the thumbnail image.",
+      "example": 400
+    },
+    "blur_data": {
+      "type": "string",
+      "description": "Base64 encoded placeholder for image blur effect.",
+      "example": "/9j/4AAQSkZJRgABAgAAAQABAAD/2wBD..."
+    },
+    "thumbnail": {
+      "type": "object",
+      "description": "Thumbnail representation of an image or file.",
+      "properties": {
+        "height": {
+          "$ref": "#/components/schemas/thumbnailHeight"
+        },
+        "width": {
+          "$ref": "#/components/schemas/thumbnailWidth"
+        },
+        "blur_data": {
+          "$ref": "#/components/schemas/blur_data"
+        }
+      }
+    },
+    "comment": {
+      "type": "string",
+      "description": "Message sent along with a file.",
+      "example": "Hey Emily! Hope you understand the above design"
+    },
+    "fileMessage_content": {
+      "type": "object",
+      "description": "Content structure for a file message.",
+      "properties": {
+        "thumbnail": {
+          "$ref": "#/components/schemas/thumbnail"
+        },
+        "file": {
+          "$ref": "#/components/schemas/file_content"
+        },
+        "comment": {
+          "$ref": "#/components/schemas/comment"
+        }
+      }
+    },
+    "message_data": {
+      "type": "object",
+      "description": "Standard text message data structure.",
+      "properties": {
+        "sender": {
+          "$ref": "#/components/schemas/sender"
+        },
+        "id": {
+          "type": "string",
+          "description": "Message ID.",
+          "example": "1542711601585_349430767610289"
+        },
+        "time": {
+          "type": "integer",
+          "description": "Timestamp of the message.",
+          "example": 1542798001273
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of message.",
+          "example": "text"
+        },
+        "content": {
+          "type": "string",
+          "description": "Text content of the message.",
+          "example": "Hello world"
+        }
+      }
+    },
+    "fileMessage_data": {
+      "type": "object",
+      "description": "Structure for file messages.",
+      "properties": {
+        "sender": {
+          "type": "object",
+          "description": "Sender information for the file message.",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Name of the sender.",
+              "example": "John Doe"
+            },
+            "id": {
+              "type": "string",
+              "description": "ID of the sender.",
+              "example": "55743307"
+            }
+          }
+        },
+        "id": {
+          "type": "string",
+          "description": "Message ID.",
+          "example": "1542711601585_349430767610289"
+        },
+        "time": {
+          "type": "integer",
+          "description": "Epoch timestamp of the message.",
+          "example": 1542798001273
+        },
+        "type": {
+          "$ref": "#/components/schemas/file_type"
+        },
+        "content": {
+          "$ref": "#/components/schemas/fileMessage_content"
+        }
+      }
+    },
+    "get-messages-response": {
+      "type": "object",
+      "description": "Response object for fetching messages.",
+      "properties": {
+        "data": {
+          "type": "array",
+          "description": "Array containing message objects.",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/fileMessage_data"
+              },
+              {
+                "$ref": "#/components/schemas/message_data"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "post-message-in-a-chat-response": {
+      "type": "object",
+      "description": "Response object for posting messages in a chat/user",
+      "properties": {
+        "message_id": {
+          "type": "string",
+          "description": "Unique identifier of the newly posted message",
+          "example": "1599387839188_229293271789"
+        }
+      }
+    },
+    "post-message-in-a-channel-request": {
+      "type": "object",
+      "description": "Request object to post a message in a channel.",
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Message text to be sent in the channel. Maximum length: 5000.",
+          "maxLength": 5000,
+          "example": "Hello team, please review the project status update and share your feedback by EOD."
+        },
+        "reply_to": {
+          "type": "string",
+          "description": "Message ID to reply to in the channel.",
+          "example": "72374289911"
+        },
+        "sync_message": {
+          "type": "boolean",
+          "description": "Whether to post the message in a synchronous thread.",
+          "example": true
+        }
+      }
+    },
+    "post-message-in-a-channel-response": {
+      "type": "object",
+      "description": "Response object after posting a message in a channel.",
+      "properties": {
+        "Response Code": {
+          "type": "string",
+          "description": "HTTP response code for the operation.",
+          "example": "204 No response"
+        }
+      }
+    },
+    "post-message-in-chat-request": {
+      "type": "object",
+      "description": "Request object to send a message in a chat.",
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Text content to send in chat. Maximum length: 5000.",
+          "maxLength": 5000,
+          "example": "Hey!"
+        },
+        "reply_to": {
+          "type": "string",
+          "description": "Message ID to reply to in chat.",
+          "example": "55743307"
+        },
+        "sync_message": {
+          "type": "boolean",
+          "description": "Post message in synchronous thread; returns message ID.",
+          "example": true
+        },
+        "mark_as_read": {
+          "type": "boolean",
+          "description": "Mark the message as read for the user.",
+          "example": true
+        }
+      }
+    },
+    "post-message-in-chat-response": {
+      "type": "object",
+      "description": "Response object after posting a message in chat.",
+      "properties": {
+        "message_id": {
+          "type": "string",
+          "description": "Message ID returned after posting.",
+          "example": "1599387839188_229293271789"
+        }
+      }
+    },
+    "edit-a-message-request": {
+      "type": "object",
+      "description": "Request object to edit an existing message.",
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Edited text content of the message. Maximum length: 5000.",
+          "maxLength": 5000,
+          "example": "Hey! Cliq platform allows you to manage your workday tasks effectively."
+        },
+        "notify_edit": {
+          "type": "boolean",
+          "description": "Notify participants about the edited message.",
+          "example": true
+        }
+      }
+    },
+    "get-reactions": {
+      "type": "object",
+      "description": "Retrieve all reactions for messages.",
+      "properties": {
+        "data": {
+          "type": "object",
+          "description": "Mapping of emoji to a list of reaction details.",
+          "additionalProperties": {
+            "type": "array",
+            "description": "Array of reactions for the emoji.",
+            "items": {
+              "type": "string",
+              "description": "Reaction string formatted as timestamp:user_id:username.",
+              "pattern": "^\\d+:\\d+:.+$"
+            }
+          },
+          "example": {
+            "\ud83d\ude0d": [
+              "1710152648241:802515329:Diana",
+              "1710152690025:784333365:Celeste Liane",
+              "1710152842875:839672527:Berk Trinity"
+            ],
+            "\ud83d\udd25": [
+              "1710152758419:788604182:Elizebet Tater",
+              "1710152797740:19924487:Derek",
+              "1710161571235:822083117:Mary E",
+              "1710165907573:800612880:Dipika"
+            ],
+            "\ud83d\udcaa": [
+              "1710152692044:788608119:Velasco",
+              "1710152722572:756417177:Guru",
+              "1710152861184:785341087:Sanjna",
+              "1710155915492:1248183:Catherine",
+              "1710165906976:800612880:Elizebet Tater"
+            ]
+          }
+        }
+      }
+    },
+    "add-a-reaction-request": {
+      "type": "object",
+      "description": "Request object to add a reaction to a message.",
+      "properties": {
+        "emoji_code": {
+          "type": "string",
+          "description": "Emoji to add to a message.\nAllowed values:\n\n  Zomojis: Custom emojis supported by Zoho Cliq\n  Unicode smiley: Standard emojis (for example, U+1F600 or U+2764) passed as actual characters or Unicode.\n",
+          "example": ":smile:"
+        }
+      }
+    },
+    "forward-messages-request": {
+      "type": "object",
+      "description": "Request object to forward one or more messages from a source chat to other chats or users.",
+      "required": [
+        "source",
+        "recipients"
+      ],
+      "properties": {
+        "source": {
+          "type": "object",
+          "description": "Source chat and messages to forward. You can specify 1 to 25 message IDs from a single chat to forward in one request.\n",
+          "required": [
+            "chat_id",
+            "message_ids"
+          ],
+          "properties": {
+            "chat_id": {
+              "type": "string",
+              "description": "Chat ID from which messages will be forwarded. All message IDs must belong to this chat.\n",
+              "example": "C_987654321"
+            },
+            "message_ids": {
+              "type": "array",
+              "description": "List of message IDs to forward. All messages must be from the same source chat specified by <code>chat_id</code>. You can <b>forward a minimum of 1 message and a maximum of 25 messages</b> in a single request.\n",
+              "minItems": 1,
+              "maxItems": 25,
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "1742000000000001",
+                "1742000000000002"
+              ]
+            }
+          }
+        },
+        "recipients": {
+          "type": "object",
+          "description": "Recipients to forward the messages to. You can specify up to 100 chat IDs and/or user IDs as recipients. Messages will be forwarded to all specified recipients based on the provided options.\n",
+          "properties": {
+            "chat_ids": {
+              "type": "string",
+              "description": "Comma-separated list of chat IDs to forward messages to.<br>\n<b>Maximum of 100 chat IDs allowed.</b>\n",
+              "example": "C_111111111,C_222222222"
+            },
+            "user_ids": {
+              "type": "string",
+              "description": "Comma-separated list of user IDs to forward messages to.<br>\n<b>Maximum of 100 user IDs allowed.</b>\n",
+              "example": "60025012345,60025012346"
+            },
+            "forward_as_group": {
+              "type": "boolean",
+              "description": "When true, messages will be forwarded as a single combined message in the recipient chats, rather than individual messages. The content of the forwarded message will include all original messages grouped together. If false or not provided, each message will be forwarded separately in the recipient chats.<br>\n<b>Note:</b> If forwarding to multiple recipients, it's recommended to set this to true to avoid spamming recipients with multiple messages.\n",
+              "example": false
+            },
+            "show_original_sender": {
+              "type": "boolean",
+              "description": "When true, the forwarded message will include the name of the original sender for each message. This is applicable when <code>forward_as_group</code> is true to provide context about who sent each message in the group forward. If false or not provided, the original sender's name will not be displayed in the forwarded message content.\n",
+              "example": true
+            },
+            "title": {
+              "type": "string",
+              "description": "Optional title to include with the forwarded message when <code>forward_as_group</code> is true. This title will be displayed at the top of the grouped forwarded message in the recipient chats. If not provided, no title will be shown.\n<br><b>Maximum length:</b> 255 characters.\n",
+              "maxLength": 255,
+              "example": "Group Title 1"
+            }
+          }
+        }
+      }
+    },
+    "forward-messages-response": {
+      "type": "object",
+      "description": "Response object after forwarding messages. Uses a partial-success model.",
+      "properties": {
+        "data": {
+          "type": "object",
+          "description": "Forwarding results data.",
+          "properties": {
+            "source_chat_id": {
+              "type": "string",
+              "description": "Source chat ID from which messages were forwarded.",
+              "example": "C_987654321"
+            },
+            "forwarded": {
+              "type": "object",
+              "description": "Successfully forwarded recipients.",
+              "properties": {
+                "chat_ids": {
+                  "type": "array",
+                  "description": "List of chat IDs where messages were successfully forwarded.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "example": [
+                    "C_111111111"
+                  ]
+                },
+                "user_ids": {
+                  "type": "array",
+                  "description": "List of user IDs to whom messages were successfully forwarded.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "example": [
+                    "60025012345"
+                  ]
+                }
+              }
+            },
+            "failures": {
+              "type": "array",
+              "description": "List of per-recipient failures with specific error details.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Chat ID or user ID that failed.",
+                    "example": "C_222222222"
+                  },
+                  "status": {
+                    "type": "string",
+                    "description": "Status of the forward attempt.",
+                    "example": "failed"
+                  },
+                  "error": {
+                    "type": "object",
+                    "description": "Error details for the failure.",
+                    "properties": {
+                      "code": {
+                        "type": "string",
+                        "description": "Error code.",
+                        "example": "chat_with_other_org_users_disabled"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "Error message.",
+                        "example": "Chat with other org users is disabled"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "delete-multiple-messages-response": {
+      "type": "object",
+      "description": "Response object after deleting multiple messages.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Response type identifier.",
+          "example": "message_delete"
+        },
+        "data": {
+          "type": "array",
+          "description": "List of message deletion results.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Message ID.",
+                "example": "1742000000000001"
+              },
+              "status": {
+                "type": "string",
+                "description": "Deletion status (success or failed).",
+                "example": "success"
+              },
+              "error": {
+                "type": "object",
+                "description": "Error details (only present if status is failed).",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "description": "Error code.",
+                    "example": "message_delete_not_allowed"
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Error message.",
+                    "example": "You do not have permission to delete this message"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "search-messages-response": {
+      "type": "object",
+      "description": "Response object for message search results containing matching messages and pagination information.",
+      "properties": {
+        "messages": {
+          "type": "array",
+          "description": "List of messages matching the search criteria.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "message_id": {
+                "type": "string",
+                "description": "Unique identifier (timestamp) of the message.",
+                "example": "1710934200000"
+              },
+              "time": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the message was sent (<a href=\"https://en.wikipedia.org/wiki/ISO_8601\">ISO 8601</a> format).",
+                "example": "2025-03-20T14:30:00.000Z"
+              },
+              "sender": {
+                "type": "string",
+                "description": "ZUID of the user who sent the message.",
+                "example": "711622XXXX"
+              },
+              "chat_id": {
+                "type": "string",
+                "description": "ID of the chat the message belongs to.",
+                "example": "6795XXXXXXXXXXXXXX"
+              },
+              "chat_title": {
+                "type": "string",
+                "description": "Display name of the chat.",
+                "example": "General"
+              },
+              "type": {
+                "type": "string",
+                "description": "Message type: text, file, link, etc.",
+                "example": "text",
+                "enum": [
+                  "text",
+                  "file",
+                  "link",
+                  "card",
+                  "table",
+                  "slides",
+                  "form",
+                  "poll",
+                  "audio",
+                  "video",
+                  "image"
+                ]
+              },
+              "content": {
+                "type": "object",
+                "description": "Message content - structure varies by type.",
+                "additionalProperties": true,
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "Text content of the message (for text type messages).",
+                    "example": "Please review the updated proposal."
+                  },
+                  "file_name": {
+                    "type": "string",
+                    "description": "Name of the file (for file type messages).",
+                    "example": "proposal_v2.pdf"
+                  },
+                  "file_type": {
+                    "type": "string",
+                    "description": "MIME type of the file.",
+                    "example": "application/pdf"
+                  },
+                  "file_size": {
+                    "type": "integer",
+                    "description": "Size of the file in bytes.",
+                    "example": 204800
+                  }
+                }
+              },
+              "channel_type": {
+                "type": "string",
+                "description": "Present for channel messages: organisation, team, personal, external.",
+                "example": "organisation",
+                "enum": [
+                  "organisation",
+                  "team",
+                  "personal",
+                  "external"
+                ]
+              },
+              "channel_unique_id": {
+                "type": "string",
+                "description": "Unique permalink identifier of the channel, if applicable."
+              },
+              "star_type": {
+                "type": "string",
+                "description": "Star label on the message, if any.",
+                "enum": [
+                  "important",
+                  "to_do",
+                  "note",
+                  "manager",
+                  "follow_up"
+                ]
+              },
+              "reply_message_id": {
+                "type": "string",
+                "description": "ID of the message being replied to, if this is a reply."
+              },
+              "parent_chat_id": {
+                "type": "string",
+                "description": "For thread messages - the ID of the parent chat."
+              },
+              "parent_chat_title": {
+                "type": "string",
+                "description": "For thread messages - the display name of the parent chat."
+              },
+              "thread_message_id": {
+                "type": "string",
+                "description": "For thread messages - the ID of the thread head message."
+              },
+              "thread_state": {
+                "type": "string",
+                "description": "For thread messages - the state of the thread."
+              }
+            }
+          }
+        },
+        "next_token": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Pass this in the next request to fetch the following page of results. Absent when there are no more results.",
+          "example": 1710920099000
+        },
+        "matched_search_value": {
+          "type": "string",
+          "description": "The query value that was searched. Included when query was provided.",
+          "example": "proposal"
+        }
+      }
+    }
+  }
+}

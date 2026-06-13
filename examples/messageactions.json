@@ -1,0 +1,492 @@
+{
+  "create_a_new_message_action": {
+    "path": "/messageactions",
+    "method": "post",
+    "examples": {
+      "request": {
+        "deluge_action": {
+          "summary": "Deluge message action",
+          "value": {
+            "name": "Create Ticket",
+            "hint": "Convert this message into a support ticket",
+            "scope": "organization",
+            "message_types": [
+              "text",
+              "attachment"
+            ],
+            "execution_type": "deluge"
+          }
+        },
+        "webhook_action": {
+          "summary": "Webhook message action",
+          "value": {
+            "name": "Log to Jira",
+            "hint": "Send this message to Jira as an issue",
+            "scope": "organization",
+            "message_types": [
+              "text",
+              "link",
+              "attachment"
+            ],
+            "execution_type": "webhook",
+            "execution_url": "https://api.yourcompany.com/cliq/messageactions/handler"
+          }
+        },
+        "team_scope": {
+          "summary": "Team-scoped message action",
+          "value": {
+            "name": "Bulk Archive",
+            "hint": "Archive selected messages",
+            "scope": "team",
+            "team_ids": [
+              100001,
+              100002
+            ],
+            "multi_selectable": true,
+            "message_types": [
+              "text"
+            ]
+          }
+        },
+        "personal_action": {
+          "summary": "Personal scope action",
+          "value": {
+            "name": "Translate",
+            "hint": "Translate selected message to English",
+            "scope": "personal",
+            "message_types": [
+              "text"
+            ]
+          }
+        }
+      },
+      "response_200": {
+        "deluge_action": {
+          "summary": "Deluge message action response",
+          "value": {
+            "url": "/api/v3/messageactions",
+            "type": "messageaction",
+            "data": {
+              "name": "Create Ticket",
+              "id": "53719000002124010",
+              "hint": "Convert this message into a support ticket",
+              "scope": "organization",
+              "multi_selectable": false,
+              "message_types": [
+                "text",
+                "attachment"
+              ],
+              "handlers": [
+                {
+                  "type": "execution_handler"
+                }
+              ],
+              "creator": {
+                "name": "James",
+                "id": "65113112"
+              },
+              "execution_type": "deluge",
+              "status": "enabled",
+              "type": "custom"
+            }
+          }
+        },
+        "webhook_action": {
+          "summary": "Webhook message action response",
+          "value": {
+            "url": "/api/v3/messageactions",
+            "type": "messageaction",
+            "data": {
+              "name": "Log to Jira",
+              "id": "53719000002124011",
+              "hint": "Send this message to Jira as an issue",
+              "scope": "organization",
+              "multi_selectable": false,
+              "message_types": [
+                "text",
+                "link",
+                "attachment"
+              ],
+              "handlers": [
+                {
+                  "type": "execution_handler"
+                }
+              ],
+              "creator": {
+                "name": "James",
+                "id": "65113112"
+              },
+              "execution_type": "webhook",
+              "execution_url": "https://api.yourcompany.com/cliq/messageactions/handler",
+              "status": "enabled",
+              "type": "custom"
+            }
+          }
+        },
+        "team_scope": {
+          "summary": "Team-scoped message action response",
+          "value": {
+            "url": "/api/v3/messageactions",
+            "type": "messageaction",
+            "data": {
+              "name": "Bulk Archive",
+              "id": "53719000002124012",
+              "hint": "Archive selected messages",
+              "scope": "team",
+              "team_ids": [
+                100001,
+                100002
+              ],
+              "multi_selectable": true,
+              "message_types": [
+                "text"
+              ],
+              "handlers": [
+                {
+                  "type": "execution_handler"
+                }
+              ],
+              "creator": {
+                "name": "James",
+                "id": "65113112"
+              },
+              "execution_type": "deluge",
+              "status": "enabled",
+              "type": "custom"
+            }
+          }
+        }
+      }
+    }
+  },
+  "list_all_message_actions": {
+    "path": "/messageactions",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "url": "/api/v3/messageactions",
+        "type": "messageaction",
+        "sync_token": "NTB8MTc3NzQzMjI3NjY1OHw1MzcxOTAwMDAwMjEyNDAxMA==",
+        "data": [
+          {
+            "multi_selectable": true,
+            "name": "Create Ticket",
+            "id": "53719000002124010",
+            "handlers": [
+              {
+                "type": "execution_handler"
+              }
+            ],
+            "creator": {
+              "name": "James",
+              "id": "65113112"
+            },
+            "execution_type": "deluge",
+            "hint": "Create a helpdesk ticket",
+            "status": "enabled",
+            "type": "custom",
+            "message_types": [
+              "text",
+              "link"
+            ],
+            "scope": "organization"
+          },
+          {
+            "multi_selectable": false,
+            "name": "Translate",
+            "id": "53719000002124013",
+            "handlers": [
+              {
+                "type": "execution_handler"
+              }
+            ],
+            "creator": {
+              "name": "James",
+              "id": "65113112"
+            },
+            "execution_type": "deluge",
+            "hint": "Translate selected message to English",
+            "status": "enabled",
+            "type": "custom",
+            "message_types": [
+              "text"
+            ],
+            "scope": "personal"
+          }
+        ]
+      }
+    }
+  },
+  "update_an_existing_message_act": {
+    "path": "/messageactions/{MESSAGE_ACTION_ID}",
+    "method": "patch",
+    "examples": {
+      "request": {
+        "update_details": {
+          "summary": "Update action details",
+          "value": {
+            "name": "Create Ticket",
+            "hint": "Convert this message into a support ticket - updated",
+            "scope": "organization",
+            "multi_selectable": false,
+            "message_types": [
+              "text",
+              "link",
+              "attachment"
+            ]
+          }
+        },
+        "update_webhook_url": {
+          "summary": "Update webhook execution URL",
+          "value": {
+            "execution_url": "https://api.yourcompany.com/cliq/messageactions/updated-handler"
+          }
+        },
+        "update_scope_to_team": {
+          "summary": "Update scope to team",
+          "value": {
+            "scope": "team",
+            "team_ids": [
+              100001,
+              100002
+            ],
+            "multi_selectable": true,
+            "message_types": [
+              "text"
+            ]
+          }
+        }
+      },
+      "response_200": {
+        "update_all_fields": {
+          "summary": "Update All Fields response",
+          "value": {
+            "url": "/api/v3/messageactions/53719000002124010",
+            "type": "messageaction",
+            "data": {
+              "name": "Create Ticket",
+              "id": "53719000002124010",
+              "hint": "Convert this message into a support ticket",
+              "scope": "organization",
+              "multi_selectable": false,
+              "message_types": [
+                "text",
+                "link",
+                "attachment"
+              ],
+              "handlers": [
+                {
+                  "type": "execution_handler"
+                }
+              ],
+              "creator": {
+                "name": "James",
+                "id": "65113112"
+              },
+              "execution_type": "deluge",
+              "status": "enabled",
+              "type": "custom"
+            }
+          }
+        },
+        "update_hint_only": {
+          "summary": "Update Hint Only response",
+          "value": {
+            "url": "/api/v3/messageactions/53719000002124011",
+            "type": "messageaction",
+            "data": {
+              "name": "Flag Message",
+              "id": "53719000002124011",
+              "hint": "Flag this message for review",
+              "scope": "organization",
+              "multi_selectable": false,
+              "message_types": [
+                "text",
+                "link",
+                "attachment"
+              ],
+              "handlers": [
+                {
+                  "type": "execution_handler"
+                }
+              ],
+              "creator": {
+                "name": "James",
+                "id": "65113112"
+              },
+              "execution_type": "deluge",
+              "status": "enabled",
+              "type": "custom"
+            }
+          }
+        },
+        "update_scope_to_team": {
+          "summary": "Update Scope to Team response",
+          "value": {
+            "url": "/api/v3/messageactions/53719000002124012",
+            "type": "messageaction",
+            "data": {
+              "name": "Bulk Archive",
+              "id": "53719000002124012",
+              "hint": "Archive selected messages",
+              "scope": "team",
+              "team_ids": [
+                100001,
+                100002
+              ],
+              "multi_selectable": true,
+              "message_types": [
+                "text"
+              ],
+              "handlers": [
+                {
+                  "type": "execution_handler"
+                }
+              ],
+              "creator": {
+                "name": "James",
+                "id": "65113112"
+              },
+              "execution_type": "deluge",
+              "status": "enabled",
+              "type": "custom"
+            }
+          }
+        },
+        "update_message_types": {
+          "summary": "Update Message Types response",
+          "value": {
+            "url": "/api/v3/messageactions/53719000002124013",
+            "type": "messageaction",
+            "data": {
+              "name": "Translate",
+              "id": "53719000002124013",
+              "hint": "Translate selected message to English",
+              "scope": "personal",
+              "multi_selectable": false,
+              "message_types": [
+                "text"
+              ],
+              "handlers": [
+                {
+                  "type": "execution_handler"
+                }
+              ],
+              "creator": {
+                "name": "James",
+                "id": "65113112"
+              },
+              "execution_type": "deluge",
+              "status": "enabled",
+              "type": "custom"
+            }
+          }
+        }
+      }
+    }
+  },
+  "get_details_of_a_specific_mess": {
+    "path": "/messageactions/{MESSAGE_ACTION_ID}",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "url": "/api/v3/messageactions/53719000002124010",
+        "type": "messageaction",
+        "data": {
+          "multi_selectable": true,
+          "name": "Create Ticket",
+          "id": "53719000002124010",
+          "handlers": [
+            {
+              "type": "execution_handler"
+            }
+          ],
+          "creator": {
+            "name": "James",
+            "id": "65113112"
+          },
+          "execution_type": "deluge",
+          "hint": "Create a helpdesk ticket",
+          "status": "enabled",
+          "type": "custom",
+          "message_types": [
+            "text",
+            "link"
+          ],
+          "scope": "organization"
+        }
+      }
+    }
+  },
+  "updateMessageActionHandler": {
+    "path": "/messageactions/{MESSAGE_ACTION_ID}/handlers/{HANDLER_TYPE}",
+    "method": "patch",
+    "examples": {
+      "request": {
+        "update_script_deluge": {
+          "summary": "Update script - Deluge message action",
+          "value": {
+            "script": "response = Map();\nmessage = info.get(\"message\").get(\"text\");\nresponse.put(\"text\", \"Ticket created for: \" + message);\nreturn response;\n"
+          }
+        },
+        "update_permissions_webhook": {
+          "summary": "Update permissions - Webhook message action",
+          "value": {
+            "permissions": [
+              "chat",
+              "message",
+              "user",
+              "attachments"
+            ]
+          }
+        }
+      },
+      "response_200": {
+        "update_script_deluge": {
+          "summary": "Script updated - Deluge message action",
+          "value": {
+            "url": "/api/v3/messageactions/53719000002124010/handlers/execution_handler",
+            "type": "execution_handler",
+            "data": {
+              "name": "execution_handler",
+              "script": "response = Map();\nmessage = info.get(\"message\").get(\"text\");\nresponse.put(\"text\", \"Ticket created for: \" + message);\nreturn response;\n",
+              "function_id": "53719000002124010"
+            }
+          }
+        },
+        "update_permissions_webhook": {
+          "summary": "Permissions updated - Webhook message action",
+          "value": {
+            "url": "/api/v3/messageactions/53719000002124011/handlers/execution_handler",
+            "type": "execution_handler",
+            "data": {
+              "name": "execution_handler",
+              "permissions": [
+                "chat",
+                "message",
+                "user",
+                "attachments"
+              ],
+              "function_id": "53719000002124011"
+            }
+          }
+        }
+      }
+    }
+  },
+  "getMessageActionHandler": {
+    "path": "/messageactions/{MESSAGE_ACTION_ID}/handlers/{HANDLER_TYPE}",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "url": "/api/v3/messageactions/53719000002124010/handlers/execution_handler",
+        "type": "execution_handler",
+        "data": {
+          "name": "execution_handler",
+          "script": "response = Map();\nmessage = info.get(\"message\").get(\"text\");\nresponse.put(\"text\", \"Ticket created for: \" + message);\nreturn response;\n",
+          "function_id": "53719000002124010"
+        }
+      }
+    }
+  }
+}

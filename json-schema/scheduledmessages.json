@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Zoho Cliq Scheduledmessages Schemas",
+  "definitions": {
+    "NoResponse": {
+      "type": "object",
+      "description": "Response object returned when no content is available.",
+      "properties": {
+        "Response Code": {
+          "type": "string",
+          "description": "HTTP response code and message indicating no content.",
+          "example": "204 No response"
+        }
+      }
+    },
+    "error-response": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ]
+    }
+  }
+}

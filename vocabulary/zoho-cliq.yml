@@ -1,0 +1,884 @@
+vocabulary:
+  name: Zoho Cliq API v3 Vocabulary
+  description: Terms and concepts from the Zoho Cliq REST API v3
+  source: https://www.zoho.com/cliq/help/restapi/v3/
+  tags:
+  - Extensions
+  - Functions
+  - Platform_storage
+  - bots
+  - buttons
+  - chats
+  - datastores
+  - dndsettings
+  - keyboardshortcuts
+  - mentions
+  - messageactions
+  - messagecards
+  - messageformat
+  - messages
+  - mobilesettings
+  - mypins
+  - pinmessages
+  - reminders
+  - scheduledmessages
+  - slashcommands
+  - stars
+  - threads
+  - userpreferences
+  terms:
+  - name: BotIncomingWebhookRequest
+    module: bots
+    description: 'Request body for the incoming webhook endpoint. Accepts any number
+      of custom key-value parameters that are passed directly to the bot''s <code>incoming_webhook_handler</code>
+      Deluge script. Up to 50 additional parameters are supported, each with a maximum
+      value length of 10,000 characters. There are no fixed or required fields.
+
+      '
+  - name: BotIncomingWebhookResponse
+    module: bots
+    description: Response returned after a successful incoming webhook message delivery.
+      Contains the list of user IDs that received the message.
+  - name: NoResponse
+    module: bots
+    description: Represents an empty successful response where no payload is returned.
+  - name: BotGetResponse
+    module: bots
+    description: Response returned when retrieving the details of a specific bot.
+  - name: BotCreateResponse
+    module: bots
+    description: Response returned after successfully creating a bot.
+  - name: GenericResponse
+    module: bots
+    description: Generic successful response envelope used for bot APIs where detailed
+      payload schema varies.
+  - name: BotListResponse
+    module: bots
+    description: Response schema for listing bots.
+  - name: BotHandlerCreateResponse
+    module: bots
+    description: Response schema returned when a new bot handler is created successfully.
+  - name: BotHandlerDetailsResponse
+    module: bots
+    description: Response schema returned when fetching the full details of a specific
+      bot handler.
+  - name: BotHandlerResponse
+    module: bots
+    description: Response schema for bot handler create, update, and fetch operations.
+  - name: BotHandlerLogsResponse
+    module: bots
+    description: Response schema for bot handler execution logs.
+  - name: ErrorResponse
+    module: bots
+    description: ''
+  - name: BotSubscribersResponse
+    module: bots
+    description: Represents the response structure for fetching subscribers of a specific
+      bot. Contains metadata and a list of subscriber details.
+  - name: BotSubscriber
+    module: bots
+    description: Detailed information about an individual subscriber of the bot.
+  - name: Trigger-Bot-Call-Request
+    module: bots
+    description: Represents the request body for triggering a bot call with a message,
+      recipients, retries, loops, and optional actions.
+  - name: Bot-call-response
+    module: bots
+    description: Represents the response returned after triggering a bot call, including
+      the alert instance ID and associated users.
+  - name: BotCreate
+    module: bots
+    description: Payload for creating a new bot.
+  - name: BotUpdateResponse
+    module: bots
+    description: Response returned after successfully updating a bot.
+  - name: BotEdit
+    module: bots
+    description: Payload for updating an existing bot. All fields are optional.
+  - name: HandlerCreate
+    module: bots
+    description: Payload for creating a new handler.
+  - name: SubAction
+    module: bots
+    description: Sub-action definition for menu handlers.
+  - name: HandlerEdit
+    module: bots
+    description: Payload for updating an existing handler.
+  - name: BotAssociateChannelRequest
+    module: bots
+    description: Payload to associate bot with a channel.
+  - name: BotMessage
+    module: bots
+    description: 'Payload for sending a message from a bot. At least one of <code>text</code>,
+      <code>card</code>, or <code>slides</code> must be provided.
+
+      To target specific recipients, include <code>user_ids</code> (comma-separated
+      user IDs, up to 100) or set <code>broadcast: true</code> to reach all subscribers.
+
+      '
+  - name: empty-response
+    module: buttons
+    description: Response returned when there is no content.
+  - name: instant-buttons-request
+    module: buttons
+    description: ''
+  - name: instant-buttons-with-arguments-request
+    module: buttons
+    description: 'Example demonstrating instant buttons with custom arguments and
+      system API actions.
+
+      '
+  - name: message-card-buttons-request
+    module: buttons
+    description: ''
+  - name: confirmation-popup-request
+    module: buttons
+    description: ''
+  - name: v3-chat
+    module: chats
+    description: Represents a chat object with comprehensive details including metadata,
+      participants, and message information.
+  - name: v3-thread
+    module: chats
+    description: ''
+  - name: v3-create-chat-request
+    module: chats
+    description: 'For direct chat, send `chat_type: direct_message` with `user_id`.
+
+      For group chat, send `chat_type: group_chat` with `user_ids` and `title`.
+
+      '
+  - name: v3-bulk-chat-update-request
+    module: chats
+    description: "Supports two payload modes, selected by the <code>operation</code>\
+      \ field:\n<ul>\n  <li><b>Mark as read</b> (<code>read_status_update</code>):\
+      \ Set <code>operation</code> to <code>read_status_update</code>, <code>read_status</code>\
+      \ to <code>read</code>, and provide a <code>chats</code> array with each chat's\
+      \ <code>chat_id</code> and <code>last_message_id</code>. Returns <code>200 OK</code>.</li>\n\
+      \  <li><b>Clear unread</b> (<code>clear_unread</code>): Set <code>operation</code>\
+      \ to <code>clear_unread</code> and provide a <code>chat_ids</code> array. Returns\
+      \ <code>204 No Content</code>.</li>\n</ul>\n"
+  - name: v3-bulk-mark-read-request
+    module: chats
+    description: ''
+  - name: v3-bulk-clear-unread-request
+    module: chats
+    description: ''
+  - name: v3-update-chat-title-request
+    module: chats
+    description: ''
+  - name: v3-update-chat-history-request
+    module: chats
+    description: ''
+  - name: v3-update-chat-read-status-request
+    module: chats
+    description: ''
+  - name: v3-close-chat-request
+    module: chats
+    description: ''
+  - name: v3-clear-local-history-request
+    module: chats
+    description: ''
+  - name: v3-typing-activity-request
+    module: chats
+    description: ''
+  - name: v3-fork-chat-request
+    module: chats
+    description: ''
+  - name: v3-create-direct-chat-request
+    module: chats
+    description: ''
+  - name: v3-create-group-chat-request
+    module: chats
+    description: ''
+  - name: v3-add-members-request
+    module: chats
+    description: ''
+  - name: no-response
+    module: chats
+    description: Response object returned when no content is available.
+  - name: get-chats-response
+    module: chats
+    description: Response object containing details of a chat or direct message.
+  - name: UserSummary
+    module: chats
+    description: Basic details of a user in the chat.
+  - name: LastMessageInfo
+    module: chats
+    description: Information about the most recent message in the chat.
+  - name: MessageStyles
+    module: chats
+    description: Style attributes applied to a message.
+  - name: BotInfo
+    module: chats
+    description: Information about a bot associated with a message.
+  - name: retrieve-chat-members
+    module: chats
+    description: Response object containing members of a chat.
+  - name: Members
+    module: chats
+    description: Detailed information about a chat member.
+  - name: pin-a-message-request
+    module: chats
+    description: Request body parameters for pinning a message in a chat.
+  - name: pin-a-message-response
+    module: chats
+    description: Response object containing details of a pinned message.
+  - name: get-pinnedmessage-response
+    module: chats
+    description: Response object containing details of an existing pinned message.
+  - name: updaterecord_response
+    module: datastores
+    description: Response envelope returned when a datastore record is retrieved or
+      updated.
+  - name: DatastoreResponse
+    module: datastores
+    description: Datastores API response envelope.
+  - name: AddRecordRequest
+    module: datastores
+    description: Request body schema to add a new record to the products database.
+  - name: UpdateRecordRequest
+    module: datastores
+    description: Request body schema to update an existing record in the products
+      database.
+  - name: Products-DatabaseResponse
+    module: datastores
+    description: Response schema representing a single product record in the database.
+  - name: product-database-list-records
+    module: datastores
+    description: Response schema containing a list of product records from the database.
+  - name: base64_regex
+    module: datastores
+    description: Base64-encoded pagination or sync token used for cursor-based pagination
+      and incremental data sync.
+  - name: editplatformdatabase_v2
+    module: datastores
+    description: Payload for updating datastore metadata.
+  - name: createplatformdatabase_v2
+    module: datastores
+    description: Payload for creating a new datastore.
+  - name: datastores_records_add
+    module: datastores
+    description: Payload for inserting or updating a single datastore record.
+  - name: encryptedappkey_regex
+    module: datastores
+    description: Encrypted application key (appkey or EXTENSION_KEY) issued to a bot
+      or extension, used as an alternative to OAuth for webhook-style authentication.
+  - name: platformstorage_records_export
+    module: datastores
+    description: Configuration payload for a Datastore bulk export operation. Specifies
+      the fields to include, filter criteria, and output format.
+  - name: datastores_records_update
+    module: datastores
+    description: Payload for bulk updating datastore records by criteria.
+  - name: orderbyfield_regex
+    module: datastores
+    description: Field name (optionally suffixed with " asc" or " desc") used to sort
+      Datastore records in query results.
+  - name: multiplelong_regex
+    module: datastores
+    description: Comma-separated list of numeric long integer IDs (e.g. record IDs
+      or field IDs) used in bulk delete operations.
+  - name: edit_platform_db_fields
+    module: datastores
+    description: Payload for editing existing datastore fields.
+  - name: add_platform_db_fields
+    module: datastores
+    description: Payload for adding new fields to a datastore schema.
+  - name: longid_regex
+    module: datastores
+    description: Numeric long integer identifier used to reference platform components
+      such as Commands, Functions, Widgets, Message Actions, Schedulers, and Extensions.
+  - name: listrecords_response
+    module: datastores
+    description: Response schema for listing records from a datastore, including pagination
+      information and a list of records.
+  - name: dnd-preferences-response
+    module: dndsettings
+    description: Current DND preference settings for the user.
+  - name: update-dnd-preferences-request
+    module: dndsettings
+    description: Request payload for updating DND preferences. Omitted fields remain
+      unchanged.
+  - name: ExtensionPropertySingleResponse
+    module: extensions
+    description: Response returned when retrieving a single extension property.
+  - name: ExtensionPropertiesGetResponse
+    module: extensions
+    description: Response returned when retrieving multiple extension properties.
+      Keys are property names; values are their current string values.
+  - name: ExtensionPropertiesUpdateResponse
+    module: extensions
+    description: Response returned after adding or updating extension properties.
+      Contains only the key-value pairs that were submitted in the request.
+  - name: extensioninstall_V3
+    module: extensions
+    description: Payload for installing an extension.
+  - name: extensionupgrade_V3
+    module: extensions
+    description: Payload for upgrading an installed extension.
+  - name: appproperties
+    module: extensions
+    description: Payload for setting extension properties.
+  - name: smallalphawithspl_regex
+    module: extensions
+    description: Lowercase alphanumeric string with allowed special characters (hyphens
+      and underscores) used as extension property keys.
+  - name: FunctionResponse
+    module: functions
+    description: Response schema for function create, get, and update operations.
+  - name: FunctionListResponse
+    module: functions
+    description: Response schema for listing functions.
+  - name: FunctionHandlerDetailsResponse
+    module: functions
+    description: Response schema returned when fetching the full details of a specific
+      function handler.
+  - name: FunctionHandlerResponse
+    module: functions
+    description: Response schema for function handler operations.
+  - name: v3-function-create
+    module: functions
+    description: Payload for creating a new function.
+  - name: v3-function-edit
+    module: functions
+    description: Payload for updating a function. `function_type` cannot be changed
+      after creation.
+  - name: FUNCTION_ID
+    module: functions
+    description: Unique numeric identifier of a Function. Used in function management
+      and handler endpoints.
+  - name: v3-exehandler-edit
+    module: functions
+    description: Payload for updating an existing function handler.
+  - name: FUNCTION_HANDLER_TYPE_regex
+    module: functions
+    description: Name of a function handler.
+  - name: v3-exehandler-create
+    module: functions
+    description: Payload for creating a new function handler.
+  - name: error-response
+    module: keyboardshortcuts
+    description: ''
+  - name: os-shortcut
+    module: keyboardshortcuts
+    description: ''
+  - name: custom-chat-or-widget-entry
+    module: keyboardshortcuts
+    description: ''
+  - name: custom-snippet-entry
+    module: keyboardshortcuts
+    description: ''
+  - name: keyboard-shortcuts-object
+    module: keyboardshortcuts
+    description: ''
+  - name: keyboard-shortcuts-response
+    module: keyboardshortcuts
+    description: ''
+  - name: update-keyboard-shortcuts-request
+    module: keyboardshortcuts
+    description: ''
+  - name: delete-keyboard-shortcuts-request
+    module: keyboardshortcuts
+    description: ''
+  - name: get-mentions-response
+    module: mentions
+    description: ''
+  - name: mention-entry
+    module: mentions
+    description: ''
+  - name: mention-chat
+    module: mentions
+    description: ''
+  - name: mention-message
+    module: mentions
+    description: ''
+  - name: mention-sender
+    module: mentions
+    description: ''
+  - name: mention-metadata
+    module: mentions
+    description: ''
+  - name: mentioned-user
+    module: mentions
+    description: ''
+  - name: mentions-error-response
+    module: mentions
+    description: ''
+  - name: MessageActionResponse
+    module: messageactions
+    description: Response schema for message action create, get, and update operations.
+  - name: updateMessageActionHandlerResponse
+    module: messageactions
+    description: Response schema for message action handler update operations.
+  - name: MessageActionUpdateResponse
+    module: messageactions
+    description: Response schema for message action update operations.
+  - name: MessageActionListItemsResponse
+    module: messageactions
+    description: Response schema for listing message actions.
+  - name: MessageActionListResponse
+    module: messageactions
+    description: Response schema for listing message actions.
+  - name: MessageActionHandlerResponse
+    module: messageactions
+    description: Response schema for message action handler operations.
+  - name: HANDLER_TYPE_regex
+    module: messageactions
+    description: Type of the message action handler. Message actions support only
+      one handler type&#58; <code>execution_handler</code>, which is triggered when
+      the action is invoked.
+  - name: v3-msgaction-create
+    module: messageactions
+    description: Payload for creating a message action.
+  - name: textpattern_regex
+    module: messageactions
+    description: Free-text search string used to filter platform components by name
+      in list and Marketplace search endpoints.
+  - name: pf_component_search_scope_regex
+    module: messageactions
+    description: Scope filter for Marketplace search. Accepted values are "organisation"
+      (org-created components) and "marketplace" (published extensions).
+  - name: v3-msgaction-edit
+    module: messageactions
+    description: Payload for updating a message action. All fields are optional; only
+      the fields provided will be updated.
+  - name: CardObject
+    module: messagecards
+    description: "Defines the interactive card to be rendered inside the message.\
+      \ The <code>theme</code> field\nselects the card type and determines which fields\
+      \ are required. For a quick reference of\nrequired and optional fields per theme,\
+      \ see the <a href=\"#available-themes\"><b>Available Themes</b></a> table in\
+      \ the overview above.\n<br><br>\n<b>Poll card fields</b>\n<ul>\n  <li><b>theme</b>\
+      \ <code>string</code>: Must be <code>poll</code>.</li>\n  <li><b>title</b> <code>string</code>:\
+      \ The poll question displayed at the top of the card. Maximum 200 characters.</li>\n\
+      \  <li><b>options</b> <code>array</code>: List of voting choices. Minimum 2,\
+      \ maximum 10 items.\n    <ul>\n      <li><b>options[].text</b> <code>string</code>:\
+      \ Display label for the poll option. Maximum 100 characters.</li>\n    </ul>\n\
+      \  </li>\n</ul>\n<b>Modern Inline card fields</b>\n<ul>\n  <li><b>theme</b>\
+      \ <code>string</code>: Must be <code>modern-inline</code>.</li>\n  <li><b>title</b>\
+      \ <code>string</code>: Card header text displayed at the top of the card. Maximum\
+      \ 200 characters.</li>\n  <li><b>thumbnail</b> <code>string</code>: Optional.\
+      \ Publicly accessible HTTPS URL of a thumbnail image shown in the card header.</li>\n\
+      \  <li><b>sections</b> <code>array</code>: Optional. One or more labeled field\
+      \ sections displayed in the card body. Each section groups related key-value\
+      \ pairs under an optional heading.\n    <ul>\n      <li><b>sections[].title</b>\
+      \ <code>string</code>: Optional section heading displayed above the fields.</li>\n\
+      \      <li><b>sections[].fields</b> <code>array</code>: List of key-value field\
+      \ pairs.\n        <ul>\n          <li><b>fields[].title</b> <code>string</code>:\
+      \ Field label (key).</li>\n          <li><b>fields[].value</b> <code>string</code>:\
+      \ Field value.</li>\n        </ul>\n      </li>\n    </ul>\n  </li>\n  <li><b>buttons</b>\
+      \ <code>array</code>: Optional. Action buttons rendered at the bottom of the\
+      \ card. Maximum 5. See <b>Button fields</b> below.</li>\n</ul>\n<b>Prompt card\
+      \ fields</b>\n<ul>\n  <li><b>theme</b> <code>string</code>: Must be <code>prompt</code>.</li>\n\
+      \  <li><b>title</b> <code>string</code>: The prompt question or alert text presented\
+      \ to the user. Maximum 200 characters.</li>\n  <li><b>buttons</b> <code>array</code>:\
+      \ Action buttons for the user to respond with. Minimum 1, maximum 5. See <b>Button\
+      \ fields</b> below.</li>\n</ul>\n<b>Button fields</b> (applicable to <code>modern-inline</code>\
+      \ and <code>prompt</code> themes)\n<ul>\n  <li><b>buttons[].label</b> <code>string</code>:\
+      \ Text displayed on the button. Maximum 30 characters.</li>\n  <li><b>buttons[].action.type</b>\
+      \ <code>string</code>: Determines how Cliq handles the button click.\n    <ul>\n\
+      \      <li><code>open.url</code>: Opens a URL in the user's default browser.\
+      \ Requires <code>action.data.web</code> (string).</li>\n      <li><code>invoke.function</code>:\
+      \ Triggers a Cliq Function by name. Requires <code>action.data.name</code> (string).</li>\n\
+      \      <li><code>system.api</code>: Calls a Cliq internal system API. Requires\
+      \ <code>action.data.api</code> (string).</li>\n      <li><code>invoke.bot</code>:\
+      \ Sends a message to a bot. Requires <code>action.data.bot_name</code> and <code>action.data.message</code>.</li>\n\
+      \      <li><code>preview.url</code>: Opens a URL inside a Cliq preview panel\
+      \ without leaving the conversation. Requires <code>action.data.web</code> (string).</li>\n\
+      \    </ul>\n  </li>\n  <li><b>buttons[].action.data</b> <code>object</code>:\
+      \ The payload passed to the action handler. Expected fields depend on <code>action.type</code>\
+      \ as listed above.</li>\n</ul>\n<b>Note:</b> To render supporting structured\
+      \ content such as tables, lists, or labelled records alongside a card,\nuse\
+      \ the top-level <code>slides</code> array in the message payload. <code>slides</code>\
+      \ is independent of the <code>card</code> object\nand can be combined with any\
+      \ card theme. For details on supported slide formats, see\n<a href=\"https://www.zoho.com/cliq/help/restapi/v3/#Message_Content\"\
+      \ target=\"_blank\">Message Content</a>.\n"
+  - name: CardButton
+    module: messagecards
+    description: An action button rendered inside a Message Card. When clicked by
+      a user, the button executes the specified <code>action</code>.
+  - name: MessageResponse
+    module: messagecards
+    description: Response returned after a message card is successfully posted.
+  - name: Slides
+    module: messagecards
+    description: "An array of structured content blocks rendered below the card inside\
+      \ the message.\n<code>slides</code> is a top-level field in the message payload\
+      \ - it sits alongside\n<code>text</code> and <code>card</code>, and is <b>not</b>\
+      \ nested inside <code>card</code>.\n<br><br>\nMultiple slide blocks can be included\
+      \ in a single message, and they are rendered in the\norder they appear in the\
+      \ array. <code>slides</code> is most commonly paired with the\n<code>modern-inline</code>\
+      \ card theme to display supporting data such as tables, lists,\nor labelled\
+      \ records alongside the card header, but it is compatible with all card themes.\n\
+      <br><br>\nEach slide block requires a <code>type</code> field that determines\
+      \ how the content is rendered,\nan optional <code>title</code> heading, and\
+      \ a <code>data</code> payload whose structure\ndepends on the slide type.\n\
+      <br><br>\n<b>Supported slide types</b>\n<table style=\"border-collapse: collapse;\
+      \ width: 100%; font-family: inherit;\">\n  <tr>\n    <th style=\"padding: 8px;\
+      \ text-align: left; border: 1px solid #ddd; font-family: inherit;\">Type</th>\n\
+      \    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd; font-family:\
+      \ inherit;\">Renders</th>\n    <th style=\"padding: 8px; text-align: left; border:\
+      \ 1px solid #ddd; font-family: inherit;\"><code>data</code> structure</th>\n\
+      \  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><a\
+      \ href=\"https://www.zoho.com/cliq/help/restapi/v3/#table\" target=\"_blank\"\
+      ><code>table</code></a></td>\n    <td style=\"padding: 8px; border: 1px solid\
+      \ #ddd;\">A data table with column headers and rows.</td>\n    <td style=\"\
+      padding: 8px; border: 1px solid #ddd;\">Object with <code>headers</code> (array\
+      \ of strings) and <code>rows</code> (array of objects where each key maps to\
+      \ a header).</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px\
+      \ solid #ddd;\"><a href=\"https://www.zoho.com/cliq/help/restapi/v3/#list\"\
+      \ target=\"_blank\"><code>list</code></a></td>\n    <td style=\"padding: 8px;\
+      \ border: 1px solid #ddd;\">A bulleted list of items.</td>\n    <td style=\"\
+      padding: 8px; border: 1px solid #ddd;\">Array of strings, each representing\
+      \ one list item.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border:\
+      \ 1px solid #ddd;\"><a href=\"https://www.zoho.com/cliq/help/restapi/v3/#label\"\
+      \ target=\"_blank\"><code>label</code></a></td>\n    <td style=\"padding: 8px;\
+      \ border: 1px solid #ddd;\">Key-value pairs in a definition-list style.</td>\n\
+      \    <td style=\"padding: 8px; border: 1px solid #ddd;\">Array of objects, each\
+      \ with <code>label</code> (string) and <code>value</code> (string).</td>\n \
+      \ </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><a\
+      \ href=\"https://www.zoho.com/cliq/help/restapi/v3/#image\" target=\"_blank\"\
+      ><code>images</code></a></td>\n    <td style=\"padding: 8px; border: 1px solid\
+      \ #ddd;\">One or more inline images.</td>\n    <td style=\"padding: 8px; border:\
+      \ 1px solid #ddd;\">Array of publicly accessible HTTPS image URL strings.</td>\n\
+      \  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><a\
+      \ href=\"https://www.zoho.com/cliq/help/restapi/v3/#text\" target=\"_blank\"\
+      ><code>text</code></a></td>\n    <td style=\"padding: 8px; border: 1px solid\
+      \ #ddd;\">A plain or formatted text block.</td>\n    <td style=\"padding: 8px;\
+      \ border: 1px solid #ddd;\">A string containing the text content to display.</td>\n\
+      \  </tr>\n</table>\n<br>\nFor full details on each slide type, including field-level\
+      \ descriptions and payload examples,\nrefer to <a href=\"https://www.zoho.com/cliq/help/restapi/v3/#Message_Content\"\
+      \ target=\"_blank\">Message Content</a>.\n"
+  - name: send-table-message-request-body
+    module: messageformat
+    description: ''
+  - name: send-list-message-request-body
+    module: messageformat
+    description: ''
+  - name: send-label-message-request-body
+    module: messageformat
+    description: ''
+  - name: send-image-message-request-body
+    module: messageformat
+    description: ''
+  - name: send-chart-message-request-body
+    module: messageformat
+    description: ''
+  - name: send-graph-message-request-body
+    module: messageformat
+    description: ''
+  - name: MessageRequest
+    module: messages
+    description: Request object to send messages to one or more users.
+  - name: UserMessage
+    module: messages
+    description: Represents message details for multiple users.
+  - name: MessageComponents
+    module: messages
+    description: Core components of a message.
+  - name: file_type
+    module: messages
+    description: Format/type of an attachment message.
+  - name: senderName
+    module: messages
+    description: Name of the message sender.
+  - name: senderID
+    module: messages
+    description: User ID of the message sender.
+  - name: sender
+    module: messages
+    description: Information about the sender of the message.
+  - name: messageText
+    module: messages
+    description: Text content of the message.
+  - name: content
+    module: messages
+    description: Content object containing text message.
+  - name: fileName
+    module: messages
+    description: Original filename of the attachment.
+  - name: contentType
+    module: messages
+    description: MIME type of the attachment.
+  - name: imageHeight
+    module: messages
+    description: Height of the image in pixels.
+  - name: imageSize
+    module: messages
+    description: Size of the image file in bytes.
+  - name: imageWidth
+    module: messages
+    description: Width of the image in pixels.
+  - name: dimensions
+    module: messages
+    description: Dimensions and size of a file or image.
+  - name: file_id
+    module: messages
+    description: Unique identifier for the file.
+  - name: file_content
+    module: messages
+    description: File metadata and content reference.
+  - name: thumbnailHeight
+    module: messages
+    description: Height of the thumbnail image.
+  - name: thumbnailWidth
+    module: messages
+    description: Width of the thumbnail image.
+  - name: blur_data
+    module: messages
+    description: Base64 encoded placeholder for image blur effect.
+  - name: thumbnail
+    module: messages
+    description: Thumbnail representation of an image or file.
+  - name: comment
+    module: messages
+    description: Message sent along with a file.
+  - name: fileMessage_content
+    module: messages
+    description: Content structure for a file message.
+  - name: message_data
+    module: messages
+    description: Standard text message data structure.
+  - name: fileMessage_data
+    module: messages
+    description: Structure for file messages.
+  - name: get-messages-response
+    module: messages
+    description: Response object for fetching messages.
+  - name: post-message-in-a-chat-response
+    module: messages
+    description: Response object for posting messages in a chat/user
+  - name: post-message-in-a-channel-request
+    module: messages
+    description: Request object to post a message in a channel.
+  - name: post-message-in-a-channel-response
+    module: messages
+    description: Response object after posting a message in a channel.
+  - name: post-message-in-chat-request
+    module: messages
+    description: Request object to send a message in a chat.
+  - name: post-message-in-chat-response
+    module: messages
+    description: Response object after posting a message in chat.
+  - name: edit-a-message-request
+    module: messages
+    description: Request object to edit an existing message.
+  - name: get-reactions
+    module: messages
+    description: Retrieve all reactions for messages.
+  - name: add-a-reaction-request
+    module: messages
+    description: Request object to add a reaction to a message.
+  - name: forward-messages-request
+    module: messages
+    description: Request object to forward one or more messages from a source chat
+      to other chats or users.
+  - name: forward-messages-response
+    module: messages
+    description: Response object after forwarding messages. Uses a partial-success
+      model.
+  - name: delete-multiple-messages-response
+    module: messages
+    description: Response object after deleting multiple messages.
+  - name: search-messages-response
+    module: messages
+    description: Response object for message search results containing matching messages
+      and pagination information.
+  - name: notification-settings
+    module: mobilesettings
+    description: Notification controls by conversation type and notification mode
+      (alert, sound, and preview).
+  - name: media-gallery-settings
+    module: mobilesettings
+    description: Controls whether downloaded media is saved to the device gallery.
+  - name: media-auto-download-settings
+    module: mobilesettings
+    description: Controls automatic media download behavior based on media type or
+      network mode.
+  - name: mobile-settings-response
+    module: mobilesettings
+    description: Full mobile settings object returned by the GET endpoint.
+  - name: update-mobile-settings-request
+    module: mobilesettings
+    description: Provide only the settings to update. For nested settings, send the
+      nested object with intended values.
+  - name: pin-category
+    module: mypins
+    description: 'Represents a pin folder (chat folder) object. Fields marked <b>conditional</b>
+      are only present when the matching <code>include_fields</code> value is requested.<br><br>
+
+      <b>Note:</b> The default folder only contains <code>category_id: "default"</code>
+      with no other fields.
+
+      '
+  - name: pinned-chat
+    module: mypins
+    description: Represents a pinned chat entry within a folder.
+  - name: get-pin-categories-response
+    module: mypins
+    description: Response envelope for listing all pin folders.
+  - name: create-pin-category-request
+    module: mypins
+    description: Request body for creating a new pin folder.
+  - name: create-pin-category-response
+    module: mypins
+    description: Response envelope after creating a pin folder.
+  - name: update-pin-category-request
+    module: mypins
+    description: "Request body for updating a pin folder. Send <b>exactly one</b>\
+      \ operation type per request.<br><br>\n<b>Operation types</b>:\n<ul>\n  <li><b>Update\
+      \ Folder Details</b>: Send <code>title</code>, <code>symbol</code>, and/or <code>state</code>.</li>\n\
+      \  <li><b>Reorder a Chat</b>: Send <code>chat_id</code> with optional <code>pin_above</code>\
+      \ and required <code>last_sync_time</code>.</li>\n  <li><b>Reorder a Folder</b>:\
+      \ Send <code>pin_above</code> only (no <code>chat_id</code>) with required <code>last_sync_time</code>.</li>\n\
+      \  <li><b>Bulk Update Chats</b>: Send <code>chat_ids</code> (array) with required\
+      \ <code>last_sync_time</code>.</li>\n</ul>\n"
+  - name: update-pin-category-details-request
+    module: mypins
+    description: "Request body for updating a pin folder. Send <b>exactly one</b>\
+      \ operation type per request.<br><br>\n<b>Operation types</b>:\n<ul>\n  <li><b>Update\
+      \ Folder Details</b>: Send <code>title</code>, <code>symbol</code>, and/or <code>state</code>.</li>\n\
+      </ul>\n"
+  - name: reorder-chat-in-category-request
+    module: mypins
+    description: "Request body for updating a pin folder. Send <b>exactly one</b>\
+      \ operation type per request.<br><br>\n<b>Operation types</b>:\n<ul>\n  <li><b>Reorder\
+      \ a Chat</b>: Send <code>chat_id</code> with optional <code>pin_above</code>\
+      \ and required <code>last_sync_time</code>.</li>\n</ul>\n"
+  - name: reorder-category-request
+    module: mypins
+    description: "Request body for updating a pin folder. Send <b>exactly one</b>\
+      \ operation type per request.<br><br>\n<b>Operation types</b>:\n<ul>\n  <li><b>Reorder\
+      \ a Folder</b>: Send <code>pin_above</code> only (no <code>chat_id</code>) with\
+      \ required <code>last_sync_time</code>.</li>\n</ul>\n"
+  - name: bulk-update-chats-in-category-request
+    module: mypins
+    description: "Request body for updating a pin folder. Send <b>exactly one</b>\
+      \ operation type per request.<br><br>\n<b>Operation types</b>:\n<ul>\n  <li><b>Bulk\
+      \ Update Chats</b>: Send <code>chat_ids</code> (array) with required <code>last_sync_time</code>.</li>\n\
+      </ul>\n"
+  - name: pin-chat-request
+    module: mypins
+    description: Request body for pinning a chat. All fields are optional.
+  - name: pin-chat-response
+    module: mypins
+    description: Response envelope after pinning a chat.
+  - name: unpin-chat-response
+    module: mypins
+    description: Response envelope after unpinning a chat.
+  - name: pin-information
+    module: pinmessages
+    description: Metadata about the pin itself.
+  - name: pinned-message
+    module: pinmessages
+    description: A pinned message object. Contains the original message fields (id,
+      type, content, sender, time, mentions) along with pin-specific fields.
+  - name: get-pinned-messages-response
+    module: pinmessages
+    description: Response envelope for listing all pinned messages.
+  - name: get-primary-pinned-message-response
+    module: pinmessages
+    description: Response envelope when fetching the primary pinned message.
+  - name: add-pinned-message-request
+    module: pinmessages
+    description: Request body for pinning a message in a chat.
+  - name: add-pinned-message-response
+    module: pinmessages
+    description: Response envelope after pinning a message.
+  - name: reorder-pinned-message-request
+    module: pinmessages
+    description: Request body for reordering a pinned message in the list.
+  - name: delete-pinned-messages-request
+    module: pinmessages
+    description: Request body for deleting specific pinned messages.
+  - name: SlashCommandResponse
+    module: slashcommands
+    description: Slash Commands API response envelope.
+  - name: ExecutionRecordResponse
+    module: slashcommands
+    description: Response envelope for slash command handler execution records.
+  - name: COMMAND_HANDLER_TYPE_regex
+    module: slashcommands
+    description: 'Name of a slash command handler. Accepted values: <code>execution_handler</code>
+      (fires on command invocation), <code>suggestion_handler</code> (fires to generate
+      autocomplete suggestions).
+
+      '
+  - name: update-slash-command-request-body
+    module: slashcommands
+    description: Payload for updating a slash command. All fields are optional; only
+      the fields provided will be updated.
+  - name: create-slash-command-request-body
+    module: slashcommands
+    description: Payload for creating a new slash command.
+  - name: list-all-slash-commands-response
+    module: slashcommands
+    description: Response schema for listing slash commands.
+  - name: StarInformation
+    module: stars
+    description: Information about the star applied to a message.
+  - name: ChatInformation
+    module: stars
+    description: Information about the chat containing the starred message.
+  - name: StarMessageRequest
+    module: stars
+    description: ''
+  - name: UpdateStarTypeRequest
+    module: stars
+    description: ''
+  - name: UpdateStarTypeResponse
+    module: stars
+    description: ''
+  - name: StarMessageResponse
+    module: stars
+    description: ''
+  - name: StarredMessagesListResponse
+    module: stars
+    description: ''
+  - name: get-thread-followers-response
+    module: threads
+    description: Response containing the list of followers for a particular thread.
+  - name: thread-creation-payload
+    module: threads
+    description: Request body to create a new thread from an existing message.
+  - name: send-message-in-thread-payload
+    module: threads
+    description: Request body to send a message in an existing thread.
+  - name: thread-creation-response
+    module: threads
+    description: Response returned after creating a thread.
+  - name: get-threads-payload
+    module: threads
+    description: Request parameters to retrieve threads from a channel.
+  - name: auto-follow-threads-payload
+    module: threads
+    description: Request body to enable or disable auto-follow for threads in a channel.
+  - name: add-followers-payload
+    module: threads
+    description: Request body to add followers to a thread.
+  - name: remove-followers-payload
+    module: threads
+    description: Request body to remove followers from a thread.
+  - name: update-state-of-thread-request
+    module: threads
+    description: Request body to update the state of a thread (open or closed).
+  - name: auto-follow-threads-response
+    module: threads
+    description: Response returned after updating auto-follow settings for threads.
+  - name: get-threads-response
+    module: threads
+    description: Response containing the list of threads in a channel.
+  - name: get-main-message-response
+    module: threads
+    description: Response containing the details of a main message and its thread
+      information.
+  - name: user-preferences-response
+    module: userpreferences
+    description: ''
+  - name: user-preferences-object
+    module: userpreferences
+    description: Complete user preference object returned by the API.
+  - name: update-user-preferences-request
+    module: userpreferences
+    description: Provide only the preference fields that must be updated.

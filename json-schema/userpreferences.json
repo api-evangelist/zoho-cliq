@@ -1,0 +1,502 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Zoho Cliq Userpreferences Schemas",
+  "definitions": {
+    "NoResponse": {
+      "type": "object",
+      "description": "Response envelope for successful operations with no payload.",
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "success"
+        },
+        "message": {
+          "type": "string",
+          "example": "Operation completed successfully."
+        }
+      }
+    },
+    "user-preferences-response": {
+      "type": "object",
+      "properties": {
+        "userpreferences": {
+          "$ref": "#/components/schemas/user-preferences-object"
+        }
+      }
+    },
+    "user-preferences-object": {
+      "type": "object",
+      "description": "Complete user preference object returned by the API.",
+      "x-enum-descriptions": [
+        {
+          "enabled": "Setting is enabled."
+        },
+        {
+          "disabled": "Setting is disabled."
+        }
+      ],
+      "properties": {
+        "dark_mode": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Enable or disable dark mode."
+        },
+        "ui_theme": {
+          "type": "string",
+          "description": "Active UI theme identifier.",
+          "example": "4"
+        },
+        "lhs_theme": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Left-hand sidebar theme toggle."
+        },
+        "smileys": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Enable emoji display in messages."
+        },
+        "smileypreference": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Emoji preference toggle."
+        },
+        "translation_mode": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Auto-translation toggle."
+        },
+        "show_translate_option": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Show the Translate option on messages."
+        },
+        "av_noise_cancellation": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Enable noise cancellation during AV calls."
+        },
+        "av_hd_video": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Enable HD video for calls."
+        },
+        "av_speech_detection": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Enable speech detection during calls."
+        },
+        "av_auto_pip": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Automatically switch to picture-in-picture during calls."
+        },
+        "av_livetranscript_always_on": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Keep live transcript always visible during calls."
+        },
+        "av_livetranscript_fontsize": {
+          "type": "string",
+          "description": "Font size setting for live transcripts.",
+          "example": "2"
+        },
+        "av_translate_livetranscript": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Translate live transcripts during calls."
+        },
+        "sound_notification": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Master toggle for sound notifications."
+        },
+        "global_sound_notify": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Global sound notification switch."
+        },
+        "desktop_notification": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Desktop push notification toggle."
+        },
+        "toast_notification": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toast (pop-up) notification toggle."
+        },
+        "reading_mask": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Enable reading mask for accessibility."
+        },
+        "reading_mask_type": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Type of reading mask."
+        },
+        "vision_assistive": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Enable vision assistive features."
+        },
+        "vision_assistive_type": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Type of vision assistive mode."
+        },
+        "cliq_font": {
+          "type": "string",
+          "description": "Selected font identifier. -1 means default.",
+          "example": "-1"
+        },
+        "cliq_font_size": {
+          "type": "string",
+          "description": "Font size level.",
+          "example": "2"
+        },
+        "cliq_font_spacing": {
+          "type": "string",
+          "description": "Font spacing level.",
+          "example": "2"
+        },
+        "reminder_notification": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggle reminder notifications."
+        },
+        "reactions_notification": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggle reaction notifications."
+        },
+        "quick_reactions": {
+          "type": "string",
+          "description": "Comma-separated list of quick reaction emojis.",
+          "example": ":thumbsup:,:super:,:heavy-plus-sign:"
+        },
+        "conference_recording": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Enable conference call recording."
+        },
+        "conference_theme": {
+          "type": "string",
+          "description": "Theme used during conference calls.",
+          "example": "none"
+        },
+        "video_background": {
+          "type": "string",
+          "description": "Virtual background for video calls.",
+          "example": "none"
+        },
+        "video_filter": {
+          "type": "string",
+          "description": "Video filter applied during calls.",
+          "example": "none"
+        },
+        "contact_photo": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Show contact photos in the chat list."
+        },
+        "linkpreview_status": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Show URL link previews in messages."
+        },
+        "underlinelinks": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Underline hyperlinks in messages."
+        },
+        "magnify_text": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Magnify text for accessibility."
+        },
+        "focus_indicator": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Show focus indicator for keyboard navigation."
+        },
+        "last_seen": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Show last seen timestamp to contacts."
+        },
+        "message_in_notification": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Show message content in notifications."
+        },
+        "huddle_mirror_video": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Mirror own video feed in huddle."
+        },
+        "huddle_pane_status": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Show huddle pane status."
+        },
+        "huddle_sticky_info": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Show sticky info bar in huddle."
+        },
+        "huddle_screenshare_layout": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Layout preference during screen share in huddle."
+        },
+        "huddle_notify_msg": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Notify participants when a huddle message is sent."
+        }
+      }
+    },
+    "update-user-preferences-request": {
+      "type": "object",
+      "description": "Provide only the preference fields that must be updated.",
+      "properties": {
+        "dark_mode": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles dark mode for the Cliq interface.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Dark mode is active.</li>\n  <li><code>disabled</code>: Dark mode is turned off.</li>\n</ul>\n"
+        },
+        "ui_theme": {
+          "type": "string",
+          "description": "Active UI theme identifier.",
+          "example": "4"
+        },
+        "lhs_theme": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles the left-hand sidebar theme.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Left-hand sidebar theme is applied.</li>\n  <li><code>disabled</code>: Left-hand sidebar theme is turned off.</li>\n</ul>\n"
+        },
+        "smileys": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles emoji display in messages.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Emojis are rendered in messages.</li>\n  <li><code>disabled</code>: Emojis are shown as text.</li>\n</ul>\n"
+        },
+        "translation_mode": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles automatic message translation.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Auto-translation is active.</li>\n  <li><code>disabled</code>: Auto-translation is turned off.</li>\n</ul>\n"
+        },
+        "av_noise_cancellation": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles noise cancellation during audio/video calls.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Noise cancellation is active.</li>\n  <li><code>disabled</code>: Noise cancellation is turned off.</li>\n</ul>\n"
+        },
+        "av_hd_video": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles HD video during calls.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: HD video is active.</li>\n  <li><code>disabled</code>: HD video is turned off.</li>\n</ul>\n"
+        },
+        "sound_notification": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Master toggle for all sound notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Sound notifications are active.</li>\n  <li><code>disabled</code>: All sound notifications are muted.</li>\n</ul>\n"
+        },
+        "desktop_notification": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles desktop push notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Desktop notifications are active.</li>\n  <li><code>disabled</code>: Desktop notifications are turned off.</li>\n</ul>\n"
+        },
+        "reading_mask": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles reading mask for accessibility.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Reading mask is active.</li>\n  <li><code>disabled</code>: Reading mask is turned off.</li>\n</ul>\n"
+        },
+        "vision_assistive": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles vision assistive features.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Vision assistive features are active.</li>\n  <li><code>disabled</code>: Vision assistive features are turned off.</li>\n</ul>\n"
+        },
+        "cliq_font": {
+          "type": "string",
+          "description": "Selected font identifier. -1 means default.",
+          "example": "-1"
+        },
+        "cliq_font_size": {
+          "type": "string",
+          "description": "Font size level.",
+          "example": "2"
+        },
+        "conference_recording": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles conference call recording.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Conference recording is permitted.</li>\n  <li><code>disabled</code>: Conference recording is not permitted.</li>\n</ul>\n"
+        },
+        "video_background": {
+          "type": "string",
+          "description": "Virtual background identifier for video calls.",
+          "example": "none"
+        },
+        "video_filter": {
+          "type": "string",
+          "description": "Video filter identifier applied during calls.",
+          "example": "none"
+        },
+        "last_seen": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Controls the visibility of the user's last seen status.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Last seen is visible to contacts.</li>\n  <li><code>disabled</code>: Last seen is hidden from contacts.</li>\n</ul>\n"
+        },
+        "linkpreview_status": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ],
+          "description": "Toggles URL link previews in messages.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Link previews are shown in messages.</li>\n  <li><code>disabled</code>: Link previews are hidden.</li>\n</ul>\n"
+        }
+      }
+    }
+  }
+}

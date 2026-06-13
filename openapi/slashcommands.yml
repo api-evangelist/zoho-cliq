@@ -1,0 +1,2335 @@
+openapi: 3.0.0
+info:
+  title: Slash Commands
+  version: '3.0'
+  description: |
+    <p>Slash Commands are custom commands that users invoke directly from the Zoho Cliq message compose bar by typing a forward slash followed by the command name (e.g. <b>/report</b>, <b>/deploy</b>, <b>/leave</b>). They allow users to trigger automation, fetch data, or initiate workflows without leaving the conversation.</p> <p>For more information, refer to the <b><a href="https://www.zoho.com/cliq/help/platform/slash-commands.html" target="_blank">Slash Commands Help Documentation</a></b>.</p> <p><b>Command Handlers</b></p> <p>Command handlers define the logic that runs when a user invokes a slash command. Each command supports up to two handler types:</p> <table style="border-collapse: collapse; width: 100%;">
+      <tr>
+        <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Handler</th>
+        <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Description</th>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>execution_handler</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Runs when the user submits the command. Processes the input, performs actions (API calls, data lookups, message posts), and returns a response rendered back in the chat.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>suggestion_handler</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Runs as the user types the command argument to populate a real-time autocomplete dropdown with context-aware suggestions. Triggered only when the command includes a text argument field.</td>
+      </tr>
+    </table> <p><b>Command Scope</b></p> <ul>
+      <li><b>organization</b> - The command is available to all users across the organization.</li>
+      <li><b>team</b> - The command is restricted to members of specified teams.</li>
+      <li><b>personal</b> - The command is visible only to the creator.</li>
+    </ul> <p><b>What can you do with the Slash Commands API?</b></p> <p>With the Slash Commands API, you can programmatically create and manage slash commands, configure execution and suggestion handlers, retrieve command details, and manage command visibility across the organization - all without using the Cliq Developer console.</p> <p>Each command has an <code>execution_type</code> that defines how its handlers run when invoked. The Slash Commands API supports two execution types:</p> <p id="deluge-commands"><b>Deluge Commands (default)</b><br> Handler logic is written in Deluge and runs entirely within Zoho's platform. No external server is required.</p> <ul>
+      <li>If <code>execution_type</code> is not specified during command creation, it defaults to <code>deluge</code>.</li>
+      <li>Handler logic is defined using the <code>script</code> field (Deluge source code) when creating or updating handlers.</li>
+      <li>Suitable for teams that want to build and manage command logic entirely within Zoho's ecosystem.</li>
+    </ul> <p id="webhook-commands"><b>Webhook Commands</b><br> When a user invokes the command, Zoho Cliq sends an HTTP POST request to the <code>execution_url</code> you configure. Your server processes the event and returns a response that Cliq renders back in the chat.</p> <ul>
+      <li>To create a Webhook command, set <code>execution_type</code> to <code>webhook</code> and provide the <code>execution_url</code>.</li>
+      <li>Handler permissions (<code>attachments</code>, <code>chat</code>, <code>location</code>, <code>user</code>) control which data attributes are included in the webhook payload. Not all permissions apply to every handler type - refer to the permissions table in the <b>Create a handler</b> endpoint.</li>
+      <li>Ideal for commands that need to integrate with external APIs, databases, or custom backend services.</li>
+    </ul>
+externalDocs:
+  description: Find out more about Zoho Cliq Platform APIs
+  url: https://www.zoho.com/cliq/help/platform/getting-started-with-cliq-platform.html
+servers:
+  - url: https://cliq.zoho.com/api/v3
+    description: Zoho Cliq US DC
+tags:
+  - name: slashcommands
+    description: Slash Commands Module
+paths:
+  /commands:
+    post:
+      summary: Create a slash command
+      operationId: creating_extension_command
+      description: |
+        <a id="creating_extension_command"></a>
+        <p>
+          Create a new slash command. Commands are invoked by users from the message compose bar by typing a forward slash followed by the command name (e.g. <b>/report</b>).
+        </p>
+        <p>
+          Slash Commands support two execution types:
+        </p>
+        <ul>
+          <li><b>Deluge</b> (default): Handler logic runs on Zoho's platform via Deluge scripts. No external server needed. Best for Zoho-native integrations.</li>
+          <li><b>Webhook</b>: When the command is invoked, Cliq sends a POST request to your <code>execution_url</code>. Your server processes the event and returns the response. Best for commands that need to reach external APIs or custom backends.</li>
+        </ul>
+        <p>
+          Pass <code>execution_type: "webhook"</code> and a valid <code>execution_url</code> to create a Webhook command. If <code>execution_type</code> is omitted, it defaults to <code>deluge</code>.
+        </p>
+        <br>
+        <p>
+          <b>Threshold limit</b>: 10 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">Security validation error</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The <code>name</code> field is required.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">Security validation error</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The <code>hint</code> field is required.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">Security validation error</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The <code>scope</code> field is required.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">Security validation error</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The <code>name</code> must not exceed 30 characters.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">Security validation error</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The <code>hint</code> must not exceed 128 characters.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">Security validation error</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The <code>description</code> must not exceed 300 characters.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">Security validation error</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">A command cannot have more than 5 options.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">Security validation error</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Each option value must not exceed 100 characters.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">command_name_already_exists</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">A command with this name already exists.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">command_creation_limit_exceeded</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The maximum number of slash commands allowed has been reached.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">command_not_valid</span></td>
+                    <td style="padding:10px 18px;">The provided command data is invalid or malformed.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters: []
+      requestBody:
+        description: Creates a slash command. Provide `name`, `hint`, and `scope`. Set `execution_type` to `webhook` and include `execution_url` for a Webhook command.
+        required: true
+        content:
+          application/json:
+            examples:
+              deluge_command:
+                summary: Deluge slash command
+                value:
+                  name: support
+                  hint: Raise a support ticket
+                  scope: organization
+                  execution_type: deluge
+                  description: Creates a ZohoDesk ticket from the chat interface
+              webhook_command:
+                summary: Webhook slash command
+                value:
+                  name: deploy
+                  hint: Trigger a deployment pipeline
+                  scope: organization
+                  execution_type: webhook
+                  execution_url: https://api.yourcompany.com/cliq/commands/handler
+                  description: Triggers a Jenkins deployment from Cliq
+            schema:
+              $ref: '#/components/schemas/create-slash-command-request-body'
+      responses:
+        '200':
+          description: Slash command created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlashCommandResponse'
+              examples:
+                deluge_command:
+                  summary: Deluge slash command response
+                  value:
+                    url: /api/v3/commands
+                    type: command
+                    data:
+                      name: support
+                      id: '227828000000128009'
+                      handlers:
+                        - type: execution_handler
+                      creator:
+                        name: Ryan West
+                        id: '119440882'
+                      execution_type: deluge
+                      hint: Raise a support ticket
+                      status: enabled
+                      type: custom
+                      description: Creates a ZohoDesk ticket from the chat interface
+                      scope: organization
+                webhook_command:
+                  summary: Webhook slash command response
+                  value:
+                    url: /api/v3/commands
+                    type: command
+                    data:
+                      name: deploy
+                      id: '227828000000129001'
+                      handlers:
+                        - type: execution_handler
+                      creator:
+                        name: Ryan West
+                        id: '119440882'
+                      execution_type: webhook
+                      execution_url: https://api.yourcompany.com/cliq/commands/handler
+                      hint: Trigger a deployment pipeline
+                      status: enabled
+                      type: custom
+                      description: Triggers a Jenkins deployment from Cliq
+                      scope: organization
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Commands.CREATE
+      tags:
+        - slashcommands
+    get:
+      summary: List all commands
+      operationId: get_list_of_commands
+      description: |
+        Retrieve a paginated list of all slash commands.
+        <p>
+          <b>Threshold limit</b>: 30 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+      parameters:
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/base64_regex'
+          in: query
+          name: sync_token
+          description: |
+            Sync token to fetch only commands that have changed since the last request. This token is returned in the <code>sync_token</code> field of the API response and can be used for incremental synchronization.
+          required: false
+        - schema:
+            description: ''
+            type: integer
+          in: query
+          name: limit
+          description: |
+            Maximum number of commands to return in the response. This can be used to control pagination and manage response size.
+          required: false
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/base64_regex'
+          in: query
+          name: next_token
+          description: |
+            Pagination token to retrieve the next page of results. This token is returned in the <code>next_token</code> field of the API response when there are more results available beyond the current page.
+          required: false
+      responses:
+        '200':
+          description: List of commands returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/list-all-slash-commands-response'
+              example:
+                url: /api/v3/commands
+                type: command
+                sync_token: MTB8MTc3NzM2MDM5OTQ5Mnw=
+                data:
+                  - name: report
+                    id: '227828000000128011'
+                    handlers:
+                      - type: execution_handler
+                    creator:
+                      name: Ryan West
+                      id: '119440882'
+                    execution_type: deluge
+                    hint: Generate a sales or activity report
+                    status: enabled
+                    type: custom
+                    description: Generates a report for the specified date range and team
+                    scope: organization
+                    options:
+                      type: Report type (e.g. sales, activity, attendance)
+                      period: Date range (e.g. today, this_week, last_month)
+                  - name: ticket
+                    id: '227828000000128009'
+                    handlers:
+                      - type: execution_handler
+                      - type: suggestion_handler
+                    creator:
+                      name: Ryan West
+                      id: '119440882'
+                    execution_type: deluge
+                    hint: Create or look up a support ticket
+                    status: enabled
+                    max_suggestions: 5
+                    type: custom
+                    description: Creates a new support ticket or retrieves an existing one by ID
+                    scope: team
+                    options:
+                      action: Action to perform (create or lookup)
+                      priority: Ticket priority (low, medium, high, critical)
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Commands.READ
+      tags:
+        - slashcommands
+  /commands/{SLASH_COMMAND_ID}:
+    patch:
+      summary: Update a slash command
+      operationId: editing_extension_command
+      description: |
+        Update the configuration of an existing slash command.
+        <p>
+          All fields are optional. Only the fields you provide will be updated; omitted fields remain unchanged.
+        </p>
+        <p>
+          For <b>Webhook commands</b>, you can update the <code>execution_url</code> independently at any time to redirect the command to a new server endpoint without recreating it.
+        </p>
+        <br>
+        <p>
+          <b>Threshold limit</b>: 10 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">command_not_found</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Command with the specified ID does not exist.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">command_name_already_exists</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">A command with this name already exists.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">command_not_valid</span></td>
+                    <td style="padding:10px 18px;">The provided command data is invalid or malformed.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/longid_regex'
+          example: SLASH_COMMAND_ID
+          in: path
+          name: SLASH_COMMAND_ID
+          description: Unique numeric identifier of the slash command. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#SLASH_COMMAND_ID">SLASH_COMMAND_ID</a> in the Glossary page.
+          required: true
+      requestBody:
+        description: Updates a slash command. Send only fields to change; omitted fields remain unchanged. For Webhook commands, use `execution_url` to update the server endpoint.
+        required: true
+        content:
+          application/json:
+            examples:
+              update_details:
+                summary: Update command details
+                value:
+                  hint: Raise a support ticket - updated
+                  description: Updated description via API
+                  scope: organization
+                  max_suggestions: 5
+              update_webhook_url:
+                summary: Update webhook execution URL
+                value:
+                  execution_url: https://api.yourcompany.com/cliq/commands/updated-handler
+            schema:
+              $ref: '#/components/schemas/update-slash-command-request-body'
+      responses:
+        '200':
+          description: Command updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlashCommandResponse'
+              examples:
+                update_details:
+                  summary: Deluge command updated
+                  value:
+                    url: /api/v3/commands/227828000000128009
+                    type: command
+                    data:
+                      name: support
+                      id: '227828000000128009'
+                      handlers:
+                        - type: execution_handler
+                      creator:
+                        name: Ryan West
+                        id: '119440882'
+                      execution_type: deluge
+                      hint: Raise a support ticket - updated
+                      status: enabled
+                      type: custom
+                      description: Updated description via API
+                      scope: organization
+                update_webhook_url:
+                  summary: Webhook command execution URL updated
+                  value:
+                    url: /api/v3/commands/227828000000129001
+                    type: command
+                    data:
+                      name: deploy
+                      id: '227828000000129001'
+                      handlers:
+                        - type: execution_handler
+                      creator:
+                        name: Ryan West
+                        id: '119440882'
+                      execution_type: webhook
+                      execution_url: https://api.yourcompany.com/cliq/commands/updated-handler
+                      hint: Trigger a deployment pipeline
+                      status: enabled
+                      type: custom
+                      description: Triggers a Jenkins deployment from Cliq
+                      scope: organization
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Commands.UPDATE
+      tags:
+        - slashcommands
+    get:
+      summary: Get a command
+      operationId: get_a_command
+      description: |
+        Retrieve details of a specific slash command.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 30 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">command_not_found</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Command with the specified ID was not found.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">command_not_found</span></td>
+                    <td style="padding:10px 18px;">You do not have permission to view this command.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/longid_regex'
+          example: SLASH_COMMAND_ID
+          in: path
+          name: SLASH_COMMAND_ID
+          description: Unique numeric identifier of the slash command. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#SLASH_COMMAND_ID">SLASH_COMMAND_ID</a> in the Glossary page.
+          required: true
+      responses:
+        '200':
+          description: Command details returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlashCommandResponse'
+              example:
+                url: /api/v3/commands/227828000000128009
+                type: command
+                data:
+                  name: greet
+                  id: '227828000000128009'
+                  handlers:
+                    - type: execution_handler
+                  creator:
+                    name: Ryan West
+                    id: '119440882'
+                  execution_type: deluge
+                  hint: Send a greeting message
+                  status: enabled
+                  max_suggestions: 5
+                  type: custom
+                  description: Sends a customizable greeting to a user or channel
+                  scope: organization
+                  options:
+                    user: The user to greet
+                    msg: Custom greeting message
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Commands.READ
+      tags:
+        - slashcommands
+    delete:
+      summary: Delete a slash command
+      operationId: deleting_extension_command
+      description: |
+        Permanently delete a custom Slash Command and all its associated handlers. The command will be removed from all accessible scopes and can no longer be invoked by users. This action is irreversible.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 10 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">command_not_found</span></td>
+                    <td style="padding:10px 18px;">Command with the specified ID was not found.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/longid_regex'
+          example: SLASH_COMMAND_ID
+          in: path
+          name: SLASH_COMMAND_ID
+          description: Unique numeric identifier of the slash command. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#SLASH_COMMAND_ID">SLASH_COMMAND_ID</a> in the Glossary page.
+          required: true
+      responses:
+        '204':
+          description: No Content. Command deleted successfully.
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Commands.DELETE
+      tags:
+        - slashcommands
+  /commands/{SLASH_COMMAND_ID}/handlers:
+    post:
+      summary: Create a handler for a specific command
+      operationId: createCommandHandler
+      description: |
+        <a id="createCommandHandler"></a>
+        <p>
+          Add a new handler to an existing slash command. Commands support two handler types:
+        </p>
+        <ul>
+          <li><b>Execution handler</b>: Executes the command's primary function when invoked.</li>
+          <li><b>Suggestion handler</b>: Provides dynamic autocomplete suggestions as users type the command.</li>
+        </ul>
+        <p>
+          The field you provide depends on the command's execution type:
+        </p>
+        <ul>
+          <li><b>Deluge command</b>: Provide the <code>script</code> field with the Deluge source code to execute when the handler fires.</li>
+          <li><b>Webhook command</b>: Provide the <code>permissions</code> field - an array of data attributes your server needs to receive in the webhook payload. Do not pass <code>script</code> for Webhook commands.</li>
+        </ul>
+        <p><b>Permissions availability by handler type</b></p>
+        <table style="border-collapse: collapse; width: 100%; font-family: inherit;">
+          <tr>
+            <th style="padding: 8px; text-align: left; border: 1px solid #ddd; font-family: inherit;">Handler</th>
+            <th style="padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit; white-space: nowrap;"><code>attachments</code></th>
+            <th style="padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;"><code>chat</code></th>
+            <th style="padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;"><code>location</code></th>
+            <th style="padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;"><code>user</code></th>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;"><code>execution_handler</code></td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">&#10003;</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">&#10003;</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">&#10003;</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">&#10003;</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;"><code>suggestion_handler</code></td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">-</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">&#10003;</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">&#10003;</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">&#10003;</td>
+          </tr>
+        </table>
+        <p>Note: <code>attachments</code> is not available for <code>suggestion_handler</code>. All permissions are available for <code>execution_handler</code>.</p>
+        <br>
+        <p>
+          <b>Threshold limit</b>: 10 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">execution_handler_create_failed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Failed to create the handler.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">execution_handler_data_required</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Required field missing.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">execution_handler_data_invalid</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Handler data is invalid.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">invalid_inputs</span></td>
+                    <td style="padding:10px 18px;">Invalid handler type or bad request body.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/longid_regex'
+          example: SLASH_COMMAND_ID
+          in: path
+          name: SLASH_COMMAND_ID
+          description: |
+            Unique numeric identifier of the slash command.<br>
+            To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#SLASH_COMMAND_ID">SLASH_COMMAND_ID</a> in the Glossary page.'
+          required: true
+      requestBody:
+        description: Creates a slash-command handler. For Deluge commands, provide `type` and `script`. For Webhook commands, provide `type` and `permissions`.
+        required: true
+        content:
+          application/json:
+            examples:
+              execution_handler_deluge:
+                summary: Execution handler - Deluge command
+                description: Provide `script` with the Deluge source code. Runs directly on Zoho's platform.
+                value:
+                  type: execution_handler
+                  script: |
+                    response = Map();
+                    user = info.get("user_info").get("name");
+                    response.put("text", "Hello, " + user + "! Support ticket created.");
+                    return response;
+              execution_handler_webhook:
+                summary: Execution handler - Webhook command
+                description: Provide `permissions` to specify the data your server needs. Cliq will forward these to your `execution_url`.
+                value:
+                  type: execution_handler
+                  permissions:
+                    - chat
+                    - user
+              suggestion_handler_deluge:
+                summary: Suggestion handler - Deluge command
+                description: Runs to generate autocomplete suggestions as users type the command.
+                value:
+                  type: suggestion_handler
+                  script: |
+                    suggestions = List();
+                    suggestions.add({"value": "create", "label": "Create a new ticket"});
+                    suggestions.add({"value": "lookup", "label": "Look up an existing ticket"});
+                    return {"suggestions": suggestions};
+              suggestion_handler_webhook:
+                summary: Suggestion handler - Webhook command
+                description: Webhook commands route suggestion requests to your `execution_url` with the configured permissions.
+                value:
+                  type: suggestion_handler
+                  permissions:
+                    - chat
+                    - user
+            schema:
+              $ref: '#/components/schemas/v3-exehandler-create'
+      responses:
+        '200':
+          description: Command handler created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlashCommandResponse'
+              examples:
+                execution_handler_deluge:
+                  summary: Execution handler created - Deluge
+                  value:
+                    url: /api/v3/commands/227828000000128009/handlers/execution_handler
+                    type: execution_handler
+                    data:
+                      name: execution_handler
+                      script: |
+                        response = Map();
+                        user = info.get("user_info").get("name");
+                        response.put("text", "Hello, " + user + "! Support ticket created.");
+                        return response;
+                      function_id: '227828000000128009'
+                execution_handler_webhook:
+                  summary: Execution handler created - Webhook
+                  value:
+                    url: /api/v3/commands/227828000000129001/handlers/execution_handler
+                    type: execution_handler
+                    data:
+                      name: execution_handler
+                      permissions:
+                        - chat
+                        - user
+                      function_id: '227828000000129001'
+                suggestion_handler_deluge:
+                  summary: Suggestion handler created - Deluge
+                  value:
+                    url: /api/v3/commands/227828000000128009/handlers/suggestion_handler
+                    type: suggestion_handler
+                    data:
+                      name: suggestion_handler
+                      script: |
+                        suggestions = List();
+                        suggestions.add({"value": "create", "label": "Create a new ticket"});
+                        suggestions.add({"value": "lookup", "label": "Look up an existing ticket"});
+                        return {"suggestions": suggestions};
+                      function_id: '227828000000128009'
+                suggestion_handler_webhook:
+                  summary: Suggestion handler created - Webhook
+                  value:
+                    url: /api/v3/commands/227828000000129001/handlers/suggestion_handler
+                    type: suggestion_handler
+                    data:
+                      name: suggestion_handler
+                      permissions:
+                        - chat
+                        - user
+                      function_id: '227828000000129001'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Commands.UPDATE
+      tags:
+        - slashcommands
+  /commands/{SLASH_COMMAND_ID}/handlers/{COMMAND_HANDLER_TYPE}:
+    patch:
+      summary: Update a handler for a specific command
+      operationId: updateCommandHandler
+      description: |
+        Update a handler for a specific slash command. What you provide depends on the command's execution type:
+        <ul>
+          <li><b>Deluge command</b>: Update the <code>script</code> attribute with the revised Deluge source code.</li>
+          <li><b>Webhook command</b>: Update the <code>permissions</code> array to change which data attributes are forwarded to your server.</li>
+        </ul>
+        <br>
+        <p>
+          <b>Threshold limit</b>: 10 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">execution_handler_update_failed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Failed to update the handler.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">execution_handler_not_found</span></td>
+                    <td style="padding:10px 18px;">Handler not found for this component.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/COMMAND_HANDLER_TYPE_regex'
+          example: COMMAND_HANDLER_TYPE
+          in: path
+          name: COMMAND_HANDLER_TYPE
+          description: |
+            Type of the handler to update.<br>
+            <b>Allowed values</b>:
+            <ul>
+              <li><code>execution_handler</code>: The main handler that executes when the command is invoked.</li>
+              <li><code>suggestion_handler</code>: The handler that generates autocomplete suggestions as users type the command.</li>
+            </ul>
+          required: true
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/longid_regex'
+          example: SLASH_COMMAND_ID
+          in: path
+          name: SLASH_COMMAND_ID
+          description: Unique numeric identifier of the slash command. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#SLASH_COMMAND_ID">SLASH_COMMAND_ID</a> in the Glossary page.
+          required: true
+      requestBody:
+        description: Updates a command handler. For Deluge commands, provide `script`. For Webhook commands, provide `permissions`.
+        required: true
+        content:
+          application/json:
+            examples:
+              update_script_deluge:
+                summary: Update script - Deluge command
+                description: Update the Deluge script that runs when the command is invoked.
+                value:
+                  script: |
+                    response = Map();
+                    user = info.get("user_info").get("name");
+                    response.put("text", "Hello, " + user + "! Updated ticket handler.");
+                    return response;
+              update_permissions_webhook:
+                summary: Update permissions - Webhook command
+                description: Update the data attributes sent to your server when the handler fires.
+                value:
+                  permissions:
+                    - chat
+                    - location
+                    - user
+            schema:
+              $ref: '#/components/schemas/v3-exehandler-edit'
+      responses:
+        '200':
+          description: Command handler updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlashCommandResponse'
+              examples:
+                update_script_deluge:
+                  summary: Script updated - Deluge command
+                  value:
+                    url: /api/v3/commands/227828000000128009/handlers/execution_handler
+                    type: execution_handler
+                    data:
+                      name: execution_handler
+                      script: |
+                        response = Map();
+                        user = info.get("user_info").get("name");
+                        response.put("text", "Hello, " + user + "! Updated ticket handler.");
+                        return response;
+                      function_id: '227828000000128009'
+                update_permissions_webhook:
+                  summary: Permissions updated - Webhook command
+                  value:
+                    url: /api/v3/commands/227828000000129001/handlers/execution_handler
+                    type: execution_handler
+                    data:
+                      name: execution_handler
+                      permissions:
+                        - chat
+                        - location
+                        - user
+                      function_id: '227828000000129001'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Commands.UPDATE
+      tags:
+        - slashcommands
+    get:
+      summary: Get details of a specific command handler
+      operationId: get_details_of_a_specific_comm
+      description: |
+        Retrieve the configuration and deluge source code of a specific handler associated with a slash command.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 10 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">execution_handler_get_failed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Failed to fetch the handler.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">execution_handler_not_found</span></td>
+                    <td style="padding:10px 18px;">Handler was not found for this command.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/COMMAND_HANDLER_TYPE_regex'
+          example: COMMAND_HANDLER_TYPE
+          in: path
+          name: COMMAND_HANDLER_TYPE
+          description: |
+            Type of the handler to retrieve.<br>
+            <b>Allowed values</b>:
+            <ul>
+              <li><code>execution_handler</code>: The main handler that executes when the command is invoked.</li>
+              <li><code>suggestion_handler</code>: The handler that generates autocomplete suggestions as users type the command.</li>
+            </ul>
+          required: true
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/longid_regex'
+          example: SLASH_COMMAND_ID
+          in: path
+          name: SLASH_COMMAND_ID
+          description: |
+            Unique numeric identifier of the slash command.<br>
+            To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#SLASH_COMMAND_ID">SLASH_COMMAND_ID</a> in the Glossary page.'
+          required: true
+      responses:
+        '200':
+          description: Command handler details returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlashCommandResponse'
+              example:
+                url: /api/v3/commands/227828000000128009/handlers/execution_handler
+                type: execution_handler
+                data:
+                  name: execution_handler
+                  script: |
+                    response = Map();
+                    user = info.get("user_info").get("name");
+                    response.put("text", "Hello, " + user + "! Command executed successfully.");
+                    return response;
+                  function_id: '227828000000128009'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Commands.READ
+      tags:
+        - slashcommands
+    delete:
+      summary: Delete a handler from a specific command
+      operationId: deleteCommandHandler
+      description: |
+        Permanently remove a specified handler from a slash command. This action is irreversible, and once removed, the associated deluge code is lost, and the handler will no longer activate on its trigger event.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 10 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">execution_handler_delete_failed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Failed to delete the handler.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">default_handler_delete_not_allowed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Default handlers cannot be deleted.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">execution_handler_not_found</span></td>
+                    <td style="padding:10px 18px;">Handler was not found for this command.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/COMMAND_HANDLER_TYPE_regex'
+          example: COMMAND_HANDLER_TYPE
+          in: path
+          name: COMMAND_HANDLER_TYPE
+          description: |
+            Name of the slash command handler.<br>
+            <b>Allowed value</b>:
+            <ul>
+              <li><code>suggestion_handler</code>: The handler that generates autocomplete suggestions as users type the command.</li>
+            </ul>
+            <b>Note</b>: Only the <code>suggestion_handler</code> can be deleted. The <code>execution_handler</code> is mandatory for a slash command and cannot be removed.  
+          required: true
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/longid_regex'
+          example: SLASH_COMMAND_ID
+          in: path
+          name: SLASH_COMMAND_ID
+          description: Unique numeric identifier of the slash command. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#SLASH_COMMAND_ID">SLASH_COMMAND_ID</a> in the Glossary page.
+          required: true
+      responses:
+        '204':
+          description: No Content. Command handler deleted successfully.
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Commands.UPDATE
+      tags:
+        - slashcommands
+components:
+  schemas:
+    SlashCommandResponse:
+      type: object
+      description: Slash Commands API response envelope.
+      properties:
+        url:
+          type: string
+        type:
+          type: string
+        data:
+          type: object
+          additionalProperties: true
+      example:
+        url: /api/v3/commands/227828000000128009
+        type: command
+        data:
+          name: greet
+          id: '227828000000128009'
+          handlers:
+            - type: execution_handler
+          creator:
+            name: Ryan West
+            id: '119440882'
+          execution_type: deluge
+          hint: Send a greeting message
+          status: enabled
+          max_suggestions: 5
+          type: custom
+          description: Sends a customizable greeting to a user or channel
+          scope: organization
+          options:
+            user: The user to greet
+            msg: Custom greeting message
+    ExecutionRecordResponse:
+      type: object
+      description: Response envelope for slash command handler execution records.
+      properties:
+        status:
+          type: string
+          description: HTTP status text of the response.
+          example: OK
+        code:
+          type: integer
+          description: HTTP status code of the response.
+          example: 200
+        data:
+          type: object
+          properties:
+            logs:
+              type: array
+              description: List of execution log entries.
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Unique identifier of the execution record.
+                  time:
+                    type: integer
+                    format: int64
+                    description: Epoch timestamp (ms) when the handler was executed.
+                  executionTime:
+                    type: integer
+                    description: Time taken to execute the handler, in milliseconds.
+                  output:
+                    type: string
+                    description: Output returned by the handler script (serialized as a JSON string).
+                  user:
+                    type: object
+                    description: Details of the user who triggered the command execution.
+                    properties:
+                      id:
+                        type: string
+                      zoho_user_id:
+                        type: string
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      email:
+                        type: string
+      example:
+        status: OK
+        code: 200
+        data:
+          logs:
+            - user:
+                zoho_user_id: '697322516'
+                last_name: Raman
+                email: priya.raman@zylker.com
+                first_name: Priya
+                id: '697322516'
+              output: '{}'
+              time: 1770628936698
+              executionTime: 183
+              id: d37d7b20-0598-11f1-8871-fb8adfa476c7
+            - user:
+                zoho_user_id: '697322516'
+                last_name: Raman
+                email: priya.raman@zylker.com
+                first_name: Priya
+                id: '697322516'
+              output: '{}'
+              time: 1770628887877
+              executionTime: 179
+              id: b66694e0-0598-11f1-b90c-55af9267af80
+    v3-exehandler-create:
+      type: object
+      description: Payload for creating a new handler. For Deluge commands, provide `type` and `script`. For Webhook commands, provide `type` and `permissions`.
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - execution_handler
+            - suggestion_handler
+          description: |
+            Type of the handler to create. Accepted values:<br>
+            <ul>
+              <li><code>execution_handler</code>: Executes on command invocation.</li>
+              <li><code>suggestion_handler</code>: Executes to provide autocomplete suggestions as users type the command.</li>
+            </ul>
+        script:
+          type: string
+          description: |
+            Deluge script source code for the handler.<br>
+            <b>Maximum size:</b> 250KB<br>
+            <b>Note:</b> Applicable only for <b>Deluge commands</b>. Do not pass <code>script</code> for Webhook commands - use <code>permissions</code> instead.
+        permissions:
+          type: array
+          maxItems: 5
+          description: |
+            List of data attributes to forward to your server in the webhook payload when the handler fires.<br>
+            <b>Note:</b> Applicable only for <b>Webhook commands</b>. Do not pass <code>permissions</code> for Deluge commands - use <code>script</code> instead.<br>
+            <b>Maximum:</b> 5 permissions per handler.<br>
+            <b>Allowed values</b>:
+            <ul>
+              <li><code>attachments</code>: File attachment metadata. Not available for <code>suggestion_handler</code>.</li>
+              <li><code>chat</code>: Chat context (chat ID, type, participants).</li>
+              <li><code>location</code>: Sender's location data.</li>
+              <li><code>user</code>: Sender's user profile details.</li>
+            </ul>
+            Refer to the permissions availability table in the <a href="/cliq/help/restapi/v3/slashcommands/#createCommandHandler">Create a handler</a> endpoint for per-handler availability.
+          items:
+            type: string
+            enum:
+              - attachments
+              - chat
+              - location
+              - user
+    longid_regex:
+      type: string
+      description: Numeric long integer identifier used to reference platform components such as Commands, Functions, Widgets, Message Actions, Schedulers, and Extensions.
+    COMMAND_HANDLER_TYPE_regex:
+      type: string
+      enum:
+        - execution_handler
+        - suggestion_handler
+      description: |
+        Name of a slash command handler. Accepted values: <code>execution_handler</code> (fires on command invocation), <code>suggestion_handler</code> (fires to generate autocomplete suggestions).
+    update-slash-command-request-body:
+      type: object
+      description: Payload for updating a slash command. All fields are optional; only the fields provided will be updated.
+      properties:
+        execution_url:
+          type: string
+          maxLength: 225
+          description: |
+            Updated server URL where Cliq will forward handler events. Applicable only for <b>Webhook commands</b>.<br>
+            This field can be updated independently to redirect the command to a new endpoint without any other changes.<br>
+            <b>Maximum length</b>: 225 characters.
+          example: https://api.yourcompany.com/cliq/commands/updated-handler
+        name:
+          type: string
+          maxLength: 30
+          description: |
+            Updated name of the slash command. This is the text users type after "/" to invoke the command. Must be unique within the command's scope.<br>
+            <b>Maximum length</b>: 30 characters<br>
+            <b>Allowed characters</b>: lowercase letters, numbers, and underscores only. No spaces or special characters allowed.
+        hint:
+          type: string
+          maxLength: 128
+          description: |
+            Updated hint shown in the slash command picker to help users understand the command's purpose. Should be concise and descriptive.<br>
+            <b>Maximum length</b>: 128 characters
+        description:
+          type: string
+          maxLength: 300
+          description: |
+            Updated detailed description of the slash command's functionality. This can provide more in-depth information than the hint and may be shown in command documentation or tooltips.<br>
+            <b>Maximum length</b>: 300 characters
+        options:
+          type: object
+          description: |
+            Updated options map. Options are additional properties which can alter the output of a /command based on the user's requirements.<br>
+            <b>Maximum size</b>: 5 key-value pairs.<br>
+            <ul>
+              <li><b>Key</b>: Option name - identifies the option (e.g. <code>location</code>, <code>unit</code>).</li>
+              <li><b>Value</b>: Option description - explains what the option does (e.g. <code>"City to check weather for"</code>).</li>
+            </ul>
+            <b>Example syntax</b>:<br>
+            <pre><code>{"options": {"location": "City to check weather for", "unit": "Temperature unit: celsius or fahrenheit"}}</code></pre>
+          additionalProperties:
+            type: string
+            maxLength: 100
+        scope:
+          type: string
+          enum:
+            - organization
+            - team
+            - personal
+          description: |
+            Updated access scope of the slash command. Determines who can see and use the command.<br>
+            <b>Allowed values</b>:<br>
+            <ul>
+              <li><code>organization</code>: Command is available to all users in the organization.</li>
+              <li><code>team</code>: Command is restricted to specific teams. Requires <a href="/cliq/help/restapi/v3/glossary/#TEAM_ID"><code>team_ids</code></a> field.</li>
+              <li><code>personal</code>: Command is only available to the creator.</li>
+            </ul>
+        team_ids:
+          type: array
+          maxItems: 4
+          description: |
+            Updated list of <a href="/cliq/help/restapi/v3/glossary/#TEAM_ID">team_ids</a> that are allowed to access the command when <code>scope</code> is set to <code>team</code>. Each ID corresponds to a team within the organization.<br>
+            <b>Maximum items</b>: 4 team IDs can be specified.<br>
+            This field is required if <code>scope</code> is being changed to <code>team</code>.
+          items:
+            type: integer
+        image:
+          type: string
+          maxLength: 204800000
+          description: |
+            Updated base64 encoded image used as the command icon. This icon will be displayed next to the command in the slash command picker.<br>
+            <b>Image requirements</b>:<br>
+            <ul>
+              <li>Format: PNG or JPEG</li>
+              <li>Maximum size: 100 KB</li>
+              <li>Recommended dimensions: 64x64 pixels for optimal display</li>
+            </ul>
+        max_suggestions:
+          type: integer
+          maximum: 5
+          description: |
+            Updated maximum number of autocomplete suggestions that can be selected by the user when the command is typed.<br>
+            <b>Maximum value</b>: 5 suggestions
+      example:
+        hint: Send a personalized greeting - updated
+        description: Sends a customizable greeting to a user or channel
+        scope: organization
+        options:
+          user: The user to greet
+          msg: Custom greeting message
+        max_suggestions: 5
+    v3-exehandler-edit:
+      type: object
+      description: Payload for updating an existing handler. For Deluge commands, provide `script`. For Webhook commands, provide `permissions`.
+      properties:
+        script:
+          type: string
+          description: |
+            Updated Deluge script source code for the handler.<br>
+            <b>Maximum size:</b> 250KB<br>
+            <b>Note:</b> Applicable only for <b>Deluge commands</b>.
+        permissions:
+          type: array
+          maxItems: 5
+          description: |
+            Updated list of data attributes to forward to your server in the webhook payload.<br>
+            <b>Note:</b> Applicable only for <b>Webhook commands</b>.<br>
+            <b>Allowed values</b>: <code>attachments</code>, <code>chat</code>, <code>location</code>, <code>user</code>. Note: <code>attachments</code> is not available for <code>suggestion_handler</code>.
+          items:
+            type: string
+            enum:
+              - attachments
+              - chat
+              - location
+              - user
+    create-slash-command-request-body:
+      type: object
+      description: Payload for creating a new slash command.
+      required:
+        - name
+        - hint
+        - scope
+      properties:
+        execution_type:
+          type: string
+          enum:
+            - deluge
+            - webhook
+          description: |
+            Defines how the command executes its handlers.<br>
+            <ul>
+              <li><code>deluge</code>: Handler logic runs on Zoho's platform via Deluge scripts. Default when omitted.</li>
+              <li><code>webhook</code>: Handler events are forwarded to your <code>execution_url</code> as POST requests.</li>
+            </ul>
+          example: deluge
+        execution_url:
+          type: string
+          maxLength: 225
+          description: |
+            The URL that Zoho Cliq will POST handler events to when the command is invoked.<br>
+            <b>Required</b> when <code>execution_type</code> is <code>webhook</code>.<br>
+            <b>Maximum length</b>: 225 characters.
+          example: https://api.yourcompany.com/cliq/commands/handler
+        name:
+          type: string
+          maxLength: 30
+          description: |
+            Name of the slash command. This is the text that users will type after the "/" to invoke the command. Must be unique within the command's scope.<br>
+            <b>Maximum length</b>: 30 characters<br>
+            <b>Allowed characters</b>: Only lowercase letters.
+        hint:
+          type: string
+          maxLength: 128
+          description: |
+            Hint shown in the slash command picker to help users understand the command's purpose. Should be concise and descriptive.<br>
+            <b>Maximum length</b>: 128 characters
+        description:
+          type: string
+          maxLength: 300
+          description: |
+            Detailed description of the slash command's functionality. This can provide more in-depth information than the hint and may be shown in command documentation or tooltips.<br>
+            <b>Maximum length</b>: 300 characters
+        options:
+          type: object
+          description: |
+            Options are additional properties which can alter the output of a /command based on the user's requirements.<br>
+            <b>Maximum size</b>: 5 key-value pairs.<br>
+            <ul>
+              <li><b>Key</b>: Option name - identifies the option (e.g. <code>location</code>, <code>unit</code>).</li>
+              <li><b>Value</b>: Option description - explains what the option does (e.g. <code>"City to check weather for"</code>).</li>
+            </ul>
+            <b>Example syntax</b>:<br>
+            <pre><code>{"options": {"location": "City to check weather for", "unit": "Temperature unit: celsius or fahrenheit"}}</code></pre>
+          additionalProperties:
+            type: string
+            maxLength: 100
+        scope:
+          type: string
+          enum:
+            - organization
+            - team
+            - personal
+          description: |
+            Access scope of the slash command. Determines who can see and use the command.<br>
+            <b>Allowed values</b>:<br>
+            <ul>
+              <li><code>organization</code>: Command is available to all users in the organization.</li>
+              <li><code>team</code>: Command is restricted to specific teams. Requires <a href="/cliq/help/restapi/v3/glossary/#TEAM_ID"><code>team_ids</code></a> field.</li>
+              <li><code>personal</code>: Command is only available to the creator.</li>
+            </ul> 
+        team_ids:
+          type: array
+          maxItems: 4
+          description: |
+            List of <a href="/cliq/help/restapi/v3/glossary/#TEAM_ID">team_ids</a> that are allowed to access the command when <code>scope</code> is set to <code>team</code>. Each ID corresponds to a team within the organization.<br>
+            <b>Maximum items</b>: 4 team IDs can be specified.<br>
+            This field is required if <code>scope</code> is <code>team</code>.
+          items:
+            type: integer
+        image:
+          type: string
+          maxLength: 204800000
+          description: |
+            Base64 encoded image used as the command icon. This icon will be displayed next to the command in the slash command picker and can help users visually identify the command.<br>
+            <b>Image requirements</b>:<br>
+            <ul>
+              <li>Format: PNG or JPEG</li>
+              <li>Maximum size: 100 KB</li>
+              <li>Recommended dimensions: 64x64 pixels for optimal display</li>
+            </ul>
+        max_suggestions:
+          type: integer
+          maximum: 5
+          description: |
+            Maximum number of autocomplete suggestions that can be selected by the user when the command is typed.<br>
+            <br><b>Maximum value</b>: 5 suggestions
+      example:
+        name: greet
+        hint: Send a greeting message
+        description: Sends a customizable greeting to a user or channel
+        scope: organization
+        options:
+          user: The user to greet
+          msg: Custom greeting message
+        max_suggestions: 5
+    list-all-slash-commands-response:
+      type: object
+      description: Response schema for listing slash commands.
+      properties:
+        url:
+          type: string
+          example: /api/v3/commands
+        type:
+          type: string
+          example: command
+        sync_token:
+          type: string
+          description: Token for incremental sync. Pass this in the next request to retrieve only commands updated since this response.
+          example: MTB8MTc3NzM2MDM5OTQ5Mnw=
+        next_token:
+          type: string
+          description: Pagination token for the next page of results.
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              id:
+                type: string
+              handlers:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+              creator:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  id:
+                    type: string
+              execution_type:
+                type: string
+                example: deluge
+              hint:
+                type: string
+              status:
+                type: string
+                example: enabled
+              type:
+                type: string
+                example: custom
+              description:
+                type: string
+              scope:
+                type: string
+                enum:
+                  - organization
+                  - team
+                  - personal
+              max_suggestions:
+                type: integer
+              options:
+                type: object
+                additionalProperties:
+                  type: string
+      example:
+        url: /api/v3/commands
+        type: command
+        sync_token: MTB8MTc3NzM2MDM5OTQ5Mnw=
+        data:
+          - name: report
+            id: '227828000000128011'
+            handlers:
+              - type: execution_handler
+            creator:
+              name: Ryan West
+              id: '119440882'
+            execution_type: deluge
+            hint: Generate a sales or activity report
+            status: enabled
+            type: custom
+            description: Generates a report for the specified date range and team
+            scope: organization
+            options:
+              type: Report type (e.g. sales, activity, attendance)
+              period: Date range (e.g. today, this_week, last_month)
+          - name: ticket
+            id: '227828000000128009'
+            handlers:
+              - type: execution_handler
+              - type: suggestion_handler
+            creator:
+              name: Ryan West
+              id: '119440882'
+            execution_type: deluge
+            hint: Create or look up a support ticket
+            status: enabled
+            max_suggestions: 5
+            type: custom
+            description: Creates a new support ticket or retrieves an existing one by ID
+            scope: team
+            options:
+              action: Action to perform (create or lookup)
+              priority: Ticket priority (low, medium, high, critical)
+    base64_regex:
+      type: string
+      description: Base64-encoded pagination or sync token used for cursor-based pagination and incremental data sync.
+  securitySchemes:
+    Cliq_Auth:
+      type: oauth2
+      x-authorization-example: Bearer 1000.41d9xxxxxxxxxxxxxxxxxxxxxxxxc2d1.8fccxxxxxxxxxxxxxxxxxxxxxxxx125f
+      flows:
+        implicit:
+          authorizationUrl: ''
+          scopes:
+            Commands.UPDATE: Update slash command configurations and manage command handlers.
+            Commands.READ: Read slash command configurations, handlers, and execution logs.
+            Commands.DELETE: Permanently delete slash commands and their handlers.
+            Commands.CREATE: Create new custom Slash Commands.

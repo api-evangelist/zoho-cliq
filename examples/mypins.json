@@ -1,0 +1,238 @@
+{
+  "getPinCategories": {
+    "path": "/pin-categories",
+    "method": "get",
+    "examples": {
+      "response_400": {
+        "operation_failed": {
+          "summary": "Unexpected server error",
+          "value": {
+            "code": "operation_failed"
+          }
+        }
+      }
+    }
+  },
+  "createPinCategory": {
+    "path": "/pin-categories",
+    "method": "post",
+    "examples": {
+      "response_400": {
+        "param_missing": {
+          "summary": "A required parameter is missing from the request body",
+          "value": {
+            "code": "param_missing"
+          }
+        },
+        "operation_not_allowed": {
+          "summary": "User does not have permission for a chat in the given chat list",
+          "value": {
+            "code": "operation_not_allowed"
+          }
+        },
+        "max_folders_error": {
+          "summary": "Maximum number of folders reached",
+          "value": {
+            "code": "max_folders_error"
+          }
+        },
+        "operation_failed": {
+          "summary": "Unexpected server error",
+          "value": {
+            "code": "operation_failed"
+          }
+        }
+      }
+    }
+  },
+  "removeChatsAcrossCategories": {
+    "path": "/pin-categories",
+    "method": "delete",
+    "examples": {
+      "response_400": {
+        "operation_failed": {
+          "summary": "Unexpected server error",
+          "value": {
+            "code": "operation_failed"
+          }
+        }
+      }
+    }
+  },
+  "updatePinCategory": {
+    "path": "/pin-categories/{CATEGORY_ID}",
+    "method": "put",
+    "examples": {
+      "response_400": {
+        "client_not_synced": {
+          "summary": "last_sync_time is stale - re-fetch folders and retry",
+          "value": {
+            "code": "client_not_synced"
+          }
+        },
+        "invalid_inputs": {
+          "summary": "title, symbol, state, or chat_id was sent alongside chat_ids",
+          "value": {
+            "code": "invalid_inputs"
+          }
+        },
+        "operation_failed": {
+          "summary": "Unexpected server error or invalid inputs",
+          "value": {
+            "code": "operation_failed"
+          }
+        }
+      }
+    }
+  },
+  "deletePinCategory": {
+    "path": "/pin-categories/{CATEGORY_ID}",
+    "method": "delete",
+    "examples": {
+      "response_400": {
+        "operation_not_allowed": {
+          "summary": "Cannot delete the default folder",
+          "value": {
+            "code": "operation_not_allowed"
+          }
+        },
+        "operation_failed": {
+          "summary": "Unexpected server error",
+          "value": {
+            "code": "operation_failed"
+          }
+        }
+      }
+    }
+  },
+  "reorderChatInCategory": {
+    "path": "/pin-categories/{CATEGORY_ID1}",
+    "method": "put",
+    "examples": {
+      "response_400": {
+        "client_not_synced": {
+          "summary": "last_sync_time is stale - re-fetch folders and retry",
+          "value": {
+            "code": "client_not_synced"
+          }
+        },
+        "invalid_inputs": {
+          "summary": "title, symbol, state, or chat_id was sent alongside chat_ids",
+          "value": {
+            "code": "invalid_inputs"
+          }
+        },
+        "operation_failed": {
+          "summary": "Unexpected server error or invalid inputs",
+          "value": {
+            "code": "operation_failed"
+          }
+        }
+      }
+    }
+  },
+  "reorderCategory": {
+    "path": "/pin-categories/{CATEGORY_ID2}",
+    "method": "put",
+    "examples": {
+      "response_400": {
+        "client_not_synced": {
+          "summary": "last_sync_time is stale - re-fetch folders and retry",
+          "value": {
+            "code": "client_not_synced"
+          }
+        },
+        "invalid_inputs": {
+          "summary": "title, symbol, state, or chat_id was sent alongside chat_ids",
+          "value": {
+            "code": "invalid_inputs"
+          }
+        },
+        "operation_failed": {
+          "summary": "Unexpected server error or invalid inputs",
+          "value": {
+            "code": "operation_failed"
+          }
+        }
+      }
+    }
+  },
+  "bulkUpdateChatsInCategory": {
+    "path": "/pin-categories/{CATEGORY_ID3}",
+    "method": "put",
+    "examples": {
+      "response_400": {
+        "client_not_synced": {
+          "summary": "last_sync_time is stale - re-fetch folders and retry",
+          "value": {
+            "code": "client_not_synced"
+          }
+        },
+        "invalid_inputs": {
+          "summary": "title, symbol, state, or chat_id was sent alongside chat_ids",
+          "value": {
+            "code": "invalid_inputs"
+          }
+        },
+        "operation_failed": {
+          "summary": "Unexpected server error or invalid inputs",
+          "value": {
+            "code": "operation_failed"
+          }
+        }
+      }
+    }
+  },
+  "pinChat": {
+    "path": "/chats/{CHAT_ID}/pins",
+    "method": "post",
+    "examples": {
+      "response_400": {
+        "max_pins_error": {
+          "summary": "The user has reached the maximum number of pinned chats in the folder",
+          "value": {
+            "code": "max_pins_error"
+          }
+        },
+        "chat_access_denied": {
+          "summary": "Caller is not a participant of this chat",
+          "value": {
+            "code": "chat_access_denied"
+          }
+        },
+        "operation_not_allowed": {
+          "summary": "Caller does not have permission to pin this chat",
+          "value": {
+            "code": "operation_not_allowed"
+          }
+        },
+        "chat_operation_failed": {
+          "summary": "Unexpected server error",
+          "value": {
+            "code": "chat_operation_failed"
+          }
+        }
+      }
+    }
+  },
+  "unpinChat": {
+    "path": "/chats/{CHAT_ID}/pins",
+    "method": "delete",
+    "examples": {
+      "response_400": {
+        "chat_access_denied": {
+          "summary": "Caller is not a participant of this chat",
+          "value": {
+            "code": "chat_access_denied"
+          }
+        },
+        "chat_operation_failed": {
+          "summary": "Unexpected server error",
+          "value": {
+            "code": "chat_operation_failed"
+          }
+        }
+      }
+    }
+  }
+}

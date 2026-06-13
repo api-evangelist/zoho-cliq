@@ -1,0 +1,268 @@
+{
+  "deleteMultipleMessagesV3": {
+    "path": "/chats/{CHAT_ID}/messagess",
+    "method": "delete",
+    "examples": {
+      "response_200": {
+        "all_success": {
+          "summary": "All messages deleted successfully",
+          "value": {
+            "type": "message.delete_result",
+            "data": [
+              {
+                "id": "1773813859592_51531973059",
+                "status": "success"
+              },
+              {
+                "id": "1773813860210_51531973060",
+                "status": "success"
+              },
+              {
+                "id": "1773813861300_51531973061",
+                "status": "success"
+              }
+            ]
+          }
+        },
+        "partial_failure": {
+          "summary": "Partial success - one message failed",
+          "value": {
+            "type": "message.delete_result",
+            "data": [
+              {
+                "id": "1773813859592_51531973059",
+                "status": "success"
+              },
+              {
+                "id": "1773813860210_51531973060",
+                "status": "success"
+              },
+              {
+                "id": "1773813861300_51531973061",
+                "status": "failed",
+                "error": {
+                  "code": "access_denied",
+                  "message": "You do not have permission to delete this message."
+                }
+              }
+            ]
+          }
+        }
+      },
+      "response_400": {
+        "limit_exceeded": {
+          "summary": "Too many message IDs",
+          "value": {
+            "code": "message_delete_limit_exceeded",
+            "message": "You can only delete up to 25 messages at once."
+          }
+        },
+        "invalid_params": {
+          "summary": "Invalid or empty message_ids",
+          "value": {
+            "code": "invalid_parameters",
+            "message": "The message_ids parameter is invalid or empty."
+          }
+        },
+        "invalid_reason": {
+          "summary": "Invalid delete reason",
+          "value": {
+            "code": "invalid_delete_reason",
+            "message": "The provided reason for deletion is not valid."
+          }
+        }
+      },
+      "response_403": {
+        "access_denied": {
+          "summary": "Permission denied",
+          "value": {
+            "code": "access_denied",
+            "message": "You do not have permission to delete one or more of the selected messages."
+          }
+        },
+        "delete_timeout": {
+          "summary": "Delete time limit expired",
+          "value": {
+            "code": "message_delete_timeout",
+            "message": "The time limit to delete one or more of these messages has expired."
+          }
+        }
+      },
+      "response_404": {
+        "message_not_found": {
+          "summary": "Message not found",
+          "value": {
+            "code": "message_not_found",
+            "message": "Requested message could not be found."
+          }
+        },
+        "chat_not_found": {
+          "summary": "Chat not found",
+          "value": {
+            "code": "chat_not_found",
+            "message": "The requested chat does not exist or you are not a participant."
+          }
+        }
+      }
+    }
+  },
+  "Forward Messages": {
+    "path": "/messages",
+    "method": "post",
+    "examples": {
+      "request": {
+        "forward_bug_report": {
+          "summary": "Forward bug-report messages to QA team and product manager",
+          "value": {
+            "source": {
+              "chat_id": "2890538000000012345",
+              "message_ids": [
+                "1773813859592_51531973059",
+                "1773813860210_51531973060"
+              ]
+            },
+            "recipients": {
+              "chat_ids": "2890538000000067890",
+              "user_ids": "70027934",
+              "forward_as_group": true,
+              "show_original_sender": true,
+              "title": "Login Bug - Critical Issue (Forwarded from Engineering)"
+            }
+          }
+        }
+      },
+      "response_200": {
+        "partial_success": {
+          "summary": "Forwarded to QA chat successfully; direct message to PM failed",
+          "value": {
+            "data": {
+              "source_chat_id": "2890538000000012345",
+              "forwarded": {
+                "chat_ids": [
+                  "2890538000000067890"
+                ],
+                "user_ids": []
+              },
+              "failures": [
+                {
+                  "id": "70027934",
+                  "status": "failed",
+                  "error": {
+                    "code": "chat_access_denied",
+                    "message": "You must be a participant in this chat to perform this action."
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "searchMessagesV3": {
+    "path": "/messages/search",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "multiple_messages": {
+          "summary": "Multiple messages found",
+          "value": {
+            "messages": [
+              {
+                "message_id": "1710934200000",
+                "time": "2025-03-20T14:30:00.000Z",
+                "sender": "711622XXXX",
+                "chat_id": "6795XXXXXXXXXXXXXX",
+                "chat_title": "General",
+                "type": "text",
+                "content": {
+                  "text": "Please review the updated proposal."
+                }
+              },
+              {
+                "message_id": "1710920100000",
+                "time": "2025-03-20T10:35:00.000Z",
+                "sender": "711633XXXX",
+                "chat_id": "6795YYYYYYYYYYYY",
+                "chat_title": "Project Alpha",
+                "type": "file",
+                "content": {
+                  "file_name": "proposal_v2.pdf",
+                  "file_type": "application/pdf",
+                  "file_size": 204800
+                },
+                "channel_type": "organisation"
+              }
+            ],
+            "next_token": 1710920099000,
+            "matched_search_value": "proposal"
+          }
+        }
+      },
+      "response_400": {
+        "invalid_inputs": {
+          "summary": "Invalid input parameters",
+          "value": {
+            "error": {
+              "code": "invalid.inputs.submitted",
+              "message": "An invalid parameter value was passed. For is_pinned, this also means fewer or more than one chat ID was provided."
+            }
+          }
+        },
+        "invalid_time": {
+          "summary": "Invalid timestamp",
+          "value": {
+            "error": {
+              "code": "invalid.time.submitted",
+              "message": "Invalid timestamp format or from_time must be earlier than to_time."
+            }
+          }
+        }
+      },
+      "response_401": {
+        "unauthorized": {
+          "summary": "Invalid auth token",
+          "value": {
+            "error": {
+              "code": "unauthorized",
+              "message": "Request was rejected because of invalid AuthToken."
+            }
+          }
+        }
+      },
+      "response_403": {
+        "invalid_access": {
+          "summary": "Access denied",
+          "value": {
+            "error": {
+              "code": "invalid_access",
+              "message": "You are not a member of the organisation or do not have permission to access this resource."
+            }
+          }
+        }
+      },
+      "response_429": {
+        "rate_limit": {
+          "summary": "Rate limit exceeded",
+          "value": {
+            "error": {
+              "code": "rate_limit_exceeded",
+              "message": "Too many requests within a certain time frame. Please try again later."
+            }
+          }
+        }
+      },
+      "response_500": {
+        "server_error": {
+          "summary": "Server error during message search",
+          "value": {
+            "error": {
+              "code": "error_message_search",
+              "message": "An unexpected error occurred while executing the search."
+            }
+          }
+        }
+      }
+    }
+  }
+}

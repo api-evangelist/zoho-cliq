@@ -1,0 +1,626 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Zoho Cliq Messageformat Schemas",
+  "definitions": {
+    "empty-response": {
+      "type": "object",
+      "description": "Response returned when there is no content.",
+      "properties": {
+        "Response_Code": {
+          "type": "string",
+          "example": "204 No response"
+        }
+      }
+    },
+    "send-table-message-request-body": {
+      "type": "object",
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "The text content of the message to be sent.<br>\n<b>Maximum length</b>: 10,000 characters.\n",
+          "maxLength": 10000,
+          "example": "New interns will be joining these teams from July."
+        },
+        "card": {
+          "type": "object",
+          "description": "An optional object that defines the visual presentation of the message card.\n",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "The title of the message card.\n",
+              "example": "ANNOUNCEMENT"
+            },
+            "theme": {
+              "type": "string",
+              "description": "The visual theme of the message card.<br>\n<b>Allowed values</b>: modern-inline | poll | prompt\n",
+              "example": "modern-inline"
+            },
+            "thumbnail": {
+              "type": "string",
+              "format": "uri",
+              "description": "The URL of the thumbnail image for the message card.\n",
+              "example": "https://www.zoho.com/cliq/help/restapi/images/announce_icon.png"
+            }
+          }
+        },
+        "slides": {
+          "type": "array",
+          "description": "An array of structured content elements to be included in the message.\n",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "The type of content.<br>\n<b>Allowed values</b>: table\n",
+                "example": "table"
+              },
+              "title": {
+                "type": "string",
+                "description": "The title of the table.\n",
+                "example": "Details"
+              },
+              "data": {
+                "type": "object",
+                "description": "The actual content data corresponding to the specified type.",
+                "properties": {
+                  "headers": {
+                    "type": "array",
+                    "description": "An array of table header names for the table columns.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": [
+                      "Name",
+                      "Team",
+                      "Reporting To"
+                    ]
+                  },
+                  "rows": {
+                    "type": "array",
+                    "description": "Represents the data rows to be displayed in the table.\nEach row must be defined as a JSON object containing key-value pairs, where:\n<ul>\n  <li>The key must exactly match one of the values defined in the headers array.</li>\n  <li>The value represents the corresponding cell data for that column.</li>\n  <li>Each object in the array represents one table row.</li>\n</ul>\nSyntax example for rows:\n<br>\nFor every row object,<br>\n<code>\n  {\n  <br>\n      \"&lt;Header1&gt;\": \"&lt;RowValue1&gt;\",<br>\n      \"&lt;Header2&gt;\": \"&lt;RowValue2&gt;\",<br>\n      ...\n  <br>\n  }\n</code>\n<ul>\n  <li>Ensure that the keys in each row object match the header names defined in the headers array.</li>\n  <li>The number of keys in each row object should align with the number of headers to maintain table integrity.</li>\n</ul>\n",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    },
+                    "example": [
+                      {
+                        "Name": "Paula Rojas",
+                        "Team": "Zylker-Sales",
+                        "Reporting To": "Li Jung"
+                      }
+                    ]
+                  },
+                  "styles": {
+                    "type": "object",
+                    "description": "Defines the visual styling and layout behavior of the table.\n",
+                    "properties": {
+                      "width": {
+                        "type": "array",
+                        "description": "<ul>\n  <li>Specifies the width distribution of each column in percentage.</li>\n  <li>The number of values must match the number of columns defined in headers.</li>\n  <li>The sum of all values must equal 100.</li>\n</ul>\n",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 100
+                        },
+                        "example": [
+                          50,
+                          30,
+                          20
+                        ]
+                      },
+                      "sticky": {
+                        "type": "object",
+                        "description": "Freezes specific rows and columns so they remain visible while scrolling.<br> <b>Note:</b> A maximum of 2 rows and 2 columns can be frozen.\n",
+                        "properties": {
+                          "rows": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 2,
+                            "description": "Number of rows to be frozen.",
+                            "example": 1
+                          },
+                          "columns": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 2,
+                            "description": "Number of columns to be frozen.",
+                            "example": 2
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "send-list-message-request-body": {
+      "type": "object",
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "The text content of the message to be sent.<br>\n<b>Maximum length</b>: 10,000 characters.\n",
+          "maxLength": 10000,
+          "example": "Welcome to Agile Bot! I'm here to give you a brief on what Agile is all about."
+        },
+        "card": {
+          "type": "object",
+          "description": "An optional object that defines the visual presentation of the message card.\n",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "The title of the message card.\n",
+              "example": "Features of Agile Bot"
+            },
+            "theme": {
+              "type": "string",
+              "description": "The visual theme of the message card.<br>\n<b>Allowed values</b>: modern-inline | poll | prompt\n",
+              "example": "modern-inline"
+            },
+            "thumbnail": {
+              "type": "string",
+              "format": "uri",
+              "description": "The URL of the thumbnail image for the message card.\n",
+              "example": "https://www.zoho.com/cliq/help/restapi/images/announce_icon.png"
+            }
+          }
+        },
+        "slides": {
+          "type": "array",
+          "description": "An array of structured content elements to be included in the message.\n",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "The type of content.<br>\n<b>Allowed values</b>: list\n",
+                "example": "list"
+              },
+              "title": {
+                "type": "string",
+                "description": "The title of the list.\n",
+                "example": "Key features"
+              },
+              "data": {
+                "type": "array",
+                "description": "Represents the list items to be displayed in the message.<br>\nEach item in the array must be provided as a string, where each string represents a single list entry.\n",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "Time - Tracking for Tasks",
+                  "Prioritize requirements effectively",
+                  "Identify and work on a fix for bugs instantly",
+                  "Collaborate actively",
+                  "Most important - Keep it simple"
+                ]
+              },
+              "styles": {
+                "type": "object",
+                "description": "Defines the visual styling of the list.\n",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "description": "Specifies the bullet or numbering style applied to the list.<br>\n<b>Allowed values</b>: disc | circle | square | decimal | lower-alpha | upper-alpha | lower-roman | upper-roman\n",
+                    "example": "bulleted"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "send-label-message-request-body": {
+      "type": "object",
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "The text content of the message to be sent.<br>\n<b>Maximum length</b>: 10,000 characters.\n",
+          "maxLength": 10000,
+          "example": "Hi Team! Take a look at the monthly financial reports attached."
+        },
+        "card": {
+          "type": "object",
+          "description": "An optional object that defines the visual presentation of the message card.\n",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "The title of the message card.\n",
+              "example": "Quarterly Revenue Growth"
+            },
+            "theme": {
+              "type": "string",
+              "description": "The visual theme of the message card.<br>\n<b>Allowed values</b>: modern-inline | poll | prompt\n",
+              "example": "modern-inline"
+            },
+            "thumbnail": {
+              "type": "string",
+              "format": "uri",
+              "description": "The URL of the thumbnail image for the message card.\n",
+              "example": "https://www.zoho.com/cliq/help/restapi/images/announce_icon.png"
+            }
+          }
+        },
+        "slides": {
+          "type": "array",
+          "description": "An array of structured content elements to be included in the message.\n",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "The type of content.<br>\n<b>Allowed values</b>: label\n",
+                "example": "label"
+              },
+              "title": {
+                "type": "string",
+                "description": "The title of the label.\n",
+                "example": "Key features"
+              },
+              "data": {
+                "type": "array",
+                "description": "\nRepresents the key-value details displayed inside the label.<br>\nEach item in the array must be a JSON object containing a <b>key-value pair</b>, where:\n<ul>\n  <li>The key represents the field name.</li>\n  <li>The value represents the corresponding field value.</li>\n</ul>\nSyntax for key-value pairs in data array:\n<code>\n      \"data\":[{\"Key1\": \"Value1\"},{\"Key2\": \"Value2\"},...]\n</code>\n",
+                "items": {
+                  "type": "object"
+                },
+                "example": [
+                  {
+                    "Revenue": "$500,000"
+                  },
+                  {
+                    "Growth": "25%"
+                  },
+                  {
+                    "Region": "North America"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "send-image-message-request-body": {
+      "type": "object",
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "The text content of the message to be sent.<br>\n<b>Maximum length</b>: 10,000 characters.\n",
+          "maxLength": 10000,
+          "example": "Please find the attached image for the office layout."
+        },
+        "card": {
+          "type": "object",
+          "description": "An optional object that defines the visual presentation of the message card.\n",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "The title of the message card.\n",
+              "example": "Office Layout"
+            },
+            "theme": {
+              "type": "string",
+              "description": "The visual theme of the message card.<br>\n<b>Allowed values</b>: modern-inline | poll | prompt\n",
+              "example": "modern-inline"
+            },
+            "thumbnail": {
+              "type": "string",
+              "format": "uri",
+              "description": "The URL of the thumbnail image for the message card.\n",
+              "example": "https://www.zoho.com/cliq/help/restapi/images/announce_icon.png"
+            }
+          }
+        },
+        "slides": {
+          "type": "array",
+          "description": "An array of structured content elements to be included in the message.\n",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "The type of content.<br>\n<b>Allowed values</b>: image\n",
+                "example": "image"
+              },
+              "title": {
+                "type": "string",
+                "description": "The title of the image.\n",
+                "example": "Floor Plan"
+              },
+              "data": {
+                "type": "array",
+                "description": "Represents the list of image URLs to be displayed in the message card.<br>\nEach item in the array must be a publicly accessible image URL. The URLs should point directly to image resources (e.g., .png, .jpg, .jpeg, .webp).\n",
+                "items": {
+                  "type": "object",
+                  "example": [
+                    "https://images.unsplash.com/photo-1522199710521-72d69614c702",
+                    "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
+                    "https://images.unsplash.com/photo-1492724441997-5dc865305da7",
+                    "https://images.unsplash.com/photo-1551434678-e076c223a692"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "send-chart-message-request-body": {
+      "type": "object",
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "The text content of the message to be sent.<br>\n<b>Maximum length</b>: 10,000 characters.\n",
+          "maxLength": 10000,
+          "example": "Hi Team! Please find the sales performance chart for this quarter."
+        },
+        "card": {
+          "type": "object",
+          "description": "An optional object that defines the visual presentation of the message card.\n",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "The title of the message card.\n",
+              "example": "Sales Performance"
+            },
+            "theme": {
+              "type": "string",
+              "description": "The visual theme of the message card.<br>\n<b>Allowed values</b>: modern-inline | poll | prompt\n",
+              "example": "modern-inline"
+            },
+            "thumbnail": {
+              "type": "string",
+              "format": "uri",
+              "description": "The URL of the thumbnail image for the message card.\n",
+              "example": "https://www.zoho.com/cliq/help/restapi/images/announce_icon.png"
+            }
+          }
+        },
+        "slides": {
+          "type": "array",
+          "description": "An array of structured content elements to be included in the message.\n",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "The type of content.<br>\n<b>Allowed values</b>: percentage_chart\n",
+                "example": "percentage_chart"
+              },
+              "title": {
+                "type": "string",
+                "description": "The title of the chart.\n",
+                "example": "Monthly Report"
+              },
+              "data": {
+                "type": "array",
+                "maxItems": 5,
+                "description": "Represents the dataset to be displayed in the chart.<br>\nEach item in the array corresponds to one segment in the chart.<br>\n<b>Maximum Items</b>: 5\n",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string",
+                      "maxLength": 20,
+                      "description": "Defines the category name for the chart segment (what the segment represents).<br>\n<b>Maximum length</b>: 20 characters.\n"
+                    },
+                    "value": {
+                      "type": "number",
+                      "format": "float",
+                      "description": "Represents the numerical value of the chart segment.\nThe size of each segment is calculated relative to other values in the dataset.\n"
+                    }
+                  },
+                  "example": [
+                    {
+                      "label": "Social Media",
+                      "value": 40
+                    },
+                    {
+                      "label": "Growth",
+                      "value": 25
+                    },
+                    {
+                      "label": "Region",
+                      "value": 10
+                    }
+                  ]
+                }
+              },
+              "styles": {
+                "type": "object",
+                "description": "Defines the visual style or appearance of the chart.<br>\nThe style value must be provided using the preview attribute\n",
+                "properties": {
+                  "preview": {
+                    "type": "string",
+                    "description": "Specifies the chart visualization style.\n<b>Allowed values</b>: pie | doughnut | semi_doughnut\n",
+                    "example": "pie"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "send-graph-message-request-body": {
+      "type": "object",
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "maxLength": 10000,
+          "description": "The text content of the message to be sent.<br>\n<b>Maximum length</b>: 10,000 characters.\n",
+          "example": "Exploring how our customers have been leveraging integrations in the past week!"
+        },
+        "card": {
+          "type": "object",
+          "description": "Optional object that defines the visual presentation of the message card.\n",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "The title of the message card.\n",
+              "example": "Usage Analysis"
+            },
+            "theme": {
+              "type": "string",
+              "description": "The visual theme of the message card.\n",
+              "example": "modern-inline"
+            }
+          }
+        },
+        "slides": {
+          "type": "array",
+          "description": "An array of structured content elements to be included in the message.\n",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Specifies the type of visualization to be generated.<br>\n<b>Allowed values</b>: graph\n",
+                "example": "graph"
+              },
+              "styles": {
+                "type": "object",
+                "description": "Specifies the visual styling configuration of the graph.\n",
+                "properties": {
+                  "preview": {
+                    "type": "string",
+                    "description": "Specifies the rendering style of the graph.<br>\n<b>Allowed values</b>: vertical_bar | vertical_stacked_bar | trend\n",
+                    "example": "trend"
+                  },
+                  "x_axis": {
+                    "type": "string",
+                    "description": "Represents the label for the x-axis of the graph.<br>\n<b>Maximum length</b>: 20 characters.\n",
+                    "example": "Months"
+                  },
+                  "y_axis": {
+                    "type": "string",
+                    "description": "Represents the label for the y-axis of the graph.<br>\n<b>Maximum length</b>: 20 characters.\n",
+                    "example": "Usage count"
+                  }
+                }
+              },
+              "data": {
+                "type": "array",
+                "maxItems": 5,
+                "description": "Represents the dataset to be plotted on the graph. Each item represents one category.<br>\n<b>Maximum items</b>: 5\n",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "category": {
+                      "type": "string",
+                      "maxLength": 20,
+                      "description": "Specifies the category name for which data is represented (for example: Products, Months, Integrations).<br>\n<b>Maximum length</b>: 20 characters.\n",
+                      "example": "Asana"
+                    },
+                    "values": {
+                      "type": "array",
+                      "maxItems": 20,
+                      "description": "Represents the list of data points within the category.<br>\n<b>Maximum items</b>: 20\n",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "label": {
+                            "type": "string",
+                            "maxLength": 20,
+                            "description": "Specifies the identifier or name of the data point.<br>\n<b>Maximum length</b>: 20 characters.\n",
+                            "example": "Jan"
+                          },
+                          "value": {
+                            "type": "number",
+                            "format": "float",
+                            "description": "Specifies the numeric value associated with the label. This value is used to plot the graph.\n",
+                            "example": 9
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "example": {
+        "text": "Exploring how our customers have been leveraging integrations in the past week!",
+        "bot": {
+          "name": "Zylker Apptics"
+        },
+        "card": {
+          "title": "Usage Analysis",
+          "theme": "modern-inline"
+        },
+        "slides": [
+          {
+            "type": "graph",
+            "styles": {
+              "preview": "trend",
+              "x_axis": "Months",
+              "y_axis": "Usage count"
+            },
+            "data": [
+              {
+                "category": "Asana",
+                "values": [
+                  {
+                    "label": "Jan",
+                    "value": 9
+                  },
+                  {
+                    "label": "Feb",
+                    "value": 6
+                  },
+                  {
+                    "label": "Mar",
+                    "value": 3
+                  }
+                ]
+              },
+              {
+                "category": "BitBucket",
+                "values": [
+                  {
+                    "label": "Jan",
+                    "value": 12
+                  },
+                  {
+                    "label": "Feb",
+                    "value": 18
+                  },
+                  {
+                    "label": "Mar",
+                    "value": 14
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

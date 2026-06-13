@@ -1,0 +1,883 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Zoho Cliq Chats Schemas",
+  "definitions": {
+    "NoResponse": {
+      "type": "object",
+      "description": "Response object returned when no content is available.",
+      "properties": {
+        "Response Code": {
+          "type": "string",
+          "description": "HTTP response code and message indicating no content.",
+          "example": "204 No response"
+        }
+      }
+    },
+    "v3-chat": {
+      "type": "object",
+      "description": "Represents a chat object with comprehensive details including metadata, participants, and message information.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Display name of the chat."
+        },
+        "chat_id": {
+          "type": "string",
+          "description": "Unique identifier for the chat."
+        },
+        "chat_type": {
+          "type": "string",
+          "description": "Type of chat: channel, bot, entity_chat, direct_message, group_chat, crossproduct_custom_chat, thread, or unknown.",
+          "enum": [
+            "channel",
+            "bot",
+            "entity_chat",
+            "direct_message",
+            "group_chat",
+            "crossproduct_custom_chat",
+            "thread",
+            "unknown"
+          ]
+        },
+        "participant_count": {
+          "type": "integer",
+          "description": "Number of participants in the chat."
+        },
+        "created_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the chat was created (<a href=\"https://en.wikipedia.org/wiki/ISO_8601\">ISO 8601</a> format)."
+        },
+        "last_modified_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the chat was last active or modified (<a href=\"https://en.wikipedia.org/wiki/ISO_8601\">ISO 8601</a> format)."
+        },
+        "pinned": {
+          "type": "boolean",
+          "description": "Whether the chat is pinned by the current user."
+        },
+        "removed": {
+          "type": "boolean",
+          "description": "Whether the current user has been removed from this chat."
+        },
+        "creator": {
+          "type": "object",
+          "description": "Details of the user who created the chat.",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Unique identifier of the creator."
+            },
+            "name": {
+              "type": "string",
+              "description": "Display name of the creator."
+            }
+          }
+        },
+        "last_message_info": {
+          "type": "object",
+          "description": "Summary of the last message in the chat, if available.",
+          "additionalProperties": true
+        },
+        "unread_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of the first unread message, if any."
+        },
+        "unread_message_count": {
+          "type": "integer",
+          "description": "Number of unread messages in the chat."
+        },
+        "previous_titles": {
+          "type": "string",
+          "description": "Historical chat names, if the chat has been renamed."
+        },
+        "thread_message_id": {
+          "type": "string",
+          "description": "ID of the thread head message. Present only for thread chats."
+        },
+        "parent_chat_id": {
+          "type": "string",
+          "description": "Chat ID of the parent. Present only for thread chats."
+        }
+      }
+    },
+    "v3-thread": {
+      "type": "object",
+      "properties": {
+        "chat_id": {
+          "type": "string"
+        },
+        "parent_chat_id": {
+          "type": "string"
+        },
+        "thread_message_id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "follower_count": {
+          "type": "integer"
+        },
+        "is_follower": {
+          "type": "boolean"
+        },
+        "thread_state": {
+          "type": "string"
+        },
+        "parent_message_sender": {
+          "type": "string"
+        },
+        "last_message_information": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "v3-create-chat-request": {
+      "type": "object",
+      "description": "For direct chat, send `chat_type: direct_message` with `user_id`.\nFor group chat, send `chat_type: group_chat` with `user_ids` and `title`.\n",
+      "required": [
+        "chat_type"
+      ],
+      "properties": {
+        "chat_type": {
+          "type": "string",
+          "description": "Type of chat to create.\n<b>Allowed values</b>:\n<ul>\n  <li><code>direct_message</code>: A one-to-one chat with another user.</li>\n  <li><code>group_chat</code>: A chat with multiple users, requires a title.</li>\n</ul>\n",
+          "enum": [
+            "direct_message",
+            "group_chat"
+          ]
+        },
+        "user_id": {
+          "type": "string",
+          "description": "Applicable for the <code>direct_message</code> chat type.<br>\nUser ID of the other participant for direct messages.\n"
+        },
+        "user_ids": {
+          "type": "array",
+          "description": "Applicable for the <code>group_chat</code> chat type.<br>\nList of user IDs to include in the group chat. Must include at least 1 user and can include up to 50 users.\n",
+          "minItems": 1,
+          "maxItems": 50,
+          "items": {
+            "type": "string"
+          }
+        },
+        "title": {
+          "type": "string",
+          "description": "Applicable for the <code>group_chat</code> chat type.<br>\nTitle of the group chat. Required when creating a group chat.\n",
+          "maxLength": 255
+        }
+      }
+    },
+    "v3-bulk-chat-update-request": {
+      "type": "object",
+      "description": "Supports two payload modes, selected by the <code>operation</code> field:\n<ul>\n  <li><b>Mark as read</b> (<code>read_status_update</code>): Set <code>operation</code> to <code>read_status_update</code>, <code>read_status</code> to <code>read</code>, and provide a <code>chats</code> array with each chat's <code>chat_id</code> and <code>last_message_id</code>. Returns <code>200 OK</code>.</li>\n  <li><b>Clear unread</b> (<code>clear_unread</code>): Set <code>operation</code> to <code>clear_unread</code> and provide a <code>chat_ids</code> array. Returns <code>204 No Content</code>.</li>\n</ul>\n",
+      "required": [
+        "operation"
+      ],
+      "properties": {
+        "operation": {
+          "type": "string",
+          "description": "The bulk operation to perform on the specified chats.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>read_status_update</code>: Marks the specified chats as read up to the given <code>last_message_id</code>. Requires <code>read_status</code> and <code>chats</code> fields.</li>\n  <li><code>clear_unread</code>: Clears the unread message count or status to zero for the specified chats. Requires <code>chat_ids</code> field.</li>\n</ul>\n",
+          "enum": [
+            "read_status_update",
+            "clear_unread"
+          ]
+        },
+        "read_status": {
+          "type": "string",
+          "description": "The read status to apply to the specified chats.<br>\nApplicable for the <code>read_status_update</code> operation only.<br>\n<b>Allowed value</b>:<br>\n<code>read</code> - Marks the specified chats as read.\n",
+          "enum": [
+            "read"
+          ]
+        },
+        "chats": {
+          "type": "array",
+          "description": "List of chats to mark as read. Applicable for the <code>read_status_update</code> operation only.<br>\nMaximum of <b>100</b> chats per request.\n",
+          "maxItems": 100,
+          "items": {
+            "type": "object",
+            "required": [
+              "chat_id",
+              "last_message_id"
+            ],
+            "properties": {
+              "chat_id": {
+                "type": "string",
+                "description": "Unique identifier of the chat to mark as read."
+              },
+              "last_message_id": {
+                "type": "string",
+                "description": "The message ID up to which the chat should be marked as read. All messages up to and including this message will be marked read."
+              }
+            }
+          }
+        },
+        "chat_ids": {
+          "type": "array",
+          "description": "List of chat IDs for which to clear the unread count. Applicable for the <code>clear_unread</code> operation only.<br>\nChats that do not have any unread entries will be skipped without error.<br>\n<b>Maximum items</b>: 100 chat IDs.\n",
+          "maxItems": 100,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "v3-bulk-mark-read-request": {
+      "type": "object",
+      "required": [
+        "operation",
+        "read_status",
+        "chats"
+      ],
+      "properties": {
+        "operation": {
+          "type": "string",
+          "enum": [
+            "read_status_update"
+          ]
+        },
+        "read_status": {
+          "type": "string",
+          "enum": [
+            "read"
+          ]
+        },
+        "chats": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "type": "object",
+            "required": [
+              "chat_id",
+              "last_message_id"
+            ],
+            "properties": {
+              "chat_id": {
+                "type": "string"
+              },
+              "last_message_id": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "v3-bulk-clear-unread-request": {
+      "type": "object",
+      "required": [
+        "operation",
+        "chat_ids"
+      ],
+      "properties": {
+        "operation": {
+          "type": "string",
+          "enum": [
+            "clear_unread"
+          ]
+        },
+        "chat_ids": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "v3-update-chat-title-request": {
+      "type": "object",
+      "required": [
+        "operation",
+        "title"
+      ],
+      "properties": {
+        "operation": {
+          "type": "string",
+          "enum": [
+            "update_title"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 255
+        }
+      }
+    },
+    "v3-update-chat-history-request": {
+      "type": "object",
+      "required": [
+        "operation",
+        "history_status"
+      ],
+      "properties": {
+        "operation": {
+          "type": "string",
+          "enum": [
+            "update_history_status"
+          ]
+        },
+        "history_status": {
+          "type": "string",
+          "enum": [
+            "enabled",
+            "disabled"
+          ]
+        }
+      }
+    },
+    "v3-update-chat-read-status-request": {
+      "type": "object",
+      "required": [
+        "operation",
+        "message_id"
+      ],
+      "properties": {
+        "operation": {
+          "type": "string",
+          "enum": [
+            "mark_as_unread"
+          ]
+        },
+        "message_id": {
+          "type": "string"
+        }
+      }
+    },
+    "v3-close-chat-request": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "closed"
+          ]
+        }
+      }
+    },
+    "v3-clear-local-history-request": {
+      "type": "object",
+      "required": [
+        "operation"
+      ],
+      "properties": {
+        "operation": {
+          "type": "string",
+          "enum": [
+            "clear_local_history"
+          ]
+        }
+      }
+    },
+    "v3-typing-activity-request": {
+      "type": "object",
+      "required": [
+        "action"
+      ],
+      "properties": {
+        "action": {
+          "type": "string",
+          "description": "The typing activity to send to the chat.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>typing</code>: Indicates that the user is currently typing a message.</li>\n  <li><code>text_entered</code>: Indicates that the user has entered text but has not yet sent the message.</li>\n  <li><code>text_cleared</code>: Indicates that the user has cleared the entered text.</li>\n</ul>\n",
+          "enum": [
+            "typing",
+            "text_entered",
+            "text_cleared"
+          ]
+        }
+      }
+    },
+    "v3-fork-chat-request": {
+      "type": "object",
+      "required": [
+        "message_id",
+        "title"
+      ],
+      "properties": {
+        "message_id": {
+          "type": "string",
+          "description": "The ID of the message from which to fork the chat. The new chat will include messages starting from this message.\n",
+          "example": "1234567890123456789"
+        },
+        "user_ids": {
+          "type": "string",
+          "description": "Comma-separated list of user IDs to include in the forked chat. Example: <code>55743307,55622727</code>\n",
+          "example": "631830848,631830849"
+        },
+        "include_participants": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to include all participants from the original chat in the forked chat. If set to true, the <code>user_ids</code> field will be ignored and all participants will be included.\n",
+          "example": false
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "Title of the forked chat. Required when creating a forked chat.\n",
+          "example": "Discussion on Q3 Marketing Strategy"
+        }
+      }
+    },
+    "v3-create-direct-chat-request": {
+      "type": "object",
+      "required": [
+        "chat_type",
+        "user_id"
+      ],
+      "properties": {
+        "chat_type": {
+          "type": "string",
+          "enum": [
+            "direct_message"
+          ]
+        },
+        "user_id": {
+          "type": "string"
+        }
+      }
+    },
+    "v3-create-group-chat-request": {
+      "type": "object",
+      "required": [
+        "chat_type",
+        "user_ids",
+        "title"
+      ],
+      "properties": {
+        "chat_type": {
+          "type": "string",
+          "enum": [
+            "group_chat"
+          ]
+        },
+        "user_ids": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 50,
+          "items": {
+            "type": "string"
+          }
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 255
+        }
+      }
+    },
+    "v3-add-members-request": {
+      "type": "object",
+      "required": [
+        "user_ids"
+      ],
+      "properties": {
+        "user_ids": {
+          "type": "array",
+          "description": "List of user IDs to add to the chat. Must include at least 1 user and can include up to 100 users.\n",
+          "minItems": 1,
+          "maxItems": 100,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "no-response": {
+      "type": "object",
+      "description": "Response object returned when no content is available.",
+      "properties": {
+        "Response Code": {
+          "type": "string",
+          "description": "HTTP response code and message indicating no content.",
+          "example": "204 No response"
+        }
+      }
+    },
+    "get-chats-response": {
+      "type": "object",
+      "description": "Response object containing details of a chat or direct message.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Display name of the chat or participant.",
+          "example": "Ryan West"
+        },
+        "creation_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the chat was created.",
+          "example": "2019-10-15T03:37:28-07:00"
+        },
+        "creator_id": {
+          "type": "string",
+          "description": "Unique identifier of the user who created the chat.",
+          "example": "631830848"
+        },
+        "last_modified_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the chat was last modified.",
+          "example": "2019-10-15T03:37:28-07:00"
+        },
+        "removed": {
+          "type": "boolean",
+          "description": "Indicates whether the chat has been removed.",
+          "example": false
+        },
+        "recipients_summary": {
+          "type": "array",
+          "description": "List of participants in the chat with basic user details.",
+          "items": {
+            "$ref": "#/components/schemas/UserSummary"
+          }
+        },
+        "chat_type": {
+          "type": "string",
+          "enum": [
+            "chat",
+            "dm"
+          ],
+          "description": "Type of the chat, either a group chat (`chat`) or a direct message (`dm`).",
+          "example": "dm"
+        },
+        "chat_id": {
+          "type": "string",
+          "description": "Unique identifier of the chat instance.",
+          "example": "2230748224630350194"
+        },
+        "last_message_info": {
+          "$ref": "#/components/schemas/LastMessageInfo"
+        },
+        "pinned": {
+          "type": "boolean",
+          "description": "Indicates if the chat is pinned by the user.",
+          "example": false
+        },
+        "participant_count": {
+          "type": "integer",
+          "description": "Number of participants in the chat.",
+          "example": 2
+        }
+      }
+    },
+    "UserSummary": {
+      "type": "object",
+      "description": "Basic details of a user in the chat.",
+      "properties": {
+        "user_id": {
+          "type": "string",
+          "description": "Unique identifier of the user.",
+          "example": "631830848"
+        },
+        "name": {
+          "type": "string",
+          "description": "Full name of the user.",
+          "example": "Ryan West"
+        }
+      }
+    },
+    "LastMessageInfo": {
+      "type": "object",
+      "description": "Information about the most recent message in the chat.",
+      "properties": {
+        "sender_id": {
+          "type": "string",
+          "description": "Unique identifier of the message sender.",
+          "example": "631830849"
+        },
+        "message_type": {
+          "type": "string",
+          "description": "Type of the message (e.g., text, image, file).",
+          "example": "text"
+        },
+        "styles": {
+          "$ref": "#/components/schemas/MessageStyles"
+        },
+        "time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the message was sent.",
+          "example": "2019-09-12T00:35:18-07:00"
+        },
+        "text": {
+          "type": "string",
+          "description": "Text content of the message.",
+          "example": "https://cliq.zoho.com/channels/marketing"
+        },
+        "bot": {
+          "$ref": "#/components/schemas/BotInfo"
+        },
+        "sender_name": {
+          "type": "string",
+          "description": "Display name of the message sender.",
+          "example": "Scott Fisher"
+        }
+      }
+    },
+    "MessageStyles": {
+      "type": "object",
+      "description": "Style attributes applied to a message.",
+      "properties": {
+        "highlight": {
+          "type": "boolean",
+          "description": "Indicates if the message should be visually highlighted.",
+          "example": true
+        }
+      }
+    },
+    "BotInfo": {
+      "type": "object",
+      "description": "Information about a bot associated with a message.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Display name of the bot.",
+          "example": "Zia"
+        },
+        "image_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL of the bot's display image.",
+          "example": "https://img.zohostatic.com/chat/default/officechat/images/default/event-bot.png"
+        }
+      }
+    },
+    "retrieve-chat-members": {
+      "type": "object",
+      "description": "Response object containing members of a chat.",
+      "properties": {
+        "members": {
+          "type": "array",
+          "description": "List of members in the chat with detailed user information.",
+          "items": {
+            "$ref": "#/components/schemas/Members"
+          }
+        }
+      }
+    },
+    "Members": {
+      "type": "object",
+      "description": "Detailed information about a chat member.",
+      "properties": {
+        "user_id": {
+          "type": "string",
+          "description": "Unique identifier of the user.",
+          "example": "431930546"
+        },
+        "email_id": {
+          "type": "string",
+          "format": "email",
+          "description": "Email address of the user.",
+          "example": "olivia.palmer@zylcal.com"
+        },
+        "name": {
+          "type": "string",
+          "description": "Full name of the user.",
+          "example": "Olivia - Content Writer"
+        }
+      }
+    },
+    "pin-a-message-request": {
+      "type": "object",
+      "description": "Request body parameters for pinning a message in a chat.",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier (msguid) of the message to be pinned.",
+          "example": "1573708648341_375412769224"
+        },
+        "expiry_time": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Expiry time in milliseconds for the pinned message.",
+          "example": 1748946453794
+        },
+        "notify": {
+          "type": "boolean",
+          "description": "Indicates whether pinning the message should notify all participants.",
+          "example": false
+        }
+      }
+    },
+    "pin-a-message-response": {
+      "type": "object",
+      "description": "Response object containing details of a pinned message.",
+      "properties": {
+        "data": {
+          "type": "object",
+          "description": "Details of the pinned message.",
+          "properties": {
+            "expiry_time": {
+              "type": "integer",
+              "description": "Expiry time set for the pinned message in milliseconds. `-1` indicates no expiry.",
+              "example": -1
+            },
+            "creator": {
+              "type": "object",
+              "description": "Information about the user who pinned the message.",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the message creator.",
+                  "example": "Scott Fisher"
+                },
+                "id": {
+                  "type": "string",
+                  "description": "Unique identifier of the message creator.",
+                  "example": "690440148"
+                }
+              }
+            },
+            "message": {
+              "type": "object",
+              "description": "Details of the pinned message.",
+              "properties": {
+                "msg": {
+                  "type": "string",
+                  "description": "Content of the pinned message.",
+                  "example": "meeting at 4"
+                },
+                "sender": {
+                  "type": "string",
+                  "description": "Unique identifier of the original message sender.",
+                  "example": "690440148"
+                },
+                "lmsgtime": {
+                  "type": "string",
+                  "description": "Timestamp when the message was last modified.",
+                  "example": "1573708493055"
+                },
+                "msguid": {
+                  "type": "string",
+                  "description": "Unique identifier of the message.",
+                  "example": "1573708648341%20375412769224"
+                },
+                "time": {
+                  "type": "string",
+                  "description": "Timestamp when the message was sent.",
+                  "example": "1573708648341"
+                },
+                "dname": {
+                  "type": "string",
+                  "description": "Display name of the original message sender.",
+                  "example": "Scott Fisher"
+                }
+              }
+            },
+            "created_time": {
+              "type": "integer",
+              "description": "Timestamp when the message was pinned (in ms).",
+              "example": 1573708712431
+            },
+            "last_modified_time": {
+              "type": "integer",
+              "description": "Timestamp when the pinned message was last modified (in ms).",
+              "example": 1573708712431
+            },
+            "chat_id": {
+              "type": "string",
+              "description": "Unique identifier of the chat where the message was pinned.",
+              "example": "CT_2243173626687865223_P87610291-C4"
+            }
+          }
+        }
+      }
+    },
+    "get-pinnedmessage-response": {
+      "type": "object",
+      "description": "Response object containing details of an existing pinned message.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Type of the response object, usually `stickymessage`.",
+          "example": "stickymessage"
+        },
+        "data": {
+          "type": "object",
+          "description": "Information about the pinned message.",
+          "properties": {
+            "expiry_time": {
+              "type": "integer",
+              "description": "Expiry time for the pinned message in milliseconds. `-1` indicates no expiry.",
+              "example": -1
+            },
+            "creator": {
+              "type": "object",
+              "description": "Information about the user who pinned the message.",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the creator.",
+                  "example": "Scott Fisher"
+                },
+                "id": {
+                  "type": "string",
+                  "description": "Unique identifier of the creator.",
+                  "example": "692133012"
+                }
+              }
+            },
+            "message": {
+              "type": "object",
+              "description": "Content details of the pinned message.",
+              "properties": {
+                "msg": {
+                  "type": "string",
+                  "description": "Text content of the message.",
+                  "example": "Feature review date: 15/11/2019"
+                },
+                "sender": {
+                  "type": "string",
+                  "description": "Unique identifier of the original message sender.",
+                  "example": "690440148"
+                },
+                "lmsgtime": {
+                  "type": "string",
+                  "description": "Timestamp when the message was last modified.",
+                  "example": "1573641920572"
+                },
+                "msguid": {
+                  "type": "string",
+                  "description": "Unique identifier of the message.",
+                  "example": "1573641936588%20345281288778"
+                },
+                "time": {
+                  "type": "string",
+                  "description": "Timestamp when the message was sent.",
+                  "example": "1573641936588"
+                },
+                "dname": {
+                  "type": "string",
+                  "description": "Display name of the original message sender.",
+                  "example": "Ryan West"
+                }
+              }
+            },
+            "created_time": {
+              "type": "integer",
+              "description": "Timestamp when the message was pinned (in ms).",
+              "example": 1573641961788
+            },
+            "last_modified_time": {
+              "type": "integer",
+              "description": "Timestamp when the pinned message was last modified (in ms).",
+              "example": 1573641961788
+            },
+            "chat_id": {
+              "type": "string",
+              "description": "Unique identifier of the chat where the message was pinned.",
+              "example": "CT_2243173626687865223_P87610291-C4"
+            }
+          }
+        }
+      }
+    }
+  }
+}

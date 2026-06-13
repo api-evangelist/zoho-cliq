@@ -1,0 +1,260 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Zoho Cliq Messagecards Schemas",
+  "definitions": {
+    "CardObject": {
+      "type": "object",
+      "description": "Defines the interactive card to be rendered inside the message. The <code>theme</code> field\nselects the card type and determines which fields are required. For a quick reference of\nrequired and optional fields per theme, see the <a href=\"#available-themes\"><b>Available Themes</b></a> table in the overview above.\n<br><br>\n<b>Poll card fields</b>\n<ul>\n  <li><b>theme</b> <code>string</code>: Must be <code>poll</code>.</li>\n  <li><b>title</b> <code>string</code>: The poll question displayed at the top of the card. Maximum 200 characters.</li>\n  <li><b>options</b> <code>array</code>: List of voting choices. Minimum 2, maximum 10 items.\n    <ul>\n      <li><b>options[].text</b> <code>string</code>: Display label for the poll option. Maximum 100 characters.</li>\n    </ul>\n  </li>\n</ul>\n<b>Modern Inline card fields</b>\n<ul>\n  <li><b>theme</b> <code>string</code>: Must be <code>modern-inline</code>.</li>\n  <li><b>title</b> <code>string</code>: Card header text displayed at the top of the card. Maximum 200 characters.</li>\n  <li><b>thumbnail</b> <code>string</code>: Optional. Publicly accessible HTTPS URL of a thumbnail image shown in the card header.</li>\n  <li><b>sections</b> <code>array</code>: Optional. One or more labeled field sections displayed in the card body. Each section groups related key-value pairs under an optional heading.\n    <ul>\n      <li><b>sections[].title</b> <code>string</code>: Optional section heading displayed above the fields.</li>\n      <li><b>sections[].fields</b> <code>array</code>: List of key-value field pairs.\n        <ul>\n          <li><b>fields[].title</b> <code>string</code>: Field label (key).</li>\n          <li><b>fields[].value</b> <code>string</code>: Field value.</li>\n        </ul>\n      </li>\n    </ul>\n  </li>\n  <li><b>buttons</b> <code>array</code>: Optional. Action buttons rendered at the bottom of the card. Maximum 5. See <b>Button fields</b> below.</li>\n</ul>\n<b>Prompt card fields</b>\n<ul>\n  <li><b>theme</b> <code>string</code>: Must be <code>prompt</code>.</li>\n  <li><b>title</b> <code>string</code>: The prompt question or alert text presented to the user. Maximum 200 characters.</li>\n  <li><b>buttons</b> <code>array</code>: Action buttons for the user to respond with. Minimum 1, maximum 5. See <b>Button fields</b> below.</li>\n</ul>\n<b>Button fields</b> (applicable to <code>modern-inline</code> and <code>prompt</code> themes)\n<ul>\n  <li><b>buttons[].label</b> <code>string</code>: Text displayed on the button. Maximum 30 characters.</li>\n  <li><b>buttons[].action.type</b> <code>string</code>: Determines how Cliq handles the button click.\n    <ul>\n      <li><code>open.url</code>: Opens a URL in the user's default browser. Requires <code>action.data.web</code> (string).</li>\n      <li><code>invoke.function</code>: Triggers a Cliq Function by name. Requires <code>action.data.name</code> (string).</li>\n      <li><code>system.api</code>: Calls a Cliq internal system API. Requires <code>action.data.api</code> (string).</li>\n      <li><code>invoke.bot</code>: Sends a message to a bot. Requires <code>action.data.bot_name</code> and <code>action.data.message</code>.</li>\n      <li><code>preview.url</code>: Opens a URL inside a Cliq preview panel without leaving the conversation. Requires <code>action.data.web</code> (string).</li>\n    </ul>\n  </li>\n  <li><b>buttons[].action.data</b> <code>object</code>: The payload passed to the action handler. Expected fields depend on <code>action.type</code> as listed above.</li>\n</ul>\n<b>Note:</b> To render supporting structured content such as tables, lists, or labelled records alongside a card,\nuse the top-level <code>slides</code> array in the message payload. <code>slides</code> is independent of the <code>card</code> object\nand can be combined with any card theme. For details on supported slide formats, see\n<a href=\"https://www.zoho.com/cliq/help/restapi/v3/#Message_Content\" target=\"_blank\">Message Content</a>.\n",
+      "required": [
+        "theme",
+        "title"
+      ],
+      "properties": {
+        "theme": {
+          "type": "string",
+          "enum": [
+            "poll",
+            "modern-inline",
+            "prompt"
+          ],
+          "description": "Card theme identifier. Determines the card type to render.<br>\n<b>Allowed values</b>:<br>\n<ul>\n  <li><code>poll</code>: Renders a poll card with voting options, live vote counts, and percentages.</li>\n  <li><code>modern-inline</code>: Renders a rich inline card with a header, optional field sections, and action buttons.</li>\n  <li><code>prompt</code>: Renders a focused prompt card with a question and quick-reply action buttons.</li>\n</ul>\n",
+          "example": "poll"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "The card header or question text displayed at the top of the card.<br>\n<b>Maximum length</b>: 200 characters.\n",
+          "example": "Where should we have the team lunch?"
+        },
+        "options": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 10,
+          "description": "<i>Applicable for <code>poll</code> theme only.</i><br>\nList of voting options. Each option is rendered as a selectable row with a live vote count and percentage bar.<br>\n<b>Minimum</b>: 2 options. <b>Maximum</b>: 10 options.\n",
+          "items": {
+            "type": "object",
+            "required": [
+              "text"
+            ],
+            "properties": {
+              "text": {
+                "type": "string",
+                "maxLength": 100,
+                "description": "Display label for the poll option. Maximum 100 characters.",
+                "example": "Italian"
+              }
+            }
+          }
+        },
+        "thumbnail": {
+          "type": "string",
+          "description": "<i>Applicable for <code>modern-inline</code> theme only.</i><br>\nURL of an image to display as a thumbnail in the card header. Must be a publicly accessible HTTPS URL.\n",
+          "example": "https://www.zoho.com/cliq/help/restapi/images/poll_icon.png"
+        },
+        "sections": {
+          "type": "array",
+          "description": "<i>Applicable for <code>modern-inline</code> theme only.</i><br>\nList of field sections. Each section groups related labeled key-value fields under an optional section title.\n",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "Optional section heading displayed above the fields.",
+                "example": "Summary"
+              },
+              "fields": {
+                "type": "array",
+                "description": "List of key-value field pairs displayed in this section.",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "title",
+                    "value"
+                  ],
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "description": "Field label (key).",
+                      "example": "Account"
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "Field value.",
+                      "example": "Zylker Corp"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "buttons": {
+          "type": "array",
+          "maxItems": 5,
+          "description": "<i>Applicable for <code>modern-inline</code> and <code>prompt</code> themes.</i><br>\nList of action buttons rendered inside the card. Each button executes an action when clicked by the user.<br>\n<b>Maximum</b>: 5 buttons. Minimum 1 required for <code>prompt</code>.\n",
+          "items": {
+            "$ref": "#/components/schemas/CardButton"
+          }
+        }
+      }
+    },
+    "CardButton": {
+      "type": "object",
+      "description": "An action button rendered inside a Message Card. When clicked by a user, the button executes the specified <code>action</code>.",
+      "required": [
+        "label",
+        "action"
+      ],
+      "properties": {
+        "label": {
+          "type": "string",
+          "maxLength": 30,
+          "description": "Display text shown on the button.<br>\n<b>Maximum length</b>: 30 characters.\n",
+          "example": "Approve"
+        },
+        "action": {
+          "type": "object",
+          "description": "Defines the action executed when the button is clicked. The <code>type</code> field determines the action category and the expected structure of the <code>data</code> payload.\n",
+          "required": [
+            "type",
+            "data"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "open.url",
+                "invoke.function",
+                "system.api",
+                "invoke.bot",
+                "preview.url"
+              ],
+              "description": "The action type. Determines how Cliq handles the button click.<br>\n<b>Allowed values</b>:<br>\n<ul>\n  <li><code>open.url</code>: Opens a URL in the user's default browser. Requires <code>action.data.web</code> (string).</li>\n  <li><code>invoke.function</code>: Triggers a Cliq Function by name. Requires <code>action.data.name</code> (string).</li>\n  <li><code>system.api</code>: Calls a Cliq internal system API. Requires <code>action.data.api</code> (string).</li>\n  <li><code>invoke.bot</code>: Sends a message to a bot. Requires <code>action.data.bot_name</code> and <code>action.data.message</code>.</li>\n  <li><code>preview.url</code>: Opens a URL inside a Cliq preview panel without leaving the conversation. Requires <code>action.data.web</code> (string).</li>\n</ul>\n",
+              "example": "invoke.function"
+            },
+            "data": {
+              "type": "object",
+              "additionalProperties": true,
+              "description": "Payload passed to the action handler. The expected fields depend on <code>type</code>:<br>\n<ul>\n  <li><b>open.url</b>: Requires <code>web</code> (string - the URL to open).</li>\n  <li><b>invoke.function</b>: Requires <code>name</code> (string - Cliq Function name).</li>\n  <li><b>system.api</b>: Requires <code>api</code> (string - the internal API path).</li>\n  <li><b>invoke.bot</b>: Requires <code>bot_name</code> and <code>message</code>.</li>\n  <li><b>preview.url</b>: Requires <code>web</code> (string - the URL to preview).</li>\n</ul>\n",
+              "example": {
+                "name": "ack_alert"
+              }
+            }
+          }
+        }
+      }
+    },
+    "MessageResponse": {
+      "type": "object",
+      "description": "Response returned after a message card is successfully posted.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "Endpoint URL associated with the response.",
+          "example": "/api/v3/channels/announcements/message"
+        },
+        "type": {
+          "type": "string",
+          "description": "Resource type of the response.",
+          "example": "message"
+        },
+        "data": {
+          "type": "object",
+          "description": "Payload containing the posted message details.",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Unique identifier of the posted message.",
+              "example": "1701234567890_1234567890"
+            },
+            "card": {
+              "type": "object",
+              "description": "The card object as stored by Cliq after posting.",
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": true
+        }
+      }
+    },
+    "Slides": {
+      "type": "array",
+      "description": "An array of structured content blocks rendered below the card inside the message.\n<code>slides</code> is a top-level field in the message payload - it sits alongside\n<code>text</code> and <code>card</code>, and is <b>not</b> nested inside <code>card</code>.\n<br><br>\nMultiple slide blocks can be included in a single message, and they are rendered in the\norder they appear in the array. <code>slides</code> is most commonly paired with the\n<code>modern-inline</code> card theme to display supporting data such as tables, lists,\nor labelled records alongside the card header, but it is compatible with all card themes.\n<br><br>\nEach slide block requires a <code>type</code> field that determines how the content is rendered,\nan optional <code>title</code> heading, and a <code>data</code> payload whose structure\ndepends on the slide type.\n<br><br>\n<b>Supported slide types</b>\n<table style=\"border-collapse: collapse; width: 100%; font-family: inherit;\">\n  <tr>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd; font-family: inherit;\">Type</th>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd; font-family: inherit;\">Renders</th>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd; font-family: inherit;\"><code>data</code> structure</th>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><a href=\"https://www.zoho.com/cliq/help/restapi/v3/#table\" target=\"_blank\"><code>table</code></a></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">A data table with column headers and rows.</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Object with <code>headers</code> (array of strings) and <code>rows</code> (array of objects where each key maps to a header).</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><a href=\"https://www.zoho.com/cliq/help/restapi/v3/#list\" target=\"_blank\"><code>list</code></a></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">A bulleted list of items.</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Array of strings, each representing one list item.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><a href=\"https://www.zoho.com/cliq/help/restapi/v3/#label\" target=\"_blank\"><code>label</code></a></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Key-value pairs in a definition-list style.</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Array of objects, each with <code>label</code> (string) and <code>value</code> (string).</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><a href=\"https://www.zoho.com/cliq/help/restapi/v3/#image\" target=\"_blank\"><code>images</code></a></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">One or more inline images.</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Array of publicly accessible HTTPS image URL strings.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><a href=\"https://www.zoho.com/cliq/help/restapi/v3/#text\" target=\"_blank\"><code>text</code></a></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">A plain or formatted text block.</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">A string containing the text content to display.</td>\n  </tr>\n</table>\n<br>\nFor full details on each slide type, including field-level descriptions and payload examples,\nrefer to <a href=\"https://www.zoho.com/cliq/help/restapi/v3/#Message_Content\" target=\"_blank\">Message Content</a>.\n",
+      "items": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "table",
+              "list",
+              "label",
+              "images",
+              "text"
+            ],
+            "description": "The slide content type. Determines how the <code>data</code> payload is rendered.<br>\n<b>Allowed values</b>:<br>\n<ul>\n  <li><code>table</code>: Renders a data table with column headers and rows.</li>\n  <li><code>list</code>: Renders a bulleted list of items.</li>\n  <li><code>label</code>: Renders key-value pairs in a definition-list style.</li>\n  <li><code>images</code>: Renders one or more inline images from HTTPS URLs.</li>\n  <li><code>text</code>: Renders a plain or formatted text block.</li>\n</ul>\n",
+            "example": "table"
+          },
+          "title": {
+            "type": "string",
+            "description": "Optional heading displayed above the slide content.",
+            "example": "Ticket Details"
+          },
+          "data": {
+            "description": "Content payload for the slide. Structure depends on <code>type</code>:<br>\n<ul>\n  <li><b>table</b>: Object with <code>headers</code> (array of strings) and <code>rows</code> (array of objects).</li>\n  <li><b>list</b>: Array of strings.</li>\n  <li><b>label</b>: Array of objects, each with <code>label</code> and <code>value</code>.</li>\n  <li><b>images</b>: Array of image URL strings.</li>\n  <li><b>text</b>: A string containing the text content to display.</li>\n</ul>\n",
+            "example": {
+              "headers": [
+                "Field",
+                "Value"
+              ],
+              "rows": [
+                {
+                  "Field": "Ticket ID",
+                  "Value": "#TKT-00892"
+                },
+                {
+                  "Field": "Priority",
+                  "Value": "Critical"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "NoResponse": {
+      "type": "object",
+      "description": "Represents an empty successful response where no payload is returned.",
+      "properties": {
+        "Response Code": {
+          "type": "string",
+          "description": "HTTP response code indicating no content is returned.",
+          "example": "204 No response"
+        }
+      }
+    },
+    "GenericResponse": {
+      "type": "object",
+      "description": "Generic successful response envelope.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "Endpoint URL associated with the response."
+        },
+        "type": {
+          "type": "string",
+          "description": "Resource type returned by the API."
+        },
+        "data": {
+          "type": "object",
+          "description": "Resource payload.",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

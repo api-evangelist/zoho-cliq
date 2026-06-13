@@ -1,0 +1,497 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Zoho Cliq Mypins Schemas",
+  "definitions": {
+    "NoResponse": {
+      "type": "object",
+      "description": "Represents an empty successful response where no payload is returned.",
+      "properties": {
+        "Response Code": {
+          "type": "string",
+          "description": "HTTP response code indicating no content is returned.",
+          "example": "204 No response"
+        }
+      }
+    },
+    "GenericResponse": {
+      "type": "object",
+      "description": "Generic successful response envelope.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "Endpoint URL associated with the response."
+        },
+        "type": {
+          "type": "string",
+          "description": "Resource type returned by the API."
+        },
+        "data": {
+          "type": "object",
+          "description": "Resource payload.",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "pin-category": {
+      "type": "object",
+      "description": "Represents a pin folder (chat folder) object. Fields marked <b>conditional</b> are only present when the matching <code>include_fields</code> value is requested.<br><br>\n<b>Note:</b> The default folder only contains <code>category_id: \"default\"</code> with no other fields.\n",
+      "properties": {
+        "category_id": {
+          "type": "string",
+          "description": "Unique ID of the folder, or <code>\"default\"</code> for the default folder."
+        },
+        "title": {
+          "type": "string",
+          "description": "Display title of the folder."
+        },
+        "symbol": {
+          "type": "string",
+          "description": "Emoji or zomoji symbol for the folder."
+        },
+        "state": {
+          "type": "string",
+          "description": "Whether the folder is expanded or collapsed.",
+          "enum": [
+            "expanded",
+            "collapsed"
+          ]
+        },
+        "chats": {
+          "type": "array",
+          "description": "<b>Conditional</b> - only present when <code>include_fields</code> contains <code>chats</code>.",
+          "items": {
+            "$ref": "#/components/schemas/pinned-chat"
+          }
+        }
+      }
+    },
+    "pinned-chat": {
+      "type": "object",
+      "description": "Represents a pinned chat entry within a folder.",
+      "properties": {
+        "chat_id": {
+          "type": "string",
+          "description": "ID of the pinned chat."
+        },
+        "chat_type": {
+          "type": "string",
+          "description": "Type of the chat, such as <code>direct_message</code>, <code>bot</code>, <code>channel</code>, <code>group_chat</code>."
+        },
+        "name": {
+          "type": "string",
+          "description": "Display name of the chat."
+        },
+        "participant_count": {
+          "type": "integer",
+          "description": "Number of participants in the chat."
+        },
+        "recipients_summary": {
+          "type": "array",
+          "description": "<b>Conditional</b> - requires both <code>chats</code> and <code>recipients_summary</code> in <code>include_fields</code>.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "User ID of the participant."
+              },
+              "name": {
+                "type": "string",
+                "description": "Display name of the participant."
+              }
+            }
+          }
+        },
+        "last_message_info": {
+          "type": "object",
+          "description": "<b>Conditional</b> - requires both <code>chats</code> and <code>last_message_info</code> in <code>include_fields</code>.",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Message ID."
+            },
+            "sender": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            },
+            "time": {
+              "type": "string",
+              "description": "<a href=\"https://en.wikipedia.org/wiki/ISO_8601\">ISO 8601</a> datetime of the message."
+            },
+            "type": {
+              "type": "string",
+              "description": "Message type."
+            },
+            "content": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "is_pinned": {
+          "type": "boolean",
+          "description": "Whether the chat is currently pinned."
+        }
+      }
+    },
+    "get-pin-categories-response": {
+      "type": "object",
+      "description": "Response envelope for listing all pin folders.",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "example": "pin_categories"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/pin-category"
+          }
+        }
+      },
+      "example": {
+        "url": "/v3/pin-categories",
+        "type": "pin_categories",
+        "data": [
+          {
+            "category_id": "default"
+          },
+          {
+            "category_id": "4000000020001",
+            "state": "expanded",
+            "symbol": ":razz:",
+            "title": "Cliq!",
+            "chats": [
+              {
+                "chat_id": "1488288613043522033",
+                "chat_type": "channel",
+                "name": "Product Launch",
+                "participant_count": 12,
+                "is_pinned": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "create-pin-category-request": {
+      "type": "object",
+      "description": "Request body for creating a new pin folder.",
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "Display title of the chat folder.<br>\n<b>Maximum Length:</b> 255 characters.\n"
+        },
+        "symbol": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Emoji or zomoji symbol for the folder.<br>\n<b>Maximum Length:</b> 50 characters.<br>\nSend an empty string to create the folder without a symbol.\n"
+        },
+        "chat_ids": {
+          "type": "array",
+          "maxItems": 100,
+          "description": "Optional list of chat IDs to pin within the folder.<br>\n<b>Maximum chat IDs:</b> 100.<br>\nIf provided, these chats will be pinned in the order specified. Otherwise, the folder will be created empty.\n",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "example": {
+        "title": "Priority Workitems",
+        "symbol": ":razz:",
+        "chat_ids": [
+          "1488288613043522033"
+        ]
+      }
+    },
+    "create-pin-category-response": {
+      "type": "object",
+      "description": "Response envelope after creating a pin folder.",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "example": "pin_categories"
+        },
+        "data": {
+          "$ref": "#/components/schemas/pin-category"
+        }
+      },
+      "example": {
+        "url": "/v3/pin-categories",
+        "type": "pin_categories",
+        "data": {
+          "category_id": "4000000020001",
+          "state": "expanded",
+          "symbol": ":razz:",
+          "title": "Priority Workitems"
+        }
+      }
+    },
+    "update-pin-category-request": {
+      "type": "object",
+      "description": "Request body for updating a pin folder. Send <b>exactly one</b> operation type per request.<br><br>\n<b>Operation types</b>:\n<ul>\n  <li><b>Update Folder Details</b>: Send <code>title</code>, <code>symbol</code>, and/or <code>state</code>.</li>\n  <li><b>Reorder a Chat</b>: Send <code>chat_id</code> with optional <code>pin_above</code> and required <code>last_sync_time</code>.</li>\n  <li><b>Reorder a Folder</b>: Send <code>pin_above</code> only (no <code>chat_id</code>) with required <code>last_sync_time</code>.</li>\n  <li><b>Bulk Update Chats</b>: Send <code>chat_ids</code> (array) with required <code>last_sync_time</code>.</li>\n</ul>\n",
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "New folder title. Maximum 255 characters."
+        },
+        "symbol": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "New emoji or zomoji. Maximum 50 characters. Send an empty string to clear."
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "expanded",
+            "collapsed"
+          ],
+          "description": "Toggle the folder's expanded or collapsed state."
+        },
+        "chat_id": {
+          "type": "string",
+          "description": "ID of the chat to reorder within the folder."
+        },
+        "chat_ids": {
+          "type": "array",
+          "maxItems": 100,
+          "description": "Replacement list of chat IDs. Replaces all existing chats in the folder. Maximum 100 items.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pin_above": {
+          "type": "string",
+          "description": "ID of the item above which to place the target. Used for both chat and folder reordering.<br>\nIf omitted, the item is moved to the end.\n"
+        },
+        "last_sync_time": {
+          "description": "Required for reorder and bulk update operations. Accepts <a href=\"https://en.wikipedia.org/wiki/ISO_8601\">ISO 8601</a> datetime strings or epoch timestamps. The server rejects the request if this is stale.\n",
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        }
+      }
+    },
+    "update-pin-category-details-request": {
+      "type": "object",
+      "description": "Request body for updating a pin folder. Send <b>exactly one</b> operation type per request.<br><br>\n<b>Operation types</b>:\n<ul>\n  <li><b>Update Folder Details</b>: Send <code>title</code>, <code>symbol</code>, and/or <code>state</code>.</li>\n</ul>\n",
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "Update title of the chat folder.<br>\n<b>Maximum Length:</b> 255 characters.\n"
+        },
+        "symbol": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Update emoji or zomoji symbol for the folder.<br>\n<b>Maximum Length:</b> 50 characters.<br>\nSend an empty string to remove the symbol.\n"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "expanded",
+            "collapsed"
+          ],
+          "description": "Toggle the folder's expanded or collapsed state.<br>\n<b>Allowed values:</b><br>\n<ul>\n  <li><code>expanded</code>: The folder is expanded to show its contents.</li>\n  <li><code>collapsed</code>: The folder is collapsed to hide its contents.</li>\n</ul>\n"
+        }
+      },
+      "example": {
+        "title": "Deliverables for Q3",
+        "symbol": ":smile:",
+        "state": "collapsed"
+      }
+    },
+    "reorder-chat-in-category-request": {
+      "type": "object",
+      "description": "Request body for updating a pin folder. Send <b>exactly one</b> operation type per request.<br><br>\n<b>Operation types</b>:\n<ul>\n  <li><b>Reorder a Chat</b>: Send <code>chat_id</code> with optional <code>pin_above</code> and required <code>last_sync_time</code>.</li>\n</ul>\n",
+      "required": [
+        "chat_id",
+        "last_sync_time"
+      ],
+      "properties": {
+        "chat_id": {
+          "type": "string",
+          "description": "Unique ID of the chat to be reordered within the chat folder.\n"
+        },
+        "pin_above": {
+          "type": "string",
+          "description": "Unique ID of the chat above which the specified chat should be placed. If not provided, the chat will be moved to the end of the chat folder.\n"
+        },
+        "last_sync_time": {
+          "description": "<ul>\n<li>Timestamp of the client's most recent sync state.</li>\n<li>This is used to ensure the chat folder has not been modified since the client last synced.</li>\n<li>If the provided timestamp is outdated, the request will be rejected to prevent conflicting updates.</li>\n</ul>\n<b>Format:</b> Accepts either <a href=\"https://en.wikipedia.org/wiki/ISO_8601\">ISO 8601</a> datetime strings or epoch timestamps.\n"
+        }
+      },
+      "example": {
+        "chat_id": "1488288613043522033",
+        "pin_above": "1488288613043522034",
+        "last_sync_time": "2024-01-01T12:00:00Z"
+      }
+    },
+    "reorder-category-request": {
+      "type": "object",
+      "description": "Request body for updating a pin folder. Send <b>exactly one</b> operation type per request.<br><br>\n<b>Operation types</b>:\n<ul>\n  <li><b>Reorder a Folder</b>: Send <code>pin_above</code> only (no <code>chat_id</code>) with required <code>last_sync_time</code>.</li>\n</ul>\n",
+      "required": [
+        "last_sync_time"
+      ],
+      "properties": {
+        "pin_above": {
+          "type": "string",
+          "description": "Unique ID of the chat folder above which the specified chat folder should be placed.<br>\nIf not provided, <b>the folder will be moved to the end of the chat folder list.</b>\n"
+        },
+        "last_sync_time": {
+          "description": "<ul>\n<li>Timestamp of the client's most recent sync state.</li>\n<li>This is used to ensure the chat folder has not been modified since the client last synced.</li>\n<li>If the provided timestamp is outdated, the request will be rejected to prevent conflicting updates.</li>\n</ul>\n<b>Format:</b> Accepts either <a href=\"https://en.wikipedia.org/wiki/ISO_8601\">ISO 8601</a> datetime strings or epoch timestamps.\n"
+        }
+      },
+      "example": {
+        "pin_above": "4000000020002",
+        "last_sync_time": "2024-01-01T12:00:00Z"
+      }
+    },
+    "bulk-update-chats-in-category-request": {
+      "type": "object",
+      "description": "Request body for updating a pin folder. Send <b>exactly one</b> operation type per request.<br><br>\n<b>Operation types</b>:\n<ul>\n  <li><b>Bulk Update Chats</b>: Send <code>chat_ids</code> (array) with required <code>last_sync_time</code>.</li>\n</ul>\n",
+      "required": [
+        "chat_ids",
+        "last_sync_time"
+      ],
+      "properties": {
+        "chat_ids": {
+          "type": "array",
+          "maxItems": 100,
+          "description": "<ul>\n  <li>Array of chat IDs that should be present in the chat folder, with a <b>maximum of 100 chats</b>.</li>\n  <li>The provided list completely replaces the existing chats in the folder.</li>\n  <li>To add a new chat without removing existing ones, include both the existing and new chat IDs in the request.</li>\n</ul>\nUse the <a href=\"/cliq/help/restapi/v3/mypins/#retrieve-chat-folders\">Retrieve Chat Folders API</a> to get the current list of pinned chats in a folder and then modify that list as needed and send it back in this request to update the folder's contents.<br><br>\nFor new Chat IDs, you can retrieve them from the <a href=\"/cliq/help/restapi/v3/chats/#retrieve-all-direct-chats\">List Chats API</a> or <a href=\"/cliq/help/restapi/v2/channels/#list-all-channels\">List Channels API</a> from the chat object returned in message payloads.\n",
+          "items": {
+            "type": "string"
+          }
+        },
+        "last_sync_time": {
+          "description": "<ul>\n  <li>Timestamp of the client's most recent sync state.</li>\n  <li>This is used to ensure the chat folder has not been modified since the client last synced.</li>\n  <li>If the provided timestamp is outdated, the request will be rejected to prevent conflicting updates.</li>\n</ul>\n<b>Format:</b> Accepts either <a href=\"https://en.wikipedia.org/wiki/ISO_8601\">ISO 8601</a> datetime strings or epoch timestamps.\n"
+        }
+      },
+      "example": {
+        "chat_ids": [
+          "1488288613043522033",
+          "1488288613043522034"
+        ],
+        "last_sync_time": "2024-01-01T12:00:00Z"
+      }
+    },
+    "pin-chat-request": {
+      "type": "object",
+      "description": "Request body for pinning a chat. All fields are optional.",
+      "properties": {
+        "category_id": {
+          "type": "string",
+          "description": "Unique ID of the chat folder to pin the chat under. If omitted, the chat will be pinned under <b>My Pins</b> section (default folder).<br><br>\nTo learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/mypins/#retrieve-chat-folders\">Retrieve Chat Folders API</a>, where <code>category_id</code> represents the ID of the chat folder.\n"
+        }
+      },
+      "example": {
+        "category_id": "2890538000000011111"
+      }
+    },
+    "pin-chat-response": {
+      "type": "object",
+      "description": "Response envelope after pinning a chat.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "chat.pin"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "chat_id": {
+              "type": "string"
+            },
+            "category_id": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "example": {
+        "type": "chat.pin",
+        "data": {
+          "chat_id": "2890538000000012345",
+          "category_id": "2890538000000011111"
+        }
+      }
+    },
+    "unpin-chat-response": {
+      "type": "object",
+      "description": "Response envelope after unpinning a chat.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "chat.unpin"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "chat_id": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "example": {
+        "type": "chat.unpin",
+        "data": {
+          "chat_id": "2890538000000012345"
+        }
+      }
+    },
+    "error-response": {
+      "type": "object",
+      "description": "Error response returned by the My Pins API.",
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "Human-readable error description."
+        },
+        "code": {
+          "type": "string",
+          "description": "Machine-readable error code.",
+          "enum": [
+            "operation_failed",
+            "operation_not_allowed",
+            "param_missing",
+            "max_folders_error",
+            "client_not_synced",
+            "invalid_inputs",
+            "max_pins_error",
+            "chat_access_denied",
+            "chat_operation_failed"
+          ]
+        }
+      }
+    }
+  }
+}

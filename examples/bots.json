@@ -1,0 +1,614 @@
+{
+  "create_a_new_bot": {
+    "path": "/bots",
+    "method": "post",
+    "examples": {
+      "request": {
+        "deluge_bot": {
+          "summary": "Deluge Bot - Internal client care assistant",
+          "value": {
+            "name": "Clientcare Bot",
+            "description": "Your client care co-pilot streamlining support by providing instant customer context and easy access to critical resources.",
+            "scope": "team",
+            "team_ids": [
+              12345678
+            ],
+            "status_messages": [
+              "Here to help you with client support!"
+            ],
+            "channel_participation": [
+              "send_message"
+            ],
+            "calls": "enabled"
+          }
+        },
+        "webhook_bot": {
+          "summary": "Webhook Bot - CI/CD pipeline alert bot",
+          "value": {
+            "name": "Pipeline Alert Bot",
+            "description": "Sends real-time CI/CD pipeline status alerts to engineering teams. Triggered by your external build server via webhook on each build, test, or deployment event.",
+            "scope": "team",
+            "team_ids": [
+              98765432
+            ],
+            "execution_type": "webhook",
+            "execution_url": "https://ci.zylker.com/cliq-webhook/pipeline-alerts",
+            "status_messages": [
+              "Monitoring your pipelines 24/7"
+            ],
+            "channel_participation": [
+              "listen_message",
+              "send_message"
+            ],
+            "calls": "enabled"
+          }
+        }
+      },
+      "response_200": {
+        "deluge_bot": {
+          "summary": "Deluge Bot response",
+          "value": {
+            "url": "/api/v3/bots",
+            "type": "bot",
+            "data": {
+              "unique_name": "clientcarebot",
+              "name": "Clientcare Bot",
+              "id": "53719000002124012",
+              "description": "Your client care co-pilot streamlining support by providing instant customer context and easy access to critical resources.",
+              "scope": "team",
+              "team_ids": [
+                12345678
+              ],
+              "status_messages": [
+                "Here to help you with client support!"
+              ],
+              "channel_participation": [
+                "send_message"
+              ],
+              "calls": "enabled",
+              "handlers": [],
+              "creator": {
+                "name": "James",
+                "id": "65113112"
+              },
+              "execution_type": "deluge",
+              "status": "enabled",
+              "type": "custom",
+              "default": false,
+              "subscriber_count": 1
+            }
+          }
+        },
+        "webhook_bot": {
+          "summary": "Webhook Bot response",
+          "value": {
+            "url": "/api/v3/bots",
+            "type": "bot",
+            "data": {
+              "unique_name": "pipelinealertbot",
+              "name": "Pipeline Alert Bot",
+              "id": "53719000002198034",
+              "description": "Sends real-time CI/CD pipeline status alerts to engineering teams. Triggered by your external build server via webhook on each build, test, or deployment event.",
+              "scope": "team",
+              "team_ids": [
+                98765432
+              ],
+              "status_messages": [
+                "Monitoring your pipelines 24/7"
+              ],
+              "channel_participation": [
+                "listen_message",
+                "send_message"
+              ],
+              "calls": "enabled",
+              "handlers": [],
+              "creator": {
+                "name": "James",
+                "id": "65113112"
+              },
+              "execution_type": "webhook",
+              "execution_url": "https://ci.zylker.com/cliq-webhook/pipeline-alerts",
+              "status": "enabled",
+              "type": "custom",
+              "default": false,
+              "subscriber_count": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  "list_all_bots": {
+    "path": "/bots",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "url": "/api/v3/bots",
+        "type": "bot",
+        "next_token": "NTB8MTc1NjM2MjA5MzQ5OHw1MzcxOTAwMDAwMTYyMDAwMw==",
+        "sync_token": "NTB8MTc3NzM0MjEyNzQ3OHw1MzcxOTAwMDAwMTg3ODAxMQ==",
+        "data": [
+          {
+            "unique_name": "supportbot",
+            "name": "Support Bot",
+            "id": "53719000001878011",
+            "description": "Handles support workflows",
+            "scope": "organization",
+            "channel_participation": [
+              "listen_message",
+              "send_message",
+              "auto_follow_thread"
+            ],
+            "handlers": [
+              {
+                "type": "call_handler"
+              },
+              {
+                "type": "welcome_handler"
+              },
+              {
+                "type": "context_handler"
+              },
+              {
+                "type": "message_handler"
+              },
+              {
+                "type": "menu_handler",
+                "id": "53719000001878017",
+                "name": "Action",
+                "icon": "wand/627282",
+                "position": 1,
+                "sub_actions": [
+                  {
+                    "name": "Sub Action",
+                    "icon": "wand/627282"
+                  }
+                ]
+              }
+            ],
+            "creator": {
+              "name": "James",
+              "id": "65113112"
+            },
+            "execution_type": "deluge",
+            "status": "enabled",
+            "type": "custom",
+            "default": false,
+            "subscriber_count": 1,
+            "calls": "disabled"
+          }
+        ]
+      }
+    }
+  },
+  "update_an_existing_bot": {
+    "path": "/bots/{BOT_ID}",
+    "method": "patch",
+    "examples": {
+      "request": {
+        "deluge_bot": {
+          "summary": "Deluge Bot - update display name and description",
+          "value": {
+            "name": "CRM Bot",
+            "description": "Your CRM co-pilot providing instant access to customer data and insights within Cliq.",
+            "scope": "organization",
+            "status_messages": [
+              "Here to help you with CRM support!"
+            ],
+            "channel_participation": [
+              "listen_message"
+            ],
+            "calls": "enabled"
+          }
+        },
+        "webhook_bot": {
+          "summary": "Webhook Bot - update execution URL",
+          "value": {
+            "execution_url": "https://example.com/new-webhook"
+          }
+        }
+      },
+      "response_200": {
+        "deluge_bot": {
+          "summary": "Deluge Bot - update response",
+          "value": {
+            "url": "/api/v3/bots/b-53719000002124012",
+            "type": "bot",
+            "data": {
+              "unique_name": "crmbot",
+              "name": "CRM Bot",
+              "id": "53719000002124012",
+              "description": "Your CRM co-pilot providing instant access to customer data and insights within Cliq.",
+              "scope": "organization",
+              "status_messages": [
+                "Here to help you with CRM support!"
+              ],
+              "channel_participation": [
+                "listen_message"
+              ],
+              "calls": "enabled",
+              "handlers": [
+                {
+                  "type": "welcome_handler"
+                }
+              ],
+              "creator": {
+                "name": "James",
+                "id": "65113112"
+              },
+              "execution_type": "deluge",
+              "status": "enabled",
+              "type": "custom",
+              "default": false,
+              "subscriber_count": 1
+            }
+          }
+        },
+        "webhook_bot": {
+          "summary": "Webhook Bot - execution URL updated response",
+          "value": {
+            "url": "/api/v3/bots/b-73829000004567890",
+            "type": "bot",
+            "data": {
+              "unique_name": "cicdbot",
+              "name": "CI/CD Alert Bot",
+              "id": "73829000004567890",
+              "description": "Sends real-time CI/CD pipeline alerts and deployment notifications to your team channels.",
+              "scope": "organization",
+              "execution_url": "https://example.com/new-webhook",
+              "execution_type": "webhook",
+              "status": "enabled",
+              "type": "custom",
+              "default": false,
+              "subscriber_count": 5
+            }
+          }
+        }
+      }
+    }
+  },
+  "get_details_of_a_specific_bot": {
+    "path": "/bots/{BOT_ID}",
+    "method": "get",
+    "examples": {
+      "response_200": {
+        "url": "/api/v3/bots/b-53719000001878011",
+        "type": "bot",
+        "data": {
+          "unique_name": "supportbot",
+          "name": "Support Bot",
+          "id": "53719000001878011",
+          "description": "Handles support workflows",
+          "scope": "organization",
+          "channel_participation": [
+            "listen_message",
+            "send_message",
+            "auto_follow_thread"
+          ],
+          "handlers": [
+            {
+              "type": "call_handler"
+            },
+            {
+              "type": "welcome_handler"
+            },
+            {
+              "type": "context_handler"
+            },
+            {
+              "type": "message_handler"
+            },
+            {
+              "type": "menu_handler",
+              "id": "53719000001878017",
+              "name": "Action",
+              "icon": "wand/627282",
+              "position": 1,
+              "sub_actions": [
+                {
+                  "name": "Sub Action",
+                  "icon": "wand/627282"
+                }
+              ]
+            }
+          ],
+          "creator": {
+            "name": "James",
+            "id": "65113112"
+          },
+          "execution_type": "deluge",
+          "status": "enabled",
+          "type": "custom",
+          "default": false,
+          "subscriber_count": 1,
+          "calls": "disabled"
+        }
+      }
+    }
+  },
+  "send_a_bot_message": {
+    "path": "/bots/{BOT_UNIQUE_NAME}/messages",
+    "method": "post",
+    "examples": {
+      "request": {
+        "card_message": {
+          "summary": "Modern inline card message to specific users",
+          "value": {
+            "text": "A critical support ticket has been escalated and requires immediate attention.",
+            "card": {
+              "theme": "modern-inline",
+              "title": "Ticket Escalated - Payment Gateway Timeout"
+            },
+            "slides": [
+              {
+                "type": "table",
+                "title": "Ticket Details",
+                "data": {
+                  "headers": [
+                    "Field",
+                    "Value"
+                  ],
+                  "rows": [
+                    {
+                      "Field": "Ticket ID",
+                      "Value": "#TKT-00892"
+                    },
+                    {
+                      "Field": "Priority",
+                      "Value": "Critical"
+                    },
+                    {
+                      "Field": "Reported By",
+                      "Value": "olivia.palmer@zylker.com"
+                    },
+                    {
+                      "Field": "Open Since",
+                      "Value": "2026-04-16 09:14 AM"
+                    }
+                  ]
+                }
+              }
+            ],
+            "buttons": [
+              {
+                "label": "Assign to Me",
+                "action": {
+                  "type": "invoke.function",
+                  "data": {
+                    "name": "assign_ticket"
+                  }
+                }
+              },
+              {
+                "label": "View Ticket",
+                "action": {
+                  "type": "open.url",
+                  "data": {
+                    "web": "https://desk.zoho.com/tickets/TKT-00892"
+                  }
+                }
+              }
+            ],
+            "user_ids": "55743307,55622727",
+            "notify_edit": false
+          }
+        },
+        "thread_message": {
+          "summary": "Bot message posted into an existing thread",
+          "value": {
+            "text": "The deployment pipeline for v3.6.1 completed successfully. All health checks passed.",
+            "thread_chat_id": "CT_1207124526552602256_60002085329-T-1291567019566818579",
+            "post_in_parent": false,
+            "user_ids": "55743307",
+            "sync_message": true
+          }
+        }
+      }
+    }
+  },
+  "send_an_incoming_webhook_message": {
+    "path": "/bots/{BOT_UNIQUE_NAME}/incoming",
+    "method": "post",
+    "examples": {
+      "request": {
+        "alert_type": "deployment",
+        "environment": "production",
+        "service_name": "payment-gateway",
+        "severity": "critical",
+        "triggered_by": "CI/CD pipeline"
+      },
+      "response_200": {
+        "user_ids": [
+          "55743307",
+          "55622727"
+        ]
+      }
+    }
+  },
+  "create_a_handler_for_a_bot": {
+    "path": "/bots/{BOT_ID}/handlers",
+    "method": "post",
+    "examples": {
+      "request": {
+        "message_handler_webhook": {
+          "summary": "Message Handler (Webhook bot) - forward chat and user context",
+          "value": {
+            "type": "message_handler",
+            "permissions": [
+              "chat",
+              "user"
+            ]
+          }
+        },
+        "message_handler_deluge": {
+          "summary": "Message Handler (Deluge bot) - intent-based support reply",
+          "value": {
+            "type": "message_handler",
+            "script": "response = Map();\nuserMessage = message.get(\"text\").toLowerCase();\nif(userMessage.contains(\"ticket\")) {\n  response.put(\"text\", \"Sure! Please provide a brief description of your issue and I'll raise a ticket right away.\");\n} else if(userMessage.contains(\"status\")) {\n  response.put(\"text\", \"Current system status:\\n\\u2705 API: Operational\\n\\u2705 Database: Operational\\n\\u26a0\\ufe0f Notifications: Degraded\");\n} else {\n  response.put(\"text\", \"I didn't catch that. You can ask me about *status* or type *ticket* to raise a support request.\");\n}\nreturn response;"
+          }
+        },
+        "menu_handler_webhook": {
+          "summary": "Menu Handler (Webhook bot) - forward chat and message context",
+          "value": {
+            "type": "menu_handler",
+            "name": "My Menu",
+            "icon": "emoji-name/FF5733",
+            "permissions": [
+              "chat",
+              "message"
+            ]
+          }
+        },
+        "menu_handler_deluge": {
+          "summary": "Menu Handler (Deluge bot) - prompt card to create a support ticket",
+          "value": {
+            "type": "menu_handler",
+            "name": "My Menu",
+            "icon": "emoji-name/FF5733",
+            "script": "response = Map();\ncard = Map();\ncard.put(\"theme\", \"prompt\");\ncard.put(\"title\", \"Create a new support ticket for this conversation?\");\nconfirmBtn = Map();\nconfirmBtn.put(\"label\", \"Create Ticket\");\nconfirmAction = Map();\nconfirmAction.put(\"type\", \"invoke.function\");\nconfirmActionData = Map();\nconfirmActionData.put(\"name\", \"create_ticket\");\nconfirmAction.put(\"data\", confirmActionData);\nconfirmBtn.put(\"action\", confirmAction);\ncancelBtn = Map();\ncancelBtn.put(\"label\", \"Cancel\");\ncancelAction = Map();\ncancelAction.put(\"type\", \"invoke.function\");\ncancelActionData = Map();\ncancelActionData.put(\"name\", \"cancel_action\");\ncancelAction.put(\"data\", cancelActionData);\ncancelBtn.put(\"action\", cancelAction);\nresponse.put(\"card\", card);\nresponse.put(\"buttons\", {confirmBtn, cancelBtn});\nreturn response;"
+          }
+        }
+      },
+      "response_200": {
+        "message_handler_webhook": {
+          "summary": "Message Handler (Webhook bot) response",
+          "value": {
+            "url": "/api/v3/bots/b-53719000001878011/handlers/message_handler",
+            "type": "execution_handler",
+            "data": {
+              "type": "message_handler",
+              "id": "53719000001878022",
+              "permissions": [
+                "chat",
+                "user"
+              ]
+            }
+          }
+        },
+        "message_handler_deluge": {
+          "summary": "Message Handler (Deluge bot) response",
+          "value": {
+            "url": "/api/v3/bots/b-53719000001878011/handlers/message_handler",
+            "type": "execution_handler",
+            "data": {
+              "type": "message_handler",
+              "id": "53719000001878022"
+            }
+          }
+        },
+        "menu_handler_webhook": {
+          "summary": "Menu Handler (Webhook bot) response",
+          "value": {
+            "url": "/api/v3/bots/b-53719000001878011/handlers/menu_handler",
+            "type": "execution_handler",
+            "data": {
+              "type": "menu_handler",
+              "id": "53719000001878027",
+              "display_props": {
+                "name": "My Menu",
+                "icon": "emoji-name/FF5733",
+                "position": 1
+              },
+              "permissions": [
+                "chat",
+                "message"
+              ]
+            }
+          }
+        },
+        "menu_handler_deluge": {
+          "summary": "Menu Handler (Deluge bot) response",
+          "value": {
+            "url": "/api/v3/bots/b-53719000001878011/handlers/menu_handler",
+            "type": "execution_handler",
+            "data": {
+              "type": "menu_handler",
+              "id": "53719000001878027",
+              "display_props": {
+                "name": "My Menu",
+                "icon": "emoji-name/FF5733",
+                "position": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "update_a_handler_for_a_bot": {
+    "path": "/bots/{BOT_ID}/handlers/{HANDLER_TYPE}",
+    "method": "patch",
+    "examples": {
+      "request": {
+        "update_script_deluge": {
+          "summary": "Update script (Deluge bot)",
+          "value": {
+            "script": "response = Map();\nresponse.put(\"text\", \"Updated\");\nreturn response;"
+          }
+        },
+        "update_permissions_webhook": {
+          "summary": "Update permissions (Webhook bot)",
+          "value": {
+            "permissions": [
+              "chat",
+              "user",
+              "message"
+            ]
+          }
+        },
+        "update_menu_handler": {
+          "summary": "Update menu handler display properties",
+          "value": {
+            "name": "Updated Menu",
+            "icon": "emoji-name/FF5733"
+          }
+        }
+      },
+      "response_200": {
+        "update_script_deluge": {
+          "summary": "Update script (Deluge bot) response",
+          "value": {
+            "url": "/api/v3/bots/b-53719000001878011/handlers/message_handler",
+            "type": "execution_handler",
+            "data": {
+              "type": "message_handler",
+              "id": "53719000001878022"
+            }
+          }
+        },
+        "update_permissions_webhook": {
+          "summary": "Update permissions (Webhook bot) response",
+          "value": {
+            "url": "/api/v3/bots/b-53719000001878011/handlers/message_handler",
+            "type": "execution_handler",
+            "data": {
+              "type": "message_handler",
+              "id": "53719000001878022",
+              "permissions": [
+                "chat",
+                "user",
+                "message"
+              ]
+            }
+          }
+        },
+        "update_menu_handler": {
+          "summary": "Update menu handler display properties response",
+          "value": {
+            "url": "/api/v3/bots/b-53719000001878011/handlers/menu_handler",
+            "type": "execution_handler",
+            "data": {
+              "type": "menu_handler",
+              "id": "53719000001878027",
+              "display_props": {
+                "name": "Updated Menu",
+                "icon": "emoji-name/FF5733",
+                "position": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
