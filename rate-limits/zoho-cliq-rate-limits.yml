@@ -1,0 +1,42 @@
+name: Zoho Cliq API Rate Limits
+description: Zoho Cliq API rate limiting policy. Zoho states there is no hard usage limit on the API, but system-level throttling exists to protect against denial of service (DOS) attacks. Users may encounter URL throttle limit errors (HTTP 400) under high request volumes. Specific numeric thresholds are not publicly disclosed.
+url: https://help.zoho.com/portal/en/community/topic/zoho-cliq-api-rate-limit
+rateLimits:
+  - name: URL Throttle Limit
+    description: System-level throttle applied to protect against denial of service attacks. Zoho does not publish specific request-per-minute or request-per-day thresholds. Requests exceeding undisclosed limits receive HTTP 400 with message "You have exceeded the URL throttle limits."
+    type: throttle
+    scope: per-endpoint
+    disclosed: false
+    errorCode: 400
+    errorMessage: You have exceeded the URL throttle limits.
+    notes: >
+      Zoho officially states "There is no usage limit on the API," but system-level
+      throttling is enforced. Contact Zoho support for specific thresholds applicable
+      to your organization and plan.
+authentication:
+  type: OAuth 2.0
+  description: All API requests must include a valid OAuth 2.0 access token. Tokens expire automatically to limit exposure from potential breaches. Users can revoke third-party application access at any time.
+  tokenURL: https://accounts.zoho.com/oauth/v2/token
+  authorizationURL: https://accounts.zoho.com/oauth/v2/auth
+  grantTypes:
+    - authorization_code
+    - client_credentials
+regions:
+  - name: United States
+    baseURL: https://cliq.zoho.com/api/v3
+  - name: European Union
+    baseURL: https://cliq.zoho.eu/api/v3
+  - name: India
+    baseURL: https://cliq.zoho.in/api/v3
+  - name: Australia
+    baseURL: https://cliq.zoho.com.au/api/v3
+  - name: China
+    baseURL: https://cliq.zoho.com.cn/api/v3
+  - name: Japan
+    baseURL: https://cliq.zoho.jp/api/v3
+  - name: Saudi Arabia
+    baseURL: https://cliq.zoho.sa/api/v3
+  - name: United Kingdom
+    baseURL: https://cliq.zoho.uk/api/v3
+  - name: Canada
+    baseURL: https://cliq.zohocloud.ca/api/v3

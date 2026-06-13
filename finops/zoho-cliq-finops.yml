@@ -1,0 +1,56 @@
+name: Zoho Cliq FinOps
+description: Financial operations guidance for Zoho Cliq API usage and subscription management. Covers cost optimization strategies, plan selection, and usage monitoring for teams integrating with the Zoho Cliq API.
+url: https://www.zoho.com/cliq/pricing.html
+billingModel:
+  type: per-user-per-month
+  description: Zoho Cliq charges per user per month. Annual billing provides approximately 10% discount over monthly billing. Paid plans require a minimum of 10 users.
+  billingCycles:
+    - monthly
+    - annual
+costFactors:
+  - name: User Licenses
+    description: Primary cost driver. Each user seat is billed monthly or annually. Free plan is available for teams that can operate within its constraints.
+    unit: per user per month
+  - name: Additional Storage
+    description: Extra file storage beyond the plan allocation (100 GB per org on Free/Standard, 100 GB per user on Professional/Enterprise) is available as a paid add-on.
+    unit: per GB
+  - name: Networks Add-on
+    description: Dedicated collaboration network spaces for external partner or client collaboration are available as paid add-ons.
+  - name: Room Devices
+    description: Hardware room device integrations carry additional licensing costs.
+  - name: Phone System
+    description: Integrated telephony and calling credits incur additional per-minute or subscription charges.
+optimizationStrategies:
+  - name: Annual Billing
+    description: Switch from monthly to annual billing to save approximately 10% on subscription costs.
+    savingsEstimate: 10%
+  - name: Right-size User Count
+    description: Audit active users periodically and remove inactive accounts to avoid paying for unused seats. The minimum is 10 users on paid plans.
+  - name: Free Plan for Small Teams
+    description: Teams under the Free plan limits (100 group participants, 10,000 searchable messages) can avoid licensing costs entirely.
+  - name: Leverage Free Developer Features
+    description: Bot, slash command, and function development is available on all plans. Start with Free tier (100 each) before upgrading for scale.
+  - name: Plan Tier Matching
+    description: >
+      - Free: Suitable for internal small teams with basic messaging needs and no compliance requirements.
+      - Standard: Teams needing external channels, call recording, or custom domain.
+      - Professional: Organizations requiring large meeting rooms (1,000+ participants), advanced permissions, or extensive API automation (2,000 bots/slash commands/functions).
+      - Enterprise: Regulated industries needing audit trails, DLP, eDiscovery, and data retention policies.
+apiCostConsiderations:
+  - name: No API Usage Fees
+    description: Zoho Cliq does not charge separately for API calls. API access is included in all plans. The number of bots, slash commands, and functions available via API scales with the plan tier.
+  - name: Bot and Automation Limits by Plan
+    description: >
+      Bot, slash command, and function limits directly affect what can be built via the API:
+      - Free: 100 each
+      - Standard: not specified (similar to Free)
+      - Professional: 2,000 each
+      - Enterprise: 5,000 each
+    recommendation: Choose Professional or Enterprise if your API integrations require many bots or automated command handlers.
+monitoring:
+  - name: Usage Reports
+    description: Advanced usage reports are available on the Enterprise plan. Standard and Professional plans have basic admin reporting.
+    url: https://www.zoho.com/cliq/pricing.html
+  - name: Status Monitoring
+    description: Monitor Zoho Cliq service availability via the official Zoho status page to detect incidents that may affect API-dependent workflows.
+    url: https://us.zohostatus.com/

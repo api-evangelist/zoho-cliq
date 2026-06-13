@@ -1,0 +1,182 @@
+name: Zoho Cliq Plans and Pricing
+description: Zoho Cliq offers four pricing tiers ranging from a free plan to an enterprise plan. Pricing is per user per month with discounts available for annual billing. All paid plans require a minimum of 10 users.
+url: https://www.zoho.com/cliq/pricing.html
+plans:
+  - name: Free
+    description: Free plan for small teams with core messaging and collaboration features.
+    url: https://www.zoho.com/cliq/pricing.html
+    price: 0
+    currency: USD
+    unit: user/month
+    limits:
+      - name: Group participants
+        value: 100
+        unit: participants per group
+      - name: Searchable messages
+        value: 10000
+        unit: messages
+      - name: Audio/Video call duration
+        value: 5
+        unit: minutes
+      - name: File storage
+        value: 100
+        unit: GB per organization
+      - name: Meeting participants
+        value: 100
+        unit: participants
+      - name: Meeting duration
+        value: 60
+        unit: minutes
+      - name: Bots
+        value: 100
+        unit: per organization
+      - name: Slash commands
+        value: 100
+        unit: per organization
+      - name: Functions
+        value: 100
+        unit: per organization
+    features:
+      - Unlimited chats
+      - Organization and personal channels
+      - Audio and video calls
+      - File sharing
+      - Basic bots and automations
+  - name: Standard
+    description: Standard plan adding external channels, call recording, and custom domain support.
+    url: https://www.zoho.com/cliq/pricing.html
+    currency: USD
+    unit: user/month
+    limits:
+      - name: Group participants
+        value: 100
+        unit: participants per group
+      - name: Searchable messages
+        value: unlimited
+        unit: messages
+      - name: Audio/Video call duration
+        value: 15
+        unit: minutes
+      - name: File storage
+        value: 100
+        unit: GB per organization
+      - name: External channels per user license
+        value: 5
+        unit: channels
+      - name: Meeting participants
+        value: 100
+        unit: participants
+    features:
+      - All Free features
+      - External channels
+      - Call recording
+      - Custom domain
+      - Extended message deletion (up to 90 days)
+  - name: Professional
+    description: Professional plan with advanced collaboration, roles, permissions, task management, and live events. Minimum 10 users.
+    url: https://www.zoho.com/cliq/pricing.html
+    currency: USD
+    unit: user/month
+    minimumUsers: 10
+    limits:
+      - name: Group participants
+        value: 500
+        unit: participants per group
+      - name: Searchable messages
+        value: unlimited
+        unit: messages
+      - name: Audio/Video call duration
+        value: 60
+        unit: minutes
+      - name: File storage
+        value: 100
+        unit: GB per user
+      - name: External channels participants
+        value: 500
+        unit: participants
+      - name: Org channel participants
+        value: 20000
+        unit: per organization
+      - name: Meeting participants
+        value: 1000
+        unit: active participants
+      - name: Meeting viewers
+        value: 10000
+        unit: viewers
+      - name: Meeting duration
+        value: 24
+        unit: hours
+      - name: Bots
+        value: 2000
+        unit: per organization
+      - name: Slash commands
+        value: 2000
+        unit: per organization
+      - name: Functions
+        value: 2000
+        unit: per organization
+      - name: Keyboard shortcuts per user
+        value: 25
+        unit: shortcuts
+    features:
+      - All Standard features
+      - Roles and permissions
+      - Team management
+      - Task management
+      - Live events
+      - Custom keyboard shortcuts
+      - Message deletion up to 365 days
+  - name: Enterprise
+    description: Enterprise plan with full compliance, audit, eDiscovery, DLP, and advanced reporting. Minimum 10 users.
+    url: https://www.zoho.com/cliq/pricing.html
+    currency: USD
+    unit: user/month
+    minimumUsers: 10
+    limits:
+      - name: Group participants
+        value: 500
+        unit: participants per group
+      - name: Searchable messages
+        value: unlimited
+        unit: messages
+      - name: Audio/Video call duration
+        value: 60
+        unit: minutes
+      - name: File storage
+        value: 100
+        unit: GB per user
+      - name: Bots
+        value: 5000
+        unit: per organization
+      - name: Slash commands
+        value: 5000
+        unit: per organization
+      - name: Functions
+        value: 5000
+        unit: per organization
+      - name: Keyboard shortcuts per user
+        value: 50
+        unit: shortcuts
+      - name: Message deletion
+        value: 730
+        unit: days
+    features:
+      - All Professional features
+      - Audit history
+      - Advanced usage reports
+      - eDiscovery and DRP
+      - Data Loss Prevention (DLP)
+      - Custom retention policies
+addOns:
+  - name: Additional Storage
+    description: Extra file storage add-on available in blocks from 5 GB to 200 GB.
+    url: https://www.zoho.com/cliq/pricing.html
+  - name: Networks
+    description: Dedicated collaboration spaces for extended team communication.
+    url: https://www.zoho.com/cliq/pricing.html
+  - name: Room Devices
+    description: Hardware integration for meeting room devices.
+    url: https://www.zoho.com/cliq/pricing.html
+  - name: Phone System
+    description: Integrated phone system and calling credits.
+    url: https://www.zoho.com/cliq/pricing.html

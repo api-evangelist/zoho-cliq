@@ -1,0 +1,59 @@
+aid: zoho-cliq
+name: Zoho Cliq
+description: Zoho Cliq is a team messaging and collaboration platform with a REST API for managing channels, bots, slash commands, message webhooks, and team communications. The API follows RESTful architecture principles with resource-oriented URLs, JSON request and response bodies, and standard HTTP verbs. It supports multi-data center deployments across nine regional domains and uses OAuth 2.0 for authentication.
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/zoho-cliq/refs/heads/main/apis.yml
+created: '2026-06-13'
+modified: '2026-06-13'
+specificationVersion: '0.19'
+tags:
+  - Messaging
+  - Team Collaboration
+  - Chat
+  - Bots
+  - Webhooks
+  - Slash Commands
+  - Communication
+apis:
+  - aid: zoho-cliq:zoho-cliq-api
+    name: Zoho Cliq API
+    description: The Zoho Cliq REST API v3 enables developers to connect Cliq with other applications and services, automate tasks, and enhance team communication capabilities. It covers chats, messages, threads, bots, slash commands, message actions, functions, datastores, and extensions.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+    baseURL: https://cliq.zoho.com/api/v3
+    tags:
+      - Messaging
+      - Chat
+      - Bots
+      - Webhooks
+    properties:
+      - type: Documentation
+        url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+      - type: Authentication
+        url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+common:
+  - type: Website
+    url: https://www.zoho.com/cliq/
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: GitHubOrg
+    url: https://github.com/zoho
+  - type: LinkedIn
+    url: https://in.linkedin.com/showcase/zoho-cliq
+  - type: Blog
+    url: https://www.zoho.com/blog/cliq
+  - type: Pricing
+    url: https://www.zoho.com/cliq/pricing.html
+  - type: StatusPage
+    url: https://us.zohostatus.com/
+  - type: X
+    url: https://twitter.com/ZohoCliq
+  - type: Plans
+    url: plans/zoho-cliq-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/zoho-cliq-rate-limits.yml
+  - type: FinOps
+    url: finops/zoho-cliq-finops.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
