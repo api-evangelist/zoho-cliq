@@ -1,7 +1,7 @@
 aid: zoho-cliq
 name: Zoho Cliq
 description: Zoho Cliq is a team messaging and collaboration platform with a REST API for managing channels, bots, slash commands, message webhooks, and team communications. The API follows RESTful architecture principles with resource-oriented URLs, JSON request and response bodies, and standard HTTP verbs. It supports multi-data center deployments across nine regional domains and uses OAuth 2.0 for authentication.
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 url: https://raw.githubusercontent.com/api-evangelist/zoho-cliq/refs/heads/main/apis.yml
 created: '2026-06-13'
 modified: '2026-06-13'
@@ -18,7 +18,7 @@ apis:
   - aid: zoho-cliq:zoho-cliq-api
     name: Zoho Cliq API
     description: The Zoho Cliq REST API v3 enables developers to connect Cliq with other applications and services, automate tasks, and enhance team communication capabilities. It covers chats, messages, threads, bots, slash commands, message actions, functions, datastores, and extensions.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
     baseURL: https://cliq.zoho.com/api/v3
     tags:
