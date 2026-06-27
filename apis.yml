@@ -83,7 +83,7 @@ apis:
         url: json-schema/bots.json
       - type: JSONSchema
         url: json-schema/datastores.json
-      - type: JSONLd
+      - type: JSONLD
         url: json-ld/zoho-cliq.jsonld
       - type: Vocabulary
         url: vocabulary/zoho-cliq.yml
