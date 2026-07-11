@@ -88,6 +88,10 @@ apis:
       - type: Vocabulary
         url: vocabulary/zoho-cliq.yml
 common:
+  - type: Authentication
+    url: authentication/zoho-cliq-authentication.yml
+  - type: OAuthScopes
+    url: scopes/zoho-cliq-scopes.yml
   - type: Website
     url: https://www.zoho.com/cliq/
   - type: Documentation

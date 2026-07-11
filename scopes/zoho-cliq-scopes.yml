@@ -1,0 +1,486 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/bots.yml, openapi/buttons.yml, openapi/chats.yml, openapi/datastores.yml, openapi/dndsettings.yml,
+  openapi/extensions.yml, openapi/functions.yml, openapi/keyboardshortcuts.yml, openapi/mentions.yml,
+  openapi/messageactions.yml, openapi/messagecards.yml, openapi/messageformat.yml, openapi/messages.yml,
+  openapi/mobilesettings.yml, openapi/mypins.yml, openapi/pinmessages.yml, openapi/reminders.yml,
+  openapi/scheduledmessages.yml, openapi/slashcommands.yml, openapi/stars.yml, openapi/threads.yml,
+  openapi/userpreferences.yml
+schemes:
+- name: Cliq_Auth
+  source: openapi/bots.yml
+  flows:
+  - flow: implicit
+    authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+- name: Cliq_Auth
+  source: openapi/buttons.yml
+  flows:
+  - flow: implicit
+    authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+- name: Cliq_Auth
+  source: openapi/chats.yml
+  flows:
+  - flow: implicit
+    authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+- name: Cliq_Auth
+  source: openapi/datastores.yml
+  flows:
+  - flow: implicit
+    authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+- name: Cliq_Auth
+  source: openapi/dndsettings.yml
+  flows:
+  - flow: implicit
+    authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+- name: Cliq_Auth
+  source: openapi/extensions.yml
+  flows:
+  - flow: implicit
+- name: Cliq_Auth
+  source: openapi/functions.yml
+  flows:
+  - flow: implicit
+- name: Cliq_Auth
+  source: openapi/keyboardshortcuts.yml
+  flows:
+  - flow: implicit
+    authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+- name: Cliq_Auth
+  source: openapi/mentions.yml
+  flows:
+  - flow: implicit
+    authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+- name: Cliq_Auth
+  source: openapi/messageactions.yml
+  flows:
+  - flow: implicit
+- name: Cliq_Auth
+  source: openapi/messagecards.yml
+  flows:
+  - flow: implicit
+    authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+- name: Cliq_Auth
+  source: openapi/messageformat.yml
+  flows:
+  - flow: implicit
+    authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+- name: Cliq_Auth
+  source: openapi/messages.yml
+  flows:
+  - flow: implicit
+    authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+- name: Cliq_Auth
+  source: openapi/mobilesettings.yml
+  flows:
+  - flow: implicit
+    authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+- name: Cliq_Auth
+  source: openapi/mypins.yml
+  flows:
+  - flow: implicit
+    authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+- name: Cliq_Auth
+  source: openapi/pinmessages.yml
+  flows:
+  - flow: implicit
+    authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+- name: Cliq_Auth
+  source: openapi/reminders.yml
+  flows:
+  - flow: implicit
+    authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+- name: Cliq_Auth
+  source: openapi/scheduledmessages.yml
+  flows:
+  - flow: implicit
+    authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+- name: Cliq_Auth
+  source: openapi/slashcommands.yml
+  flows:
+  - flow: implicit
+- name: Cliq_Auth
+  source: openapi/stars.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+    tokenUrl: https://accounts.zoho.com/oauth/v2/token
+- name: Cliq_Auth
+  source: openapi/threads.yml
+  flows:
+  - flow: implicit
+    authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+- name: Cliq_Auth
+  source: openapi/userpreferences.yml
+  flows:
+  - flow: implicit
+    authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+scopes:
+- scope: Commands.CREATE
+  description: Create new custom Slash Commands.
+  flows:
+  - implicit
+  sources:
+  - openapi/slashcommands.yml
+- scope: Commands.DELETE
+  description: Permanently delete slash commands and their handlers.
+  flows:
+  - implicit
+  sources:
+  - openapi/slashcommands.yml
+- scope: Commands.READ
+  description: Read slash command configurations, handlers, and execution logs.
+  flows:
+  - implicit
+  sources:
+  - openapi/slashcommands.yml
+- scope: Commands.UPDATE
+  description: Update slash command configurations and manage command handlers.
+  flows:
+  - implicit
+  sources:
+  - openapi/slashcommands.yml
+- scope: DatastoreRecords.CREATE
+  sources:
+  - openapi/datastores.yml
+- scope: DatastoreRecords.DELETE
+  sources:
+  - openapi/datastores.yml
+- scope: DatastoreRecords.READ
+  sources:
+  - openapi/datastores.yml
+- scope: DatastoreRecords.UPDATE
+  sources:
+  - openapi/datastores.yml
+- scope: Datastores.CREATE
+  sources:
+  - openapi/datastores.yml
+- scope: Datastores.DELETE
+  sources:
+  - openapi/datastores.yml
+- scope: Datastores.READ
+  sources:
+  - openapi/datastores.yml
+- scope: Datastores.UPDATE
+  sources:
+  - openapi/datastores.yml
+- scope: Extensions.READ
+  sources:
+  - openapi/extensions.yml
+- scope: Extensions.UPDATE
+  sources:
+  - openapi/extensions.yml
+- scope: ZohoCliq.BotMessages.CREATE
+  description: Send messages via bot incoming webhooks
+  flows:
+  - implicit
+  sources:
+  - openapi/bots.yml
+- scope: ZohoCliq.Bots.CREATE
+  description: Create Bots
+  flows:
+  - implicit
+  sources:
+  - openapi/bots.yml
+- scope: ZohoCliq.Bots.DELETE
+  description: Delete Bots
+  flows:
+  - implicit
+  sources:
+  - openapi/bots.yml
+- scope: ZohoCliq.Bots.READ
+  description: Read Bot Information
+  flows:
+  - implicit
+  sources:
+  - openapi/bots.yml
+- scope: ZohoCliq.Bots.UPDATE
+  description: Update Bots
+  flows:
+  - implicit
+  sources:
+  - openapi/bots.yml
+- scope: ZohoCliq.Channels.CREATE
+  description: Post messages to channels
+  flows:
+  - implicit
+  sources:
+  - openapi/messagecards.yml
+- scope: ZohoCliq.Channels.UPDATE
+  description: Update Channel Settings
+  flows:
+  - implicit
+  sources:
+  - openapi/bots.yml
+  - openapi/threads.yml
+- scope: ZohoCliq.Chats.CREATE
+  description: Create Chats
+  flows:
+  - implicit
+  sources:
+  - openapi/chats.yml
+  - openapi/mypins.yml
+  - openapi/pinmessages.yml
+- scope: ZohoCliq.Chats.DELETE
+  description: Delete Chats
+  flows:
+  - implicit
+  sources:
+  - openapi/chats.yml
+  - openapi/mypins.yml
+  - openapi/pinmessages.yml
+  - openapi/threads.yml
+- scope: ZohoCliq.Chats.READ
+  description: Read Chats
+  flows:
+  - implicit
+  sources:
+  - openapi/chats.yml
+  - openapi/mentions.yml
+  - openapi/messages.yml
+  - openapi/mypins.yml
+  - openapi/pinmessages.yml
+  - openapi/threads.yml
+- scope: ZohoCliq.Chats.UPDATE
+  description: Modify Chats
+  flows:
+  - implicit
+  sources:
+  - openapi/chats.yml
+  - openapi/mypins.yml
+  - openapi/pinmessages.yml
+  - openapi/threads.yml
+- scope: ZohoCliq.Commands.CREATE
+  sources:
+  - openapi/slashcommands.yml
+- scope: ZohoCliq.Commands.DELETE
+  sources:
+  - openapi/slashcommands.yml
+- scope: ZohoCliq.Commands.READ
+  sources:
+  - openapi/slashcommands.yml
+- scope: ZohoCliq.Commands.UPDATE
+  sources:
+  - openapi/slashcommands.yml
+- scope: ZohoCliq.DatastoreRecords.CREATE
+  description: Insert new records into Datastores.
+  flows:
+  - implicit
+  sources:
+  - openapi/datastores.yml
+- scope: ZohoCliq.DatastoreRecords.DELETE
+  description: Delete records from Datastores.
+  flows:
+  - implicit
+  sources:
+  - openapi/datastores.yml
+- scope: ZohoCliq.DatastoreRecords.READ
+  description: Read and query records from Datastores.
+  flows:
+  - implicit
+  sources:
+  - openapi/datastores.yml
+- scope: ZohoCliq.DatastoreRecords.UPDATE
+  description: Update existing records in Datastores.
+  flows:
+  - implicit
+  sources:
+  - openapi/datastores.yml
+- scope: ZohoCliq.Datastores.ALL
+  description: Create, Read, Update and Delete Datastores
+  flows:
+  - implicit
+  sources:
+  - openapi/datastores.yml
+- scope: ZohoCliq.Datastores.CREATE
+  description: Create new Datastores with schema definitions.
+  flows:
+  - implicit
+  sources:
+  - openapi/datastores.yml
+- scope: ZohoCliq.Datastores.DELETE
+  description: Permanently delete Datastores and all their records.
+  flows:
+  - implicit
+  sources:
+  - openapi/datastores.yml
+- scope: ZohoCliq.Datastores.READ
+  description: Read Datastore metadata, field schemas, and execution logs.
+  flows:
+  - implicit
+  sources:
+  - openapi/datastores.yml
+- scope: ZohoCliq.Datastores.UPDATE
+  description: Update Datastore metadata and field schema definitions.
+  flows:
+  - implicit
+  sources:
+  - openapi/datastores.yml
+- scope: ZohoCliq.Extensions.CREATE
+  description: Install Extensions (Applications) into an organisation or network scope.
+  flows:
+  - implicit
+  sources:
+  - openapi/extensions.yml
+- scope: ZohoCliq.Extensions.READ
+  description: Read extension configurations, handlers, properties, and execution logs.
+  flows:
+  - implicit
+  sources:
+  - openapi/extensions.yml
+- scope: ZohoCliq.Extensions.UPDATE
+  description: Update extension configurations, handlers, and properties; manage extension lifecycle.
+  flows:
+  - implicit
+  sources:
+  - openapi/extensions.yml
+- scope: ZohoCliq.Functions.CREATE
+  description: Create new Functions in the platform.
+  flows:
+  - implicit
+  sources:
+  - openapi/functions.yml
+- scope: ZohoCliq.Functions.DELETE
+  description: Permanently delete Functions and their handlers.
+  flows:
+  - implicit
+  sources:
+  - openapi/functions.yml
+- scope: ZohoCliq.Functions.READ
+  description: Read function configurations, handlers, and execution logs.
+  flows:
+  - implicit
+  sources:
+  - openapi/functions.yml
+- scope: ZohoCliq.Functions.UPDATE
+  description: Update function configurations and manage function handlers.
+  flows:
+  - implicit
+  sources:
+  - openapi/functions.yml
+- scope: ZohoCliq.MessageActions.CREATE
+  description: Create new custom Message Actions.
+  flows:
+  - implicit
+  sources:
+  - openapi/messageactions.yml
+  - openapi/messages.yml
+- scope: ZohoCliq.MessageActions.DELETE
+  description: Permanently delete Message Actions and their handlers.
+  flows:
+  - implicit
+  sources:
+  - openapi/messageactions.yml
+  - openapi/messages.yml
+- scope: ZohoCliq.MessageActions.READ
+  description: Read message action configurations, handlers, and execution logs.
+  flows:
+  - implicit
+  sources:
+  - openapi/messageactions.yml
+  - openapi/messages.yml
+- scope: ZohoCliq.MessageActions.UPDATE
+  description: Update message action configurations and manage message action handlers.
+  flows:
+  - implicit
+  sources:
+  - openapi/messageactions.yml
+- scope: ZohoCliq.Messages.CREATE
+  description: Send messages to users and chats
+  flows:
+  - authorizationCode
+  - implicit
+  sources:
+  - openapi/messagecards.yml
+  - openapi/messages.yml
+  - openapi/scheduledmessages.yml
+  - openapi/stars.yml
+- scope: ZohoCliq.Messages.DELETE
+  description: Delete Messages
+  flows:
+  - authorizationCode
+  - implicit
+  sources:
+  - openapi/chats.yml
+  - openapi/messages.yml
+  - openapi/scheduledmessages.yml
+  - openapi/stars.yml
+- scope: ZohoCliq.Messages.READ
+  description: Read Messages
+  flows:
+  - authorizationCode
+  - implicit
+  sources:
+  - openapi/messages.yml
+  - openapi/scheduledmessages.yml
+  - openapi/stars.yml
+  - openapi/threads.yml
+- scope: ZohoCliq.Messages.UPDATE
+  description: Modify Messages
+  flows:
+  - authorizationCode
+  - implicit
+  sources:
+  - openapi/chats.yml
+  - openapi/messages.yml
+  - openapi/scheduledmessages.yml
+  - openapi/stars.yml
+- scope: ZohoCliq.Profile.DELETE
+  description: Delete user profile settings
+  flows:
+  - implicit
+  sources:
+  - openapi/keyboardshortcuts.yml
+- scope: ZohoCliq.Profile.READ
+  description: Read user profile settings
+  flows:
+  - implicit
+  sources:
+  - openapi/dndsettings.yml
+  - openapi/keyboardshortcuts.yml
+  - openapi/mobilesettings.yml
+  - openapi/userpreferences.yml
+- scope: ZohoCliq.Profile.UPDATE
+  description: Update user profile settings
+  flows:
+  - implicit
+  sources:
+  - openapi/dndsettings.yml
+  - openapi/keyboardshortcuts.yml
+  - openapi/mobilesettings.yml
+  - openapi/userpreferences.yml
+- scope: ZohoCliq.Reminders.CREATE
+  description: Create reminder notifications
+  flows:
+  - implicit
+  sources:
+  - openapi/reminders.yml
+- scope: ZohoCliq.Reminders.DELETE
+  description: Delete reminders
+  flows:
+  - implicit
+  sources:
+  - openapi/reminders.yml
+- scope: ZohoCliq.Reminders.READ
+  description: Read reminders
+  flows:
+  - implicit
+  sources:
+  - openapi/reminders.yml
+- scope: ZohoCliq.Reminders.UPDATE
+  description: Update reminders
+  flows:
+  - implicit
+  sources:
+  - openapi/reminders.yml
+- scope: ZohoCliq.Webhooks.CREATE
+  description: Post messages to conversations via webhooks
+  flows:
+  - implicit
+  sources:
+  - openapi/bots.yml
+  - openapi/buttons.yml
+  - openapi/mentions.yml
+  - openapi/messagecards.yml
+  - openapi/messageformat.yml
+  - openapi/messages.yml
+  - openapi/threads.yml
