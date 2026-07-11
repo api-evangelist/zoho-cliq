@@ -1,0 +1,49 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/bots.yml, openapi/buttons.yml, openapi/chats.yml, openapi/datastores.yml, openapi/dndsettings.yml,
+  openapi/extensions.yml, openapi/functions.yml, openapi/keyboardshortcuts.yml, openapi/mentions.yml,
+  openapi/messageactions.yml, openapi/messagecards.yml, openapi/messageformat.yml ...
+summary:
+  types:
+  - oauth2
+  oauth2_flows:
+  - authorizationCode
+  - implicit
+schemes:
+- name: Cliq_Auth
+  type: oauth2
+  flows:
+  - flow: implicit
+    authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+    scopes: 7
+  sources:
+  - openapi/bots.yml
+  - openapi/buttons.yml
+  - openapi/chats.yml
+  - openapi/datastores.yml
+  - openapi/dndsettings.yml
+  - openapi/extensions.yml
+  - openapi/functions.yml
+  - openapi/keyboardshortcuts.yml
+  - openapi/mentions.yml
+  - openapi/messageactions.yml
+  - openapi/messagecards.yml
+  - openapi/messageformat.yml
+  - openapi/messages.yml
+  - openapi/mobilesettings.yml
+  - openapi/mypins.yml
+  - openapi/pinmessages.yml
+  - openapi/reminders.yml
+  - openapi/scheduledmessages.yml
+  - openapi/slashcommands.yml
+  - openapi/threads.yml
+  - openapi/userpreferences.yml
+- name: Cliq_Auth
+  type: oauth2
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+    tokenUrl: https://accounts.zoho.com/oauth/v2/token
+    scopes: 4
+  sources:
+  - openapi/stars.yml

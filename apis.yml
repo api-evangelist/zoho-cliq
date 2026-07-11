@@ -88,6 +88,10 @@ apis:
       - type: Vocabulary
         url: vocabulary/zoho-cliq.yml
 common:
+  - type: VulnerabilityDisclosure
+    url: security/zoho-cliq-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/zoho-cliq-domain-security.yml
   - type: Authentication
     url: authentication/zoho-cliq-authentication.yml
   - type: OAuthScopes
