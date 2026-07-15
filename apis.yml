@@ -88,6 +88,8 @@ apis:
       - type: Vocabulary
         url: vocabulary/zoho-cliq.yml
 common:
+  - type: AgenticAccess
+    url: agentic-access/zoho-cliq-agentic-access.yml
   - type: VulnerabilityDisclosure
     url: security/zoho-cliq-vulnerability-disclosure.yml
   - type: DomainSecurity

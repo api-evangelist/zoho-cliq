@@ -1,0 +1,2644 @@
+generated: '2026-07-15'
+method: generated
+source: openapi/bots.yml, openapi/buttons.yml, openapi/chats.yml, openapi/datastores.yml, openapi/dndsettings.yml,
+  openapi/extensions.yml, openapi/functions.yml, openapi/keyboardshortcuts.yml, openapi/mentions.yml,
+  openapi/messageactions.yml, openapi/messagecards.yml, openapi/messageformat.yml, openapi/messages.yml,
+  openapi/mobilesettings.yml, openapi/mypins.yml, openapi/pinmessages.yml, openapi/reminders.yml,
+  openapi/scheduledmessages.yml, openapi/slashcommands.yml, openapi/stars.yml, openapi/threads.yml,
+  openapi/userpreferences.yml
+description: Recommended x-agentic-access execution contracts, classified heuristically from
+  the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
+  audience per deployment. See research/curity/agentic-governance/.
+summary:
+  operations: 158
+  by_action_class:
+    acting: 117
+    connected: 41
+  by_consequence:
+    write: 106
+    read: 41
+    physical: 11
+  human_in_the_loop_required: 0
+operations:
+- path: /bots
+  method: post
+  operationId: create_a_new_bot
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Bots.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /bots
+  method: get
+  operationId: list_all_bots
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Bots.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /bots/{BOT_ID}
+  method: patch
+  operationId: update_an_existing_bot
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Bots.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /bots/{BOT_ID}
+  method: get
+  operationId: get_details_of_a_specific_bot
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Bots.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /bots/{BOT_ID}
+  method: delete
+  operationId: delete_a_specific_bot
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Bots.DELETE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /bots/{BOT_UNIQUE_NAME}/messages
+  method: post
+  operationId: send_a_bot_message
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    scope:
+    - ZohoCliq.BotMessages.CREATE
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /bots/{BOT_UNIQUE_NAME}/incoming
+  method: post
+  operationId: send_an_incoming_webhook_message
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    scope:
+    - ZohoCliq.BotMessages.CREATE
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /bots/{BOT_UNIQUE_NAME}/calls
+  method: post
+  operationId: Trigger Bot Calls
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.BotMessages.CREATE
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /bots/{BOT_ID}/handlers
+  method: post
+  operationId: create_a_handler_for_a_bot
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Bots.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /bots/{BOT_ID}/handlers/{HANDLER_TYPE}
+  method: patch
+  operationId: update_a_handler_for_a_bot
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Bots.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /bots/{BOT_ID}/handlers/{HANDLER_TYPE}
+  method: get
+  operationId: get_details_of_a_specific_bot_handler
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Bots.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /bots/{BOT_ID}/handlers/{HANDLER_TYPE}
+  method: delete
+  operationId: delete_a_handler_from_a_bot
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Bots.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /bots/{BOT_UNIQUE_NAME}/associate
+  method: post
+  operationId: associate_bot_to_channel
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Channels.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /bots/{BOT_ID_OR_UNIQUE_NAME}/subscribers
+  method: get
+  operationId: list_all_subscribers_of_a_bot
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Bots.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /chats/{CHAT_ID}/messages
+  method: post
+  operationId: messageCardButtons
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID1}/messages
+  method: post
+  operationId: confirmationPopup
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID2}/messages
+  method: post
+  operationId: instantButtons
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats
+  method: get
+  operationId: Retrieve all direct chats
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Chats.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /chats
+  method: post
+  operationId: createChatV3
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats
+  method: put
+  operationId: bulkUpdateChatsV3
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/search
+  method: get
+  operationId: searchChatsV3
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Chats.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /chats/{CHAT_ID}
+  method: get
+  operationId: getChatV3
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Chats.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /chats/{CHAT_ID}
+  method: put
+  operationId: updateChatV3
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID1}
+  method: put
+  operationId: markChatAsUnreadV3
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    - ZohoCliq.Messages.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID2}
+  method: put
+  operationId: clearChatMessagesV3
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID3}
+  method: put
+  operationId: closeChatV3
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID}/members
+  method: get
+  operationId: Retrieve members of a chat
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Chats.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /chats/{CHAT_ID}/members
+  method: post
+  operationId: addMembersToChatV3
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID}/members
+  method: delete
+  operationId: removeMembersFromChatV3
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.DELETE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID}/forks
+  method: post
+  operationId: forkChatV3
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID}/activities
+  method: post
+  operationId: sendTypingActivityV3
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID}/leave
+  method: post
+  operationId: Leave a chat
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID}/mute
+  method: post
+  operationId: Mute a chat
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID}/unmute
+  method: post
+  operationId: Unmute a chat
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /datastores
+  method: post
+  operationId: creating_datastores_for_an_org
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - Datastores.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /datastores
+  method: get
+  operationId: get_list_of_datastores
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - Datastores.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /datastores/{DATASTORE_ID}
+  method: patch
+  operationId: edit_datastores
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - Datastores.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /datastores/{DATASTORE_ID}
+  method: get
+  operationId: get_a_datastores
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - Datastores.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /datastores/{DATASTORE_ID}
+  method: delete
+  operationId: delete_a_datastore
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - Datastores.DELETE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /datastores/{DATASTORE_ID}/fields
+  method: patch
+  operationId: edit_datastore_fields
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - Datastores.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /datastores/{DATASTORE_ID}/fields
+  method: post
+  operationId: add_datastore_fields
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - Datastores.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /datastores/{DATASTORE_ID}/fields
+  method: delete
+  operationId: delete_datastore_fields
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - Datastores.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /datastores/{DATASTORE_UNIQUE_NAME}/records
+  method: patch
+  operationId: update_records_in_storage
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - DatastoreRecords.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /datastores/{DATASTORE_UNIQUE_NAME}/records
+  method: post
+  operationId: insert_record_in_storage
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - DatastoreRecords.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /datastores/{DATASTORE_UNIQUE_NAME}/records
+  method: get
+  operationId: get_records
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - DatastoreRecords.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /datastores/{DATASTORE_UNIQUE_NAME}/records
+  method: delete
+  operationId: delete_records_of_given_ids_in
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - DatastoreRecords.DELETE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /datastores/{DATASTORE_UNIQUE_NAME}/records/{RECORD_ID}
+  method: patch
+  operationId: update_a_record_in_storage
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - DatastoreRecords.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /datastores/{DATASTORE_UNIQUE_NAME}/records/{RECORD_ID}
+  method: get
+  operationId: get_a_record
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - DatastoreRecords.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /datastores/{DATASTORE_UNIQUE_NAME}/records/{RECORD_ID}
+  method: delete
+  operationId: delete_a_record_in_storage
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - DatastoreRecords.DELETE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /datastores/{DATASTORE_ID}/export
+  method: post
+  operationId: export_datastore_records
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - Datastores.READ
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /settings/dnd-preferences
+  method: get
+  operationId: getDNDPreferences
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Profile.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /settings/dnd-preferences
+  method: put
+  operationId: updateDNDPreferences
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Profile.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /extensions/{EXTENSION_ID}/installation
+  method: post
+  operationId: install_an_extension
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Extensions.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /extensions/{EXTENSION_ID}/installation
+  method: put
+  operationId: update_extension
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Extensions.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /extensions/{EXTENSION_ID}/properties
+  method: patch
+  operationId: add_or_update_extension_proper
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Extensions.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /extensions/{EXTENSION_ID}/properties
+  method: get
+  operationId: get_extension_properties
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Extensions.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /extensions/{EXTENSION_ID}/properties/{EXTENSION_PROPERTY_KEY_NAME}
+  method: get
+  operationId: get_extension_property
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - Extensions.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /extensions/{EXTENSION_ID}/properties/{EXTENSION_PROPERTY_KEY_NAME}
+  method: delete
+  operationId: delete_extension_property
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - Extensions.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /functions
+  method: post
+  operationId: create_a_new_function
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Functions.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /functions
+  method: get
+  operationId: list_all_functions
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Functions.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /functions/{FUNCTION_ID}
+  method: patch
+  operationId: update_an_existing_function
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Functions.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /functions/{FUNCTION_ID}
+  method: get
+  operationId: get_details_of_a_specific_func
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Functions.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /functions/{FUNCTION_ID}
+  method: delete
+  operationId: delete_a_specific_function
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Functions.DELETE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /functions/{FUNCTION_ID}/handlers
+  method: post
+  operationId: createFunctionHandler
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Functions.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /functions/{FUNCTION_ID}/handlers/{FUNCTION_HANDLER_TYPE}
+  method: patch
+  operationId: updateFunctionHandler
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Functions.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /functions/{FUNCTION_ID}/handlers/{FUNCTION_HANDLER_TYPE}
+  method: get
+  operationId: getFunctionHandler
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Functions.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /functions/{FUNCTION_ID}/handlers/{FUNCTION_HANDLER_TYPE}
+  method: delete
+  operationId: deleteFunctionHandler
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Functions.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /settings/keyboard-shortcuts
+  method: get
+  operationId: fetchKeyboardShortcuts
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Profile.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /settings/keyboard-shortcuts
+  method: put
+  operationId: updateKeyboardShortcuts
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Profile.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /settings/keyboard-shortcuts
+  method: delete
+  operationId: deleteKeyboardShortcuts
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Profile.DELETE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /mentions
+  method: get
+  operationId: getMentions
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Chats.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /chats/{CHAT_ID}/messages
+  method: post
+  operationId: mentioningUser
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID1}/messages
+  method: post
+  operationId: silentMentions
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID2}/messages
+  method: post
+  operationId: mentioningChannel
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID3}/messages
+  method: post
+  operationId: mentioningAllUsers
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID4}/messages
+  method: post
+  operationId: mentioningAvailableUsers
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID5}/messages
+  method: post
+  operationId: mentioningTeam
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /messageactions
+  method: post
+  operationId: create_a_new_message_action
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.MessageActions.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /messageactions
+  method: get
+  operationId: list_all_message_actions
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.MessageActions.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /messageactions/{MESSAGE_ACTION_ID}
+  method: patch
+  operationId: update_an_existing_message_act
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.MessageActions.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /messageactions/{MESSAGE_ACTION_ID}
+  method: get
+  operationId: get_details_of_a_specific_mess
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.MessageActions.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /messageactions/{MESSAGE_ACTION_ID}
+  method: delete
+  operationId: delete_a_specific_message_acti
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.MessageActions.DELETE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /messageactions/{MESSAGE_ACTION_ID}/handlers/{HANDLER_TYPE}
+  method: patch
+  operationId: updateMessageActionHandler
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.MessageActions.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /messageactions/{MESSAGE_ACTION_ID}/handlers/{HANDLER_TYPE}
+  method: get
+  operationId: getMessageActionHandler
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.MessageActions.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /channels/{CHANNEL_UNIQUE_NAME}/message
+  method: post
+  operationId: postMessageCardToChannel
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Channels.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID}/messages
+  method: post
+  operationId: postMessageCardToChat
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Messages.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID}/messages
+  method: post
+  operationId: textmessageformat
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID1}/messages
+  method: post
+  operationId: table
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID2}/messages
+  method: post
+  operationId: list
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID3}/messages
+  method: post
+  operationId: label
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID4}/messages
+  method: post
+  operationId: image
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID5}/messages
+  method: post
+  operationId: charts
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID6}/messages
+  method: post
+  operationId: graphs
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID}/messagess
+  method: delete
+  operationId: deleteMultipleMessagesV3
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Messages.DELETE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /channelsbyname/{CHANNEL_UNIQUE_NAME}/messages
+  method: post
+  operationId: postMessageInChannelByChannelUniqueName
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /channels/{CHANNEL_ID}/messages
+  method: post
+  operationId: postMessageInChannelByChannelId
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID}/messages
+  method: post
+  operationId: Post message in chat
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /messages
+  method: post
+  operationId: Forward Messages
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Messages.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /messages/search
+  method: get
+  operationId: searchMessagesV3
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Chats.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /settings/mobile
+  method: get
+  operationId: getMobileSettings
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Profile.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /settings/mobile
+  method: put
+  operationId: updateMobileSettings
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Profile.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /pin-categories
+  method: get
+  operationId: getPinCategories
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Chats.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /pin-categories
+  method: post
+  operationId: createPinCategory
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /pin-categories
+  method: delete
+  operationId: removeChatsAcrossCategories
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.DELETE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /pin-categories/{CATEGORY_ID}
+  method: put
+  operationId: updatePinCategory
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /pin-categories/{CATEGORY_ID}
+  method: delete
+  operationId: deletePinCategory
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.DELETE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /pin-categories/{CATEGORY_ID1}
+  method: put
+  operationId: reorderChatInCategory
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /pin-categories/{CATEGORY_ID2}
+  method: put
+  operationId: reorderCategory
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /pin-categories/{CATEGORY_ID3}
+  method: put
+  operationId: bulkUpdateChatsInCategory
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID}/pins
+  method: post
+  operationId: pinChat
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID}/pins
+  method: delete
+  operationId: unpinChat
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID}/pin-messages
+  method: get
+  operationId: getPinnedMessages
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Chats.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /chats/{CHAT_ID}/pin-messages
+  method: post
+  operationId: addPinnedMessage
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID}/pin-messages
+  method: put
+  operationId: reorderPinnedMessages
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID}/pin-messages
+  method: delete
+  operationId: deletePinnedMessages
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.DELETE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID}/pin-messages?primary=true
+  method: get
+  operationId: getPrimaryPinnedMessage
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Chats.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /chats/{CHAT_ID}/reminders
+  method: get
+  operationId: getRemindersInChatV3
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Reminders.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /reminders/{REMINDER_ID}
+  method: put
+  operationId: updateReminderStatusV3
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Reminders.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /reminders/{REMINDER_ID}/notifications
+  method: post
+  operationId: triggerReminderNotificationV3
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Reminders.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /reminders/edits
+  method: put
+  operationId: batchEditRemindersV3
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Reminders.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /scheduledmessages
+  method: get
+  operationId: listAllScheduledMessagesV3
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Messages.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /chats/{CHAT_ID}/scheduledmessages
+  method: get
+  operationId: listScheduledMessagesInChatV3
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Messages.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /chats/{CHAT_ID}/scheduledmessages
+  method: post
+  operationId: sendScheduledMessagesNowV3
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    scope:
+    - ZohoCliq.Messages.CREATE
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID}/scheduledmessages
+  method: put
+  operationId: bulkRescheduleScheduledMessagesV3
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Messages.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID}/scheduledmessages
+  method: delete
+  operationId: deleteAllScheduledMessagesInChatV3
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Messages.DELETE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID}/scheduledmessages/{SCHEDULED_MESSAGE_ID}
+  method: put
+  operationId: editScheduledMessageV3
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Messages.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID}/scheduledmessages/{SCHEDULED_MESSAGE_ID}
+  method: delete
+  operationId: deleteScheduledMessageV3
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Messages.DELETE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /commands
+  method: post
+  operationId: creating_extension_command
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Commands.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /commands
+  method: get
+  operationId: get_list_of_commands
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Commands.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /commands/{SLASH_COMMAND_ID}
+  method: patch
+  operationId: editing_extension_command
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Commands.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /commands/{SLASH_COMMAND_ID}
+  method: get
+  operationId: get_a_command
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Commands.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /commands/{SLASH_COMMAND_ID}
+  method: delete
+  operationId: deleting_extension_command
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Commands.DELETE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /commands/{SLASH_COMMAND_ID}/handlers
+  method: post
+  operationId: createCommandHandler
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Commands.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /commands/{SLASH_COMMAND_ID}/handlers/{COMMAND_HANDLER_TYPE}
+  method: patch
+  operationId: updateCommandHandler
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Commands.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /commands/{SLASH_COMMAND_ID}/handlers/{COMMAND_HANDLER_TYPE}
+  method: get
+  operationId: get_details_of_a_specific_comm
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Commands.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /commands/{SLASH_COMMAND_ID}/handlers/{COMMAND_HANDLER_TYPE}
+  method: delete
+  operationId: deleteCommandHandler
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Commands.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /stars
+  method: post
+  operationId: star_a_message
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Messages.CREATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /stars
+  method: get
+  operationId: list_starred_messages
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Messages.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /stars/{MESSAGE_ID}
+  method: delete
+  operationId: unstar_a_message
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Messages.DELETE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /channels/{CHANNEL_ID}/messages
+  method: post
+  operationId: createThreadMessageByChannelId
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    scope:
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{CHAT_ID}/messages
+  method: post
+  operationId: createThreadMessageByChatId
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    scope:
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /channelsbyname/{CHANNEL_UNIQUE_NAME}/messages
+  method: post
+  operationId: createThreadMessageByChannelUniqueName
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    scope:
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{THREAD_CHAT_ID}/messages
+  method: post
+  operationId: Send a message to an existing thread
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    scope:
+    - ZohoCliq.Webhooks.CREATE
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /threads/{THREAD_CHAT_ID}
+  method: get
+  operationId: getThreadDetailsV3
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Chats.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /threads/{THREAD_CHAT_ID}
+  method: put
+  operationId: Update the state of a thread
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /threads/{THREAD_CHAT_ID}/messages/main
+  method: get
+  operationId: Get main message of a thread
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Messages.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /threads/{THREAD_CHAT_ID}/followers
+  method: get
+  operationId: Get thread followers
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Chats.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /threads/{THREAD_CHAT_ID}/followers
+  method: post
+  operationId: Add followers to a thread
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /threads/{THREAD_CHAT_ID}/followers
+  method: delete
+  operationId: Remove followers from a thread
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.DELETE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /threads/{THREAD_CHAT_ID}/nonfollowers
+  method: get
+  operationId: Get non-followers of a thread
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Chats.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /threads/{THREAD_CHAT_ID}/follow
+  method: post
+  operationId: Join-follow a thread
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /threads/{THREAD_CHAT_ID}/unfollow
+  method: post
+  operationId: Leave-unfollow a thread
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{THREAD_CHAT_ID}/members
+  method: get
+  operationId: Retrieve members of a thread
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Chats.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /chats/{THREAD_CHAT_ID}/leave
+  method: post
+  operationId: Leave a thread
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{THREAD_CHAT_ID}/mute
+  method: post
+  operationId: Mute a thread
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /chats/{THREAD_CHAT_ID}/unmute
+  method: post
+  operationId: Unmute a thread
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Chats.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /settings/user-preferences
+  method: get
+  operationId: getUserPreferences
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - ZohoCliq.Profile.READ
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /settings/user-preferences
+  method: put
+  operationId: updateUserPreferences
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - ZohoCliq.Profile.UPDATE
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
