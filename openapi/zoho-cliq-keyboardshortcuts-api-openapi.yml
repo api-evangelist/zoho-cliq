@@ -1,0 +1,667 @@
+openapi: 3.0.0
+info:
+  title: Bots keyboardshortcuts API
+  description: "<p>Bots are conversational assistants designed to automate repetitive tasks and manage simple user interactions. Their behavior is fully customizable through predefined Bot Handlers, which are activated by specific actions or through Webhooks that communicate with your own external server.</p> <p>For more information about Bots, please refer to the <b><a href=\"https://www.zoho.com/cliq/help/platform/bots.html\" target=\"_blank\">Bots Help Documentation</a></b>.</p> <p><b>Bot Handlers</b></p> <ul>\n  <li>Bot Handlers are the building blocks of a bot's functionality. Each handler is associated with a specific trigger event, such as receiving a direct message, being @mentioned in a channel, or a user subscribing to the bot.</li>\n  <li>When the trigger event occurs, the corresponding handler executes it's script to perform actions like sending messages, making API calls, or updating data.</li>\n  <li>By configuring different handlers, you can create bots that respond intelligently to various user interactions and automate complex workflows within Zoho Cliq.</li>\n</ul> <p><b>Types of Bot Handlers</b></p> <table style=\"border-collapse: collapse; width: 100%;\">\n  <tr>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Handler</th>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Description</th>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Menu Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Adds up to 5 quick-action items to the bot's chat menu. Triggered when a user interacts with the menu.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Message Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot receives a message.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Welcome Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Defines the greeting message sent when a user subscribes to the bot.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Mention Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot is @mentioned in a chat or channel.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Incoming Webhook Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Allows external services to post messages into the bot via outgoing webhooks.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Context Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Manages multi-turn conversations, maintaining context across a user's interaction with the bot.</td>\n  </tr>\n</table> <p><b>What you can do with the Bots API?</b></p> <p>With the Bots API, you can retrieve information about a specific bot, list all bots within your organization, manage configurations specific to handlers, trigger bot calls programmatically, manage subscribers, and much more.</p> <p>Each bot has an <code>execution_type</code> that defines how its handlers run when a trigger event occurs. The Bots API allows developers to create two types of bots:</p> <p id=\"deluge-bots\"><b>Deluge Bots (default)</b><br> Deluge bot executes handler logic using Zoho's Deluge scripting language, hosted entirely within the Zoho Cliq Developer platform, where no external server is required.</p> <ul>\n  <li>If <code>execution_type</code> is not specified during bot creation, it defaults to deluge.</li>\n  <li>Handler logic is defined as a script field (Deluge source code) when creating or updating handlers.</li>\n  <li>Suitable for teams that want to build and manage bot logic entirely within Zoho's ecosystem.</li>\n</ul> <p id=\"webhook-bots\"><b>Webhook Bots</b><br> A Webhook bot delegates all handler execution to your own external server. When a trigger event fires, Zoho Cliq sends an HTTP POST request to the <code>execution_url</code> you configure, and your server processes the event and returns a response.</p> <ul>\n  <li>To create a Webhook bot, set <code>execution_type</code> to webhook during bot creation and provide the <code>execution_url</code> where event payloads should be sent.</li>\n  <li>Your server must be publicly accessible and able to handle incoming POST requests from Zoho Cliq.</li>\n  <li>Ideal for teams seeking complete control over bot logic and possessing the resources to manage an external server. Also suitable for integrations requiring access to external databases, third-party APIs, or custom business logic that cannot be executed in Deluge.</li>\n</ul>\n"
+  contact: {}
+  version: 1.0.0
+servers:
+- url: https://cliq.zoho.com/api/v3
+  description: Zoho Cliq US DC
+tags:
+- name: keyboardshortcuts
+  description: Keyboard Shortcuts Module
+paths:
+  /settings/keyboard-shortcuts:
+    get:
+      summary: Fetch all keyboard shortcuts
+      operationId: fetchKeyboardShortcuts
+      description: "Retrieves all keyboard shortcuts for the authenticated user, including default shortcuts and any custom shortcuts. If the user does not have any custom shortcuts, all default shortcuts will be returned.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">invalid_oauthtoken</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The access token is invalid or expired.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">invalid_access</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The user does not have access to this resource.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">operation_failed</span></td>\n            <td style=\"padding:10px 18px;\">Unexpected server error while processing the request.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      responses:
+        '200':
+          description: Keyboard shortcuts were fetched successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/keyboard-shortcuts-response'
+              example:
+                keyboard_shortcuts:
+                  basic:
+                    search:
+                      mac: cmd+k
+                      windows: ctrl+k
+                    mute:
+                      mac: cmd+shift+m
+                      windows: ctrl+shift+m
+                    go_to_mentions:
+                      mac: g+m
+                      windows: g+m
+                    conversation_history:
+                      mac: cmd+shift+h
+                      windows: ctrl+shift+h
+                    go_home:
+                      mac: g+h
+                      windows: g+h
+                    zia_search:
+                      mac: cmd+slash
+                      windows: ctrl+slash
+                    add_event:
+                      mac: cmd+shift+e
+                      windows: ctrl+shift+e
+                  composer:
+                    bold:
+                      mac: cmd+b
+                      windows: ctrl+b
+                    italic:
+                      mac: cmd+i
+                      windows: ctrl+i
+                    underline:
+                      mac: cmd+u
+                      windows: ctrl+u
+                    strikethrough:
+                      mac: cmd+shift+x
+                      windows: ctrl+shift+x
+                    schedule_message:
+                      mac: cmd+shift+s
+                      windows: ctrl+shift+s
+                    link:
+                      mac: cmd+l
+                      windows: ctrl+l
+                  message_action:
+                    reply:
+                      mac: right
+                      windows: right
+                    forward:
+                      mac: f
+                      windows: f
+                    pin:
+                      mac: p
+                      windows: p
+                    copy:
+                      mac: c
+                      windows: c
+                    delete:
+                      mac: delete
+                      windows: delete
+                    mark_unread:
+                      mac: u
+                      windows: u
+                  media:
+                    pip:
+                      mac: i
+                      windows: i
+                    add_participant:
+                      mac: shift+equal
+                      windows: shift+equal
+                    go_to_chat:
+                      mac: g+c
+                      windows: g+c
+                  annotate:
+                    rotate:
+                      mac: r
+                      windows: r
+                    annotate:
+                      mac: cmd+e
+                      windows: ctrl+e
+                  networks: {}
+                  custom:
+                    chat:
+                    - id: support-team
+                      name: Support Team
+                      mac: cmd+option+c
+                      windows: ctrl+alt+c
+                    widget: []
+                    snippet: []
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+      - Cliq_Auth:
+        - ZohoCliq.Profile.READ
+      tags:
+      - keyboardshortcuts
+    put:
+      summary: Update keyboard shortcuts
+      operationId: updateKeyboardShortcuts
+      description: "Updates default or custom keyboard shortcuts for the authenticated user. The shortcut details must be passed in JSON format.\n<br><br>\n<ul>\n  <li><b>Default shortcuts:</b> Provide the category (e.g., <code>basic</code>, <code>composer</code>, <code>message_action</code>, <code>annotate</code>, <code>media</code>, <code>networks</code>), the shortcut name, and the OS key (<code>windows</code> or <code>mac</code>).</li>\n  <li><b>Custom shortcuts:</b>\n    <ul>\n      <li><b>Chat / Widget:</b> Requires an <code>id</code> (chat ID or widget ID respectively) along with the OS key.</li>\n      <li><b>Snippet:</b> Requires a <code>name</code> and <code>message</code> along with the OS key.</li>\n    </ul>\n  </li>\n  <li><b>Overlap validation:</b> When updating, the new shortcut key is validated against existing shortcuts to prevent overlap. If the key is already mapped to another action, an error is returned.</li>\n</ul>\n<br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">shortcut_overlap</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Shortcut key is already mapped to another action.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">invalid_shortcut_payload</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Payload structure is invalid.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">invalid_widget_id</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Provided widget ID does not exist.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">invalid_chat_id</span></td>\n            <td style=\"padding:10px 18px;\">Provided chat ID does not exist.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update-keyboard-shortcuts-request'
+            examples:
+              update_default_shortcut:
+                summary: Update a default shortcut key mapping
+                value:
+                  keyboard_shortcuts:
+                    basic:
+                      search:
+                        mac: cmd+k
+                        windows: ctrl+k
+                    composer:
+                      bold:
+                        mac: cmd+b
+                        windows: ctrl+b
+              add_custom_chat_shortcut:
+                summary: Add a custom chat shortcut
+                value:
+                  custom:
+                    chat:
+                    - id: support-team
+                      name: Support Team
+                      mac: cmd+option+c
+                      windows: ctrl+alt+c
+              add_custom_widget_shortcut:
+                summary: Add a custom widget shortcut
+                value:
+                  custom:
+                    widget:
+                    - id: calendar-widget
+                      name: Calendar Widget
+                      mac: cmd+option+w
+                      windows: ctrl+alt+w
+      responses:
+        '200':
+          description: Keyboard shortcuts were updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/no-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+      - Cliq_Auth:
+        - ZohoCliq.Profile.UPDATE
+      tags:
+      - keyboardshortcuts
+    delete:
+      summary: Delete keyboard shortcuts customization
+      operationId: deleteKeyboardShortcuts
+      description: "Resets all custom shortcuts to defaults, or deletes only the specific mappings provided in the request payload. To delete a single shortcut key, pass the same input structure as the update (PUT) request with the target shortcut details.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">invalid_shortcut_payload</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Payload structure is invalid for targeted deletion.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">operation_failed</span></td>\n            <td style=\"padding:10px 18px;\">Unexpected server error while deleting custom shortcuts.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/delete-keyboard-shortcuts-request'
+            examples:
+              delete_specific_custom:
+                summary: Delete a specific custom chat shortcut
+                value:
+                  custom:
+                    chat:
+                    - id: support-team
+              delete_all_custom:
+                summary: Delete all custom shortcuts in bulk
+                value:
+                  type: custom
+              reset_all_defaults:
+                summary: Reset all default shortcuts to system defaults
+                value:
+                  type: default
+      responses:
+        '204':
+          description: Keyboard shortcuts reset/deletion completed successfully.
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+      - Cliq_Auth:
+        - ZohoCliq.Profile.DELETE
+      tags:
+      - keyboardshortcuts
+components:
+  schemas:
+    update-keyboard-shortcuts-request:
+      type: object
+      additionalProperties: true
+      properties:
+        basic:
+          type: object
+          description: Basic navigation shortcuts to update (e.g., interacting with elements, moving sections, moving focus).
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        composer:
+          type: object
+          description: Message composer shortcuts to update (e.g., bold, italic, underline).
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        message_action:
+          type: object
+          description: Message action shortcuts to update (e.g., star message, add reaction, go to writing assistant).
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        annotate:
+          type: object
+          description: Annotation tool shortcuts to update (e.g., rectangle, add line, text).
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        media:
+          type: object
+          description: Media call shortcuts to update (e.g., mute/unmute, video on/off, temporary unmute).
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        networks:
+          type: object
+          description: Network navigation shortcuts to update (e.g., navigate between networks).
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        custom:
+          type: object
+          description: "Custom shortcuts to update. To update a custom shortcut, provide the complete details of the shortcut (including the new key mapping and associated chat/widget/snippet information). Partial updates are not supported for custom shortcuts.\n<b>Allowed custom shortcut types:</b>\n<ul>\n  <li><code>chat</code>: Requires an <code>id</code> (chat ID) along with the new shortcut key mapping.</li>\n  <li><code>widget</code>: Requires an <code>id</code> (widget ID) along with the new shortcut key mapping.</li>\n  <li><code>snippet</code>: Requires a <code>name</code>, <code>message</code>, and the new shortcut key mapping.</li>\n</ul>\n"
+          additionalProperties: true
+    no-response:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+    keyboard-shortcuts-object:
+      type: object
+      additionalProperties: true
+      properties:
+        basic:
+          type: object
+          description: Basic navigation shortcuts (e.g., interacting with elements, moving sections, moving focus).
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        composer:
+          type: object
+          description: Message composer shortcuts (e.g., bold, italic, underline).
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        message_action:
+          type: object
+          description: Message action shortcuts (e.g., star message, add reaction, go to writing assistant).
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        annotate:
+          type: object
+          description: Annotation tool shortcuts (e.g., rectangle, add line, text).
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        media:
+          type: object
+          description: Media call shortcuts (e.g., mute/unmute, video on/off, temporary unmute).
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        networks:
+          type: object
+          description: Network navigation shortcuts (e.g., navigate between networks).
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        custom:
+          type: object
+          properties:
+            chat:
+              type: array
+              items:
+                $ref: '#/components/schemas/custom-chat-or-widget-entry'
+            widget:
+              type: array
+              items:
+                $ref: '#/components/schemas/custom-chat-or-widget-entry'
+            snippet:
+              type: array
+              items:
+                $ref: '#/components/schemas/custom-snippet-entry'
+    custom-chat-or-widget-entry:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the chat or widget.
+          example: Support Team
+        id:
+          type: string
+          description: Chat or widget identifier.
+          example: support-team
+        mac:
+          type: string
+          description: Shortcut mapping for Mac (e.g., <code>cmd+option+c</code>).
+          example: cmd+option+c
+        windows:
+          type: string
+          description: Shortcut mapping for Windows (e.g., <code>ctrl+alt+c</code>).
+          example: ctrl+alt+c
+      required:
+      - id
+    delete-keyboard-shortcuts-request:
+      type: object
+      additionalProperties: true
+      properties:
+        basic:
+          type: object
+          description: Basic navigation shortcuts to delete/reset.
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        composer:
+          type: object
+          description: Message composer shortcuts to delete/reset.
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        message_action:
+          type: object
+          description: Message action shortcuts to delete/reset.
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        annotate:
+          type: object
+          description: Annotation tool shortcuts to delete/reset.
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        media:
+          type: object
+          description: Media call shortcuts to delete/reset.
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        networks:
+          type: object
+          description: Network navigation shortcuts to delete/reset.
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        custom:
+          type: object
+          description: 'Custom shortcuts to delete. Provide the <code>id</code> of each chat or widget shortcut to remove.
+
+            '
+          additionalProperties: true
+        type:
+          type: string
+          enum:
+          - custom
+          - default
+          description: 'Specifies a bulk delete operation. Use <code>custom</code> to remove all custom shortcuts, or <code>default</code> to reset all default shortcuts to their system defaults. Omit this field to delete only the specific shortcuts provided in the payload.
+
+            '
+          example: custom
+    custom-snippet-entry:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of snippet shortcut.
+          example: OOO Snippet
+        message:
+          type: string
+          description: Snippet content to be sent when the shortcut is triggered.
+          example: I'm currently out of office. Will get back to you soon!
+        mac:
+          type: string
+          description: Shortcut mapping for Mac (e.g., <code>cmd+option+o</code>).
+          example: cmd+option+o
+        windows:
+          type: string
+          description: Shortcut mapping for Windows (e.g., <code>ctrl+alt+o</code>).
+          example: ctrl+alt+o
+      required:
+      - name
+      - message
+    os-shortcut:
+      type: object
+      properties:
+        windows:
+          type: string
+          description: Shortcut mapping for Windows (e.g., <code>ctrl+k</code>, <code>ctrl+shift+m</code>).
+          example: ctrl+k
+        mac:
+          type: string
+          description: Shortcut mapping for Mac (e.g., <code>cmd+k</code>, <code>cmd+shift+m</code>).
+          example: cmd+k
+    keyboard-shortcuts-response:
+      type: object
+      properties:
+        keyboard_shortcuts:
+          $ref: '#/components/schemas/keyboard-shortcuts-object'
+      required:
+      - keyboard_shortcuts
+  securitySchemes:
+    Cliq_Auth:
+      type: oauth2
+      x-authorization-example: Bearer 1000.41d9xxxxxxxxxxxxxxxxxxxxxxxxc2d1.8fccxxxxxxxxxxxxxxxxxxxxxxxx125f
+      flows:
+        implicit:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          scopes:
+            ZohoCliq.Bots.READ: Read Bot Information
+            ZohoCliq.Bots.CREATE: Create Bots
+            ZohoCliq.Bots.UPDATE: Update Bots
+            ZohoCliq.Bots.DELETE: Delete Bots
+            ZohoCliq.Webhooks.CREATE: Post messages to conversations via webhooks
+            ZohoCliq.BotMessages.CREATE: Send messages via bot incoming webhooks
+            ZohoCliq.Channels.UPDATE: Update Channel Settings
+externalDocs:
+  description: Find out more about Zoho Cliq APIs V3
+  url: https://www.zoho.com/cliq/help/restapi/v3/

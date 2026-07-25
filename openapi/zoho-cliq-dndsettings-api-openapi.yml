@@ -1,0 +1,223 @@
+openapi: 3.0.0
+info:
+  title: Bots dndsettings API
+  description: "<p>Bots are conversational assistants designed to automate repetitive tasks and manage simple user interactions. Their behavior is fully customizable through predefined Bot Handlers, which are activated by specific actions or through Webhooks that communicate with your own external server.</p> <p>For more information about Bots, please refer to the <b><a href=\"https://www.zoho.com/cliq/help/platform/bots.html\" target=\"_blank\">Bots Help Documentation</a></b>.</p> <p><b>Bot Handlers</b></p> <ul>\n  <li>Bot Handlers are the building blocks of a bot's functionality. Each handler is associated with a specific trigger event, such as receiving a direct message, being @mentioned in a channel, or a user subscribing to the bot.</li>\n  <li>When the trigger event occurs, the corresponding handler executes it's script to perform actions like sending messages, making API calls, or updating data.</li>\n  <li>By configuring different handlers, you can create bots that respond intelligently to various user interactions and automate complex workflows within Zoho Cliq.</li>\n</ul> <p><b>Types of Bot Handlers</b></p> <table style=\"border-collapse: collapse; width: 100%;\">\n  <tr>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Handler</th>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Description</th>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Menu Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Adds up to 5 quick-action items to the bot's chat menu. Triggered when a user interacts with the menu.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Message Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot receives a message.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Welcome Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Defines the greeting message sent when a user subscribes to the bot.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Mention Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot is @mentioned in a chat or channel.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Incoming Webhook Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Allows external services to post messages into the bot via outgoing webhooks.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Context Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Manages multi-turn conversations, maintaining context across a user's interaction with the bot.</td>\n  </tr>\n</table> <p><b>What you can do with the Bots API?</b></p> <p>With the Bots API, you can retrieve information about a specific bot, list all bots within your organization, manage configurations specific to handlers, trigger bot calls programmatically, manage subscribers, and much more.</p> <p>Each bot has an <code>execution_type</code> that defines how its handlers run when a trigger event occurs. The Bots API allows developers to create two types of bots:</p> <p id=\"deluge-bots\"><b>Deluge Bots (default)</b><br> Deluge bot executes handler logic using Zoho's Deluge scripting language, hosted entirely within the Zoho Cliq Developer platform, where no external server is required.</p> <ul>\n  <li>If <code>execution_type</code> is not specified during bot creation, it defaults to deluge.</li>\n  <li>Handler logic is defined as a script field (Deluge source code) when creating or updating handlers.</li>\n  <li>Suitable for teams that want to build and manage bot logic entirely within Zoho's ecosystem.</li>\n</ul> <p id=\"webhook-bots\"><b>Webhook Bots</b><br> A Webhook bot delegates all handler execution to your own external server. When a trigger event fires, Zoho Cliq sends an HTTP POST request to the <code>execution_url</code> you configure, and your server processes the event and returns a response.</p> <ul>\n  <li>To create a Webhook bot, set <code>execution_type</code> to webhook during bot creation and provide the <code>execution_url</code> where event payloads should be sent.</li>\n  <li>Your server must be publicly accessible and able to handle incoming POST requests from Zoho Cliq.</li>\n  <li>Ideal for teams seeking complete control over bot logic and possessing the resources to manage an external server. Also suitable for integrations requiring access to external databases, third-party APIs, or custom business logic that cannot be executed in Deluge.</li>\n</ul>\n"
+  contact: {}
+  version: 1.0.0
+servers:
+- url: https://cliq.zoho.com/api/v3
+  description: Zoho Cliq US DC
+tags:
+- name: dndsettings
+  description: DND Settings Module
+paths:
+  /settings/dnd-preferences:
+    get:
+      summary: Get DND preferences
+      operationId: getDNDPreferences
+      description: "Returns the current Do Not Disturb preferences for the authenticated user.\nYou can optionally limit the response by passing specific preference keys.\n<br><br>\n<p>\n  <b>OAuth Scope</b>: ZohoCliq.Profile.READ<br>\n</p>\n"
+      parameters:
+      - name: keys
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Comma-separated preference keys to fetch (e.g. schedule).
+        example: schedule
+      responses:
+        '200':
+          description: DND preferences were retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dnd-preferences-response'
+              example:
+                quiet_hours: 18:00-09:00
+                quiet_days: sunday,monday
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+      - Cliq_Auth:
+        - ZohoCliq.Profile.READ
+      tags:
+      - dndsettings
+    put:
+      summary: Update DND preferences
+      operationId: updateDNDPreferences
+      description: "Updates \"Do Not Disturb\" preferences for the authenticated user.\n<br><br>\n<p>\n  <b>OAuth Scope</b>: ZohoCliq.Profile.UPDATE<br>\n</p>\n"
+      requestBody:
+        description: Updates DND preferences for the authenticated user. Send one or both fields depending on what must be changed.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update-dnd-preferences-request'
+            example:
+              quiet_days: monday,tuesday
+              quiet_hours: 18:00-21:00
+      responses:
+        '204':
+          description: No Content. DND preferences were updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoResponse'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+      - Cliq_Auth:
+        - ZohoCliq.Profile.UPDATE
+      tags:
+      - dndsettings
+components:
+  schemas:
+    update-dnd-preferences-request:
+      type: object
+      description: Request payload for updating DND preferences. Omitted fields remain unchanged.
+      properties:
+        quiet_hours:
+          type: string
+          description: '''Time range for quiet hours in HH:MM-HH:MM format. For example, "18:00-09:00" means DND is active from 6 PM to 9 AM the next day.''
+
+            '
+          example: 18:00-21:00
+        quiet_days:
+          type: string
+          description: "Comma-separated list of days when DND is active.<br>\n<b>Allowed values</b>:\n<ul>\n   <li>sunday</li>\n   <li>monday</li>\n   <li>tuesday</li>\n   <li>wednesday</li>\n   <li>thursday</li>\n   <li>friday</li>\n   <li>saturday</li>\n</ul>\nFor example, \"monday,tuesday\" means DND is active on Mondays and Tuesdays.\n"
+          example: monday,tuesday
+    NoResponse:
+      type: object
+      description: Response envelope for successful operations with no payload.
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Operation completed successfully.
+    dnd-preferences-response:
+      type: object
+      description: Current DND preference settings for the user.
+      properties:
+        quiet_hours:
+          type: string
+          description: Time range for quiet hours in HH:MM-HH:MM format.
+          example: 18:00-09:00
+        quiet_days:
+          type: string
+          description: Comma-separated list of days when DND is active.
+          example: sunday,monday
+  securitySchemes:
+    Cliq_Auth:
+      type: oauth2
+      x-authorization-example: Bearer 1000.41d9xxxxxxxxxxxxxxxxxxxxxxxxc2d1.8fccxxxxxxxxxxxxxxxxxxxxxxxx125f
+      flows:
+        implicit:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          scopes:
+            ZohoCliq.Bots.READ: Read Bot Information
+            ZohoCliq.Bots.CREATE: Create Bots
+            ZohoCliq.Bots.UPDATE: Update Bots
+            ZohoCliq.Bots.DELETE: Delete Bots
+            ZohoCliq.Webhooks.CREATE: Post messages to conversations via webhooks
+            ZohoCliq.BotMessages.CREATE: Send messages via bot incoming webhooks
+            ZohoCliq.Channels.UPDATE: Update Channel Settings
+externalDocs:
+  description: Find out more about Zoho Cliq APIs V3
+  url: https://www.zoho.com/cliq/help/restapi/v3/

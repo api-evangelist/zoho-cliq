@@ -1,0 +1,907 @@
+openapi: 3.0.0
+info:
+  title: Bots buttons API
+  description: "<p>Bots are conversational assistants designed to automate repetitive tasks and manage simple user interactions. Their behavior is fully customizable through predefined Bot Handlers, which are activated by specific actions or through Webhooks that communicate with your own external server.</p> <p>For more information about Bots, please refer to the <b><a href=\"https://www.zoho.com/cliq/help/platform/bots.html\" target=\"_blank\">Bots Help Documentation</a></b>.</p> <p><b>Bot Handlers</b></p> <ul>\n  <li>Bot Handlers are the building blocks of a bot's functionality. Each handler is associated with a specific trigger event, such as receiving a direct message, being @mentioned in a channel, or a user subscribing to the bot.</li>\n  <li>When the trigger event occurs, the corresponding handler executes it's script to perform actions like sending messages, making API calls, or updating data.</li>\n  <li>By configuring different handlers, you can create bots that respond intelligently to various user interactions and automate complex workflows within Zoho Cliq.</li>\n</ul> <p><b>Types of Bot Handlers</b></p> <table style=\"border-collapse: collapse; width: 100%;\">\n  <tr>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Handler</th>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Description</th>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Menu Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Adds up to 5 quick-action items to the bot's chat menu. Triggered when a user interacts with the menu.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Message Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot receives a message.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Welcome Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Defines the greeting message sent when a user subscribes to the bot.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Mention Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot is @mentioned in a chat or channel.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Incoming Webhook Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Allows external services to post messages into the bot via outgoing webhooks.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Context Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Manages multi-turn conversations, maintaining context across a user's interaction with the bot.</td>\n  </tr>\n</table> <p><b>What you can do with the Bots API?</b></p> <p>With the Bots API, you can retrieve information about a specific bot, list all bots within your organization, manage configurations specific to handlers, trigger bot calls programmatically, manage subscribers, and much more.</p> <p>Each bot has an <code>execution_type</code> that defines how its handlers run when a trigger event occurs. The Bots API allows developers to create two types of bots:</p> <p id=\"deluge-bots\"><b>Deluge Bots (default)</b><br> Deluge bot executes handler logic using Zoho's Deluge scripting language, hosted entirely within the Zoho Cliq Developer platform, where no external server is required.</p> <ul>\n  <li>If <code>execution_type</code> is not specified during bot creation, it defaults to deluge.</li>\n  <li>Handler logic is defined as a script field (Deluge source code) when creating or updating handlers.</li>\n  <li>Suitable for teams that want to build and manage bot logic entirely within Zoho's ecosystem.</li>\n</ul> <p id=\"webhook-bots\"><b>Webhook Bots</b><br> A Webhook bot delegates all handler execution to your own external server. When a trigger event fires, Zoho Cliq sends an HTTP POST request to the <code>execution_url</code> you configure, and your server processes the event and returns a response.</p> <ul>\n  <li>To create a Webhook bot, set <code>execution_type</code> to webhook during bot creation and provide the <code>execution_url</code> where event payloads should be sent.</li>\n  <li>Your server must be publicly accessible and able to handle incoming POST requests from Zoho Cliq.</li>\n  <li>Ideal for teams seeking complete control over bot logic and possessing the resources to manage an external server. Also suitable for integrations requiring access to external databases, third-party APIs, or custom business logic that cannot be executed in Deluge.</li>\n</ul>\n"
+  contact: {}
+  version: 1.0.0
+servers:
+- url: https://cliq.zoho.com/api/v3
+  description: Zoho Cliq US DC
+tags:
+- name: buttons
+  description: Buttons Module
+paths:
+  /chats/{CHAT_ID}/messages:
+    post:
+      summary: Message card buttons
+      operationId: messageCardButtons
+      description: 'Message cards can be made interactive by attaching buttons to them. These buttons allow users to perform actions directly from the card without leaving the conversation.<br><br>
+
+        A single message card can include a maximum of 5 buttons.
+
+        To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+
+        '
+      parameters:
+      - name: CHAT_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: CHAT_ID
+        description: Unique identifier of the chat where the message needs to be sent.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/message-card-buttons-request'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+      - Cliq_Auth:
+        - ZohoCliq.Webhooks.CREATE
+      tags:
+      - buttons
+  /chats/{CHAT_ID1}/messages:
+    post:
+      summary: Confirmation popup
+      x-display-path: /chats/{CHAT_ID}/messages
+      x-virtual-endpoint: true
+      x-note: 'CHAT_ID1 is a documentation alias for CHAT_ID path parameter used in confirmationPopup operation. This alias is used to document the confirmation popup variation separately while keeping it under the same POST /chats/{CHAT_ID}/messages endpoint, because the actual API path remains the same and only the request payload includes the confirm object. The actual endpoint for confirmationPopup operation remains /chats/{CHAT_ID}/messages as specified in the paths object.
+
+        '
+      operationId: confirmationPopup
+      description: "The confirmation popup displays a dialogue box before executing a button action. It is used to collect user confirmation and optional input (such as authentication keys, feedback, or remarks) before proceeding.<br><br>\nThis object is optional and can be included in the button's action object attributes as a JSON object called \"confirm.\" It contains properties for the confirmation dialogue that appears before the action is executed.<br><br> \nYou can include this based on your specific requirements. When configured, the action will only execute after the user confirms their choice.\nTo learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.\n"
+      parameters:
+      - name: CHAT_ID1
+        in: path
+        required: true
+        schema:
+          type: string
+        example: CHAT_ID
+        description: 'Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.<br><br>
+
+          <b>Note:</b> <code>CHAT_ID1</code> is a documentation alias for <code>CHAT_ID</code>, used to document the "Confirmation popup" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload includes the <code>confirm</code> object.
+
+          '
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/confirmation-popup-request'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+      - Cliq_Auth:
+        - ZohoCliq.Webhooks.CREATE
+      tags:
+      - buttons
+  /chats/{CHAT_ID2}/messages:
+    post:
+      summary: Instant buttons
+      x-display-path: /chats/{CHAT_ID}/messages
+      x-virtual-endpoint: true
+      x-note: 'CHAT_ID2 is a documentation alias for CHAT_ID path parameter used in instantButtons operation. This alias is used to document the instant buttons variation separately while keeping it under the same POST /chats/{CHAT_ID}/messages endpoint, because the actual API path remains the same and only the request payload uses the references object for inline button definitions. The actual endpoint for instantButtons operation remains /chats/{CHAT_ID}/messages as specified in the paths object.
+
+        '
+      operationId: instantButtons
+      description: "Instant buttons can be easily specified along with the message text. Instant buttons, when clicked, can perform an action in the following ways:<br><br>\n<ul>\n  <li><a href=\"#instant-invoke-function\"><b>invoke.function</b></a>: Triggering a deluge task through invoke function.</li>\n  <li><a href=\"#instant-system-api\"><b>system.api</b></a>: Perform any of the below given system actions:\n    <ul>\n      <li>Audio Call</li>\n      <li>Video Call</li>\n      <li>Start Chat</li>\n      <li>Contact Invite</li>\n      <li>Location Access</li>\n    </ul>\n  </li>\n  <li><a href=\"#instant-copy\"><b>copy</b></a>: Copies specified text to the user's clipboard.</li>\n</ul>\nInstant buttons are defined as references within the message text and can be used to create interactive messages without needing a separate buttons array in the request payload. This makes them quick and easy to implement for simple use cases.\n<br>\n"
+      parameters:
+      - name: CHAT_ID2
+        in: path
+        required: true
+        schema:
+          type: string
+        example: CHAT_ID
+        description: 'Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.<br><br>
+
+          <b>Note:</b> <code>CHAT_ID2</code> is a documentation alias for <code>CHAT_ID</code>, used to document the "Instant buttons" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload uses the <code>references</code> object for inline button definitions.
+
+          '
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/instant-buttons-request'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+      - Cliq_Auth:
+        - ZohoCliq.Webhooks.CREATE
+      tags:
+      - buttons
+components:
+  schemas:
+    confirmation-popup-request:
+      type: object
+      required:
+      - text
+      properties:
+        text:
+          type: string
+          description: 'The text content of the message to be sent.<br>
+
+            <b>Maximum length</b>: 10,000 characters.
+
+            '
+          maxLength: 10000
+          example: New interns will be joining these teams from July.
+        card:
+          type: object
+          description: 'An optional object that defines the visual presentation of the message card.
+
+            '
+          properties:
+            title:
+              type: string
+              description: 'The title of the message card.
+
+                '
+              example: ANNOUNCEMENT
+            theme:
+              type: string
+              description: 'The visual theme of the message card.<br>
+
+                <b>Allowed values</b>: modern-inline | poll | prompt
+
+                '
+              example: modern-inline
+            thumbnail:
+              type: string
+              format: uri
+              description: 'The URL of the thumbnail image for the message card.
+
+                '
+              example: https://www.zoho.com/cliq/help/restapi/images/announce_icon.png
+        buttons:
+          type: array
+          maxItems: 5
+          description: 'An array of button objects that define the interactive buttons to be attached to the message card.<br>
+
+            A <b>maximum of 5 buttons</b> can be included.
+
+            '
+          items:
+            type: object
+            required:
+            - label
+            - type
+            - action
+            properties:
+              label:
+                type: string
+                maxLength: 20
+                description: "The display name of the button.<br>\n<b>Maximum number of characters allowed</b>: 20 \n"
+              hint:
+                type: string
+                maxLength: 100
+                description: 'A tool tip indicating the button''s function while hovering over.<br>
+
+                  <b>Maximum number of characters allowed</b>: 100
+
+                  '
+              type:
+                type: string
+                enum:
+                - +
+                - '-'
+                description: "\"+\" renders a positive (green outline) button. \"-\" renders a negative (red outline) button.    \n"
+              key:
+                type: string
+                maxLength: 100
+                description: "Unique identifier for each button. This key can be defined to easily identify and differentiate the buttons clicked and execute the functionality. \n<b>Maximum number of characters allowed</b>: 100\n"
+              action:
+                type: object
+                description: 'An object containing the type of action the button should perform.
+
+                  '
+                required:
+                - type
+                - data
+                properties:
+                  type:
+                    type: string
+                    description: "The action type for a button. \n<b>Allowed values</b>: invoke.function | open.url | system.api | preview.url | copy\n"
+                    enum:
+                    - invoke.function
+                    - open.url
+                    - system.api
+                    - preview.url
+                    - copy
+                  data:
+                    type: object
+                    description: "An object with properties for each action type. The required properties depend on the action type specified.<br> \n"
+        confirm:
+          type: object
+          description: 'Properties of the confirmation dialog box before the action is executed. It can be included based on the requirement.
+
+            '
+          required:
+          - title
+          - input
+          - button_label
+          properties:
+            title:
+              type: string
+              maxLength: 100
+              description: 'Confirmation dialog box title before the action is executed. Maximum number of characters allowed : 100
+
+                '
+            description:
+              type: string
+              maxLength: 100
+              description: 'Confirmation message displayed before the action is executed. Maximum number of characters allowed : 100
+
+                '
+            input:
+              type: string
+              maxLength: 300
+              description: 'The input text prompt present in the confirmation dialog box. Maximum number of characters allowed : 300
+
+                This input field is used to collect user input ( For example : authentication key or feedback ) during confirmation or cancellation action.
+
+                '
+            emotion:
+              type: string
+              enum:
+              - positive
+              - neutral
+              - negative
+              description: '(Optional) To set the visual style of the confirmation dialog box. Allowed Values : positive | neutral | negative If key is not provided, the theme of the dialog box will be set as positive by default.
+
+                '
+            button_label:
+              type: string
+              maxLength: 100
+              description: 'Label of the button present in the confirmation box. Maximum number of characters allowed : 100
+
+                '
+            cancel_button_label:
+              type: string
+              maxLength: 100
+              description: 'Label of the cancel button present in the confirmation box. Maximum number of characters allowed : 100
+
+                '
+            mandatory:
+              type: string
+              enum:
+              - 'true'
+              - 'false'
+              description: "(Optional) To specify whether the input field is required or not. Allowed Values : true | false When set to true, an error must be thrown if the user does not provide any input.             \n"
+      example:
+        text: The Q4 marketing budget is ready for review.
+        card:
+          title: Q4 Budget Proposal
+          theme: modern-inline
+        hint: Please review the allocation details before approval.
+        buttons:
+        - label: Approve Budget
+          type: +
+          key: approve_budget_q4
+          action:
+            type: invoke.function
+            data:
+              name: approve_q4_budget
+              owner: finance@zylker.com
+            confirm:
+              title: Finalize Budget Approval
+              description: Please provide approval remarks before proceeding.
+              input: Enter approval remarks
+              emotion: positive
+              button_label: Confirm Approval
+              cancel_button_label: Review Again
+              mandatory: 'true'
+    instant-buttons-request:
+      type: object
+      required:
+      - text
+      - references
+      properties:
+        text:
+          type: string
+          description: 'The text content of the message with inline button references.<br>
+
+            Use the format <code>[Button Label]($reference-key)</code> to embed buttons within the text.<br>
+
+            <b>Maximum length</b>: 10,000 characters.
+
+            '
+          maxLength: 10000
+          example: Who's up for lunch after the match on Friday? [Yes]($1)  [Call Support]($2)  [Copy Details]($3)
+        references:
+          type: object
+          description: "An object containing button definitions referenced in the message text.<br>\n<ul>\n  <li>Each key in this object corresponds to a reference key used in the text (e.g., \"1\", \"2\", \"3\").</li>\n  <li>The value for each key is a button definition object containing the button's properties.</li>\n  <li>Reference keys are embedded in the message text using the format <code>[Button Label]($reference-key)</code>.</li>\n  <li>When the message is displayed, the references are rendered as interactive buttons.</li>\n</ul>\n"
+          properties:
+            reference_key:
+              type: object
+              description: "Each reference key (e.g., \"1\", \"2\", \"3\") maps to a button definition object.<br>\n<ul>\n  <li>The reference key must match the key used in the message text within <code>$reference-key</code>.</li>\n  <li>Each button definition contains a <code>type</code> (must be \"button\") and an <code>object</code> with button properties.</li>\n  <li>You can define multiple buttons by creating multiple reference keys.</li>\n</ul>\n"
+              required:
+              - type
+              - object
+              properties:
+                type:
+                  type: string
+                  enum:
+                  - button
+                  description: 'The type of reference. For buttons, this must be "button".
+
+                    '
+                  example: button
+                object:
+                  type: object
+                  description: 'The button object containing the button''s configuration.
+
+                    '
+                  required:
+                  - label
+                  - action
+                  properties:
+                    label:
+                      type: string
+                      maxLength: 20
+                      description: 'The display name of the button.<br>
+
+                        <b>Maximum number of characters allowed</b>: 20
+
+                        '
+                      example: 'Yes'
+                    type:
+                      type: string
+                      enum:
+                      - +
+                      - '-'
+                      description: 'The visual style of the button.<br>
+
+                        "+" renders a positive (green outline) button.<br>
+
+                        "-" renders a negative (red outline) button.
+
+                        '
+                      example: +
+                    action:
+                      type: object
+                      description: 'An object containing the type of action the button should perform.
+
+                        '
+                      required:
+                      - type
+                      - data
+                      properties:
+                        type:
+                          type: string
+                          description: "The action type for the button.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><a href=\"#instant-invoke-function\"><b>invoke.function</b></a>: Executes a predefined function created in Cliq Developer Console or Bots and tools.</li>\n  <li><a href=\"#instant-system-api\"><b>system.api</b></a>: Calls a predefined system API to perform specific actions within Cliq (audiocall, videocall, startchat, invite, locationpermission).</li>\n  <li><a href=\"#instant-copy\"><b>copy</b></a>: Copies specified text to the user's clipboard.</li>\n</ul>\n"
+                          enum:
+                          - invoke.function
+                          - system.api
+                          - copy
+                          example: invoke.function
+                        data:
+                          type: object
+                          description: "An object with properties for each action type.<br><br>\n<div id=\"instant-invoke-function\">Data object when the button action type is <b>invoke.function</b>:</div><br>\n<table>\n  <thead>\n    <tr>\n      <th>Attribute</th>\n      <th>Type</th>\n      <th>Description</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>name*</td>\n      <td>string</td>\n      <td>The unique name of the function to be invoked.</td>\n    </tr>\n    <tr>\n      <td>owner</td>\n      <td>string</td>\n      <td>The email ID of the function owner (optional if the function is created by the same user).</td>\n    </tr>\n  </tbody>\n</table>\n<br>\n<div id=\"instant-system-api\">Data object when the button action type is <b>system.api</b>:</div><br>\n<table>\n  <thead>\n    <tr>\n      <th>Attribute</th>\n      <th>Type</th>\n      <th>Description</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>api*</td>\n      <td>string</td>\n      <td>\n        Specifies the system action to be executed.<br><br>\n        <b>Allowed values:</b> audiocall | videocall | startchat | invite | locationpermission<br><br>\n        <b>Format:</b> system_action/{zuid}<br>\n        Where {zuid} is the Zoho User ID of the user to whom the system action should be performed.\n      </td>\n    </tr>\n  </tbody>\n</table>\n<br>\n<div id=\"instant-copy\">Data object when the button action type is <b>copy</b>:</div><br>\n<table>\n  <thead>\n    <tr>\n      <th>Attribute</th>\n      <th>Type</th>\n      <th>Description</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>text*</td>\n      <td>string</td>\n      <td>\n        The text that will be copied to the user's clipboard when the button is clicked.<br><br>\n        <b>Maximum length:</b> 200 characters.\n      </td>\n    </tr>\n  </tbody>\n</table>\n"
+                          example:
+                            name: teammatch
+                    arguments:
+                      type: object
+                      description: 'Optional custom arguments to be passed to the invoked function.<br>
+
+                        This can contain any key-value pairs required by your function.
+
+                        '
+                      additionalProperties: true
+                      example:
+                        key_1: value_1
+                        key_2: value_2
+                        key_3: value_3
+      example:
+        text: Who's up for lunch after the match on Friday? [Yes]($1)  [Call Support]($2)  [Copy Details]($3)
+        references:
+          '1':
+            type: button
+            object:
+              label: 'Yes'
+              action:
+                type: invoke.function
+                data:
+                  name: teammatch
+              type: +
+          '2':
+            type: button
+            object:
+              label: Call Support
+              action:
+                type: system.api
+                data:
+                  api: videocall/12345678
+              type: +
+          '3':
+            type: button
+            object:
+              label: Copy Details
+              action:
+                type: copy
+                data:
+                  text: 'Match Details: Friday 6 PM at Central Stadium'
+              type: +
+    empty-response:
+      type: object
+      description: Response returned when there is no content.
+      properties:
+        Response_Code:
+          type: string
+          example: 204 No response
+    message-card-buttons-request:
+      type: object
+      required:
+      - text
+      properties:
+        text:
+          type: string
+          description: 'The text content of the message to be sent.<br>
+
+            <b>Maximum length</b>: 10,000 characters.
+
+            '
+          maxLength: 10000
+          example: New interns will be joining these teams from July.
+        card:
+          type: object
+          description: 'An optional object that defines the visual presentation of the message card.
+
+            '
+          properties:
+            title:
+              type: string
+              description: 'The title of the message card.
+
+                '
+              example: ANNOUNCEMENT
+            theme:
+              type: string
+              description: 'The visual theme of the message card.<br>
+
+                <b>Allowed values</b>: modern-inline | poll | prompt
+
+                '
+              example: modern-inline
+            thumbnail:
+              type: string
+              format: uri
+              description: 'The URL of the thumbnail image for the message card.
+
+                '
+              example: https://www.zoho.com/cliq/help/restapi/images/announce_icon.png
+        buttons:
+          type: array
+          maxItems: 5
+          description: 'An array of button objects that define the interactive buttons to be attached to the message card.<br>
+
+            A <b>maximum of 5 buttons</b> can be included.
+
+            '
+          items:
+            type: object
+            required:
+            - label
+            - type
+            - action
+            properties:
+              label:
+                type: string
+                maxLength: 20
+                description: "The display name of the button.<br>\n<b>Maximum number of characters allowed</b>: 20 \n"
+              hint:
+                type: string
+                maxLength: 100
+                description: 'A tool tip indicating the button''s function while hovering over.<br>
+
+                  <b>Maximum number of characters allowed</b>: 100
+
+                  '
+              type:
+                type: string
+                enum:
+                - +
+                - '-'
+                description: "\"+\" renders a positive (green outline) button. \"-\" renders a negative (red outline) button.    \n"
+              key:
+                type: string
+                maxLength: 100
+                description: "Unique identifier for each button. This key can be defined to easily identify and differentiate the buttons clicked and execute the functionality. \n<b>Maximum number of characters allowed</b>: 100\n"
+              action:
+                type: object
+                description: 'An object containing the type of action the button should perform.
+
+                  '
+                required:
+                - type
+                - data
+                properties:
+                  type:
+                    type: string
+                    description: "The action type for a button. \n<b>Allowed values</b>:\n<ul>\n  <li><a href=\"#invoke-function\"><b>invoke.function</b></a>: Executes a predefined function created in Cliq Developer Console or Bots and tools.</li>\n  <li><a href=\"#open-url\"><b>open.url</b></a>: Opens a specified URL in a new browser tab or window.</li>\n  <li><a href=\"#system-api\"><b>system.api</b></a>: Calls a predefined system API to perform specific actions within Cliq</li>\n  <li><a href=\"#preview-url\"><b>preview.url</b></a>: Displays a preview of the specified URL within Cliq.</li>\n  <li><a href=\"#copy\"><b>copy</b></a>: Copies specified text to the user's clipboard.</li>\n</ul>\n"
+                    enum:
+                    - invoke.function
+                    - open.url
+                    - system.api
+                    - preview.url
+                    - copy
+                  data:
+                    type: object
+                    description: "An object with properties for each action type. The required properties depend on the action type specified.<br>\n<div id=\"invoke-function\">Data object when the button action type is <b>invoke.function</b>:</div><br>\n<table>\n  <thead>\n    <tr>\n      <th>Attribute</th>\n      <th>Type</th>\n      <th>Description</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>name*</td>\n      <td>string</td>\n      <td>Name of the function to be invoked.</td>\n    </tr>\n    <tr>\n      <td>owner*</td>\n      <td>string</td>\n      <td>The email address of the function creator.</td>\n    </tr>\n  </tbody>\n</table>\n\n<div id=\"open-url\">Data object when the button action type is <b>open.url</b>:</div><br>\n<table>\n  <thead>\n    <tr>\n      <th>Attribute</th>\n      <th>Type</th>\n      <th>Description</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>web</td>\n      <td>string (URL)</td>\n      <td>\n        The URL to be opened when the button is clicked.<br><br>\n        <b>Supported protocols:</b> http | https | tel | sms | sip<br><br>\n        <b>Maximum length:</b> 256 characters.\n      </td>\n    </tr>\n    <tr>\n      <td>windows</td>\n      <td>string (URL)</td>\n      <td>\n        The URL to be opened on Windows mobile devices.<br><br>\n        <b>Maximum length:</b> 256 characters.\n      </td>\n    </tr>\n    <tr>\n      <td>iOS</td>\n      <td>string (URL)</td>\n      <td>\n        The URL to be opened on iOS mobile devices.<br><br>\n        <b>Maximum length:</b> 256 characters.\n      </td>\n    </tr>\n    <tr>\n      <td>android</td>\n      <td>string (URL)</td>\n      <td>\n        The URL to be opened on Android mobile devices.<br><br>\n        <b>Maximum length:</b> 256 characters.\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<div id=\"preview-url\">Data object when the button action type is <b>preview.url</b>:</div>\n<table>\n  <thead>\n    <tr>\n      <th>Attribute</th>\n      <th>Type</th>\n      <th>Description</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>url*</td>\n      <td>string</td>\n      <td>\n        Iframe URL used to play a video or render a webpage within the chat interface.<br><br>\n        <b>Maximum length:</b> 500 characters.\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<div id=\"system-api\">Data object when the button action type is <b>system.api</b>:</div>\n<table>\n  <thead>\n    <tr>\n      <th>Attribute</th>\n      <th>Type</th>\n      <th>Description</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>api*</td>\n      <td>string</td>\n      <td>\n        Specifies the system action to be executed.<br><br>\n        <b>Allowed values:</b> audiocall | videocall | startchat | invite | locationpermission<br><br>\n        <b>Supported system actions and formats:</b><br><br>\n        • <b>audiocall/zuid</b> – Initiates an audio call with the specified user.<br><br>\n        • <b>videocall/zuid</b> – Initiates a video call with the specified user.<br><br>\n        • <b>startchat/zuid</b> – Starts a direct chat with the specified user.<br><br>\n        • <b>invite/zuid</b> – Sends a contact invitation to the specified user.<br><br>\n        • <b>locationpermission</b> – Requests location access permission from the user.<br><br>\n        <b>Format:</b> system action/{zuid}\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<div id=\"copy\">Data object when the button action type is <b>copy</b>:</div><br>\n<table>\n  <thead>\n    <tr>\n      <th>Attribute</th>\n      <th>Type</th>\n      <th>Description</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>text*</td>\n      <td>string</td>\n      <td>\n        The text that will be copied to the user's clipboard when the button is clicked.<br><br>\n        <b>Maximum length:</b> 200 characters.\n      </td>\n    </tr>\n  </tbody>\n</table>\n"
+        confirm:
+          type: object
+          description: 'Properties of the confirmation dialog box before the action is executed. It can be included based on the requirement.
+
+            '
+          required:
+          - title
+          - input
+          - button_label
+          properties:
+            title:
+              type: string
+              maxLength: 100
+              description: 'Confirmation dialog box title before the action is executed. Maximum number of characters allowed : 100
+
+                '
+            description:
+              type: string
+              maxLength: 100
+              description: 'Confirmation message displayed before the action is executed. Maximum number of characters allowed : 100
+
+                '
+            input:
+              type: string
+              maxLength: 300
+              description: 'The input text prompt present in the confirmation dialog box. Maximum number of characters allowed : 300
+
+                This input field is used to collect user input ( For example : authentication key or feedback ) during confirmation or cancellation action.
+
+                '
+            emotion:
+              type: string
+              enum:
+              - positive
+              - neutral
+              - negative
+              description: '(Optional) To set the visual style of the confirmation dialog box. Allowed Values : positive | neutral | negative If key is not provided, the theme of the dialog box will be set as positive by default.
+
+                '
+            button_label:
+              type: string
+              maxLength: 100
+              description: 'Label of the button present in the confirmation box. Maximum number of characters allowed : 100
+
+                '
+            cancel_button_label:
+              type: string
+              maxLength: 100
+              description: 'Label of the cancel button present in the confirmation box. Maximum number of characters allowed : 100
+
+                '
+            mandatory:
+              type: string
+              enum:
+              - 'true'
+              - 'false'
+              description: '(Optional) To specify whether the input field is required or not. Allowed Values : true | false When set to true, an error must be thrown if the user does not provide any input.
+
+                '
+      example:
+        text: You are invited to the Sales Annual Strategy Meet 2024. Please review the agenda and confirm your participation.
+        card:
+          theme: modern-inline
+          thumbnail: /cliq/help/restapi/images/cliq_icon.png
+        buttons:
+        - label: View Agenda
+          type: +
+          key: view_agenda
+          action:
+            type: open.url
+            data:
+              web: https://events.zylker.com/sales-meet-2024
+        - label: Add to Calendar
+          type: +
+          key: calendar_invite
+          action:
+            type: invoke.function
+            data:
+              name: add_sales_meet_calendar
+              owner: events@zylker.com
+        - label: Join Virtual Meet
+          type: +
+          key: join_meet
+          action:
+            type: system.api
+            data:
+              api: videocall/9876543210
+        - label: Watch Promo
+          type: +
+          key: preview_video
+          action:
+            type: preview.url
+            data:
+              url: https://media.zylker.com/sales-meet-promo
+        - label: Copy Event ID
+          type: +
+          key: copy_event_id
+          action:
+            type: copy
+            data:
+              text: SALES-MEET-2024
+  securitySchemes:
+    Cliq_Auth:
+      type: oauth2
+      x-authorization-example: Bearer 1000.41d9xxxxxxxxxxxxxxxxxxxxxxxxc2d1.8fccxxxxxxxxxxxxxxxxxxxxxxxx125f
+      flows:
+        implicit:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          scopes:
+            ZohoCliq.Bots.READ: Read Bot Information
+            ZohoCliq.Bots.CREATE: Create Bots
+            ZohoCliq.Bots.UPDATE: Update Bots
+            ZohoCliq.Bots.DELETE: Delete Bots
+            ZohoCliq.Webhooks.CREATE: Post messages to conversations via webhooks
+            ZohoCliq.BotMessages.CREATE: Send messages via bot incoming webhooks
+            ZohoCliq.Channels.UPDATE: Update Channel Settings
+externalDocs:
+  description: Find out more about Zoho Cliq APIs V3
+  url: https://www.zoho.com/cliq/help/restapi/v3/
