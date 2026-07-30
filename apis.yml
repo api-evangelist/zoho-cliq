@@ -1,7 +1,20 @@
 aid: zoho-cliq
 name: Zoho Cliq
 description: Zoho Cliq is a team messaging and collaboration platform with a REST API for managing channels, bots, slash commands, message webhooks, and team communications. The API follows RESTful architecture principles with resource-oriented URLs, JSON request and response bodies, and standard HTTP verbs. It supports multi-data center deployments across nine regional domains and uses OAuth 2.0 for authentication.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/zoho-cliq.png
 url: https://raw.githubusercontent.com/api-evangelist/zoho-cliq/refs/heads/main/apis.yml
 created: '2026-06-13'
 modified: '2026-06-13'
@@ -15,78 +28,584 @@ tags:
   - Slash Commands
   - Communication
 apis:
-  - aid: zoho-cliq:zoho-cliq-api
-    name: Zoho Cliq API
-    description: The Zoho Cliq REST API v3 enables developers to connect Cliq with other applications and services, automate tasks, and enhance team communication capabilities. It covers chats, messages, threads, bots, slash commands, message actions, functions, datastores, and extensions.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
-    baseURL: https://cliq.zoho.com/api/v3
-    tags:
-      - Messaging
-      - Chat
-      - Bots
-      - Webhooks
-    properties:
-      - type: Documentation
-        url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
-      - type: Authentication
-        url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
-      - type: OpenAPI
-        url: openapi/chats.yml
-      - type: OpenAPI
-        url: openapi/messages.yml
-      - type: OpenAPI
-        url: openapi/threads.yml
-      - type: OpenAPI
-        url: openapi/scheduledmessages.yml
-      - type: OpenAPI
-        url: openapi/reminders.yml
-      - type: OpenAPI
-        url: openapi/pinmessages.yml
-      - type: OpenAPI
-        url: openapi/mypins.yml
-      - type: OpenAPI
-        url: openapi/stars.yml
-      - type: OpenAPI
-        url: openapi/messageformat.yml
-      - type: OpenAPI
-        url: openapi/mentions.yml
-      - type: OpenAPI
-        url: openapi/buttons.yml
-      - type: OpenAPI
-        url: openapi/messagecards.yml
-      - type: OpenAPI
-        url: openapi/bots.yml
-      - type: OpenAPI
-        url: openapi/slashcommands.yml
-      - type: OpenAPI
-        url: openapi/messageactions.yml
-      - type: OpenAPI
-        url: openapi/functions.yml
-      - type: OpenAPI
-        url: openapi/datastores.yml
-      - type: OpenAPI
-        url: openapi/extensions.yml
-      - type: OpenAPI
-        url: openapi/dndsettings.yml
-      - type: OpenAPI
-        url: openapi/mobilesettings.yml
-      - type: OpenAPI
-        url: openapi/userpreferences.yml
-      - type: OpenAPI
-        url: openapi/keyboardshortcuts.yml
-      - type: JSONSchema
-        url: json-schema/chats.json
-      - type: JSONSchema
-        url: json-schema/messages.json
-      - type: JSONSchema
-        url: json-schema/bots.json
-      - type: JSONSchema
-        url: json-schema/datastores.json
-      - type: JSONLD
-        url: json-ld/zoho-cliq.jsonld
-      - type: Vocabulary
-        url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-bots-api
+  name: Zoho Cliq Bots API
+  description: The Bots API from Zoho Cliq — 9 operation(s) for bots.
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - Bots
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-bots-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-buttons-api
+  name: Zoho Cliq buttons API
+  description: Buttons Module
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - buttons
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-buttons-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-chats-api
+  name: Zoho Cliq chats API
+  description: Chats Module
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - chats
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-chats-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-dndsettings-api
+  name: Zoho Cliq dndsettings API
+  description: DND Settings Module
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - dndsettings
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-dndsettings-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-extensions-api
+  name: Zoho Cliq Extensions API
+  description: Extensions Module
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - Extensions
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-extensions-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-functions-api
+  name: Zoho Cliq Functions API
+  description: Functions Module
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - Functions
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-functions-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-keyboardshortcuts-api
+  name: Zoho Cliq keyboardshortcuts API
+  description: Keyboard Shortcuts Module
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - keyboardshortcuts
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-keyboardshortcuts-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-mentions-api
+  name: Zoho Cliq mentions API
+  description: Mentions Module
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - mentions
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-mentions-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-messageactions-api
+  name: Zoho Cliq messageactions API
+  description: Message Actions Module
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - messageactions
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-messageactions-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-messagecards-api
+  name: Zoho Cliq messagecards API
+  description: >-
+    APIs for sending structured interactive message cards (Poll, Modern Inline, and Prompt) inside Zoho
+    Cliq conversations.
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - messagecards
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-messagecards-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-messageformat-api
+  name: Zoho Cliq messageformat API
+  description: Message Format Module
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - messageformat
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-messageformat-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-messages-api
+  name: Zoho Cliq messages API
+  description: Messages Module
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - messages
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-messages-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-mobilesettings-api
+  name: Zoho Cliq mobilesettings API
+  description: Mobile Settings Module
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - mobilesettings
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-mobilesettings-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-mypins-api
+  name: Zoho Cliq mypins API
+  description: My Pins and Chat Folders Module
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - mypins
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-mypins-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-pinmessages-api
+  name: Zoho Cliq pinmessages API
+  description: Pin Messages Module
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - pinmessages
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-pinmessages-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-platform-storage-api
+  name: Zoho Cliq Platform_storage API
+  description: >-
+    Manage Cliq Datastores - structured, schema-defined storage tables scoped to an organisation or extension.
+    Datastores allow platform components to persist and query structured data across executions. Each
+    datastore has typed fields and supports CRUD operations, field schema management, bulk record exports,
+    and criteria-based queries.
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - Platform_storage
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-platform-storage-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-reminders-api
+  name: Zoho Cliq reminders API
+  description: Reminders Module
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - reminders
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-reminders-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-scheduledmessages-api
+  name: Zoho Cliq scheduledmessages API
+  description: Scheduled Messages Module
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - scheduledmessages
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-scheduledmessages-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-slashcommands-api
+  name: Zoho Cliq slashcommands API
+  description: Slash Commands Module
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - slashcommands
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-slashcommands-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-stars-api
+  name: Zoho Cliq Stars API
+  description: The Stars API from Zoho Cliq — 2 operation(s) for stars.
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - Stars
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-stars-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-threads-api
+  name: Zoho Cliq threads API
+  description: Threads Module
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - threads
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-threads-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-userpreferences-api
+  name: Zoho Cliq userpreferences API
+  description: User Preferences Module
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - userpreferences
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-userpreferences-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
 common:
   - type: AgenticAccess
     url: agentic-access/zoho-cliq-agentic-access.yml
