@@ -2,17 +2,10 @@
   "repo": "zoho-cliq",
   "feeds": [
     {
-      "source": "https://www.zoho.com/blog/cliq/feed/",
-      "feed_url": "https://www.zoho.com/blog/cliq/feed/",
-      "title": "",
-      "saved": 0,
-      "method": "feed"
-    },
-    {
       "source": "https://in.linkedin.com/showcase/zoho-cliq",
       "error": "HTTPError"
     }
   ],
-  "fetched": "2026-07-11T11:50:51Z",
+  "fetched": "2026-08-01T15:49:00Z",
   "post_count": 10
 }

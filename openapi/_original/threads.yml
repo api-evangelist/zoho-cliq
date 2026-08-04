@@ -1,0 +1,2530 @@
+openapi: 3.0.0
+info:
+  title: Threads
+  description: |
+    Threads are a new way to organize discussions in a channel by grouping messages by specific topics.<br><br>The Threads API enables structured conversation management in chats, giving users complete control over threaded discussions. This makes it ideal for focused, topic-driven collaboration scenarios. The v3 version of the Threads API is designed to keep conversations organized and contextual, allowing developers to create communication experiences where each discussion has a clear, dedicated space. <br><br><b>Key Capabilities</b> <ul> With the latest v3 version of the Threads API, you can:
+      <li><b>Thread Management:</b> Create new threads with an opening message, retrieve details about existing threads, and list all threads within a chat to maintain a clear view of ongoing discussions.</li>
+      <li><b>Thread Replies:</b> Send follow-up messages to an existing thread, ensuring that responses remain contextual and do not disrupt the main chat flow.</li>
+    </ul>
+  contact: {}
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Zoho Cliq APIs V2
+  url: https://www.zoho.com/cliq/help/restapi/v2/
+servers:
+  - url: https://cliq.zoho.com/api/v3
+    description: Zoho Cliq US DC
+tags:
+  - name: threads
+    description: Threads Module
+paths:
+  /channels/{CHANNEL_ID}/messages:
+    post:
+      summary: Create and send a thread message with CHANNEL_ID
+      operationId: createThreadMessageByChannelId
+      description: |
+        Use this API to create a thread from a message sent in a channel, identified by its <b>CHANNEL_ID</b>. <br><br> You can also create a thread using one of the following alternative endpoints:<br> <ul>
+          <li><a href="#operation/createThreadMessageByChatId"><code>POST /chats/{CHAT_ID}/messages</code></a> - Use the <b>CHAT_ID</b> of the channel (same channel, accessed via its chat identifier).</li>
+          <li><a href="#operation/createThreadMessageByChannelUniqueName"><code>POST /channelsbyname/{CHANNEL_UNIQUE_NAME}/messages</code></a> - Use the <b>unique name</b> of the channel.</li>
+        </ul> <br> <b>Note:</b> The channel's reply mode must be set to <b>Threads</b> or <b>Allow both</b> for thread creation to work. See <a href="https://help.zoho.com/portal/en/kb/zoho-cliq/admin-guides/configurations/articles/configuring-reply-mode-for-different-levels-of-channels" target="_blank">Configuring Reply Mode for Channels</a> for more details. <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: CHANNEL_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHANNEL_ID
+          description: The unique identifier of the channel in which the thread needs to be created. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHANNEL_ID">CHANNEL_ID</a> in the Glossary page.
+        - name: bot_unique_name
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Use this parameter to send a message in a channel as a bot.   <b>Note</b>: The bot should already be a participant in the channel.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/thread-creation-payload'
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/thread-creation-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Webhooks.CREATE
+      tags:
+        - threads
+  /chats/{CHAT_ID}/messages:
+    post:
+      summary: Create and send a thread message with CHAT_ID
+      operationId: createThreadMessageByChatId
+      description: |
+        Use this API to create a thread from a message sent in a channel, identified by its <b>CHAT_ID</b>. Every channel in Cliq also has a corresponding chat ID. This endpoint is functionally equivalent to using <code>POST /channels/{CHANNEL_ID}/messages</code> - both target the same channel, just identified differently. <br><br> You can also create a thread using one of the following alternative endpoints:<br> <ul>
+          <li><a href="#operation/createThreadMessageByChannelId"><code>POST /channels/{CHANNEL_ID}/messages</code></a> - Use the <b>CHANNEL_ID</b> of the channel.</li>
+          <li><a href="#operation/createThreadMessageByChannelUniqueName"><code>POST /channelsbyname/{CHANNEL_UNIQUE_NAME}/messages</code></a> - Use the <b>unique name</b> of the channel.</li>
+        </ul> <br> <b>Note:</b> The channel's reply mode must be set to <b>Threads</b> or <b>Allow both</b> for thread creation to work. See <a href="https://help.zoho.com/portal/en/kb/zoho-cliq/admin-guides/configurations/articles/configuring-reply-mode-for-different-levels-of-channels" target="_blank">Configuring Reply Mode for Channels</a> for more details. <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: The chat ID of the channel in which the thread needs to be created. Every channel has a corresponding chat ID. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+        - name: bot_unique_name
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Use this parameter to send a message in a channel as a bot.   <b>Note</b>: The bot should already be a participant in the channel.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/thread-creation-payload'
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/thread-creation-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Webhooks.CREATE
+      tags:
+        - threads
+  /channelsbyname/{CHANNEL_UNIQUE_NAME}/messages:
+    post:
+      summary: Create and send a thread message with CHANNEL_UNIQUE_NAME
+      operationId: createThreadMessageByChannelUniqueName
+      description: |
+        Use this API to create a thread from a message sent in a channel, identified by its <b>unique name</b>. This is useful when you know the channel's unique name but not its ID. <br><br> You can also create a thread using one of the following alternative endpoints:<br> <ul>
+          <li><a href="#operation/createThreadMessageByChannelId"><code>POST /channels/{CHANNEL_ID}/messages</code></a> - Use the <b>CHANNEL_ID</b> of the channel.</li>
+          <li><a href="#operation/createThreadMessageByChatId"><code>POST /chats/{CHAT_ID}/messages</code></a> - Use the <b>CHAT_ID</b> of the channel.</li>
+        </ul> <br> <b>Note:</b> The channel's reply mode must be set to <b>Threads</b> or <b>Allow both</b> for thread creation to work. See <a href="https://help.zoho.com/portal/en/kb/zoho-cliq/admin-guides/configurations/articles/configuring-reply-mode-for-different-levels-of-channels" target="_blank">Configuring Reply Mode for Channels</a> for more details. <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: CHANNEL_UNIQUE_NAME
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHANNEL_UNIQUE_NAME
+          description: The unique name of the channel in which the thread needs to be created. To learn how to retrieve this, see <a href="/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME">CHANNEL_UNIQUE_NAME</a> in the Glossary page.
+        - name: bot_unique_name
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Use this parameter to send a message in a channel as a bot.   <b>Note</b>: The bot should already be a participant in the channel.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/thread-creation-payload'
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/thread-creation-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Webhooks.CREATE
+      tags:
+        - threads
+  /chats/{THREAD_CHAT_ID}/messages:
+    post:
+      summary: Send a message to an existing thread
+      operationId: Send a message to an existing thread
+      description: |
+        Use this API to send a message to an existing thread.
+          <br><br>  
+          <p>
+            <b>Threshold limit</b>: 20 requests per min per user<br>
+            Number of API calls allowed within a minute.<br><br>
+            <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+          </p>  
+      parameters:
+        - name: THREAD_CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: THREAD_CHAT_ID
+          description: Chat ID of the thread where the message should be sent. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID">THREAD_CHAT_ID</a> in the Glossary page.
+        - name: bot_unique_name
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Use this parameter to send a message in a thread as a bot.   Note that the bot should already be a participant in the channel.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/send-message-in-thread-payload'
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/thread-creation-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Webhooks.CREATE
+      tags:
+        - threads
+  /threads/{THREAD_CHAT_ID}:
+    get:
+      summary: Retrieve thread details
+      operationId: getThreadDetailsV3
+      description: |
+        Fetches details of a thread using its thread chat ID. Returns information such as the thread title, follower count, whether the requesting user is a follower, the parent chat, and the thread's open/closed state.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">thread_chatid_invalid</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The thread chat ID given is not according to the format.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">external_communication_not_supported</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Sorry, external communication is not supported as per the organization policy.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_failed</span></td>
+                    <td style="padding:10px 18px;">Sorry, we couldn't process your request due to a technical error. Please try again later.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - name: THREAD_CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: THREAD_CHAT_ID
+          description: The unique identifier of the thread chat.
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              examples:
+                get_thread:
+                  summary: Thread details
+                  value:
+                    url: /api/v3/threads/CT_1207124526552602256_60002085329-T-1291567019566818579
+                    type: chat_thread
+                    data:
+                      chat_id: CT_1207124526552602256_60002085329-T-1291567019566818579
+                      parent_chat_id: CT_1207124526552602256_60002085329
+                      thread_message_id: 1727333520582%2047588994306224
+                      title: Email campaign strategy discussion
+                      follower_count: 26
+                      is_follower: true
+                      parent_participant: true
+                      thread_state: open
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                  type:
+                    type: string
+                    example: chat_thread
+                  data:
+                    $ref: '#/components/schemas/v3-thread'
+        '400':
+          description: Bad Request. The thread chat ID format is invalid.
+          content:
+            application/json:
+              examples:
+                thread_chatid_invalid:
+                  summary: Invalid thread chat ID format
+                  value:
+                    code: thread_chatid_invalid
+                    message: The thread chat ID given is not according to the format.
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden. External communication is restricted by organization policy.
+          content:
+            application/json:
+              examples:
+                external_communication_not_supported:
+                  summary: External communication not allowed
+                  value:
+                    code: external_communication_not_supported
+                    message: Sorry, external communication is not supported as per the organization policy.
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              examples:
+                operation_failed:
+                  summary: Server-side error
+                  value:
+                    code: operation_failed
+                    message: Sorry, we couldn't process your request due to a technical error. Please try again later.
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.READ
+      tags:
+        - chats
+    put:
+      summary: Update the state of a thread
+      operationId: Update the state of a thread
+      description: |
+        Use this API to update the state or follow status of a thread.
+        <ul>
+          <li><b>Thread state</b>: Close a thread to stop further replies, or reopen it to resume discussion.</li>
+          <li><b>Follow state</b>: Follow a thread to receive notifications for new replies, or unfollow to stop them.</li>
+        </ul>
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: THREAD_CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: THREAD_CHAT_ID
+          description: CHAT ID of the thread whose state is to be updated (closed or reopened). To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID">THREAD_CHAT_ID</a> in the Glossary page.
+        - name: bot_unique_name
+          in: query
+          required: false
+          schema:
+            type: string
+          description: To use when the action is to be performed by a bot that is already a participant in the channel.
+        - name: appkey
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Must be provided if the specified bot is from an extension. This parameter is to be used along with bot_unique_name.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update-state-of-thread-request'
+      responses:
+        '204':
+          description: The request was successfully completed. No content is returned.
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+      tags:
+        - threads
+  /threads/{THREAD_CHAT_ID}/messages/main:
+    get:
+      summary: Get main message of a thread
+      operationId: Get main message of a thread
+      description: |
+        Use this API to retrieve the main message from which the thread was created.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: THREAD_CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: THREAD_CHAT_ID
+          description: The CHAT_ID of the thread whose main (original) message is to be retrieved To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID">THREAD_CHAT_ID</a> in the Glossary page.
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              examples:
+                main_thread_message:
+                  summary: Main message for a customer escalation thread
+                  value:
+                    parent_resource_id: engineering-updates
+                    sender:
+                      name: Ryan West
+                      id: '855727961'
+                    mentions:
+                      - name: '@Scott Fisher'
+                        id: '855727962'
+                        type: user
+                      - name: '@Tim Harrison'
+                        id: '855727963'
+                        type: user
+                    thread_information:
+                      thread_message_id: 1760000012345%201234567890
+                      title: Customer onboarding latency issue
+                      follower_count: 3
+                      message_count: 18
+                      chat_id: CT_2242125513190139257_855711548-T-2263887074117538898
+                    id: '1760000012345_1234567890'
+                    time: '2026-05-28T10:36:48+00:00'
+                    thread_state_information:
+                      thread_state: open
+                    type: text
+                    content:
+                      text: The customer onboarding workflow is intermittently delayed. Please share logs and mitigation updates in this thread.
+                    is_pinned: false
+              schema:
+                $ref: '#/components/schemas/get-main-message-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Messages.READ
+      tags:
+        - threads
+  /threads/{THREAD_CHAT_ID}/followers:
+    get:
+      summary: Get thread followers
+      operationId: Get thread followers
+      description: |
+        Use this API to get the followers of the thread.
+      parameters:
+        - name: THREAD_CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: THREAD_CHAT_ID
+          description: Chat ID of the thread for which the list of followers needs to be retrieved To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID">THREAD_CHAT_ID</a> in the Glossary page.
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              examples:
+                followers_list:
+                  summary: Thread followers in Zylker
+                  value:
+                    data:
+                      - user_id: '855727961'
+                        email_id: ryan.west@zylker.com
+                        name: Ryan West
+                      - user_id: '855727962'
+                        email_id: scott.fisher@zylker.com
+                        name: Scott Fisher
+              schema:
+                $ref: '#/components/schemas/get-thread-followers-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.READ
+      tags:
+        - threads
+    post:
+      summary: Add followers to a thread
+      operationId: Add followers to a thread
+      description: |
+        Use this API to add one or more users as followers to an existing thread.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: THREAD_CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: THREAD_CHAT_ID
+          description: Chat ID of the thread for which the list of followers needs to be added To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID">THREAD_CHAT_ID</a> in the Glossary page.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/add-followers-payload'
+      responses:
+        '204':
+          description: The request was successfully completed. No content is returned.
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+      tags:
+        - threads
+    delete:
+      summary: Remove followers from a thread
+      operationId: Remove followers from a thread
+      description: |
+        Removes one or more specified users from the followers list of a given thread.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: THREAD_CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: THREAD_CHAT_ID
+          description: Chat ID of the thread for which the list of followers needs to be removed To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID">THREAD_CHAT_ID</a> in the Glossary page.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/remove-followers-payload'
+      responses:
+        '204':
+          description: The request was successfully completed. No content is returned.
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.DELETE
+      tags:
+        - threads
+  /threads/{THREAD_CHAT_ID}/nonfollowers:
+    get:
+      summary: Get non-followers of a thread
+      operationId: Get non-followers of a thread
+      description: |
+        Use this API to retrieve the list of channel members who are not currently following the specified thread.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: THREAD_CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: THREAD_CHAT_ID
+          description: Chat ID of the thread for which the list of non-followers needs to be retrieved To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID">THREAD_CHAT_ID</a> in the Glossary page.
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              examples:
+                nonfollowers_list:
+                  summary: Channel members not following the thread
+                  value:
+                    data:
+                      - user_id: '855727963'
+                        email_id: tim.harrison@zylker.com
+                        name: Tim Harrison
+              schema:
+                $ref: '#/components/schemas/get-thread-followers-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.READ
+      tags:
+        - threads
+  /threads/{THREAD_CHAT_ID}/follow:
+    post:
+      summary: Join (follow) a thread
+      operationId: Join-follow a thread
+      description: |
+        Allows the authenticated user to join a thread as a follower.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: THREAD_CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: THREAD_CHAT_ID
+          description: CHAT ID of the thread to which the authenticated user should be added as a follower To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID">THREAD_CHAT_ID</a> in the Glossary page.
+      responses:
+        '204':
+          description: The request was successfully completed. No content is returned.
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+      tags:
+        - threads
+  /threads/{THREAD_CHAT_ID}/unfollow:
+    post:
+      summary: Leave (unfollow) a thread
+      operationId: Leave-unfollow a thread
+      description: |
+        Allows the authenticated user to leave a thread they are currently following.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: THREAD_CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: THREAD_CHAT_ID
+          description: CHAT ID of the thread to which the authenticated user should be removed as a follower To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID">THREAD_CHAT_ID</a> in the Glossary page.
+      responses:
+        '204':
+          description: The request was successfully completed. No content is returned.
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+      tags:
+        - threads
+  /chats/{THREAD_CHAT_ID}/members:
+    get:
+      summary: Retrieve members of a thread
+      operationId: Retrieve members of a thread
+      description: |
+        Use this API to fetch participants of a specific thread conversation.
+        This is useful when you want to display who is currently involved in a focused topic discussion without scanning the parent channel.
+        <br><br>
+        Common use cases:
+        <ul>
+          <li>Render a thread participant panel in your app UI.</li>
+          <li>Show participant identity fields (name, email_id, user_id) using the <code>fields</code> query parameter.</li>
+          <li>Audit collaboration context before automations post follow-up replies in the same thread.</li>
+        </ul>
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: THREAD_CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: THREAD_CHAT_ID
+          description: The ID of the thread from which members need to be retrieved. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID">THREAD_CHAT_ID</a> in the Glossary page.
+        - name: fields
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Use this parameter to get details of members participating in the thread.<br>
+            <b>Allowed values</b>:
+            <ul>
+              <li><b>user_id</b> - Unique identifier for the user in Cliq.</li>
+              <li><b>email_id</b> - Email address of the user.</li>
+              <li><b>name</b> - Display name of the user.</li>
+            </ul>
+            <br><br>
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/retrieve-chat-members'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.READ
+      tags:
+        - threads
+  /chats/{THREAD_CHAT_ID}/leave:
+    post:
+      summary: Leave a thread
+      operationId: Leave a thread
+      description: |
+        Use this API to remove the authenticated user from a thread conversation.
+        After leaving, the user is no longer an active participant in that thread context.
+        <br><br>
+        This endpoint is helpful for reducing noise in discussions that are no longer relevant to the user while keeping the parent channel membership unchanged.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: THREAD_CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: THREAD_CHAT_ID
+          description: The ID of the thread that you wish to leave. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID">THREAD_CHAT_ID</a> in the Glossary page.
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/no-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+      tags:
+        - threads
+  /chats/{THREAD_CHAT_ID}/mute:
+    post:
+      summary: Mute a thread
+      operationId: Mute a thread
+      description: |
+        Use this API to mute notifications for a thread while still keeping the thread accessible.
+        Muting is ideal for high-volume threads where the user wants to stay in the conversation but avoid immediate notification interruptions.
+        <br><br>
+        This setting affects thread-level notifications and helps keep topic-based discussions organized without muting the entire parent chat.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: THREAD_CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: THREAD_CHAT_ID
+          description: The ID of the thread that needs to be muted. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID">THREAD_CHAT_ID</a> in the Glossary page.
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/no-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+      tags:
+        - threads
+  /chats/{THREAD_CHAT_ID}/unmute:
+    post:
+      summary: Unmute a thread
+      operationId: Unmute a thread
+      description: |
+        Use this API to restore notifications for a previously muted thread.
+        Once unmuted, the user starts receiving thread updates again according to their notification settings.
+        <br><br>
+        Use this when a discussion becomes active or relevant again and timely visibility of thread replies is required.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: THREAD_CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: THREAD_CHAT_ID
+          description: The ID of the thread that needs to be unmuted. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID">THREAD_CHAT_ID</a> in the Glossary page.
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/no-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+      tags:
+        - threads
+components:
+  schemas:
+    no-response:
+      type: object
+      description: Response object returned when no content is available.
+      properties:
+        Response Code:
+          type: string
+          description: HTTP response code and message indicating no content.
+          example: 204 No response
+    v3-thread:
+      type: object
+      properties:
+        chat_id:
+          type: string
+        parent_chat_id:
+          type: string
+        thread_message_id:
+          type: string
+        title:
+          type: string
+        follower_count:
+          type: integer
+        is_follower:
+          type: boolean
+        thread_state:
+          type: string
+        parent_message_sender:
+          type: string
+        last_message_information:
+          type: object
+          additionalProperties: true
+    post-message-in-a-channel-response:
+      type: object
+      description: Response returned when a message is posted in a channel. A '204 No response' indicates successful posting without returning any content.
+      properties:
+        Response Code:
+          type: string
+          description: HTTP response code when message is posted.
+          example: 204 No response
+    get-thread-followers-response:
+      type: object
+      description: Response containing the list of followers for a particular thread.
+      properties:
+        data:
+          type: array
+          description: List of users following the thread.
+          items:
+            type: object
+            properties:
+              user_id:
+                type: string
+                description: Unique identifier of the user.
+                example: '855727961'
+              email_id:
+                type: string
+                format: email
+                description: Email ID of the user.
+                example: ryan.west@zylker.com
+              name:
+                type: string
+                description: Name of the user.
+                example: Ryan West
+          example:
+            - user_id: '855727961'
+              email_id: ryan.west@zylker.com
+              name: Ryan West
+            - user_id: '855727962'
+              email_id: scott.fisher@zylker.com
+              name: Scott Fisher
+            - user_id: '855727963'
+              email_id: tim.harrison@zylker.com
+              name: Tim Harrison
+    retrieve-chat-members:
+      type: object
+      description: Response object containing members of a chat.
+      properties:
+        members:
+          type: array
+          description: List of members in the chat with detailed user information.
+          items:
+            $ref: '#/components/schemas/Members'
+    Members:
+      type: object
+      description: Detailed information about a chat member.
+      properties:
+        user_id:
+          type: string
+          description: Unique identifier of the user.
+          example: '431930546'
+        email_id:
+          type: string
+          format: email
+          description: Email address of the user.
+          example: olivia.palmer@zylcal.com
+        name:
+          type: string
+          description: Full name of the user.
+          example: Olivia - Content Writer
+    thread-creation-payload:
+      type: object
+      description: Request body to create a new thread from an existing message.
+      required:
+        - text
+        - thread_message_id
+      properties:
+        text:
+          type: string
+          description: 'Text to post as the initial message in the thread. Maximum length: 5000 characters.'
+          example: Follow this thread for daily updates on ticket resolutions.
+        thread_message_id:
+          type: string
+          description: ID of the parent message from which the thread should be created.
+          example: '1599044334698_117280617320'
+        reply_to:
+          type: string
+          description: Optional. ID of a message to reply to within the thread.
+        post_in_parent:
+          type: boolean
+          description: Optional. If true, posts the thread message in the parent chat as well.
+          example: true
+        thread_title:
+          type: string
+          description: Optional. Title for the thread.
+          example: Ticket Resolution Summary for the Day
+        sync_message:
+          type: boolean
+          description: Optional. If true, posts the message synchronously and returns the message ID.
+          example: true
+    send-message-in-thread-payload:
+      type: object
+      description: Request body to send a message in an existing thread.
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          description: 'Text to post in the thread. Maximum length: 5000 characters.'
+          example: Let's automate these cases so we can address them during testing.
+        reply_to:
+          type: string
+          description: Optional. Message ID to reply to within the thread.
+        post_in_parent:
+          type: boolean
+          description: Optional. If true, posts the message in the parent chat as well.
+          example: true
+        sync_message:
+          type: boolean
+          description: Optional. If true, posts the message synchronously and returns the message ID.
+          example: true
+    thread-creation-response:
+      type: object
+      description: Response returned after creating a thread.
+      properties:
+        message_id:
+          type: string
+          description: ID of the created thread message.
+          example: '1275417686584_20804595296'
+    get-threads-payload:
+      type: object
+      description: Request parameters to retrieve threads from a channel.
+      properties:
+        next_token:
+          type: string
+          description: Used for pagination. Pass the next_token received in the previous API response to get the next page.
+          example: MTV8MTYxNjEzNTI3ODYzNnwxNzc1OTk4MDAxMTcwMDczMzAx
+        limit:
+          type: string
+          description: Maximum number of threads to return in the response.
+          example: '50'
+    auto-follow-threads-payload:
+      type: object
+      description: Request body to enable or disable auto-follow for threads in a channel.
+      properties:
+        auto_follow_threads:
+          type: string
+          description: |
+            Set the auto-follow status for threads in the channel.<br>
+            <b>Allowed values</b>:<br>
+             <ul>
+              <li>enable - Automatically follow all threads created in the channel.</li>
+              <li>disable - Do not automatically follow threads. Users will need to manually follow threads they are interested in.</li>
+            </ul>
+          example: enable
+    add-followers-payload:
+      type: object
+      description: Request body to add followers to a thread.
+      required:
+        - user_ids
+      properties:
+        user_ids:
+          type: array
+          description: List of user IDs to add as followers to the thread.
+          items:
+            type: string
+            description: Unique identifier of a user to be added as a follower.
+          example:
+            - '15067889'
+            - '35068981'
+            - '5120923'
+    remove-followers-payload:
+      type: object
+      description: Request body to remove followers from a thread.
+      required:
+        - user_ids
+      properties:
+        user_ids:
+          type: array
+          description: List of user IDs to remove from followers of the thread.
+          items:
+            type: string
+            description: Unique identifier of a user to be removed from the thread.
+          example:
+            - '15067889'
+            - '35068981'
+            - '5120923'
+    update-state-of-thread-request:
+      type: object
+      description: Request body to update the state of a thread (open or closed).
+      required:
+        - action
+      properties:
+        action:
+          type: string
+          description: |
+            Action to update the thread state.<br>
+            <b>Allowed values</b>:<br>
+             <ul>
+              <li>reopen - Reopen a closed thread.</li>
+              <li>close - Close an open thread to prevent new messages from being added.</li>
+              <li>follow - Follow the thread to receive notifications for new messages.</li>
+              <li>unfollow - Unfollow the thread to stop receiving notifications for new messages.</li>
+            </ul> 
+          example: close
+    auto-follow-threads-response:
+      type: object
+      description: Response returned after updating auto-follow settings for threads.
+      properties:
+        status:
+          type: string
+          description: Current auto-follow status of the channel.
+          example: enabled
+    get-threads-response:
+      type: object
+      description: Response containing the list of threads in a channel.
+      properties:
+        url:
+          type: string
+          description: API endpoint for fetching threads.
+          example: /api/v3/threads
+        next_token:
+          type: string
+          description: Token for pagination to retrieve next set of threads.
+          example: MTV8MTYxNjEzNTI3ODYzNnwxNzc1OTk4MDAxMTcwMDczMzAx
+        type:
+          type: string
+          description: Type of response.
+          example: chat_thread
+        sync_token:
+          type: string
+          description: Token for synchronizing thread data.
+          example: MTV8MTYyODgzNTQ3OTkyOHwxNzc1OTk4MDAxMTg2NzU5NDUx
+        data:
+          type: array
+          description: List of threads.
+          items:
+            type: object
+            properties:
+              parent_chat_id:
+                type: string
+                description: ID of the parent chat.
+                example: CT_9001245010012354810_3467821
+              is_follower:
+                type: boolean
+                description: Indicates if the current user is following this thread.
+                example: true
+              follower_count:
+                type: integer
+                description: Number of followers of the thread.
+                example: 5
+              chat_id:
+                type: string
+                description: ID of the thread chat.
+                example: CT_9001245010012354810_3467821-T-9001245010938461210
+              last_message_information:
+                type: object
+                description: Details of the last message in the thread.
+                properties:
+                  sender_id:
+                    type: string
+                    example: '45321098'
+                  message_type:
+                    type: string
+                    example: text
+                  time:
+                    type: string
+                    format: date-time
+                    example: '2024-12-12T10:45:00+05:30'
+                  text:
+                    type: string
+                    example: Final report has been uploaded to the portal.
+                  sender_name:
+                    type: string
+                    example: Olivia Palmer
+              title:
+                type: string
+                description: Thread title.
+                example: Final Report Submission
+              thread_message_id:
+                type: string
+                description: Unique message ID for the thread.
+                example: 1702119024356%2097654301123490
+              parent_message_sender:
+                type: string
+                description: User ID of the parent message sender.
+                example: '673892104'
+              thread_state:
+                type: string
+                enum:
+                  - open
+                  - closed
+                description: State of the thread.
+                example: open
+    get-main-message-response:
+      type: object
+      description: Response containing the details of a main message and its thread information.
+      properties:
+        parent_resource_id:
+          type: string
+          description: Resource ID of the parent entity.
+          example: engineering-updates
+        sender:
+          type: object
+          description: Information about the sender of the message.
+          properties:
+            name:
+              type: string
+              example: Ryan West
+            id:
+              type: string
+              example: '855727961'
+        mentions:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: '@Scott Fisher'
+              id:
+                type: string
+                example: '855727962'
+              type:
+                type: string
+                example: user
+        thread_information:
+          type: object
+          description: Additional thread information.
+          properties:
+            thread_message_id:
+              type: string
+              example: 1760000012345%201234567890
+            title:
+              type: string
+              example: Customer onboarding latency issue
+            follower_count:
+              type: integer
+              example: 3
+            message_count:
+              type: integer
+              example: 18
+            chat_id:
+              type: string
+              example: CT_2242125513190139257_855711548-T-2263887074117538898
+        id:
+          type: string
+          example: '1760000012345_1234567890'
+        time:
+          type: string
+          format: date-time
+          example: '2026-05-28T10:36:48+00:00'
+        thread_state_information:
+          type: object
+          description: State information of the thread.
+          properties:
+            thread_state:
+              type: string
+              example: open
+        type:
+          type: string
+          example: text
+        content:
+          type: object
+          properties:
+            text:
+              type: string
+              example: The customer onboarding workflow is intermittently delayed. Please share logs and mitigation updates in this thread.
+        is_pinned:
+          type: boolean
+          example: false
+  securitySchemes:
+    Cliq_Auth:
+      type: oauth2
+      x-authorization-example: Bearer 1000.41d9xxxxxxxxxxxxxxxxxxxxxxxxc2d1.8fccxxxxxxxxxxxxxxxxxxxxxxxx125f
+      flows:
+        implicit:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          scopes:
+            ZohoCliq.Webhooks.CREATE: Post messages to your conversations directly or by using incoming webhooks
+            ZohoCliq.Channels.UPDATE: Update Channels
+            ZohoCliq.Chats.UPDATE: Modify Chats
+            ZohoCliq.Chats.DELETE: Delete Chats
+            ZohoCliq.Chats.READ: Read Chats
+            ZohoCliq.Messages.READ: Read messages

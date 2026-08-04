@@ -1,0 +1,1997 @@
+openapi: 3.0.0
+info:
+  title: Message Actions
+  version: '3.0'
+  description: |
+    <p>Message Actions are custom contextual actions that appear in the right-click (or long-press on mobile) context menu of individual chat messages. When a user selects an action, the configured handler executes with the selected message as its input - enabling workflows like ticket creation, message translation, content archiving, and more, directly from within a conversation.</p> <p>For more information, refer to the <b><a href="https://www.zoho.com/cliq/help/platform/message-actions.html" target="_blank">Message Actions Help Documentation</a></b>.</p> <p><b>Key Concepts</b></p> <ul>
+      <li><b>Trigger</b>: A message action fires when a user right-clicks (or long-presses) a message and selects the action from the context menu.</li>
+      <li><b>message_types</b>: Controls which message types the action is available for - <code>text</code>, <code>link</code>, or <code>attachment</code>.</li>
+      <li><b>multi_selectable</b>: When <code>true</code>, allows the action to be applied to multiple selected messages at once.</li>
+    </ul> <p><b>Action Scope</b></p> <table style="border-collapse: collapse; width: 100%;">
+      <tr>
+        <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Scope</th>
+        <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Visibility</th>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>organization</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Available to all users in the organization.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>team</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Restricted to members of the specified teams.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>personal</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Visible only to the creator.</td>
+      </tr>
+    </table> <p><b>What can you do with the Message Actions API?</b></p> <p>With the Message Actions API, you can programmatically create and manage message actions, configure their execution handlers, control scope and message type filters, and retrieve action details - all without using the Cliq Developer console.</p> <p>Each message action has an <code>execution_type</code> that determines how its handler runs when triggered. The Message Actions API supports two execution types:</p> <p id="deluge-actions"><b>Deluge Message Actions (default)</b><br> Handler logic is written in Deluge and runs entirely within Zoho's platform. The script receives full message context as input.</p> <ul>
+      <li>If <code>execution_type</code> is not specified, it defaults to <code>deluge</code>.</li>
+      <li>Handler logic is defined using the <code>script</code> field when creating or updating the <code>execution_handler</code>.</li>
+      <li>Suitable for actions that perform operations within the Zoho ecosystem.</li>
+    </ul> <p id="webhook-actions"><b>Webhook Message Actions</b><br> When a user triggers the action, Zoho Cliq sends an HTTP POST request to your <code>execution_url</code> containing the event payload. Your server processes it and returns a response that Cliq acts upon.</p> <ul>
+      <li>To create a Webhook message action, set <code>execution_type</code> to <code>webhook</code> and provide the <code>execution_url</code>.</li>
+      <li>Handler permissions (<code>attachments</code>, <code>chat</code>, <code>location</code>, <code>message</code>, <code>user</code>) control which data attributes are included in the webhook payload sent to your server.</li>
+      <li>Ideal for actions that need to integrate with external ticketing systems, translators, databases, or custom services.</li>
+    </ul>
+externalDocs:
+  description: Find out more about Zoho Cliq Platform APIs
+  url: https://www.zoho.com/cliq/help/platform/getting-started-with-cliq-platform.html
+servers:
+  - url: https://cliq.zoho.com/api/v3
+    description: Zoho Cliq US DC
+tags:
+  - name: messageactions
+    description: Message Actions Module
+paths:
+  /messageactions:
+    post:
+      summary: Create a new message action
+      operationId: create_a_new_message_action
+      description: |
+        <a id="create_a_new_message_action"></a>
+        <p>
+          Create a new Message Action. Message actions appear in the right-click / long-press context menu for individual chat messages. When a user selects the action, the configured handler executes with the selected message as input.
+        </p>
+        <p>
+          Message Actions support two execution types:
+        </p>
+        <ul>
+          <li><b>Deluge</b> (default): Handler logic runs on Zoho's platform via Deluge scripts. The script receives full message context including content, sender, and chat details.</li>
+          <li><b>Webhook</b>: When the action is triggered, Cliq sends a POST request to your <code>execution_url</code> with the event payload. Your server processes it and returns the response. Supports all 5 permissions (<code>attachments</code>, <code>chat</code>, <code>location</code>, <code>message</code>, <code>user</code>).</li>
+        </ul>
+        <p>
+          Pass <code>execution_type: "webhook"</code> and a valid <code>execution_url</code> to create a Webhook message action. If <code>execution_type</code> is omitted, it defaults to <code>deluge</code>.
+        </p>
+        <br>
+        <p>
+          <b>Threshold limit</b>: 30 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">msgaction_creation_limit_exceeded</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Organization has reached the maximum number of message actions.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">msgaction_name_already_exists</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">A message action with this name already exists.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">invalid_inputs</span></td>
+                    <td style="padding:10px 18px;">Request body validation failed.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters: []
+      requestBody:
+        description: Creates a message action. Set `execution_type` to `webhook` and include `execution_url` for a Webhook message action.
+        required: true
+        content:
+          application/json:
+            examples:
+              deluge_action:
+                summary: Deluge message action
+                value:
+                  name: Create Ticket
+                  hint: Convert this message into a support ticket
+                  scope: organization
+                  message_types:
+                    - text
+                    - attachment
+                  execution_type: deluge
+              webhook_action:
+                summary: Webhook message action
+                value:
+                  name: Log to Jira
+                  hint: Send this message to Jira as an issue
+                  scope: organization
+                  message_types:
+                    - text
+                    - link
+                    - attachment
+                  execution_type: webhook
+                  execution_url: https://api.yourcompany.com/cliq/messageactions/handler
+              team_scope:
+                summary: Team-scoped message action
+                value:
+                  name: Bulk Archive
+                  hint: Archive selected messages
+                  scope: team
+                  team_ids:
+                    - 100001
+                    - 100002
+                  multi_selectable: true
+                  message_types:
+                    - text
+              personal_action:
+                summary: Personal scope action
+                value:
+                  name: Translate
+                  hint: Translate selected message to English
+                  scope: personal
+                  message_types:
+                    - text
+            schema:
+              $ref: '#/components/schemas/v3-msgaction-create'
+      responses:
+        '200':
+          description: Message action created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageActionResponse'
+              examples:
+                deluge_action:
+                  summary: Deluge message action response
+                  value:
+                    url: /api/v3/messageactions
+                    type: messageaction
+                    data:
+                      name: Create Ticket
+                      id: '53719000002124010'
+                      hint: Convert this message into a support ticket
+                      scope: organization
+                      multi_selectable: false
+                      message_types:
+                        - text
+                        - attachment
+                      handlers:
+                        - type: execution_handler
+                      creator:
+                        name: James
+                        id: '65113112'
+                      execution_type: deluge
+                      status: enabled
+                      type: custom
+                webhook_action:
+                  summary: Webhook message action response
+                  value:
+                    url: /api/v3/messageactions
+                    type: messageaction
+                    data:
+                      name: Log to Jira
+                      id: '53719000002124011'
+                      hint: Send this message to Jira as an issue
+                      scope: organization
+                      multi_selectable: false
+                      message_types:
+                        - text
+                        - link
+                        - attachment
+                      handlers:
+                        - type: execution_handler
+                      creator:
+                        name: James
+                        id: '65113112'
+                      execution_type: webhook
+                      execution_url: https://api.yourcompany.com/cliq/messageactions/handler
+                      status: enabled
+                      type: custom
+                team_scope:
+                  summary: Team-scoped message action response
+                  value:
+                    url: /api/v3/messageactions
+                    type: messageaction
+                    data:
+                      name: Bulk Archive
+                      id: '53719000002124012'
+                      hint: Archive selected messages
+                      scope: team
+                      team_ids:
+                        - 100001
+                        - 100002
+                      multi_selectable: true
+                      message_types:
+                        - text
+                      handlers:
+                        - type: execution_handler
+                      creator:
+                        name: James
+                        id: '65113112'
+                      execution_type: deluge
+                      status: enabled
+                      type: custom
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.MessageActions.CREATE
+      tags:
+        - messageactions
+    get:
+      summary: List all message actions
+      operationId: list_all_message_actions
+      description: |
+        Retrieve a paginated list of all message Actions available to the user.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 30 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+      parameters:
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/base64_regex'
+          in: query
+          name: sync_token
+          description: |
+            Sync token for incremental synchronization. To fetch only message actions created or updated since the last request, provide the <code>sync_token</code> value from the previous response. For the initial request, omit this parameter or set it to null to retrieve all message actions.
+          required: false
+        - schema:
+            description: ''
+            type: integer
+          in: query
+          name: limit
+          description: |
+            Maximum number of message actions to return per page.<br>
+            <b>Default</b>: 20<br>
+            <b>Maximum limit</b>: 100
+          required: false
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/base64_regex'
+          in: query
+          name: next_token
+          description: |
+            Token for fetching the next page of results. If the response includes a <code>next_token</code>, use its value in this parameter to retrieve the next page. Omit this parameter or set it to null if there are no more pages to fetch.
+          required: false
+      responses:
+        '200':
+          description: List of message actions returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageActionListItemsResponse'
+              example:
+                url: /api/v3/messageactions
+                type: messageaction
+                sync_token: NTB8MTc3NzQzMjI3NjY1OHw1MzcxOTAwMDAwMjEyNDAxMA==
+                data:
+                  - multi_selectable: true
+                    name: Create Ticket
+                    id: '53719000002124010'
+                    handlers:
+                      - type: execution_handler
+                    creator:
+                      name: James
+                      id: '65113112'
+                    execution_type: deluge
+                    hint: Create a helpdesk ticket
+                    status: enabled
+                    type: custom
+                    message_types:
+                      - text
+                      - link
+                    scope: organization
+                  - multi_selectable: false
+                    name: Translate
+                    id: '53719000002124013'
+                    handlers:
+                      - type: execution_handler
+                    creator:
+                      name: James
+                      id: '65113112'
+                    execution_type: deluge
+                    hint: Translate selected message to English
+                    status: enabled
+                    type: custom
+                    message_types:
+                      - text
+                    scope: personal
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.MessageActions.READ
+      tags:
+        - messageactions
+  /messageactions/{MESSAGE_ACTION_ID}:
+    patch:
+      summary: Update an existing message action
+      operationId: update_an_existing_message_act
+      description: |
+        Update the configuration of an existing message action.
+        <p>
+          All fields are optional. Only the fields you provide will be updated; omitted fields remain unchanged.
+        </p>
+        <p>
+          For <b>Webhook message actions</b>, you can update the <code>execution_url</code> independently at any time to redirect the action to a new server endpoint.
+        </p>
+        <br>
+        <p>
+          <b>Threshold limit</b>: 10 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">msgaction_not_found</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Message action with the specified ID was not found.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">msgaction_name_already_exists</span></td>
+                    <td style="padding:10px 18px;">Another message action with this name already exists.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/longid_regex'
+          example: MESSAGE_ACTION_ID
+          in: path
+          name: MESSAGE_ACTION_ID
+          description: |
+            Unique numeric identifier of the message action.<br>
+            To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#MESSAGE_ACTION_ID">MESSAGE_ACTION_ID</a> in the Glossary page.'
+          required: true
+      requestBody:
+        description: Updates a message action. Send only fields to change. For Webhook actions, use `execution_url` to update the server endpoint.
+        required: true
+        content:
+          application/json:
+            examples:
+              update_details:
+                summary: Update action details
+                value:
+                  name: Create Ticket
+                  hint: Convert this message into a support ticket - updated
+                  scope: organization
+                  multi_selectable: false
+                  message_types:
+                    - text
+                    - link
+                    - attachment
+              update_webhook_url:
+                summary: Update webhook execution URL
+                value:
+                  execution_url: https://api.yourcompany.com/cliq/messageactions/updated-handler
+              update_scope_to_team:
+                summary: Update scope to team
+                value:
+                  scope: team
+                  team_ids:
+                    - 100001
+                    - 100002
+                  multi_selectable: true
+                  message_types:
+                    - text
+            schema:
+              $ref: '#/components/schemas/v3-msgaction-edit'
+      responses:
+        '200':
+          description: Message action updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageActionUpdateResponse'
+              examples:
+                update_all_fields:
+                  summary: Update All Fields response
+                  value:
+                    url: /api/v3/messageactions/53719000002124010
+                    type: messageaction
+                    data:
+                      name: Create Ticket
+                      id: '53719000002124010'
+                      hint: Convert this message into a support ticket
+                      scope: organization
+                      multi_selectable: false
+                      message_types:
+                        - text
+                        - link
+                        - attachment
+                      handlers:
+                        - type: execution_handler
+                      creator:
+                        name: James
+                        id: '65113112'
+                      execution_type: deluge
+                      status: enabled
+                      type: custom
+                update_hint_only:
+                  summary: Update Hint Only response
+                  value:
+                    url: /api/v3/messageactions/53719000002124011
+                    type: messageaction
+                    data:
+                      name: Flag Message
+                      id: '53719000002124011'
+                      hint: Flag this message for review
+                      scope: organization
+                      multi_selectable: false
+                      message_types:
+                        - text
+                        - link
+                        - attachment
+                      handlers:
+                        - type: execution_handler
+                      creator:
+                        name: James
+                        id: '65113112'
+                      execution_type: deluge
+                      status: enabled
+                      type: custom
+                update_scope_to_team:
+                  summary: Update Scope to Team response
+                  value:
+                    url: /api/v3/messageactions/53719000002124012
+                    type: messageaction
+                    data:
+                      name: Bulk Archive
+                      id: '53719000002124012'
+                      hint: Archive selected messages
+                      scope: team
+                      team_ids:
+                        - 100001
+                        - 100002
+                      multi_selectable: true
+                      message_types:
+                        - text
+                      handlers:
+                        - type: execution_handler
+                      creator:
+                        name: James
+                        id: '65113112'
+                      execution_type: deluge
+                      status: enabled
+                      type: custom
+                update_message_types:
+                  summary: Update Message Types response
+                  value:
+                    url: /api/v3/messageactions/53719000002124013
+                    type: messageaction
+                    data:
+                      name: Translate
+                      id: '53719000002124013'
+                      hint: Translate selected message to English
+                      scope: personal
+                      multi_selectable: false
+                      message_types:
+                        - text
+                      handlers:
+                        - type: execution_handler
+                      creator:
+                        name: James
+                        id: '65113112'
+                      execution_type: deluge
+                      status: enabled
+                      type: custom
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.MessageActions.UPDATE
+      tags:
+        - messageactions
+    get:
+      summary: Get details of a specific message action
+      operationId: get_details_of_a_specific_mess
+      description: |
+        Retrieve details of a specific message action.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 10 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">msgaction_not_found</span></td>
+                    <td style="padding:10px 18px;">Message action with the specified ID was not found.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/longid_regex'
+          example: MESSAGE_ACTION_ID
+          in: path
+          name: MESSAGE_ACTION_ID
+          description: Unique numeric identifier of the message action. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#MESSAGE_ACTION_ID">MESSAGE_ACTION_ID</a> in the Glossary page.
+          required: true
+      responses:
+        '200':
+          description: Message action details returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageActionResponse'
+              example:
+                url: /api/v3/messageactions/53719000002124010
+                type: messageaction
+                data:
+                  multi_selectable: true
+                  name: Create Ticket
+                  id: '53719000002124010'
+                  handlers:
+                    - type: execution_handler
+                  creator:
+                    name: James
+                    id: '65113112'
+                  execution_type: deluge
+                  hint: Create a helpdesk ticket
+                  status: enabled
+                  type: custom
+                  message_types:
+                    - text
+                    - link
+                  scope: organization
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.MessageActions.READ
+      tags:
+        - messageactions
+    delete:
+      summary: Delete a specific message action
+      operationId: delete_a_specific_message_acti
+      description: |
+        Permanently delete a Message Action and its associated handler.Deletion is irreversible and the message action will be removed from all message context menus.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 10 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">msgaction_not_found</span></td>
+                    <td style="padding:10px 18px;">Message action with the specified ID was not found.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/longid_regex'
+          example: MESSAGE_ACTION_ID
+          in: path
+          name: MESSAGE_ACTION_ID
+          description: Unique numeric identifier of the message action. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#MESSAGE_ACTION_ID">MESSAGE_ACTION_ID</a> in the Glossary page.
+          required: true
+      responses:
+        '204':
+          description: No Content. Message action deleted successfully.
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.MessageActions.DELETE
+      tags:
+        - messageactions
+  /messageactions/{MESSAGE_ACTION_ID}/handlers/{HANDLER_TYPE}:
+    patch:
+      summary: Update a handler for a specific message action
+      operationId: updateMessageActionHandler
+      description: |
+        Update a handler for a specific message action. What you provide depends on the action's execution type:
+        <ul>
+          <li><b>Deluge message action</b>: Update the <code>script</code> attribute with the revised Deluge source code to execute when the action fires.</li>
+          <li><b>Webhook message action</b>: Update the <code>permissions</code> array to change which data attributes are forwarded to your server. All 5 permissions are available for message action handlers.</li>
+        </ul>
+        <br>
+        <p>
+          <b>Threshold limit</b>: 10 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">execution_handler_update_failed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Failed to update the execution handler.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">execution_handler_not_found</span></td>
+                    <td style="padding:10px 18px;">Specified handler was not found for this message action.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/HANDLER_TYPE_regex'
+          example: HANDLER_TYPE
+          in: path
+          name: HANDLER_TYPE
+          description: Type of the message action handler. The only supported value is <code>execution_handler</code>, which is triggered when the message action is invoked.
+          required: true
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/longid_regex'
+          example: MESSAGE_ACTION_ID
+          in: path
+          name: MESSAGE_ACTION_ID
+          description: Unique numeric identifier of the message action. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#MESSAGE_ACTION_ID">MESSAGE_ACTION_ID</a> in the Glossary page.
+          required: true
+      requestBody:
+        description: Updates a message-action handler. For Deluge actions, provide `script`. For Webhook actions, provide `permissions`.
+        required: true
+        content:
+          application/json:
+            examples:
+              update_script_deluge:
+                summary: Update script - Deluge message action
+                value:
+                  script: |
+                    response = Map();
+                    message = info.get("message").get("text");
+                    response.put("text", "Ticket created for: " + message);
+                    return response;
+              update_permissions_webhook:
+                summary: Update permissions - Webhook message action
+                value:
+                  permissions:
+                    - chat
+                    - message
+                    - user
+                    - attachments
+            schema:
+              $ref: '#/components/schemas/v3-exehandler-edit'
+      responses:
+        '200':
+          description: Message action handler updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/updateMessageActionHandlerResponse'
+              examples:
+                update_script_deluge:
+                  summary: Script updated - Deluge message action
+                  value:
+                    url: /api/v3/messageactions/53719000002124010/handlers/execution_handler
+                    type: execution_handler
+                    data:
+                      name: execution_handler
+                      script: |
+                        response = Map();
+                        message = info.get("message").get("text");
+                        response.put("text", "Ticket created for: " + message);
+                        return response;
+                      function_id: '53719000002124010'
+                update_permissions_webhook:
+                  summary: Permissions updated - Webhook message action
+                  value:
+                    url: /api/v3/messageactions/53719000002124011/handlers/execution_handler
+                    type: execution_handler
+                    data:
+                      name: execution_handler
+                      permissions:
+                        - chat
+                        - message
+                        - user
+                        - attachments
+                      function_id: '53719000002124011'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.MessageActions.UPDATE
+      tags:
+        - messageactions
+    get:
+      summary: Get details of a specific message action handler
+      operationId: getMessageActionHandler
+      description: |
+        Retrieve the configuration and Deluge source code of the execution handler attached to a specific Message Action.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 10 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">execution_handler_get_failed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Failed to fetch the execution handler.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">execution_handler_not_found</span></td>
+                    <td style="padding:10px 18px;">Specified handler was not found for this message action.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/HANDLER_TYPE_regex'
+          example: HANDLER_TYPE
+          in: path
+          name: HANDLER_TYPE
+          description: Type of the message action handler. The only supported value is <code>execution_handler</code>, which is triggered when the message action is invoked.
+          required: true
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/longid_regex'
+          example: MESSAGE_ACTION_ID
+          in: path
+          name: MESSAGE_ACTION_ID
+          description: Unique numeric identifier of the message action. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#MESSAGE_ACTION_ID">MESSAGE_ACTION_ID</a> in the Glossary page.
+          required: true
+      responses:
+        '200':
+          description: Message action handler details returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageActionHandlerResponse'
+              example:
+                url: /api/v3/messageactions/53719000002124010/handlers/execution_handler
+                type: execution_handler
+                data:
+                  name: execution_handler
+                  script: |
+                    response = Map();
+                    message = info.get("message").get("text");
+                    response.put("text", "Ticket created for: " + message);
+                    return response;
+                  function_id: '53719000002124010'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.MessageActions.READ
+      tags:
+        - messageactions
+components:
+  schemas:
+    NoResponse:
+      type: object
+      description: Represents an empty successful response where no payload is returned.
+      properties:
+        Response Code:
+          type: string
+          example: 204 No response
+    MessageActionResponse:
+      type: object
+      description: Response schema for message action create, get, and update operations.
+      properties:
+        url:
+          type: string
+          description: API endpoint URL for the message action resource.
+          example: /api/v3/messageactions
+        type:
+          type: string
+          description: Resource type.
+          example: messageaction
+        data:
+          type: object
+          description: Message action details.
+          properties:
+            multi_selectable:
+              type: boolean
+              example: true
+            name:
+              type: string
+              example: Create Ticket
+            id:
+              type: string
+              example: '53719000002124010'
+            handlers:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+            creator:
+              type: object
+              properties:
+                name:
+                  type: string
+                id:
+                  type: string
+            execution_type:
+              type: string
+              example: deluge
+            hint:
+              type: string
+              example: Create a helpdesk ticket
+            status:
+              type: string
+              example: enabled
+            type:
+              type: string
+              example: custom
+            message_types:
+              type: array
+              items:
+                type: string
+            scope:
+              type: string
+              example: organization
+      example:
+        url: /api/v3/messageactions
+        type: messageaction
+        data:
+          multi_selectable: true
+          name: Create Ticket
+          id: '53719000002124010'
+          handlers:
+            - type: execution_handler
+          creator:
+            name: James
+            id: '65113112'
+          execution_type: deluge
+          hint: Create a helpdesk ticket
+          status: enabled
+          type: custom
+          message_types:
+            - text
+            - link
+          scope: organization
+    GenericResponse:
+      type: object
+      description: Generic API response envelope.
+      properties:
+        url:
+          type: string
+          example: /api/v3/resource
+        type:
+          type: string
+          example: object
+        data:
+          type: object
+          additionalProperties: true
+    updateMessageActionHandlerResponse:
+      type: object
+      description: Response schema for message action handler update operations.
+      properties:
+        url:
+          type: string
+          description: API endpoint URL for the handler resource.
+        type:
+          type: string
+          description: Handler type.
+          example: execution_handler
+        data:
+          type: object
+          additionalProperties: true
+          properties:
+            name:
+              type: string
+              description: Handler name.
+            script:
+              type: string
+              description: Updated Deluge script source code.
+            function_id:
+              type: string
+              description: Unique identifier of the underlying function associated with this handler.
+      example:
+        url: /api/v3/messageactions/53719000002124010/handlers/execution_handler
+        type: execution_handler
+        data:
+          name: execution_handler
+          script: |
+            response = Map();
+            message = info.get("message").get("text");
+            response.put("text", "Ticket created for: " + message);
+            return response;
+          function_id: '53719000002124010'
+    MessageActionUpdateResponse:
+      type: object
+      description: Response schema for message action update operations.
+      properties:
+        url:
+          type: string
+          description: API endpoint URL for the updated message action resource.
+          example: /api/v3/messageactions/53719000002124010
+        type:
+          type: string
+          description: Resource type.
+          example: messageaction
+        data:
+          type: object
+          description: Updated message action details.
+          properties:
+            name:
+              type: string
+            id:
+              type: string
+            hint:
+              type: string
+            scope:
+              type: string
+            multi_selectable:
+              type: boolean
+            message_types:
+              type: array
+              items:
+                type: string
+            team_ids:
+              type: array
+              items:
+                type: integer
+            handlers:
+              type: array
+            creator:
+              type: object
+            execution_type:
+              type: string
+            status:
+              type: string
+            type:
+              type: string
+      example:
+        url: /api/v3/messageactions/53719000002124010
+        type: messageaction
+        data:
+          name: Create Ticket
+          id: '53719000002124010'
+          hint: Convert this message into a support ticket
+          scope: organization
+          multi_selectable: false
+          message_types:
+            - text
+            - link
+            - attachment
+          handlers:
+            - type: execution_handler
+          creator:
+            name: James
+            id: '65113112'
+          execution_type: deluge
+          status: enabled
+          type: custom
+    MessageActionListItemsResponse:
+      type: object
+      description: Response schema for listing message actions.
+      properties:
+        url:
+          type: string
+          example: /api/v3/messageactions
+        type:
+          type: string
+          example: messageaction
+        sync_token:
+          type: string
+          description: Token for incremental sync. Pass this in the next request to retrieve only message actions updated since this response.
+        next_token:
+          type: string
+          description: Pagination token for the next page of results.
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              id:
+                type: string
+              hint:
+                type: string
+              scope:
+                type: string
+              multi_selectable:
+                type: boolean
+              message_types:
+                type: array
+                items:
+                  type: string
+              handlers:
+                type: array
+              creator:
+                type: object
+              execution_type:
+                type: string
+              status:
+                type: string
+              type:
+                type: string
+      example:
+        url: /api/v3/messageactions
+        type: messageaction
+        sync_token: NTB8MTc3NzQzMjI3NjY1OHw1MzcxOTAwMDAwMjEyNDAxMA==
+        data:
+          - multi_selectable: true
+            name: Create Ticket
+            id: '53719000002124010'
+            handlers:
+              - type: execution_handler
+            creator:
+              name: James
+              id: '65113112'
+            execution_type: deluge
+            hint: Create a helpdesk ticket
+            status: enabled
+            type: custom
+            message_types:
+              - text
+              - link
+            scope: organization
+          - multi_selectable: false
+            name: Translate
+            id: '53719000002124013'
+            handlers:
+              - type: execution_handler
+            creator:
+              name: James
+              id: '65113112'
+            execution_type: deluge
+            hint: Translate selected message to English
+            status: enabled
+            type: custom
+            message_types:
+              - text
+            scope: personal
+    MessageActionListResponse:
+      type: object
+      description: Response schema for listing message actions.
+      properties:
+        deleted:
+          type: array
+          items:
+            type: string
+        url:
+          type: string
+          example: /api/v3/messageactions
+        next_token:
+          type: string
+        type:
+          type: string
+          example: messageaction
+        total_count:
+          type: integer
+        sync_token:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+    MessageActionHandlerResponse:
+      type: object
+      description: Response schema for message action handler operations.
+      properties:
+        url:
+          type: string
+        type:
+          type: string
+          example: execution_handler
+        data:
+          type: object
+          additionalProperties: true
+    HANDLER_TYPE_regex:
+      type: string
+      description: Type of the message action handler. Message actions support only one handler type&#58; <code>execution_handler</code>, which is triggered when the action is invoked.
+      enum:
+        - execution_handler
+    longid_regex:
+      type: string
+      description: Numeric long integer identifier used to reference platform components such as Commands, Functions, Widgets, Message Actions, Schedulers, and Extensions.
+    v3-msgaction-create:
+      type: object
+      description: Payload for creating a message action.
+      required:
+        - name
+        - hint
+      properties:
+        execution_type:
+          type: string
+          enum:
+            - deluge
+            - webhook
+          description: |
+            Defines how the message action executes its handler.<br>
+            <ul>
+              <li><code>deluge</code>: Handler logic runs on Zoho's platform via Deluge scripts. Default when omitted.</li>
+              <li><code>webhook</code>: When the action is triggered, Cliq sends a POST request to your <code>execution_url</code>.</li>
+            </ul>
+          example: deluge
+        execution_url:
+          type: string
+          maxLength: 225
+          description: |
+            The URL that Zoho Cliq will POST handler events to when the message action is triggered.<br>
+            <b>Required</b> when <code>execution_type</code> is <code>webhook</code>.<br>
+            <b>Maximum length</b>: 225 characters.
+          example: https://api.yourcompany.com/cliq/messageactions/handler
+        name:
+          type: string
+          maxLength: 30
+          description: |
+            Name of the message action. This is the text shown to users in the message action menu.<br>
+            <b>Maximum length:</b> 30 characters.
+        hint:
+          type: string
+          maxLength: 128
+          description: |
+            Hint text displayed below the message action name in the menu to provide additional context to users.<br>
+            <b>Maximum length:</b> 128 characters.
+        scope:
+          type: string
+          enum:
+            - organization
+            - team
+            - personal
+          description: |
+            Access level for the message action, determining its visibility and availability to users.<br>
+            Allowed values are:<br>
+            <ul>
+              <li><code>organization</code>: Visible and accessible to all users within the organization.</li>
+              <li><code>team</code>: Visible and accessible only to members of specified teams. Requires <a href="/cliq/help/restapi/v3/glossary/#TEAM_ID"><code>team_ids</code></a> field.</li>
+              <li><code>personal</code>: Visible and accessible only to the creator, but can be shared with other users by adding them as collaborators.</li>
+            </ul>
+        team_ids:
+          type: array
+          maxItems: 4
+          description: |
+            List of <a href="/cliq/help/restapi/v3/glossary/#TEAM_ID">team_ids</a> that have access to the message action when <code>scope</code> is set to <code>team</code>. Each ID corresponds to a team within the organization.<br>
+            <b>Maximum items:</b> 4 team IDs can be specified when <code>scope</code> is <code>team</code>.
+          items:
+            type: integer
+        multi_selectable:
+          type: boolean
+          description: |
+            Determines whether the message action can be applied to multiple messages at once. If set to <code>true</code>, users can select multiple messages and invoke the action on all selected messages simultaneously. If <code>false</code>, the action can only be applied to one message at a time.
+        image:
+          type: string
+          description: |
+            Base64-encoded string representing a custom icon image for the message action. This icon is displayed in the message action menu alongside the action name.
+        message_types:
+          type: array
+          minItems: 1
+          maxItems: 3
+          description: |
+            List of message types that the message action supports. This determines which types of messages the action can be applied to. Allowed values are:<br>
+            <ul>
+              <li><code>text</code>: The action can be applied to text messages.</li>
+              <li><code>link</code>: The action can be applied to messages containing links.</li>
+              <li><code>attachment</code>: The action can be applied to messages with attachments.</li>
+            </ul>
+            <b>Minimum items:</b> At least 1 message type must be specified.<br>
+          items:
+            type: string
+            enum:
+              - text
+              - link
+              - attachment
+    textpattern_regex:
+      type: string
+      description: Free-text search string used to filter platform components by name in list and Marketplace search endpoints.
+    base64_regex:
+      type: string
+      description: Base64-encoded pagination or sync token used for cursor-based pagination and incremental data sync.
+    pf_component_search_scope_regex:
+      type: string
+      description: Scope filter for Marketplace search. Accepted values are "organisation" (org-created components) and "marketplace" (published extensions).
+    v3-exehandler-edit:
+      type: object
+      description: Payload for updating the message action execution handler. For Deluge actions, provide `script`. For Webhook actions, provide `permissions`.
+      properties:
+        script:
+          type: string
+          description: |
+            Updated Deluge script for the execution handler. This script is executed when the message action is invoked by users.<br>
+            <b>Maximum size:</b> 250KB.<br>
+            <b>Note:</b> Applicable only for <b>Deluge message actions</b>.
+        permissions:
+          type: array
+          maxItems: 5
+          description: |
+            Updated list of data attributes to forward to your server in the webhook payload.<br>
+            <b>Note:</b> Applicable only for <b>Webhook message actions</b>.<br>
+            Message action handlers support all 5 permissions.<br>
+            <b>Allowed values</b>:
+            <ul>
+              <li><code>chat</code>: Chat context (chat ID, type, participants).</li>
+              <li><code>message</code>: Message content and metadata.</li>
+              <li><code>user</code>: Sender's user profile details.</li>
+              <li><code>location</code>: Sender's location data.</li>
+              <li><code>attachments</code>: Attachment metadata and download info.</li>
+            </ul>
+          items:
+            type: string
+            enum:
+              - chat
+              - message
+              - user
+              - location
+              - attachments
+    v3-msgaction-edit:
+      type: object
+      description: Payload for updating a message action. All fields are optional; only the fields provided will be updated.
+      properties:
+        execution_url:
+          type: string
+          maxLength: 225
+          description: |
+            Updated server URL where Cliq will forward handler events. Applicable only for <b>Webhook message actions</b>.<br>
+            This field can be updated independently to redirect the action to a new endpoint.<br>
+            <b>Maximum length</b>: 225 characters.
+          example: https://api.yourcompany.com/cliq/messageactions/updated-handler
+        name:
+          type: string
+          maxLength: 30
+          description: |
+            Updated name of the message action shown to users in the message action menu.<br>
+            <b>Maximum length:</b> 30 characters.
+        hint:
+          type: string
+          maxLength: 128
+          description: |
+            Updated hint text displayed below the message action name in the menu to provide additional context to users.<br>
+            <b>Maximum length:</b> 128 characters.
+        scope:
+          type: string
+          enum:
+            - organization
+            - team
+            - personal
+          description: |
+            Updated access level for the message action, determining its visibility and availability to users.<br>
+            Allowed values are:<br>
+            <ul>
+              <li><code>organization</code>: Visible and accessible to all users within the organization.</li>
+              <li><code>team</code>: Visible and accessible only to members of specified teams. Requires <a href="/cliq/help/restapi/v3/glossary/#TEAM_ID"><code>team_ids</code></a> field.</li>
+              <li><code>personal</code>: Visible and accessible only to the creator, but can be shared with other users by adding them as collaborators.</li>
+            </ul>
+        team_ids:
+          type: array
+          maxItems: 4
+          description: |
+            Updated list of <a href="/cliq/help/restapi/v3/glossary/#TEAM_ID">team_ids</a> that have access to the message action when <code>scope</code> is set to <code>team</code>. Each ID corresponds to a team within the organization.<br>
+            <b>Maximum items:</b> 4 team IDs can be specified when <code>scope</code> is <code>team</code>.
+          items:
+            type: integer
+        multi_selectable:
+          type: boolean
+          description: |
+            Updated multi-selection behavior. If set to <code>true</code>, users can select multiple messages and invoke the action on all selected messages simultaneously. If <code>false</code>, the action can only be applied to one message at a time.
+        image:
+          type: string
+          description: |
+            Updated Base64-encoded string representing a custom icon image for the message action. This icon is displayed in the message action menu alongside the action name.
+        message_types:
+          type: array
+          minItems: 1
+          maxItems: 3
+          description: |
+            Updated list of message types that the message action supports. Allowed values are:<br>
+            <ul>
+              <li><code>text</code>: The action can be applied to text messages.</li>
+              <li><code>link</code>: The action can be applied to messages containing links.</li>
+              <li><code>attachment</code>: The action can be applied to messages with attachments.</li>
+            </ul>
+            <b>Minimum items:</b> At least 1 message type must be specified.<br>
+          items:
+            type: string
+            enum:
+              - text
+              - link
+              - attachment
+      example:
+        name: Create Ticket
+        hint: Convert this message into a support ticket
+        scope: organization
+        multi_selectable: false
+        message_types:
+          - text
+          - link
+          - attachment
+  securitySchemes:
+    Cliq_Auth:
+      type: oauth2
+      x-authorization-example: Bearer 1000.41d9xxxxxxxxxxxxxxxxxxxxxxxxc2d1.8fccxxxxxxxxxxxxxxxxxxxxxxxx125f
+      flows:
+        implicit:
+          authorizationUrl: ''
+          scopes:
+            ZohoCliq.MessageActions.UPDATE: Update message action configurations and manage message action handlers.
+            ZohoCliq.MessageActions.CREATE: Create new custom Message Actions.
+            ZohoCliq.MessageActions.READ: Read message action configurations, handlers, and execution logs.
+            ZohoCliq.MessageActions.DELETE: Permanently delete Message Actions and their handlers.

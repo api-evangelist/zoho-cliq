@@ -1,0 +1,2440 @@
+openapi: 3.0.0
+info:
+  title: Functions
+  version: '3.0'
+  description: |
+    <p>Functions are reusable, UI-triggered components in Zoho Cliq that execute when a user interacts with a UI element - clicking a button in a message, submitting or changing a form, or clicking a button inside a widget. Unlike commands or message actions which are user-text-driven, functions are driven by structured UI interactions.</p> <p>For more information, refer to the <b><a href="https://www.zoho.com/cliq/help/platform/functions.html" target="_blank">Functions Help Documentation</a></b>.</p> <p><b>Function Types</b></p> <p>The <code>function_type</code> field determines which UI trigger activates the function:</p> <table style="border-collapse: collapse; width: 100%;">
+      <tr>
+        <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">function_type</th>
+        <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Trigger</th>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>button</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Triggered when a user clicks a button inside a chat message.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>form</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Triggered by form interactions - view (render), field change, dynamic select, and submit events.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>widget_button</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Triggered when a user clicks a button rendered inside a Cliq widget.</td>
+      </tr>
+    </table> <p><b>Function Handlers</b></p> <p>Each function supports one or more handlers based on its type. Handlers define the logic executed at each stage of the UI interaction:</p> <table style="border-collapse: collapse; width: 100%;">
+      <tr>
+        <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Handler</th>
+        <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Applicable function_type</th>
+        <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Description</th>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>button_handler</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>button</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Executes when a button in a message is clicked.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>form_view_handler</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>form</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Renders the form UI when a user navigates to the form's permalink URL.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>form_submit_handler</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>form</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Executes when the user submits the form.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>form_change_handler</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>form</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Executes when a field value changes within the form.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>form_dynamic_select_handler</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>form</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Populates dynamic dropdown options within a form field.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>widget_button_handler</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>widget_button</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Executes when a button inside a Cliq widget is clicked.</td>
+      </tr>
+    </table> <p><b>What can you do with the Functions API?</b></p> <p>With the Functions API, you can programmatically create and manage functions, configure their handlers (Deluge scripts or webhook permissions), update function configurations, and retrieve function details - all without using the Cliq Developer console.</p> <p>Each function has an <code>execution_type</code> that defines how handlers run when a UI element is triggered. The Functions API supports two execution types:</p> <p id="deluge-functions"><b>Deluge Functions (default)</b><br> Handler logic is written in Deluge and runs entirely within Zoho's platform. No external server is required.</p> <ul>
+      <li>If <code>execution_type</code> is not specified, it defaults to <code>deluge</code>.</li>
+      <li>Handler logic is defined using the <code>script</code> field when creating or updating handlers.</li>
+      <li>Suitable for teams building UI-driven automations entirely within the Zoho platform.</li>
+    </ul> <p id="webhook-functions"><b>Webhook Functions</b><br> When a UI element is interacted with, Zoho Cliq sends an HTTP POST request to your <code>execution_url</code>. Your server processes the event and returns a response that Cliq renders back to the user.</p> <ul>
+      <li>To create a Webhook function, set <code>execution_type</code> to <code>webhook</code> and provide the <code>execution_url</code>.</li>
+      <li>Handler permissions (<code>chat</code>, <code>message</code>, <code>user</code>) control which data attributes are included in the webhook payload. Note: <code>location</code> and <code>attachments</code> are not available for function handlers.</li>
+      <li>Ideal for functions that need to integrate with external systems or require custom server-side processing.</li>
+    </ul>
+externalDocs:
+  description: Find out more about Zoho Cliq Platform APIs
+  url: https://www.zoho.com/cliq/help/platform/getting-started-with-cliq-platform.html
+servers:
+  - url: https://cliq.zoho.com/api/v3
+    description: Zoho Cliq US DC
+tags:
+  - name: Functions
+    description: Functions Module
+paths:
+  /functions:
+    post:
+      summary: Create a new function
+      operationId: create_a_new_function
+      description: |
+        <a id="create_a_new_function"></a>
+        <p>
+          Create a new Function in the Cliq platform. Functions are reusable UI-triggered components that execute when a user clicks a button, submits a form, or interacts with a widget button. The <code>function_type</code> determines the UI trigger.
+        </p>
+        <p>
+          Functions support two execution types:
+        </p>
+        <ul>
+          <li><b>Deluge</b> (default): Handler logic runs on Zoho's platform via Deluge scripts. Best for UI interactions within the Zoho ecosystem - approvals, form submissions, inline actions.</li>
+          <li><b>Webhook</b>: When a UI element is interacted with, Cliq sends a POST request to your <code>execution_url</code>. Your server processes the event and returns a response that Cliq renders back to the user. Supports <code>chat</code>, <code>message</code>, and <code>user</code> permissions.</li>
+        </ul>
+        <p>
+          Pass <code>execution_type: "webhook"</code> and a valid <code>execution_url</code> to create a Webhook function. If <code>execution_type</code> is omitted, it defaults to <code>deluge</code>.
+        </p>
+        <br>
+        <p>
+          <b>Threshold limit</b>: 10 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">function_creation_limit_exceeded</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Organization has reached the maximum number of functions.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">function_name_already_exists</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">A function with this name already exists.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">invalid_inputs</span></td>
+                    <td style="padding:10px 18px;">Request body validation failed.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters: []
+      requestBody:
+        description: Creates a function. Provide `name`, `description`, and `function_type`. Set `execution_type` to `webhook` and include `execution_url` for a Webhook function.
+        required: true
+        content:
+          application/json:
+            examples:
+              button_function_deluge:
+                summary: Deluge button function
+                value:
+                  name: ApproveRequest
+                  description: Handles approval button clicks in messages
+                  function_type: button
+                  execution_type: deluge
+              button_function_webhook:
+                summary: Webhook button function
+                value:
+                  name: ApproveExpense
+                  description: Forwards approval clicks to external HR system
+                  function_type: button
+                  execution_type: webhook
+                  execution_url: https://api.yourcompany.com/cliq/functions/handler
+              form_function:
+                summary: Form function
+                value:
+                  name: SubmitFeedback
+                  description: Processes feedback form submissions from users
+                  function_type: form
+              widget_button_function:
+                summary: Widget button function
+                value:
+                  name: RefreshWidget
+                  description: Handles button clicks inside widgets
+                  function_type: widget_button
+            schema:
+              $ref: '#/components/schemas/v3-function-create'
+      responses:
+        '200':
+          description: Function created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FunctionResponse'
+              examples:
+                button_function_deluge:
+                  summary: Deluge button function response
+                  value:
+                    url: /api/v3/functions
+                    type: function
+                    data:
+                      name: ApproveRequest
+                      id: '53719000002124011'
+                      function_type: button
+                      handlers:
+                        - type: button_handler
+                      creator:
+                        name: James
+                        id: '65113112'
+                      execution_type: deluge
+                      status: enabled
+                      type: custom
+                      description: Handles approval button clicks in messages
+                      scope: personal
+                button_function_webhook:
+                  summary: Webhook button function response
+                  value:
+                    url: /api/v3/functions
+                    type: function
+                    data:
+                      name: ApproveExpense
+                      id: '53719000002124014'
+                      function_type: button
+                      handlers:
+                        - type: button_handler
+                      creator:
+                        name: James
+                        id: '65113112'
+                      execution_type: webhook
+                      execution_url: https://api.yourcompany.com/cliq/functions/handler
+                      status: enabled
+                      type: custom
+                      description: Forwards approval clicks to external HR system
+                      scope: personal
+                form_function:
+                  summary: Form function response
+                  value:
+                    url: /api/v3/functions
+                    type: function
+                    data:
+                      name: SubmitFeedback
+                      id: '53719000002124012'
+                      function_type: form
+                      handlers:
+                        - type: form_submit_handler
+                      creator:
+                        name: James
+                        id: '65113112'
+                      execution_type: deluge
+                      status: enabled
+                      type: custom
+                      description: Processes feedback form submissions from users
+                      scope: personal
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Functions.CREATE
+      tags:
+        - Functions
+    get:
+      summary: List all functions
+      operationId: list_all_functions
+      description: |
+        Retrieve a paginated list of all functions defined by the authenicated user.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 30 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+      parameters:
+        - name: next_token
+          in: query
+          description: Token for fetching the next page of results. Omit this parameter to retrieve the first page.
+          required: false
+          schema:
+            type: string
+        - name: sync_token
+          in: query
+          description: Token for incremental synchronization. Provide the <code>sync_token</code> value from a previous response to retrieve only functions that were created or updated since that response was generated.
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: |
+            Maximum number of functions to return per page.<br>
+            <b>Default</b>: 20<br>
+            <b>Maximum</b>: 50
+          required: false
+          schema:
+            type: integer
+            default: 20
+            maximum: 50
+      responses:
+        '200':
+          description: List of functions returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FunctionListResponse'
+              example:
+                url: /api/v3/functions
+                next_token: NTB8LTF8NTM3MTkwMDAwMDAyNDUwMTE=
+                type: function
+                sync_token: NTB8MTc3NzQzMjg2NjI1MXw1MzcxOTAwMDAwMjEyNDAxMQ==
+                data:
+                  - name: createTask
+                    id: '53719000002124011'
+                    function_type: button
+                    handlers:
+                      - type: button_handler
+                    creator:
+                      name: James
+                      id: '65113112'
+                    execution_type: deluge
+                    status: enabled
+                    type: custom
+                    description: Creates a task in integrated system
+                    scope: personal
+                  - name: SubmitFeedback
+                    id: '53719000002124012'
+                    function_type: form
+                    handlers:
+                      - type: form_submit_handler
+                    creator:
+                      name: James
+                      id: '65113112'
+                    execution_type: deluge
+                    status: enabled
+                    type: custom
+                    description: Processes feedback form submissions from users
+                    scope: personal
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Functions.READ
+      tags:
+        - Functions
+  /functions/{FUNCTION_ID}:
+    patch:
+      summary: Update an existing function
+      operationId: update_an_existing_function
+      description: |
+        Update the configuration (name and description) of an existing function.<br>
+        To modify the function's handler logic, use the <a href="/cliq/help/restapi/v3/functions/#updateFunctionHandler">handler-level endpoints</a>.
+        <p>
+          For <b>Webhook functions</b>, you can also update the <code>execution_url</code> independently at any time to redirect all handler events to a new server endpoint.
+        </p>
+        <br>
+        <p>
+          <b>Threshold limit</b>: 10 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">function_not_found</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Function with the specified ID was not found.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">function_name_already_exists</span></td>
+                    <td style="padding:10px 18px;">Another function with this name already exists.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/longid_regex'
+          example: FUNCTION_ID
+          in: path
+          name: FUNCTION_ID
+          description: Unique numeric identifier of the function. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#FUNCTION_ID">FUNCTION_ID</a> in the Glossary page.
+          required: true
+      requestBody:
+        description: Updates function metadata. For Webhook functions, use `execution_url` to update the server endpoint.
+        required: true
+        content:
+          application/json:
+            examples:
+              update_details:
+                summary: Update function details
+                value:
+                  name: createTaskUpdated
+                  description: Updated function description
+              update_webhook_url:
+                summary: Update webhook execution URL
+                value:
+                  execution_url: https://api.yourcompany.com/cliq/functions/updated-handler
+            schema:
+              $ref: '#/components/schemas/v3-function-edit'
+      responses:
+        '200':
+          description: Function updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FunctionResponse'
+              examples:
+                update_details:
+                  summary: Deluge function updated
+                  value:
+                    url: /api/v3/functions/53719000002124011
+                    type: function
+                    data:
+                      name: createTaskUpdated
+                      id: '53719000002124011'
+                      function_type: button
+                      handlers:
+                        - type: button_handler
+                      creator:
+                        name: James
+                        id: '65113112'
+                      execution_type: deluge
+                      status: enabled
+                      type: custom
+                      description: Updated function description
+                      scope: personal
+                update_webhook_url:
+                  summary: Webhook function execution URL updated
+                  value:
+                    url: /api/v3/functions/53719000002124014
+                    type: function
+                    data:
+                      name: ApproveExpense
+                      id: '53719000002124014'
+                      function_type: button
+                      handlers:
+                        - type: button_handler
+                      creator:
+                        name: James
+                        id: '65113112'
+                      execution_type: webhook
+                      execution_url: https://api.yourcompany.com/cliq/functions/updated-handler
+                      status: enabled
+                      type: custom
+                      description: Forwards approval clicks to external HR system
+                      scope: personal
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Functions.UPDATE
+      tags:
+        - Functions
+    get:
+      summary: Get details of a specific function
+      operationId: get_details_of_a_specific_func
+      description: |
+        Retrieve the full configuration of a single Function identified by its `FUNCTION_ID`. The response includes the function name, description, and a summary of the configured handlers.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 30 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">function_not_found</span></td>
+                    <td style="padding:10px 18px;">Function with the specified ID was not found.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/longid_regex'
+          example: FUNCTION_ID
+          in: path
+          name: FUNCTION_ID
+          description: Unique numeric identifier of the function. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#FUNCTION_ID">FUNCTION_ID</a> in the Glossary page.
+          required: true
+      responses:
+        '200':
+          description: Function details returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FunctionResponse'
+              example:
+                url: /api/v3/functions/53719000002124011
+                type: function
+                data:
+                  name: createTask
+                  id: '53719000002124011'
+                  function_type: button
+                  handlers:
+                    - type: button_handler
+                  creator:
+                    name: James
+                    id: '65113112'
+                  execution_type: deluge
+                  status: enabled
+                  type: custom
+                  description: Creates a task in integrated system
+                  scope: personal
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Functions.READ
+      tags:
+        - Functions
+    delete:
+      summary: Delete a specific function
+      operationId: delete_a_specific_function
+      description: |
+        Permanently delete a Function and all its associated handlers. Any platform component that calls this function will stop working once it is deleted. This action is irreversible.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 10 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">function_not_found</span></td>
+                    <td style="padding:10px 18px;">Function with the specified ID was not found.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/longid_regex'
+          example: FUNCTION_ID
+          in: path
+          name: FUNCTION_ID
+          description: Unique numeric identifier of the function. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#FUNCTION_ID">FUNCTION_ID</a> in the Glossary page.
+          required: true
+      responses:
+        '204':
+          description: No Content. Function deleted successfully.
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Functions.DELETE
+      tags:
+        - Functions
+  /functions/{FUNCTION_ID}/handlers:
+    post:
+      summary: Create a handler for a specific function
+      operationId: createFunctionHandler
+      description: |
+        <a id="createFunctionHandler"></a>
+        <p>
+          Create a handler for a function. Handlers define the logic that executes when a user triggers the UI element (button click, form submit, widget interaction, etc.).
+        </p>
+        <p>
+          The field you provide depends on the function's execution type:
+        </p>
+        <ul>
+          <li><b>Deluge function</b>: Provide the <code>script</code> field with the Deluge source code to execute when the handler fires.</li>
+          <li><b>Webhook function</b>: Provide the <code>permissions</code> field - an array of data attributes your server needs to receive in the webhook payload. Do not pass <code>script</code> for Webhook functions.</li>
+        </ul>
+        <p><b>Permissions availability by handler type</b></p>
+        <table style="border-collapse: collapse; width: 100%; font-family: inherit;">
+          <tr>
+            <th style="padding: 8px; text-align: left; border: 1px solid #ddd; font-family: inherit;">Handler</th>
+            <th style="padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;"><code>chat</code></th>
+            <th style="padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;"><code>message</code></th>
+            <th style="padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;"><code>user</code></th>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;"><code>button_handler</code></td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">&#10003;</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">&#10003;</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">&#10003;</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;"><code>form_submit_handler</code></td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">&#10003;</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">&#10003;</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">&#10003;</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;"><code>form_change_handler</code></td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">&#10003;</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">-</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">&#10003;</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;"><code>form_dynamic_select_handler</code></td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">&#10003;</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">-</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">&#10003;</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;"><code>form_view_handler</code></td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">-</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">-</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">&#10003;</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;"><code>widget_button_handler</code></td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">-</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">-</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">&#10003;</td>
+          </tr>
+        </table>
+        <p>Note: <code>attachments</code> and <code>location</code> are not available for any function handler type. Only <code>chat</code>, <code>message</code>, and <code>user</code> are applicable.</p>
+        <br>
+        <p>
+          <b>Threshold limit</b>: 10 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">execution_handler_create_failed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Failed to create the handler.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">execution_handler_data_required</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Required field missing (e.g., name for menu_handler).</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">execution_handler_data_invalid</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Handler data is invalid.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">invalid_inputs</span></td>
+                    <td style="padding:10px 18px;">Invalid handler type or bad request body.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/longid_regex'
+          example: FUNCTION_ID
+          in: path
+          name: FUNCTION_ID
+          description: Unique numeric identifier of the function. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#FUNCTION_ID">FUNCTION_ID</a> in the Glossary page.
+          required: true
+      requestBody:
+        description: Creates a function handler. For Deluge functions, provide `type` and `script`. For Webhook functions, provide `type` and `permissions`.
+        required: true
+        content:
+          application/json:
+            examples:
+              button_handler_deluge:
+                summary: Button handler - Deluge
+                value:
+                  type: button_handler
+                  script: |-
+                    response = Map();
+                    response.put("text", "Button clicked!");
+                    return response;
+              button_handler_webhook:
+                summary: Button handler - Webhook
+                value:
+                  type: button_handler
+                  permissions:
+                    - chat
+                    - message
+                    - user
+              form_submit_handler_deluge:
+                summary: Form submit handler - Deluge
+                value:
+                  type: form_submit_handler
+                  script: |-
+                    values = form.values;
+                    info values;
+                    return {"type": "banner", "text": "Form submitted!", "status": "success"};
+              form_submit_handler_webhook:
+                summary: Form submit handler - Webhook
+                value:
+                  type: form_submit_handler
+                  permissions:
+                    - chat
+                    - user
+              form_view_handler:
+                summary: Form view handler - Deluge
+                value:
+                  type: form_view_handler
+                  script: |-
+                    form = Map();
+                    form.put("title", "Feedback Form");
+                    actions = Map();
+                    submit = Map();
+                    submit.put("type", "invoke.function");
+                    actions.put("submit", submit);
+                    form.put("actions", actions);
+                    return form;
+            schema:
+              $ref: '#/components/schemas/v3-exehandler-create'
+      responses:
+        '200':
+          description: Function handler created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FunctionHandlerResponse'
+              examples:
+                button_handler_deluge:
+                  summary: Button handler created - Deluge
+                  value:
+                    url: /api/v3/functions
+                    type: function
+                    data:
+                      name: ApproveRequest
+                      id: '53719000002124011'
+                      function_type: button
+                      handlers:
+                        - type: button_handler
+                      creator:
+                        name: James
+                        id: '65113112'
+                      execution_type: deluge
+                      status: enabled
+                      type: custom
+                      description: Creates a task in integrated system
+                      scope: personal
+                button_handler_webhook:
+                  summary: Button handler created - Webhook
+                  value:
+                    url: /api/v3/functions
+                    type: function
+                    data:
+                      name: ApproveExpense
+                      id: '53719000002124014'
+                      function_type: button
+                      handlers:
+                        - type: button_handler
+                      creator:
+                        name: James
+                        id: '65113112'
+                      execution_type: webhook
+                      execution_url: https://api.yourcompany.com/cliq/functions/handler
+                      status: enabled
+                      type: custom
+                      description: Forwards approval clicks to external HR system
+                      scope: personal
+                form_submit_handler_deluge:
+                  summary: Form submit handler created - Deluge
+                  value:
+                    url: /api/v3/functions
+                    type: function
+                    data:
+                      name: SubmitFeedback
+                      id: '53719000002124012'
+                      function_type: form
+                      handlers:
+                        - type: form_submit_handler
+                      creator:
+                        name: James
+                        id: '65113112'
+                      execution_type: deluge
+                      status: enabled
+                      type: custom
+                      description: Processes feedback form submissions from users
+                      scope: personal
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Functions.UPDATE
+      tags:
+        - Functions
+  /functions/{FUNCTION_ID}/handlers/{FUNCTION_HANDLER_TYPE}:
+    patch:
+      summary: Update a handler for a specific function
+      operationId: updateFunctionHandler
+      description: |
+        Update a handler for a specific function. What you provide depends on the function's execution type:
+        <ul>
+          <li><b>Deluge function</b>: Update the <code>script</code> attribute with the revised Deluge source code to execute when the handler fires.</li>
+          <li><b>Webhook function</b>: Update the <code>permissions</code> array to change which data attributes (<code>chat</code>, <code>message</code>, <code>user</code>) are forwarded to your server. Note: <code>attachments</code> and <code>location</code> are not available for function handlers.</li>
+        </ul>
+        <br>
+        <p>
+          <b>Threshold limit</b>: 10 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">execution_handler_update_failed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Failed to update the handler.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">execution_handler_not_found</span></td>
+                    <td style="padding:10px 18px;">Handler not found for this component.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/FUNCTION_HANDLER_TYPE_regex'
+          example: FUNCTION_HANDLER_TYPE
+          in: path
+          name: FUNCTION_HANDLER_TYPE
+          description: |
+            Type of the function handler to update. Supported handler types are:
+            <ul>
+              <li><code>button_handler</code> - for button functions</li>
+              <li><code>form_submit_handler</code> - for form functions, triggered on form submission</li>
+              <li><code>form_change_handler</code> - for form functions, triggered on form field value change</li>
+              <li><code>form_view_handler</code> - for form functions, triggered when the form is rendered</li>
+              <li><code>form_dynamic_select_handler</code> - for form functions, triggered when a dynamic select field is loaded</li>
+              <li><code>widget_button_handler</code> - for widget functions, triggered on widget button click</li>
+            </ul>
+          required: true
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/longid_regex'
+          example: FUNCTION_ID
+          in: path
+          name: FUNCTION_ID
+          description: Unique numeric identifier of the function. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#FUNCTION_ID">FUNCTION_ID</a> in the Glossary page.
+          required: true
+      requestBody:
+        description: Updates a function handler. For Deluge functions, provide `script`. For Webhook functions, provide `permissions`.
+        required: true
+        content:
+          application/json:
+            examples:
+              update_script_deluge_button:
+                summary: Update script - Deluge button handler
+                value:
+                  script: |-
+                    response = Map();
+                    response.put("text", "Task approved successfully!");
+                    return response;
+              update_permissions_webhook_button:
+                summary: Update permissions - Webhook button handler
+                value:
+                  permissions:
+                    - chat
+                    - message
+                    - user
+              update_script_form_submit:
+                summary: Update script - Form submit handler
+                value:
+                  script: |-
+                    values = form.get("values");
+                    task_name = values.get("task_name");
+                    response = Map();
+                    response.put("type", "banner");
+                    response.put("text", "Task '" + task_name + "' created.");
+                    response.put("status", "success");
+                    return response;
+              update_permissions_webhook_form:
+                summary: Update permissions - Webhook form handler
+                value:
+                  permissions:
+                    - chat
+                    - user
+              form_change_handler:
+                summary: Update script - Form change handler
+                value:
+                  script: |-
+                    changed_field = form.get("changed_field");
+                    form_response = Map();
+                    if(changed_field == "priority") {
+                      priority_val = form.get("values").get("priority");
+                      options = List();
+                      if(priority_val == "high") {
+                        options.add("Escalate");
+                        options.add("Notify Manager");
+                      } else {
+                        options.add("Standard Process");
+                      }
+                      form_response.put("action_field", Map());
+                    }
+                    return form_response;
+              form_view_handler:
+                summary: Update script - Form view handler
+                value:
+                  script: |-
+                    form = Map();
+                    form.put("title", "Create Task");
+                    fields = List();
+                    task_field = Map();
+                    task_field.put("name", "task_name");
+                    task_field.put("label", "Task Name");
+                    task_field.put("type", "text");
+                    task_field.put("mandatory", true);
+                    fields.add(task_field);
+                    due_field = Map();
+                    due_field.put("name", "due_date");
+                    due_field.put("label", "Due Date");
+                    due_field.put("type", "date");
+                    fields.add(due_field);
+                    form.put("fields", fields);
+                    actions = Map();
+                    submit = Map();
+                    submit.put("type", "invoke.function");
+                    actions.put("submit", submit);
+                    form.put("actions", actions);
+                    return form;
+              widget_button_handler:
+                summary: Update script - Widget button handler
+                value:
+                  script: |-
+                    button_name = action.get("name");
+                    widget = Map();
+                    widget.put("type", "zhtml");
+                    widget.put("body", "<p>Button '" + button_name + "' clicked. Widget refreshed at " + zoho.currenttime + "</p>");
+                    return widget;
+            schema:
+              $ref: '#/components/schemas/v3-exehandler-edit'
+      responses:
+        '200':
+          description: Function handler updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FunctionHandlerResponse'
+              examples:
+                update_script_deluge:
+                  summary: Script updated - Deluge function
+                  value:
+                    url: /api/v3/functions/53719000002124011/handlers/button_handler
+                    type: execution_handler
+                    data:
+                      name: button_handler
+                      script: |-
+                        response = Map();
+                        response.put("text", "Task approved successfully!");
+                        return response;
+                      function_id: '53719000002124011'
+                update_permissions_webhook:
+                  summary: Permissions updated - Webhook function
+                  value:
+                    url: /api/v3/functions/53719000002124014/handlers/button_handler
+                    type: execution_handler
+                    data:
+                      name: button_handler
+                      permissions:
+                        - chat
+                        - message
+                        - user
+                      function_id: '53719000002124014'
+                form_submit_handler:
+                  summary: Form submit handler response
+                  value:
+                    url: /api/v3/functions/53719000002124012/handlers/form_submit_handler
+                    type: execution_handler
+                    data:
+                      name: form_submit_handler
+                      script: |-
+                        values = form.get("values");
+                        task_name = values.get("task_name");
+                        due_date = values.get("due_date");
+                        response = Map();
+                        response.put("type", "banner");
+                        response.put("text", "Task '" + task_name + "' created with due date: " + due_date);
+                        response.put("status", "success");
+                        return response;
+                      function_id: '53719000002124012'
+                form_change_handler:
+                  summary: Form change handler response
+                  value:
+                    url: /api/v3/functions/53719000002124012/handlers/form_change_handler
+                    type: execution_handler
+                    data:
+                      name: form_change_handler
+                      script: |-
+                        changed_field = form.get("changed_field");
+                        form_response = Map();
+                        if(changed_field == "priority") {
+                          priority_val = form.get("values").get("priority");
+                          options = List();
+                          if(priority_val == "high") {
+                            options.add("Escalate");
+                            options.add("Notify Manager");
+                          } else {
+                            options.add("Standard Process");
+                          }
+                          form_response.put("action_field", Map());
+                        }
+                        return form_response;
+                      function_id: '53719000002124012'
+                form_view_handler:
+                  summary: Form view handler response
+                  value:
+                    url: /api/v3/functions/53719000002124012/handlers/form_view_handler
+                    type: execution_handler
+                    data:
+                      name: form_view_handler
+                      script: |-
+                        form = Map();
+                        form.put("title", "Create Task");
+                        fields = List();
+                        task_field = Map();
+                        task_field.put("name", "task_name");
+                        task_field.put("label", "Task Name");
+                        task_field.put("type", "text");
+                        task_field.put("mandatory", true);
+                        fields.add(task_field);
+                        due_field = Map();
+                        due_field.put("name", "due_date");
+                        due_field.put("label", "Due Date");
+                        due_field.put("type", "date");
+                        fields.add(due_field);
+                        form.put("fields", fields);
+                        actions = Map();
+                        submit = Map();
+                        submit.put("type", "invoke.function");
+                        actions.put("submit", submit);
+                        form.put("actions", actions);
+                        return form;
+                      function_id: '53719000002124012'
+                widget_button_handler:
+                  summary: Widget button handler response
+                  value:
+                    url: /api/v3/functions/53719000002124013/handlers/widget_button_handler
+                    type: execution_handler
+                    data:
+                      name: widget_button_handler
+                      script: |-
+                        button_name = action.get("name");
+                        widget = Map();
+                        widget.put("type", "zhtml");
+                        widget.put("body", "<p>Button '" + button_name + "' clicked. Widget refreshed at " + zoho.currenttime + "</p>");
+                        return widget;
+                      function_id: '53719000002124013'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Functions.UPDATE
+      tags:
+        - Functions
+    get:
+      summary: Get details of a specific function handler
+      operationId: getFunctionHandler
+      description: |
+        Retrieve the configuration and deluge source code of a function handler.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 10 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">execution_handler_get_failed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Failed to fetch the execution handler.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">execution_handler_not_found</span></td>
+                    <td style="padding:10px 18px;">Specified handler was not found for this function.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/FUNCTION_HANDLER_TYPE_regex'
+          example: FUNCTION_HANDLER_TYPE
+          in: path
+          name: FUNCTION_HANDLER_TYPE
+          description: |
+            Name of the function execution handler. For functions with multiple handlers, this parameter is required to specify which handler's details to retrieve.
+            <br><b>Allowed values</b>:
+            <ul>
+              <li><code>button_handler</code>: Handler for button click events.</li>
+              <li><code>form_submit_handler</code>: Handler for form submission events.</li>
+              <li><code>form_view_handler</code>: Handler for rendering form views.</li>
+              <li><code>form_change_handler</code>: Handler for form field change events.</li>
+              <li><code>form_dynamic_select_handler</code>: Handler for dynamic select field load events.</li>
+              <li><code>widget_button_handler</code>: Handler for widget button click events.</li>
+            </ul>
+          required: true
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/longid_regex'
+          example: FUNCTION_ID
+          in: path
+          name: FUNCTION_ID
+          description: Unique numeric identifier of the function. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#FUNCTION_ID">FUNCTION_ID</a> in the Glossary page.
+          required: true
+      responses:
+        '200':
+          description: Function handler details returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FunctionHandlerDetailsResponse'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Functions.READ
+      tags:
+        - Functions
+    delete:
+      summary: Delete a handler from a specific function
+      operationId: deleteFunctionHandler
+      description: |
+        Permanently remove a named execution handler from a Function. Once deleted, the handler's Deluge code is lost and the function will no longer be executable until a new handler is added.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 10 requests per min per user<br>
+          Maximum API calls allowed within one minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">execution_handler_delete_failed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Failed to delete the execution handler.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">default_handler_delete_not_allowed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Default handlers cannot be deleted.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">execution_handler_not_found</span></td>
+                    <td style="padding:10px 18px;">Specified handler was not found for this function.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/FUNCTION_HANDLER_TYPE_regex'
+          example: FUNCTION_HANDLER_TYPE
+          in: path
+          name: FUNCTION_HANDLER_TYPE
+          description: |
+            Name of the function execution handler. For functions with multiple handlers, this parameter is required to specify which handler to delete.
+            <br><b>Allowed values</b>:
+            <ul>
+              <li><code>button_handler</code>: Handler for button click events.</li>
+              <li><code>form_submit_handler</code>: Handler for form submission events.</li>
+              <li><code>form_view_handler</code>: Handler for rendering form views.</li>
+              <li><code>form_change_handler</code>: Handler for form field change events.</li>
+              <li><code>form_dynamic_select_handler</code>: Handler for dynamic select field load events.</li>
+              <li><code>widget_button_handler</code>: Handler for widget button click events.</li>
+            </ul>
+          required: true
+        - schema:
+            description: ''
+            $ref: '#/components/schemas/longid_regex'
+          example: FUNCTION_ID
+          in: path
+          name: FUNCTION_ID
+          description: Unique numeric identifier of the function. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#FUNCTION_ID">FUNCTION_ID</a> in the Glossary page.
+          required: true
+      responses:
+        '200':
+          description: Function handler deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoResponse'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Functions.UPDATE
+      tags:
+        - Functions
+components:
+  schemas:
+    NoResponse:
+      type: object
+      description: Represents an empty successful response where no payload is returned.
+      properties:
+        Response Code:
+          type: string
+          example: 204 No response
+    FunctionResponse:
+      type: object
+      description: Response schema for function create, get, and update operations.
+      properties:
+        url:
+          type: string
+          description: API endpoint URL for the function resource.
+          example: /api/v3/functions
+        type:
+          type: string
+          description: Resource type.
+          example: function
+        data:
+          type: object
+          description: Function details.
+          properties:
+            name:
+              type: string
+              example: createTask
+            id:
+              type: string
+              example: '53719000002124011'
+            function_type:
+              type: string
+              example: button
+            handlers:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+            creator:
+              type: object
+              properties:
+                name:
+                  type: string
+                id:
+                  type: string
+            execution_type:
+              type: string
+              example: deluge
+            status:
+              type: string
+              example: enabled
+            type:
+              type: string
+              example: custom
+            description:
+              type: string
+            scope:
+              type: string
+              example: personal
+      example:
+        url: /api/v3/functions
+        type: function
+        data:
+          name: createTask
+          id: '53719000002124011'
+          function_type: button
+          handlers:
+            - type: button_handler
+          creator:
+            name: James
+            id: '65113112'
+          execution_type: deluge
+          status: enabled
+          type: custom
+          description: Creates a task in integrated system
+          scope: personal
+    GenericResponse:
+      type: object
+      description: Generic API response envelope.
+      properties:
+        url:
+          type: string
+          example: /api/v3/resource
+        type:
+          type: string
+          example: object
+        data:
+          type: object
+          additionalProperties: true
+    FunctionListResponse:
+      type: object
+      description: Response schema for listing functions.
+      properties:
+        deleted:
+          type: array
+          items:
+            type: string
+        url:
+          type: string
+          example: /api/v3/functions
+        next_token:
+          type: string
+        type:
+          type: string
+          example: function
+        total_count:
+          type: integer
+        sync_token:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+      example:
+        url: /api/v3/functions
+        next_token: NTB8LTF8NTM3MTkwMDAwMDAyNDUwMTE=
+        type: function
+        sync_token: NTB8MTc3NzQzMjg2NjI1MXw1MzcxOTAwMDAwMjEyNDAxMQ==
+        data:
+          - name: createTask
+            id: '53719000002124011'
+            function_type: button
+            handlers:
+              - type: button_handler
+            creator:
+              name: James
+              id: '65113112'
+            execution_type: deluge
+            status: enabled
+            type: custom
+            description: Creates a task in integrated system
+            scope: personal
+          - name: SubmitFeedback
+            id: '53719000002124012'
+            function_type: form
+            handlers:
+              - type: form_submit_handler
+            creator:
+              name: James
+              id: '65113112'
+            execution_type: deluge
+            status: enabled
+            type: custom
+            description: Processes feedback form submissions from users
+            scope: personal
+    FunctionHandlerDetailsResponse:
+      type: object
+      description: Response schema returned when fetching the full details of a specific function handler.
+      properties:
+        url:
+          type: string
+          description: Endpoint URL of the handler resource.
+        type:
+          type: string
+          description: Resource type identifier.
+          example: button_handler
+        data:
+          type: object
+          description: Full configuration and runtime parameter details of the handler.
+          properties:
+            script:
+              type: string
+              description: Deluge source code of the handler.
+            return_type:
+              type: string
+              description: Return type expected from the handler script.
+              example: MAP
+            params:
+              type: array
+              description: List of runtime parameters passed to the handler script.
+              items:
+                type: object
+                properties:
+                  param_name:
+                    type: string
+                    description: Name of the parameter.
+                  param_type:
+                    type: string
+                    description: Data type of the parameter (e.g., MAP, STRING, BOOLEAN).
+          additionalProperties: true
+      example:
+        url: /api/v3/functions/53719000002124011/handlers/button_handler
+        type: button_handler
+        data:
+          script: |-
+            // Triggered when a user clicks the "Approve Task" instant button
+            // [Approve Task](invoke.function|ApproveTask)
+            response = Map();
+            task_name = arguments.get("task_name");
+            assignee = arguments.get("assignee");
+            response.put("text", "✅ Task '" + task_name + "' has been approved and assigned to " + assignee + ". They'll be notified shortly.");
+            return response;
+          return_type: MAP
+          params:
+            - param_name: access
+              param_type: MAP
+            - param_name: environment
+              param_type: MAP
+            - param_name: chat
+              param_type: MAP
+            - param_name: user
+              param_type: MAP
+            - param_name: message
+              param_type: MAP
+            - param_name: target
+              param_type: MAP
+            - param_name: arguments
+              param_type: MAP
+            - param_name: event
+              param_type: STRING
+            - param_name: location
+              param_type: MAP
+    FunctionHandlerResponse:
+      type: object
+      description: Response schema for function handler operations.
+      properties:
+        url:
+          type: string
+          example: /api/v3/functions/53719000002124011/handlers/button_handler
+        type:
+          type: string
+          example: execution_handler
+        data:
+          type: object
+          properties:
+            name:
+              type: string
+              example: button_handler
+            script:
+              type: string
+              example: |-
+                response = Map();
+                response.put("text", "Task approved successfully!");
+                return response;
+            function_id:
+              type: string
+              example: '53719000002124011'
+      example:
+        url: /api/v3/functions/53719000002124011/handlers/button_handler
+        type: execution_handler
+        data:
+          name: button_handler
+          script: |-
+            response = Map();
+            response.put("text", "Task approved successfully!");
+            return response;
+          function_id: '53719000002124011'
+    v3-function-create:
+      type: object
+      description: Payload for creating a new function.
+      required:
+        - name
+        - description
+        - function_type
+      properties:
+        name:
+          type: string
+          maxLength: 30
+          description: |
+            Unique name for the function.<br>
+            <b>Maximum length</b>: 30 characters.
+        description:
+          type: string
+          maxLength: 300
+          description: |
+            Description for the function.<br>
+            <b>Maximum length</b>: 300 characters.
+        function_type:
+          type: string
+          enum:
+            - button
+            - form
+            - widget_button
+          description: |
+            Type of the function which determines where it can be invoked from.<br>
+            <b>Allowed values:</b>
+            <ul>
+              <li><b>button</b> - Triggered by button clicks in messages.</li>
+              <li><b>form</b> - Triggered by form submissions and interactions.</li>
+              <li><b>widget_button</b> - Triggered by button clicks inside widgets.</li>
+            </ul>
+            <b>Note</b>: <code>function_type</code> cannot be changed after creation.
+        execution_type:
+          type: string
+          enum:
+            - deluge
+            - webhook
+          description: |
+            Execution type of the function.<br>
+            <ul>
+              <li><b>deluge</b> (default) - Handler logic is written in Deluge and executed on Zoho's platform.</li>
+              <li><b>webhook</b> - Cliq sends a POST request to your <code>execution_url</code> when the function is triggered. Provide <code>execution_url</code> when using this type.</li>
+            </ul>
+        execution_url:
+          type: string
+          maxLength: 225
+          description: |
+            The URL that Cliq sends a POST request to when the function is triggered. Required when <code>execution_type</code> is <code>webhook</code>.<br>
+            <b>Maximum length</b>: 225 characters.
+    base64_regex:
+      type: string
+      description: Base64-encoded pagination or sync token used for cursor-based pagination and incremental data sync.
+    v3-function-edit:
+      type: object
+      description: Payload for updating a function. `function_type` cannot be changed after creation.
+      properties:
+        name:
+          type: string
+          maxLength: 30
+          description: |
+            Updated function name.<br>
+            <b>Maximum length</b>: 30 characters.
+          example: createTask
+        description:
+          type: string
+          maxLength: 300
+          description: |
+            Updated function description.<br>
+            <b>Maximum length</b>: 300 characters.
+          example: Creates a task in integrated system
+        execution_url:
+          type: string
+          maxLength: 225
+          description: |
+            Updated webhook execution URL for the function. Only applicable when the function's <code>execution_type</code> is <code>webhook</code>.<br>
+            <b>Maximum length</b>: 225 characters.
+    FUNCTION_ID:
+      type: string
+      description: Unique numeric identifier of a Function. Used in function management and handler endpoints.
+    longid_regex:
+      type: string
+      description: Numeric long integer identifier used to reference platform components such as Commands, Functions, Widgets, Message Actions, Schedulers, and Extensions.
+    v3-exehandler-edit:
+      type: object
+      description: Payload for updating an existing function handler.
+      properties:
+        script:
+          type: string
+          description: Updated Deluge script source code for the handler. Maximum size is 250KB. Only applicable for Deluge functions.
+        permissions:
+          type: array
+          maxItems: 5
+          description: |
+            List of data attributes to include in the webhook payload. Only applicable for Webhook functions. Not all permissions are valid for every handler type - refer to the <a href="/cliq/help/restapi/v3/functions/#createFunctionHandler">Create a handler</a> table for availability.<br>
+            <b>Available values</b>: <code>chat</code>, <code>message</code>, <code>user</code>.
+          items:
+            type: string
+            enum:
+              - chat
+              - message
+              - user
+    FUNCTION_HANDLER_TYPE_regex:
+      type: string
+      description: Name of a function handler.
+      enum:
+        - button_handler
+        - form_submit_handler
+        - form_change_handler
+        - form_dynamic_select_handler
+        - form_view_handler
+        - widget_button_handler
+    v3-exehandler-create:
+      type: object
+      description: Payload for creating a new function handler.
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - button_handler
+            - form_submit_handler
+            - form_change_handler
+            - form_dynamic_select_handler
+            - form_view_handler
+            - widget_button_handler
+          description: |
+            Type of the function handler which determines the trigger for execution.<br>
+            <b>Allowed values:</b>
+            <ul>
+              <li><b>button_handler</b> - Triggered by button clicks in messages.</li>
+              <li><b>form_submit_handler</b> - Triggered by form submissions.</li>
+              <li><b>form_change_handler</b> - Triggered by changes in form fields.</li>
+              <li><b>form_dynamic_select_handler</b> - Triggered to populate dynamic field options in forms.</li>
+              <li><b>form_view_handler</b> - Renders the form UI when a user navigates to the form's permalink URL.</li>
+              <li><b>widget_button_handler</b> - Triggered by button clicks inside widgets.</li>
+            </ul>
+        script:
+          type: string
+          description: |
+            Deluge script source code for the handler. Maximum size is 250KB. Only applicable for Deluge functions.
+        permissions:
+          type: array
+          maxItems: 5
+          description: |
+            List of data attributes to include in the webhook payload when the handler fires. Only applicable for Webhook functions. Not all permissions are valid for every handler type - refer to the <a href="/cliq/help/restapi/v3/functions/#createFunctionHandler">Create a handler</a> table for availability.<br>
+            <b>Available values</b>: <code>chat</code>, <code>message</code>, <code>user</code>.
+          items:
+            type: string
+            enum:
+              - chat
+              - message
+              - user
+  securitySchemes:
+    Cliq_Auth:
+      type: oauth2
+      x-authorization-example: Bearer 1000.41d9xxxxxxxxxxxxxxxxxxxxxxxxc2d1.8fccxxxxxxxxxxxxxxxxxxxxxxxx125f
+      flows:
+        implicit:
+          authorizationUrl: ''
+          scopes:
+            ZohoCliq.Functions.CREATE: Create new Functions in the platform.
+            ZohoCliq.Functions.READ: Read function configurations, handlers, and execution logs.
+            ZohoCliq.Functions.UPDATE: Update function configurations and manage function handlers.
+            ZohoCliq.Functions.DELETE: Permanently delete Functions and their handlers.

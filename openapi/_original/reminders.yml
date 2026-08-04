@@ -1,0 +1,784 @@
+openapi: 3.0.0
+info:
+  title: Reminders
+  description: |
+    The Reminders API takes a significant leap forward with v3, enabling developers to attach time-based alerts to specific messages across any chat type - direct messages, group chats, or channels. With support for multi-participant assignment and flexible recurrence, it is well suited for building notification-driven and accountability-focused workflows.
+    <br><br><b>Key Capabilities</b>
+    <ul>
+      <li><b>Get Reminders:</b> Retrieve all reminders associated with messages in a chat, spanning direct messages, group chats, and channels in a single query.</li>
+      <li><b>Update Status:</b> Resolve a recurring reminder by marking it as completed across all its occurrences simultaneously.</li>
+      <li><b>Trigger Notification:</b> Proactively push an immediate alert to all assignees of a reminder, without waiting for the scheduled trigger. Available exclusively for reminders assigned to other users.</li>
+      <li><b>Batch Edit:</b> Reschedule multiple reminders in one operation by supplying reminder IDs alongside their updated epoch timestamps.</li>
+    </ul>
+    <br><b>Reminder Types</b>
+    <table style="border-collapse: collapse; width: 100%; font-family: inherit;">
+      <tr>
+        <th style="padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;">Type</th>
+        <th style="padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;">Description</th>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;">One-time</td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Fires once at the specified time. Use batch edit to reschedule.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;">Recurring</td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Repeats on a defined schedule. Supports <code>apply_to: all_occurrences</code> for status updates.</td>
+      </tr>
+    </table>
+    <br><b>Base URL Note</b><br>
+    <ul>
+      <li><b>GET Reminders</b>: <code>https://cliq.zoho.com/v3</code> (without <code>/api</code>)</li>
+      <li><b>All other Reminders APIs</b>: <code>https://cliq.zoho.com/api/v3</code></li>
+    </ul>
+  contact: {}
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Zoho Cliq APIs V3
+  url: https://www.zoho.com/cliq/help/restapi/v3/
+servers:
+  - url: https://cliq.zoho.com/api/v3
+    description: Zoho Cliq US DC
+tags:
+  - name: reminders
+    description: Reminders Module
+paths:
+  /chats/{CHAT_ID}/reminders:
+    get:
+      summary: Get reminders in a chat
+      operationId: getRemindersInChatV3
+      description: |
+        Retrieves all reminders set on messages within a specific chat. Use this to list all active reminder alerts across direct messages, group chats, and channels, including single-user and multi-user assigned reminders.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>
+          Wait time before consecutive API requests.
+        </p>
+        <br><b>Note</b>: This endpoint uses a different base URL: <code>https://cliq.zoho.com/v3</code> (without <code>/api</code>).<br>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">param_missing</span></td>
+                    <td style="padding:10px 18px;">A required parameter is missing. The <code>limit</code> query parameter must be provided.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      servers:
+        - url: https://cliq.zoho.com/v3
+          description: Zoho Cliq US DC (GET reminders)
+      tags:
+        - reminders
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          description: Unique identifier of the chat or channel. Use this to scope the reminders retrieval to a specific conversation.
+          example: CHAT_ID
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: true
+          description: |
+            Number of results per page.<br>
+            <b>Maximum limit</b>: 100
+          schema:
+            type: integer
+            maximum: 200
+        - name: next_token
+          in: query
+          required: false
+          description: Pagination cursor returned from a previous response. Pass this value to retrieve the next page of results.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Reminders retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                channel_recurring_reminder:
+                  summary: Channel with recurring reminder
+                  value:
+                    category: chat
+                    time: '2026-05-29T03:57:43-07:00'
+                    list:
+                      - id: '1901318000012651019'
+                        time: '2026-05-31T19:30:00-07:00'
+                        timezone: Asia/Kolkata
+                        content: Weekly Finance Sync
+                        completed: false
+                        creation_time: '2026-05-29T04:05:57-07:00'
+                        creator:
+                          name: Priya
+                          id: '697322516'
+                        users:
+                          - name: Priya
+                            id: '697322516'
+                            completed: false
+                            deleted: false
+                        message:
+                          msgid: '1780052699342'
+                          msg: 'Weekly Finance Sync: Review all pending expense approvals and flag any claims older than 7 days for escalation. Ensure the expense tracker is updated before the sync.'
+                          chat_id: CT_1424569695482328362_631836344
+                          sender_id: '697322516'
+                          dname: Priya
+                      - id: '1901318000012651010'
+                        time: '2026-06-09T21:30:00-07:00'
+                        timezone: Asia/Kolkata
+                        content: Vendor Payment Review
+                        completed: false
+                        creation_time: '2026-05-29T03:51:46-07:00'
+                        creator:
+                          name: Priya
+                          id: '697322516'
+                        users:
+                          - name: Priya
+                            id: '697322516'
+                            completed: false
+                            deleted: false
+                        message:
+                          msgid: '1780051880491'
+                          msg: 'Vendor Payment Review: Review and approve all pending vendor payment requests before the monthly finance sync on June 6.'
+                          chat_id: CT_1424569695482328362_631836344
+                          sender_id: '697322516'
+                          dname: Priya
+                group_chat_multi_user_assigned:
+                  summary: Group chat with multi-user assigned reminder
+                  value:
+                    category: chat
+                    time: '2026-05-29T03:57:43-07:00'
+                    list:
+                      - id: '1901318000012651028'
+                        time: '2026-06-15T04:30:00-07:00'
+                        timezone: Asia/Kolkata
+                        content: Action Item followup reminder
+                        completed: false
+                        creation_time: '2026-05-29T04:08:17-07:00'
+                        creator:
+                          name: Priya
+                          id: '697322516'
+                        users:
+                          - name: Scott
+                            id: '631830848'
+                            completed: false
+                            deleted: false
+                          - name: Olivia Palmer
+                            id: '631830846'
+                            completed: false
+                            deleted: false
+                        message:
+                          msgid: '1780051988899'
+                          msg: 'Action Item Follow-up: Check the status of all open action items from last week''s sprint review. Update the tracker and post a summary in this channel before EOD.'
+                          chat_id: '1608865438186287622'
+                          sender_id: '697322516'
+                          dname: Priya
+                empty_chat:
+                  summary: Empty chat
+                  value:
+                    category: chat
+                    time: '2026-05-29T03:57:42-07:00'
+                    list: []
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Reminders.READ
+  /reminders/{REMINDER_ID}:
+    put:
+      summary: Update reminder status
+      operationId: updateReminderStatusV3
+      description: |
+        Marks a recurring reminder as completed across all occurrences. Use this to close out a recurring reminder entirely once the associated task or event no longer requires follow-up.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>
+          Wait time before consecutive API requests.
+        </p>
+        <br><b>Note</b>: <code>apply_to: all_occurrences</code> is applicable only for recurring reminders. For one-time reminders, use batch edit to reschedule instead.<br>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">reminder_missing_apply_to</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The <code>apply_to</code> field is required. Supported value: <code>all_occurrences</code>.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">reminder_not_recurring</span></td>
+                    <td style="padding:10px 18px;"><code>apply_to: all_occurrences</code> is only applicable for recurring reminders.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      tags:
+        - reminders
+      parameters:
+        - name: REMINDER_ID
+          in: path
+          required: true
+          description: Unique identifier of the reminder to update. Use this to target the specific recurring reminder whose status needs to be marked as completed.<br>To retrieve this ID, use the <a href="#get-reminders-in-a-chat">Get reminders in a chat</a> endpoint or the <a href="https://www.zoho.com/cliq/help/restapi/v2/reminders/#get-list-of-all-reminders">List all reminders (v2)</a>.
+          example: REMINDER_ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - status
+                - apply_to
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - completed
+                  description: |
+                    New status to apply to the reminder.<br>
+                    <b>Allowed values</b>:<br>
+                    <ul>
+                      <li><code>completed</code>: Marks the reminder as done. When used with <code>apply_to: all_occurrences</code>, marks all occurrences of a recurring reminder as completed.</li>
+                    </ul>
+                apply_to:
+                  type: string
+                  enum:
+                    - all_occurrences
+                  description: |
+                    Scope of the status update. Required for all status changes.<br>
+                    <b>Allowed values</b>:<br>
+                    <ul>
+                      <li><code>all_occurrences</code>: Applies the status update across every occurrence of a recurring reminder. Not applicable for one-time reminders.</li>
+                    </ul>
+            example:
+              status: completed
+              apply_to: all_occurrences
+      responses:
+        '204':
+          description: Recurring reminder marked as completed across all occurrences. No response body returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoResponse'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Reminders.UPDATE
+  /reminders/{REMINDER_ID}/notifications:
+    post:
+      summary: Trigger reminder notification to assignees
+      operationId: triggerReminderNotificationV3
+      description: |
+        Immediately notifies all assignees of a reminder, bypassing the scheduled time. Use this to push a reminder notification to all assigned users on demand, without waiting for the reminder to fire automatically. Supported only for reminders assigned to other users.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>
+          Wait time before consecutive API requests.
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">remind_self_not_allowed</span></td>
+                    <td style="padding:10px 18px;">Notification trigger is not applicable for self-assigned reminders.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      tags:
+        - reminders
+      parameters:
+        - name: REMINDER_ID
+          in: path
+          required: true
+          description: Unique identifier of the reminder whose assignees should be notified immediately. Must be a reminder assigned to other users, not a self-assigned reminder.<br>To retrieve this ID, use the <a href="#get-reminders-in-a-chat">Get reminders in a chat</a> endpoint or the <a href="https://www.zoho.com/cliq/help/restapi/v2/reminders/#get-list-of-all-reminders">List all reminders (v2)</a>.
+          example: REMINDER_ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Notification triggered. Returns the list of notified assignees.
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                notification_triggered:
+                  summary: Notification triggered successfully
+                  value:
+                    data:
+                      - name: Scott
+                        id: '631830848'
+                        completed: false
+                        deleted: false
+                      - name: Olivia Palmer
+                        id: '631830846'
+                        completed: false
+                        deleted: false
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Reminders.CREATE
+  /reminders/edits:
+    put:
+      summary: Batch edit reminders
+      operationId: batchEditRemindersV3
+      description: |
+        Reschedules multiple reminders in a single request. Use this to update the delivery time of several reminders at once, avoiding the need to make individual edit calls for each one.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>
+          Wait time before consecutive API requests.
+        </p>
+        <br><b>Note</b>: Use <code>reminder_id</code> (not <code>id</code>) as the key for each reminder object. Timezone is not a supported field in the request body, convert to epoch milliseconds in the desired timezone before sending.
+        <br><br><b>Response status values</b><br>
+        The top-level <code>status</code> field reflects the overall result of the batch operation across all submitted reminders.<br>
+        <ul>
+          <li><code>success</code>: All reminders in the batch were rescheduled successfully.</li>
+          <li><code>partial</code>: One or more reminders failed while the rest succeeded. Check the individual <code>status</code> field inside each object in the <code>data</code> array to identify which ones failed.</li>
+          <li><code>failure</code>: All reminders in the batch failed to reschedule.</li>
+        </ul>
+        Each object in the <code>data</code> array carries its own <code>status</code> and <code>reminder_id</code>, allowing you to handle successes and failures per reminder regardless of the overall batch outcome.<br>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">param_missing</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">A required parameter is missing. Ensure <code>reminder_id</code> and <code>time</code> are provided for each reminder object.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">extra_key_found</span></td>
+                    <td style="padding:10px 18px;">An unsupported key was included in the request body. For example, <code>timezone</code> is not accepted.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      tags:
+        - reminders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - reminders
+              properties:
+                reminders:
+                  type: array
+                  maxItems: 25
+                  description: |
+                    List of reminder objects to reschedule.<br>
+                    <b>Maximum items</b>: 25 per request.
+                  items:
+                    type: object
+                    required:
+                      - reminder_id
+                      - time
+                    properties:
+                      reminder_id:
+                        type: string
+                        description: Unique identifier of the reminder to reschedule.
+                      time:
+                        type: integer
+                        format: int64
+                        description: New reminder time in epoch milliseconds.
+            examples:
+              single_reminder:
+                summary: Reschedule a single reminder
+                value:
+                  reminders:
+                    - reminder_id: '1901318000012651019'
+                      time: 1749369000000
+              multiple_reminders:
+                summary: Reschedule multiple reminders
+                value:
+                  reminders:
+                    - reminder_id: '1901318000012651010'
+                      time: 1749282600000
+                    - reminder_id: '1901318000012651016'
+                      time: 1748930400000
+      responses:
+        '200':
+          description: Returns per-reminder result with updated data for each ID.
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                batch_edit_success:
+                  summary: Multiple reminders rescheduled successfully
+                  value:
+                    status: success
+                    data:
+                      - status: success
+                        reminder_id: '1901318000012651010'
+                        data:
+                          id: '1901318000012651010'
+                          time: '2026-06-09T21:30:00-07:00'
+                          timezone: Asia/Kolkata
+                          content: Vendor Payment Review
+                          completed: false
+                          creation_time: '2026-05-29T03:51:46-07:00'
+                          creator:
+                            name: Priya
+                            id: '697322516'
+                          users:
+                            - name: Priya
+                              id: '697322516'
+                              completed: false
+                              deleted: false
+                          message:
+                            msgid: '1780051880491'
+                            msg: 'Vendor Payment Review: Review and approve all pending vendor payment requests before the monthly finance sync on June 6.'
+                            chat_id: CT_1424569695482328362_631836344
+                            sender_id: '697322516'
+                            dname: Priya
+                      - status: success
+                        reminder_id: '1901318000012651016'
+                        data:
+                          id: '1901318000012651016'
+                          time: '2026-06-04T20:30:00-07:00'
+                          timezone: Asia/Kolkata
+                          completed: false
+                          creation_time: '2026-05-29T03:53:32-07:00'
+                          creator:
+                            name: Priya
+                            id: '697322516'
+                          users:
+                            - name: Priya
+                              id: '697322516'
+                              completed: false
+                              deleted: false
+                          message:
+                            msgid: '1780051988899'
+                            msg: 'Sprint Review Prep: All team members to update their task status in the project tracker before the sprint review on June 4.'
+                            chat_id: '1608865438186287622'
+                            sender_id: '697322516'
+                            dname: Priya
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Reminders.UPDATE
+components:
+  schemas:
+    NoResponse:
+      type: object
+      description: Response object returned when no content is available.
+      properties:
+        Response Code:
+          type: string
+          description: HTTP response code and message indicating no content.
+          example: 204 No response
+    error-response:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
+  securitySchemes:
+    Cliq_Auth:
+      type: oauth2
+      x-authorization-example: Bearer 1000.41d9xxxxxxxxxxxxxxxxxxxxxxxxc2d1.8fccxxxxxxxxxxxxxxxxxxxxxxxx125f
+      flows:
+        implicit:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          scopes:
+            ZohoCliq.Reminders.READ: Read reminders
+            ZohoCliq.Reminders.CREATE: Create reminder notifications
+            ZohoCliq.Reminders.UPDATE: Update reminders
+            ZohoCliq.Reminders.DELETE: Delete reminders

@@ -1,0 +1,2069 @@
+openapi: 3.0.0
+info:
+  title: My Pins and Chat Folders
+  description: |
+    The My Pins API enables users to organise and access important chats and channels in Cliq efficiently. Users can pin conversations directly in the <b>My Pins</b> section for quick access or group them into personalised chat folders to better structure their workspace. <br><br><b>Chat folders</b> enable users to categorise conversations by projects, teams, priorities, or personal workflows. Users can create multiple chat folders, rename them, reorder the folders, and rearrange pinned chats within each folder to suit their preferences. <br><br>At the API endpoint level, the terminology used for chat folders is "pincategories." The unique identifier of a chat folder is referred to as the <b>CATEGORY_ID</b> in endpoint terminology.
+  contact: {}
+  version: 3.0.0
+externalDocs:
+  description: Find out more about Zoho Cliq APIs V3
+  url: https://www.zoho.com/cliq/help/restapi/v2/
+servers:
+  - url: https://cliq.zoho.com/api/v3
+    description: Zoho Cliq US DC
+tags:
+  - name: mypins
+    description: My Pins and Chat Folders Module
+paths:
+  /pin-categories:
+    get:
+      summary: Retrieve chat folders
+      operationId: getPinCategories
+      description: |
+        Retrieve the list of chat folders for the current user, along with the chats pinned within each folder. By default, only basic details are returned for each pinned chat, but additional fields can be included as needed.
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_failed</span></td>
+                    <td style="padding:10px 18px;">Unexpected server error.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      tags:
+        - mypins
+      parameters:
+        - name: include_fields
+          in: query
+          required: false
+          description: |
+            Comma-separated list of additional fields to include for each pinned chat. By default, only basic details are returned for pinned chats, but you can specify additional fields as needed. Available fields include:
+            <ul>
+              <li><code>chats</code>: Include the full chat objects for each pinned chat.</li>
+              <li><code>recipients_summary</code>: Include a summary of recipients for each pinned chat.</li>
+              <li><code>last_message_info</code>: Include details about the last message in each pinned chat.</li>
+            </ul>
+          schema:
+            type: string
+            example: chats,recipients_summary,last_message_info
+      responses:
+        '200':
+          description: Pin folders retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/get-pin-categories-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+              examples:
+                operation_failed:
+                  summary: Unexpected server error
+                  value:
+                    code: operation_failed
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.READ
+    post:
+      summary: Create a chat folder
+      operationId: createPinCategory
+      description: |
+        Create a new chat folder under the <b>My Pins</b> section. The folder must include a title and a symbol, and may optionally include a list of chats to pin within it.
+        <br><br>If chat IDs are provided, the folder will be created with those chats already pinned. Otherwise, an empty chat folder will be created.
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">param_missing</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">A required parameter is missing from the request body.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_not_allowed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">User does not have permission for a chat in the given chat list.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">max_folders_error</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Maximum number of categories reached.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_failed</span></td>
+                    <td style="padding:10px 18px;">Unexpected server error.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      tags:
+        - mypins
+      requestBody:
+        required: true
+        description: Provide the folder title and optionally a symbol and chat IDs to populate the folder.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create-pin-category-request'
+      responses:
+        '200':
+          description: Pin folder created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/create-pin-category-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+              examples:
+                param_missing:
+                  summary: A required parameter is missing from the request body
+                  value:
+                    code: param_missing
+                operation_not_allowed:
+                  summary: User does not have permission for a chat in the given chat list
+                  value:
+                    code: operation_not_allowed
+                max_folders_error:
+                  summary: Maximum number of folders reached
+                  value:
+                    code: max_folders_error
+                operation_failed:
+                  summary: Unexpected server error
+                  value:
+                    code: operation_failed
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.CREATE
+    delete:
+      summary: Remove pinned chats across chat folders
+      operationId: removeChatsAcrossCategories
+      description: |
+        Remove specific pinned chats from all chat folders in one request. Provide the list of chat IDs to unpin those chats from every folder they are pinned in.<br><br>This is a bulk operation that can be used when a chat is no longer relevant and needs to be removed from multiple folders at once.
+        <br><p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_failed</span></td>
+                    <td style="padding:10px 18px;">Unexpected server error.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      tags:
+        - mypins
+      parameters:
+        - name: chat_ids
+          in: query
+          required: true
+          description: |
+            Comma-separated list of chat IDs to unpin from all folders. For each provided chat ID, the chat will be removed from every folder it is currently pinned in.<br>
+            <b>Maximum limit:</b> 25 chat IDs per request.
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Chats removed from all folders successfully. No response body.
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+              examples:
+                operation_failed:
+                  summary: Unexpected server error
+                  value:
+                    code: operation_failed
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.DELETE
+  /pin-categories/{CATEGORY_ID}:
+    put:
+      summary: Modify a chat folder
+      operationId: updatePinCategory
+      description: |
+        Update the title, symbol and state of a chat folder.
+        <p>
+          <b>Threshold limit</b>: 50 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">client_not_synced</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The provided <code>last_sync_time</code> is stale - re-fetch categories and retry.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">invalid_inputs</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);"><code>title</code>, <code>symbol</code>, <code>state</code>, or <code>chat_id</code> was sent alongside <code>chat_ids</code>.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_failed</span></td>
+                    <td style="padding:10px 18px;">Unexpected server error or invalid inputs.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      tags:
+        - mypins
+      parameters:
+        - name: CATEGORY_ID
+          in: path
+          required: true
+          description: |
+            Unique ID of the chat folder to update. You can obtain this ID from the <a href="/cliq/help/restapi/v3/mypins/#retrieve-chat-folders">Retrieve Chat Folders API</a>, where <code>category_id</code> represents the ID of the chat folder.
+          schema:
+            type: string
+          example: CATEGORY_ID
+      requestBody:
+        required: true
+        description: Request body determines the operation. Send exactly one operation type per request.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update-pin-category-details-request'
+      responses:
+        '204':
+          description: Folder updated successfully. No response body.
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+              examples:
+                client_not_synced:
+                  summary: last_sync_time is stale - re-fetch folders and retry
+                  value:
+                    code: client_not_synced
+                invalid_inputs:
+                  summary: title, symbol, state, or chat_id was sent alongside chat_ids
+                  value:
+                    code: invalid_inputs
+                operation_failed:
+                  summary: Unexpected server error or invalid inputs
+                  value:
+                    code: operation_failed
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+    delete:
+      summary: Delete a chat folder
+      operationId: deletePinCategory
+      description: |
+        Delete a chat folder and optionally unpin all chats within it.
+        <br><b>Note:</b> The default folder i.e <b>My Pins</b> section cannot be deleted.
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_not_allowed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Cannot delete the default category.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_failed</span></td>
+                    <td style="padding:10px 18px;">Unexpected server error.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      tags:
+        - mypins
+      parameters:
+        - name: CATEGORY_ID
+          in: path
+          required: true
+          description: |
+            Unique ID of the chat folder to delete. You can obtain this ID from the <a href="/cliq/help/restapi/v3/mypins/#retrieve-chat-folders">Retrieve Chat Folders API</a>, where <code>category_id</code> represents the ID of the chat folder.
+          schema:
+            type: string
+          example: CATEGORY_ID
+        - name: unpin_all
+          in: query
+          required: false
+          description: |
+            Determines whether to unpin all chats within the folder instead of moving them to the default folder i.e <b>My Pins</b> section.
+            <br><b>Allowed values:</b><br>
+            <ul>
+              <li><code>true</code>: Unpin all chats within the folder instead of moving them to the default folder.</li>
+              <li><code>false</code> (default): Move chats pinned within the deleted folder to the default folder.</li>
+            </ul>
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '204':
+          description: Pin folder deleted successfully. No response body.
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+              examples:
+                operation_not_allowed:
+                  summary: Cannot delete the default folder
+                  value:
+                    code: operation_not_allowed
+                operation_failed:
+                  summary: Unexpected server error
+                  value:
+                    code: operation_failed
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.DELETE
+  /pin-categories/{CATEGORY_ID1}:
+    put:
+      summary: Reorder a chat within a chat folder
+      operationId: reorderChatInCategory
+      x-display-path: /pin-categories/{CATEGORY_ID}
+      x-virtual-endpoint: true
+      x-note: |
+        CATEGORY_ID1 is a documentation aliases for CATEGORY_ID path parameter used in updatePinCategory operation. This is to display the reorderChatInCategory operation in the documentation under the same endpoint as updatePinCategory since both operations require the same path parameter and it would be more intuitive to have them under the same endpoint. The actual endpoint for reorderChatInCategory operation will still be /pin-categories/{CATEGORY_ID} as specified in the paths object.
+      description: |
+        Reorder a pinned chat within a chat folder. This allows users to prioritise certain chats within a folder by moving them up or down the list.
+        <p>
+          <b>Threshold limit</b>: 50 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">client_not_synced</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The provided <code>last_sync_time</code> is stale - re-fetch categories and retry.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">invalid_inputs</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);"><code>title</code>, <code>symbol</code>, <code>state</code>, or <code>chat_id</code> was sent alongside <code>chat_ids</code>.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_failed</span></td>
+                    <td style="padding:10px 18px;">Unexpected server error or invalid inputs.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      tags:
+        - mypins
+      parameters:
+        - name: CATEGORY_ID1
+          in: path
+          required: true
+          description: |
+            Unique ID of the chat folder to update. You can obtain this ID from the <a href="/cliq/help/restapi/v3/mypins/#retrieve-chat-folders">Retrieve Chat Folders API</a>, where <code>category_id</code> represents the ID of the chat folder.<br><br> 
+            <b>Note:</b> <code>CATEGORY_ID1</code> is a documentation alias for <code>CATEGORY_ID</code>, used to separate the "Reorder a chat within a chat folder" operation for better readability while sharing the same <code>/pin-categories/{CATEGORY_ID}</code> endpoint.
+          schema:
+            type: string
+          example: CATEGORY_ID
+      requestBody:
+        required: true
+        description: Request body determines the operation. Send exactly one operation type per request.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reorder-chat-in-category-request'
+      responses:
+        '204':
+          description: Folder updated successfully. No response body.
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+              examples:
+                client_not_synced:
+                  summary: last_sync_time is stale - re-fetch folders and retry
+                  value:
+                    code: client_not_synced
+                invalid_inputs:
+                  summary: title, symbol, state, or chat_id was sent alongside chat_ids
+                  value:
+                    code: invalid_inputs
+                operation_failed:
+                  summary: Unexpected server error or invalid inputs
+                  value:
+                    code: operation_failed
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+  /pin-categories/{CATEGORY_ID2}:
+    put:
+      summary: Reorder a chat folder
+      operationId: reorderCategory
+      x-display-path: /pin-categories/{CATEGORY_ID}
+      x-virtual-endpoint: true
+      x-note: |
+        CATEGORY_ID2 is a documentation aliases for CATEGORY_ID path parameter used in updatePinCategory operation. This is to display the reorderCategory operation in the documentation under the same endpoint as updatePinCategory since both operations require the same path parameter and it would be more intuitive to have them under the same endpoint. The actual endpoint for reorderCategory operation will still be /pin-categories/{CATEGORY_ID} as specified in the paths object.
+      description: |
+        Reorder a chat folder within the list of chat folders. This allows users to prioritise certain folders by moving them up or down the list.
+        <p>
+          <b>Threshold limit</b>: 50 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">client_not_synced</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The provided <code>last_sync_time</code> is stale - re-fetch categories and retry.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">invalid_inputs</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);"><code>title</code>, <code>symbol</code>, <code>state</code>, or <code>chat_id</code> was sent alongside <code>chat_ids</code>.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_failed</span></td>
+                    <td style="padding:10px 18px;">Unexpected server error or invalid inputs.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      tags:
+        - mypins
+      parameters:
+        - name: CATEGORY_ID2
+          in: path
+          required: true
+          description: |
+            Unique ID of the chat folder to update. You can obtain this ID from the <a href="/cliq/help/restapi/v3/mypins/#retrieve-chat-folders">Retrieve Chat Folders API</a>, where <code>category_id</code> represents the ID of the chat folder.<br><br>
+            <b>Note:</b> <code>CATEGORY_ID2</code> is a documentation alias for <code>CATEGORY_ID</code>, used to separate the "Reorder a chat folder" operation for better readability while sharing the same <code>/pin-categories/{CATEGORY_ID}</code> endpoint.
+          schema:
+            type: string
+          example: CATEGORY_ID
+      requestBody:
+        required: true
+        description: Request body determines the operation. Send exactly one operation type per request.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reorder-category-request'
+      responses:
+        '204':
+          description: Folder updated successfully. No response body.
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+              examples:
+                client_not_synced:
+                  summary: last_sync_time is stale - re-fetch folders and retry
+                  value:
+                    code: client_not_synced
+                invalid_inputs:
+                  summary: title, symbol, state, or chat_id was sent alongside chat_ids
+                  value:
+                    code: invalid_inputs
+                operation_failed:
+                  summary: Unexpected server error or invalid inputs
+                  value:
+                    code: operation_failed
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+  /pin-categories/{CATEGORY_ID3}:
+    put:
+      summary: Replace chats in a chat folder
+      x-display-path: /pin-categories/{CATEGORY_ID}
+      x-virtual-endpoint: true
+      x-note: |
+        CATEGORY_ID3 is a documentation aliases for CATEGORY_ID path parameter used in updatePinCategory operation. This is to display the replaceChatInCategory operation in the documentation under the same endpoint as updatePinCategory since both operations require the same path parameter and it would be more intuitive to have them under the same endpoint. The actual endpoint for replaceChatInCategory operation will still be /pin-categories/{CATEGORY_ID} as specified in the paths object.
+      operationId: bulkUpdateChatsInCategory
+      description: |
+        Replace the existing chats in the specified chat folder with a new set of chats. Chats not included in the request will be removed from the folder.
+        <p>
+          <b>Threshold limit</b>: 50 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">client_not_synced</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The provided <code>last_sync_time</code> is stale - re-fetch categories and retry.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">invalid_inputs</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);"><code>title</code>, <code>symbol</code>, <code>state</code>, or <code>chat_id</code> was sent alongside <code>chat_ids</code>.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_failed</span></td>
+                    <td style="padding:10px 18px;">Unexpected server error or invalid inputs.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      tags:
+        - mypins
+      parameters:
+        - name: CATEGORY_ID3
+          in: path
+          required: true
+          description: |
+            Unique ID of the chat folder to update. You can obtain this ID from the <a href="/cliq/help/restapi/v3/mypins/#retrieve-chat-folders">Retrieve Chat Folders API</a>, where <code>category_id</code> represents the ID of the chat folder.<br><br>
+            <b>Note:</b> <code>CATEGORY_ID3</code> is a documentation alias for <code>CATEGORY_ID</code>, used to separate the "Replace chats in a chat folder" operation for better readability while sharing the same <code>/pin-categories/{CATEGORY_ID}</code> endpoint. 
+          schema:
+            type: string
+          example: CATEGORY_ID
+      requestBody:
+        required: true
+        description: Request body determines the operation. Send exactly one operation type per request.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/bulk-update-chats-in-category-request'
+      responses:
+        '204':
+          description: Folder updated successfully. No response body.
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+              examples:
+                client_not_synced:
+                  summary: last_sync_time is stale - re-fetch folders and retry
+                  value:
+                    code: client_not_synced
+                invalid_inputs:
+                  summary: title, symbol, state, or chat_id was sent alongside chat_ids
+                  value:
+                    code: invalid_inputs
+                operation_failed:
+                  summary: Unexpected server error or invalid inputs
+                  value:
+                    code: operation_failed
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+  /chats/{CHAT_ID}/pins:
+    post:
+      summary: Pin a chat to a chat folder
+      operationId: pinChat
+      description: |
+        Pin a chat for quick access either directly under the My Pins section or within a specific chat folder.
+        <p>
+          <b>Threshold limit</b>: 50 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">max_pins_error</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The user has reached the maximum number of pinned chats in the category.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_access_denied</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Caller is not a participant of this chat.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_not_allowed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Caller does not have permission to pin this chat.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_operation_failed</span></td>
+                    <td style="padding:10px 18px;">Unexpected server error.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      tags:
+        - mypins
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          description: Unique ID of the chat to pin. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+          schema:
+            type: string
+          example: CHAT_ID
+      requestBody:
+        required: false
+        description: Optionally provide a <code>category_id</code> to pin the chat under a specific folder.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pin-chat-request'
+      responses:
+        '200':
+          description: Chat pinned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pin-chat-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+              examples:
+                max_pins_error:
+                  summary: The user has reached the maximum number of pinned chats in the folder
+                  value:
+                    code: max_pins_error
+                chat_access_denied:
+                  summary: Caller is not a participant of this chat
+                  value:
+                    code: chat_access_denied
+                operation_not_allowed:
+                  summary: Caller does not have permission to pin this chat
+                  value:
+                    code: operation_not_allowed
+                chat_operation_failed:
+                  summary: Unexpected server error
+                  value:
+                    code: chat_operation_failed
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+    delete:
+      summary: Unpin a chat
+      operationId: unpinChat
+      description: |
+        Remove a pinned chat from the <b>My Pins</b> section and all associated chat folders. The chat will no longer appear in any pinned location.
+        <p>
+          <b>Threshold limit</b>: 50 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_access_denied</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Caller is not a participant of this chat.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_operation_failed</span></td>
+                    <td style="padding:10px 18px;">Unexpected server error.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      tags:
+        - mypins
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          description: Unique ID of the chat to unpin. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+          schema:
+            type: string
+          example: CHAT_ID
+      responses:
+        '200':
+          description: Chat unpinned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unpin-chat-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+              examples:
+                chat_access_denied:
+                  summary: Caller is not a participant of this chat
+                  value:
+                    code: chat_access_denied
+                chat_operation_failed:
+                  summary: Unexpected server error
+                  value:
+                    code: chat_operation_failed
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+components:
+  schemas:
+    NoResponse:
+      type: object
+      description: Represents an empty successful response where no payload is returned.
+      properties:
+        Response Code:
+          type: string
+          description: HTTP response code indicating no content is returned.
+          example: 204 No response
+    GenericResponse:
+      type: object
+      description: Generic successful response envelope.
+      properties:
+        url:
+          type: string
+          description: Endpoint URL associated with the response.
+        type:
+          type: string
+          description: Resource type returned by the API.
+        data:
+          type: object
+          description: Resource payload.
+          additionalProperties: true
+      additionalProperties: true
+    pin-category:
+      type: object
+      description: |
+        Represents a pin folder (chat folder) object. Fields marked <b>conditional</b> are only present when the matching <code>include_fields</code> value is requested.<br><br>
+        <b>Note:</b> The default folder only contains <code>category_id: "default"</code> with no other fields.
+      properties:
+        category_id:
+          type: string
+          description: Unique ID of the folder, or <code>"default"</code> for the default folder.
+        title:
+          type: string
+          description: Display title of the folder.
+        symbol:
+          type: string
+          description: Emoji or zomoji symbol for the folder.
+        state:
+          type: string
+          description: Whether the folder is expanded or collapsed.
+          enum:
+            - expanded
+            - collapsed
+        chats:
+          type: array
+          description: <b>Conditional</b> - only present when <code>include_fields</code> contains <code>chats</code>.
+          items:
+            $ref: '#/components/schemas/pinned-chat'
+    pinned-chat:
+      type: object
+      description: Represents a pinned chat entry within a folder.
+      properties:
+        chat_id:
+          type: string
+          description: ID of the pinned chat.
+        chat_type:
+          type: string
+          description: Type of the chat, such as <code>direct_message</code>, <code>bot</code>, <code>channel</code>, <code>group_chat</code>.
+        name:
+          type: string
+          description: Display name of the chat.
+        participant_count:
+          type: integer
+          description: Number of participants in the chat.
+        recipients_summary:
+          type: array
+          description: <b>Conditional</b> - requires both <code>chats</code> and <code>recipients_summary</code> in <code>include_fields</code>.
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: User ID of the participant.
+              name:
+                type: string
+                description: Display name of the participant.
+        last_message_info:
+          type: object
+          description: <b>Conditional</b> - requires both <code>chats</code> and <code>last_message_info</code> in <code>include_fields</code>.
+          properties:
+            id:
+              type: string
+              description: Message ID.
+            sender:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+            time:
+              type: string
+              description: <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> datetime of the message.
+            type:
+              type: string
+              description: Message type.
+            content:
+              type: object
+              properties:
+                text:
+                  type: string
+        is_pinned:
+          type: boolean
+          description: Whether the chat is currently pinned.
+    get-pin-categories-response:
+      type: object
+      description: Response envelope for listing all pin folders.
+      properties:
+        url:
+          type: string
+        type:
+          type: string
+          example: pin_categories
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/pin-category'
+      example:
+        url: /v3/pin-categories
+        type: pin_categories
+        data:
+          - category_id: default
+          - category_id: '4000000020001'
+            state: expanded
+            symbol: ':razz:'
+            title: Cliq!
+            chats:
+              - chat_id: '1488288613043522033'
+                chat_type: channel
+                name: Product Launch
+                participant_count: 12
+                is_pinned: true
+    create-pin-category-request:
+      type: object
+      description: Request body for creating a new pin folder.
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          maxLength: 255
+          description: |
+            Display title of the chat folder.<br>
+            <b>Maximum Length:</b> 255 characters.
+        symbol:
+          type: string
+          maxLength: 50
+          description: |
+            Emoji or zomoji symbol for the folder.<br>
+            <b>Maximum Length:</b> 50 characters.<br>
+            Send an empty string to create the folder without a symbol.
+        chat_ids:
+          type: array
+          maxItems: 100
+          description: |
+            Optional list of chat IDs to pin within the folder.<br>
+            <b>Maximum chat IDs:</b> 100.<br>
+            If provided, these chats will be pinned in the order specified. Otherwise, the folder will be created empty.
+          items:
+            type: string
+      example:
+        title: Priority Workitems
+        symbol: ':razz:'
+        chat_ids:
+          - '1488288613043522033'
+    create-pin-category-response:
+      type: object
+      description: Response envelope after creating a pin folder.
+      properties:
+        url:
+          type: string
+        type:
+          type: string
+          example: pin_categories
+        data:
+          $ref: '#/components/schemas/pin-category'
+      example:
+        url: /v3/pin-categories
+        type: pin_categories
+        data:
+          category_id: '4000000020001'
+          state: expanded
+          symbol: ':razz:'
+          title: Priority Workitems
+    update-pin-category-request:
+      type: object
+      description: |
+        Request body for updating a pin folder. Send <b>exactly one</b> operation type per request.<br><br>
+        <b>Operation types</b>:
+        <ul>
+          <li><b>Update Folder Details</b>: Send <code>title</code>, <code>symbol</code>, and/or <code>state</code>.</li>
+          <li><b>Reorder a Chat</b>: Send <code>chat_id</code> with optional <code>pin_above</code> and required <code>last_sync_time</code>.</li>
+          <li><b>Reorder a Folder</b>: Send <code>pin_above</code> only (no <code>chat_id</code>) with required <code>last_sync_time</code>.</li>
+          <li><b>Bulk Update Chats</b>: Send <code>chat_ids</code> (array) with required <code>last_sync_time</code>.</li>
+        </ul>
+      properties:
+        title:
+          type: string
+          maxLength: 255
+          description: New folder title. Maximum 255 characters.
+        symbol:
+          type: string
+          maxLength: 50
+          description: New emoji or zomoji. Maximum 50 characters. Send an empty string to clear.
+        state:
+          type: string
+          enum:
+            - expanded
+            - collapsed
+          description: Toggle the folder's expanded or collapsed state.
+        chat_id:
+          type: string
+          description: ID of the chat to reorder within the folder.
+        chat_ids:
+          type: array
+          maxItems: 100
+          description: Replacement list of chat IDs. Replaces all existing chats in the folder. Maximum 100 items.
+          items:
+            type: string
+        pin_above:
+          type: string
+          description: |
+            ID of the item above which to place the target. Used for both chat and folder reordering.<br>
+            If omitted, the item is moved to the end.
+        last_sync_time:
+          description: |
+            Required for reorder and bulk update operations. Accepts <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> datetime strings or epoch timestamps. The server rejects the request if this is stale.
+          oneOf:
+            - type: string
+            - type: integer
+    update-pin-category-details-request:
+      type: object
+      description: |
+        Request body for updating a pin folder. Send <b>exactly one</b> operation type per request.<br><br>
+        <b>Operation types</b>:
+        <ul>
+          <li><b>Update Folder Details</b>: Send <code>title</code>, <code>symbol</code>, and/or <code>state</code>.</li>
+        </ul>
+      properties:
+        title:
+          type: string
+          maxLength: 255
+          description: |
+            Update title of the chat folder.<br>
+            <b>Maximum Length:</b> 255 characters.
+        symbol:
+          type: string
+          maxLength: 50
+          description: |
+            Update emoji or zomoji symbol for the folder.<br>
+            <b>Maximum Length:</b> 50 characters.<br>
+            Send an empty string to remove the symbol.
+        state:
+          type: string
+          enum:
+            - expanded
+            - collapsed
+          description: |
+            Toggle the folder's expanded or collapsed state.<br>
+            <b>Allowed values:</b><br>
+            <ul>
+              <li><code>expanded</code>: The folder is expanded to show its contents.</li>
+              <li><code>collapsed</code>: The folder is collapsed to hide its contents.</li>
+            </ul>
+      example:
+        title: Deliverables for Q3
+        symbol: ':smile:'
+        state: collapsed
+    reorder-chat-in-category-request:
+      type: object
+      description: |
+        Request body for updating a pin folder. Send <b>exactly one</b> operation type per request.<br><br>
+        <b>Operation types</b>:
+        <ul>
+          <li><b>Reorder a Chat</b>: Send <code>chat_id</code> with optional <code>pin_above</code> and required <code>last_sync_time</code>.</li>
+        </ul>
+      required:
+        - chat_id
+        - last_sync_time
+      properties:
+        chat_id:
+          type: string
+          description: |
+            Unique ID of the chat to be reordered within the chat folder.
+        pin_above:
+          type: string
+          description: |
+            Unique ID of the chat above which the specified chat should be placed. If not provided, the chat will be moved to the end of the chat folder.
+        last_sync_time:
+          description: |
+            <ul>
+            <li>Timestamp of the client's most recent sync state.</li>
+            <li>This is used to ensure the chat folder has not been modified since the client last synced.</li>
+            <li>If the provided timestamp is outdated, the request will be rejected to prevent conflicting updates.</li>
+            </ul>
+            <b>Format:</b> Accepts either <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> datetime strings or epoch timestamps.
+      example:
+        chat_id: '1488288613043522033'
+        pin_above: '1488288613043522034'
+        last_sync_time: '2024-01-01T12:00:00Z'
+    reorder-category-request:
+      type: object
+      description: |
+        Request body for updating a pin folder. Send <b>exactly one</b> operation type per request.<br><br>
+        <b>Operation types</b>:
+        <ul>
+          <li><b>Reorder a Folder</b>: Send <code>pin_above</code> only (no <code>chat_id</code>) with required <code>last_sync_time</code>.</li>
+        </ul>
+      required:
+        - last_sync_time
+      properties:
+        pin_above:
+          type: string
+          description: |
+            Unique ID of the chat folder above which the specified chat folder should be placed.<br>
+            If not provided, <b>the folder will be moved to the end of the chat folder list.</b>
+        last_sync_time:
+          description: |
+            <ul>
+            <li>Timestamp of the client's most recent sync state.</li>
+            <li>This is used to ensure the chat folder has not been modified since the client last synced.</li>
+            <li>If the provided timestamp is outdated, the request will be rejected to prevent conflicting updates.</li>
+            </ul>
+            <b>Format:</b> Accepts either <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> datetime strings or epoch timestamps.
+      example:
+        pin_above: '4000000020002'
+        last_sync_time: '2024-01-01T12:00:00Z'
+    bulk-update-chats-in-category-request:
+      type: object
+      description: |
+        Request body for updating a pin folder. Send <b>exactly one</b> operation type per request.<br><br>
+        <b>Operation types</b>:
+        <ul>
+          <li><b>Bulk Update Chats</b>: Send <code>chat_ids</code> (array) with required <code>last_sync_time</code>.</li>
+        </ul>
+      required:
+        - chat_ids
+        - last_sync_time
+      properties:
+        chat_ids:
+          type: array
+          maxItems: 100
+          description: |
+            <ul>
+              <li>Array of chat IDs that should be present in the chat folder, with a <b>maximum of 100 chats</b>.</li>
+              <li>The provided list completely replaces the existing chats in the folder.</li>
+              <li>To add a new chat without removing existing ones, include both the existing and new chat IDs in the request.</li>
+            </ul>
+            Use the <a href="/cliq/help/restapi/v3/mypins/#retrieve-chat-folders">Retrieve Chat Folders API</a> to get the current list of pinned chats in a folder and then modify that list as needed and send it back in this request to update the folder's contents.<br><br>
+            For new Chat IDs, you can retrieve them from the <a href="/cliq/help/restapi/v3/chats/#retrieve-all-direct-chats">List Chats API</a> or <a href="/cliq/help/restapi/v2/channels/#list-all-channels">List Channels API</a> from the chat object returned in message payloads.
+          items:
+            type: string
+        last_sync_time:
+          description: |
+            <ul>
+              <li>Timestamp of the client's most recent sync state.</li>
+              <li>This is used to ensure the chat folder has not been modified since the client last synced.</li>
+              <li>If the provided timestamp is outdated, the request will be rejected to prevent conflicting updates.</li>
+            </ul>
+            <b>Format:</b> Accepts either <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> datetime strings or epoch timestamps.
+      example:
+        chat_ids:
+          - '1488288613043522033'
+          - '1488288613043522034'
+        last_sync_time: '2024-01-01T12:00:00Z'
+    pin-chat-request:
+      type: object
+      description: Request body for pinning a chat. All fields are optional.
+      properties:
+        category_id:
+          type: string
+          description: |
+            Unique ID of the chat folder to pin the chat under. If omitted, the chat will be pinned under <b>My Pins</b> section (default folder).<br><br>
+            To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/mypins/#retrieve-chat-folders">Retrieve Chat Folders API</a>, where <code>category_id</code> represents the ID of the chat folder.
+      example:
+        category_id: '2890538000000011111'
+    pin-chat-response:
+      type: object
+      description: Response envelope after pinning a chat.
+      properties:
+        type:
+          type: string
+          example: chat.pin
+        data:
+          type: object
+          properties:
+            chat_id:
+              type: string
+            category_id:
+              type: string
+      example:
+        type: chat.pin
+        data:
+          chat_id: '2890538000000012345'
+          category_id: '2890538000000011111'
+    unpin-chat-response:
+      type: object
+      description: Response envelope after unpinning a chat.
+      properties:
+        type:
+          type: string
+          example: chat.unpin
+        data:
+          type: object
+          properties:
+            chat_id:
+              type: string
+      example:
+        type: chat.unpin
+        data:
+          chat_id: '2890538000000012345'
+    error-response:
+      type: object
+      description: Error response returned by the My Pins API.
+      properties:
+        message:
+          type: string
+          description: Human-readable error description.
+        code:
+          type: string
+          description: Machine-readable error code.
+          enum:
+            - operation_failed
+            - operation_not_allowed
+            - param_missing
+            - max_folders_error
+            - client_not_synced
+            - invalid_inputs
+            - max_pins_error
+            - chat_access_denied
+            - chat_operation_failed
+  securitySchemes:
+    Cliq_Auth:
+      type: oauth2
+      x-authorization-example: Bearer 1000.41d9xxxxxxxxxxxxxxxxxxxxxxxxc2d1.8fccxxxxxxxxxxxxxxxxxxxxxxxx125f
+      flows:
+        implicit:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          scopes:
+            ZohoCliq.Chats.CREATE: Create Chats
+            ZohoCliq.Chats.READ: Read Chats
+            ZohoCliq.Chats.UPDATE: Modify Chats
+            ZohoCliq.Chats.DELETE: Delete Chats

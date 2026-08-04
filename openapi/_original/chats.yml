@@ -1,0 +1,3636 @@
+openapi: 3.0.0
+info:
+  title: Chats
+  description: |
+    The Chats API enables effective conversation management, offering complete control over chat interactions, making it suitable for various messaging and collaboration scenarios.<br><br>
+    The v3 version of the Chats API is designed to provide full lifecycle control over chat interactions, enabling developers to create scalable, feature-rich communication experiences.
+    <br><br><b>Key Capabilities</b><br>
+    With the latest v3 version of the Chats API, you can:
+    <ul>
+      <li><b>Search Chats:</b> Efficiently query and retrieve chats based on parameters such as participants, metadata, or chat state.</li>
+      <li><b>Chat Management:</b> Create new chats, retrieve existing ones (including direct chats or specific conversations), and fork chats from existing discussions.</li>
+      <li><b>Member Management:</b> Add or remove participants and access the list of members within a chat.</li>
+      <li><b>Chat Operations:</b> Update chat states, send typing indicators, and perform bulk updates across multiple chats.</li>
+    </ul>
+  contact: {}
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Zoho Cliq APIs V2
+  url: https://www.zoho.com/cliq/help/restapi/v2/
+servers:
+  - url: https://cliq.zoho.com/api/v3
+    description: Zoho Cliq US DC
+tags:
+  - name: chats
+    description: Chats Module
+paths:
+  /chats:
+    get:
+      summary: Retrieve all direct chats
+      operationId: Retrieve all direct chats
+      description: |
+        Use this API to get details of all direct chats.
+        <br><br> 
+        <p>
+          <b>Threshold limit</b>: 30 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Search for chats with names that partially match the provided value.<br>
+            For example, searching with "pro" may return chats named "Project Alpha" and "Product Launch".
+        - name: recipient
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Filter chats containing recipient.<br>
+            Provide the recipient <code>USER_ID</code> to return chats that include that user as a participant.<br>
+            To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#USER_ID">USER_ID</a> in the Glossary page.<br>
+            For example, searching with <code>70027934</code> returns chats that include that user ID.
+        - name: muted
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: |
+            Set this parameter to true to retrieve the list of chats which are muted by the user.
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+            maxLength: 100
+          description: |
+            The number of chats that has to be retrieved.<br>
+            <b>Maximum limit</b> : 100
+        - name: modified_before
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+          description: |
+            Gets the list of chats where the last message is sent before the mentioned time.
+            <br>
+            The time should be in <b>epoch milliseconds</b> format.<br>For example, <code>1711929600000</code>.
+        - name: modified_after
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+          description: |
+            Gets the list of chats where the last message is sent after the mentioned time.
+            <br>
+            The time should be in <b>epoch milliseconds</b> format.<br>For example, <code>1711929600000</code>.
+        - name: drafts
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: |
+            Set this parameter to true to retrieve the list of chats which have unsent messages (drafts).
+        - name: pinned
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: |
+            Set this parameter to true to retrieve the list of chats which are pinned by the user.
+        - name: closed
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: |
+            Set this parameter to true to retrieve the list of chats which are closed by the user.
+        - name: joined
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: |
+            Set this parameter to true to retrieve the list of chats which are joined by the user.
+        - name: chat_ids
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Comma-separated list of chat IDs to filter the chats.<br>
+            To learn how to retrieve these IDs, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.<br>
+        - name: parent_chid
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Filter chats that are threads of a specific parent chat. Provide the parent chat's <code>CHAT_ID</code> to return all threads under that chat.<br>
+            To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.<br>
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - guests
+              - threads
+              - channel
+              - bot
+              - dm
+              - muted
+          description: |
+            Filter chats by type.<br>
+            <b>Allowed values</b>:<br>
+            <ul>
+              <li><code>threads</code> - Chats that are threads of a parent chat.</li>
+              <li><code>channel</code> - Channel conversations.</li>
+              <li><code>bot</code> - Conversations with bots.</li>
+              <li><code>dm</code> - Direct messages between users.</li>
+              <li><code>muted</code> - Chats that are muted by the user.</li>
+            </ul>
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              examples:
+                success:
+                  summary: List of direct chats
+                  value:
+                    chats:
+                      - chat_id: '2890538000000012345'
+                        name: Alice Johnson
+                        chat_type: direct_message
+                        participant_count: 2
+                        created_time: '2024-06-01T09:00:00.000Z'
+                        last_modified_time: '2025-04-10T14:30:00.000Z'
+                        pinned: false
+                        removed: false
+                        creator:
+                          id: '70027934'
+                          name: Tim Harrison
+                        last_message_info:
+                          message_id: '1773813859592_51531973059'
+                          sender: '70027934'
+                          time: '2025-04-10T14:30:00.000Z'
+                          content:
+                            text: See you at the standup!
+                          type: text
+                      - chat_id: '2890538000000067890'
+                        name: Bob Carter
+                        chat_type: direct_message
+                        participant_count: 2
+                        created_time: '2024-09-15T11:00:00.000Z'
+                        last_modified_time: '2025-04-09T09:45:00.000Z'
+                        pinned: true
+                        removed: false
+                        creator:
+                          id: '70027934'
+                          name: Tim Harrison
+              schema:
+                type: object
+                properties:
+                  chats:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/v3-chat'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.READ
+      tags:
+        - chats
+    post:
+      summary: Create chat
+      operationId: createChatV3
+      description: |
+        Create a new direct conversation or a group chat.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 30 requests per min<br>
+          Number of API calls allowed within a minute.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">121_deptmem_message</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Permission to chat with department members is restricted by admin.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">121_orgmem_message</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Permission to chat with organization members is restricted by admin.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_continue_nonorg_nonmutual_contact_failed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The user is no longer part of your contacts or organization.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">121_extmem_message</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Permission to chat with external users is restricted by admin.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_not_available_with_this_inactive_user_and_cannot_create_newchat</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">No chat history with this inactive user; cannot create a new chat.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">invalid_inputs</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Missing or invalid fields (e.g. chat_type not provided or unsupported).</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">no_valid_users_available_to_create_chat</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">All specified users are inactive or not in your contacts.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">insufficient_members_to_create_group_chat</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Not enough valid members to create a group chat (minimum 3 including creator).</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_operation_failed</span></td>
+                    <td style="padding:10px 18px;">Unexpected server error while creating the chat.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            examples:
+              direct_chat:
+                summary: Direct Chat
+                value:
+                  chat_type: direct_message
+                  user_id: '70027934'
+              group_chat:
+                summary: Group Chat
+                value:
+                  chat_type: group_chat
+                  user_ids:
+                    - '70027934'
+                    - '106324287'
+                    - '70317945'
+                    - '72589892'
+                  title: Q2 Product Review - Design, Engineering & QA
+            schema:
+              $ref: '#/components/schemas/v3-create-chat-request'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              examples:
+                direct_chat:
+                  summary: Direct Chat response
+                  value:
+                    url: /v3/chats
+                    type: chat
+                    data:
+                      user_membership:
+                        pinned: false
+                        removed: false
+                      chat_type: direct_message
+                      name: Ryan West
+                      creator:
+                        name: Ryan West
+                        id: '855727963'
+                      participant_count: 2
+                      created_time: '2024-11-06T22:39:30-08:00'
+                      last_modified_time: '2026-05-06T23:37:30-07:00'
+                      chat_id: '2198144177691461096'
+                group_chat:
+                  summary: Group Chat response
+                  value:
+                    url: /v3/chats
+                    type: chat
+                    data:
+                      name: Q2 Product Review - Design, Engineering & QA
+                      chat_id: '1456816193674892935'
+                      chat_type: group_chat
+                      participant_count: 5
+                      created_time: '2025-06-15T10:30:00+05:30'
+                      last_modified_time: '2025-06-15T10:30:00+05:30'
+                      user_membership:
+                        pinned: false
+                        removed: false
+                      creator:
+                        id: '70027934'
+                        name: Tim Harrison
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/v3-chat'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.CREATE
+      tags:
+        - chats
+    put:
+      summary: Mark Multiple Chats as Read or Clear Unread Count
+      operationId: bulkUpdateChatsV3
+      description: |
+        Manage the read state of multiple chats in a single request.<br> 
+        Two bulk actions are supported, controlled by the <code>operation</code> field in the request body:
+        <ul>
+          <li><code>read_status_update</code>- Manage the read status of multiple chats in a single request. This is particularly useful for keeping your chat list organized and up-to-date, especially when you have a large number of conversations.</li>
+          <li><code>clear_unread</code> - Clears the unread message count or status to zero for the specified chats. If a specified chat has no unread entries, it is silently skipped.</li>
+        </ul>
+        <p>
+          <b>Threshold limits</b>: 60 requests per min<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock periods</b>: 5 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <p style="margin:0px 0 8px 0; font-weight:600; font-size:0.9em; opacity:0.75;">Possible Error Codes - Mark Chats as Read (<code>read_status_update</code>)</p>
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">param_missing</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The param 'operation' is missing.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">param_missing</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The param 'read_status' is missing.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">param_missing</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The param 'chats' is missing.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">param_missing</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The param 'chat_id' is missing.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">invalid.inputs.submitted</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Incorrect values submitted.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_access_denied</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">You must be a participant in this chat to perform this action.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_operation_failed</span></td>
+                    <td style="padding:10px 18px;">Unable to perform the action. Please retry.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p style="margin:14px 0 8px 0; font-weight:600; font-size:0.9em; opacity:0.75;">Possible Error Codes - Clear Unread Count (<code>clear_unread</code>)</p>
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">param_missing</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The param 'operation' is missing.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">param_missing</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">One or more required params are missing: <code>operation</code> or <code>chat_ids</code>.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">invalid.inputs.submitted</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Incorrect values submitted.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_operation_failed</span></td>
+                    <td style="padding:10px 18px;">Unable to perform the action. Please retry.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            examples:
+              read_status_update:
+                summary: Mark multiple chats as read
+                value:
+                  operation: read_status_update
+                  read_status: read
+                  chats:
+                    - chat_id: '2890538000000012345'
+                      last_message_id: '1773813859592_51531973059'
+                    - chat_id: '2890538000000067890'
+                      last_message_id: '1773813860210_51531973060'
+              clear_unread:
+                summary: Clear unread count for multiple chats
+                value:
+                  operation: clear_unread
+                  chat_ids:
+                    - '2890538000000012345'
+                    - '2890538000000067890'
+            schema:
+              $ref: '#/components/schemas/v3-bulk-chat-update-request'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              examples:
+                read_status_update:
+                  summary: Mark as read - success/failure breakdown
+                  value:
+                    type: chat.read_status
+                    data:
+                      success:
+                        - '2890538000000012345'
+                        - '2890538000000067890'
+                      failure: []
+                clear_unread:
+                  summary: Clear unread count
+                  value:
+                    Response Code: 204 No response
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: chat.read_status
+                  data:
+                    type: object
+                    additionalProperties: true
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+      tags:
+        - chats
+  /chats/search:
+    get:
+      summary: Search chats
+      operationId: searchChatsV3
+      description: |
+        Search for chats accessible to the current user. You can filter by name, type, date range, participant, and more.
+        <br><br> 
+        <p>
+          <b>Threshold limit</b>: 50 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">invalid.inputs.submitted</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">An invalid value was passed (e.g. unrecognised <code>chat_type</code> or <code>sort_by</code>).</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">invalid.time.submitted</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);"><code>modified_before</code> or <code>modified_after</code> is not a valid timestamp, or <code>modified_after</code> is not earlier than <code>modified_before</code>.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">invalid_access</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The user is not a member of the organisation.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_operation_failed</span></td>
+                    <td style="padding:10px 18px;">An unexpected server-side error occurred.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - name: title
+          in: query
+          required: false
+          schema:
+            type: string
+            maxLength: 200
+          description: |
+            Search for chats that include this keyword in their names. The search should be case-insensitive and allow for partial matches.<br>
+            <b>Maximum length</b>: 200 characters
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            maximum: 500
+            default: 500
+          description: |
+            The maximum number of chats to return.<br>
+            <b>Maximum limit</b>: 500. Default is 500 if not specified.
+        - name: modified_before
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Search and return only chats last modified before this time.<br>
+            Accepts either epoch time in milliseconds (for example, <code>1711929600000</code>) or <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format (for example, <code>2024-04-01T00:00:00Z</code>).<br>
+            Use the same time format consistently across both <code>modified_before</code> and <code>modified_after</code> in a request for predictable filtering.
+            <b>Note:</b> When both modified_before and modified_after are provided, modified_after must be earlier than modified_before.
+        - name: modified_after
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Search and return only chats last modified after this time.<br>
+            Accepts either epoch time in milliseconds (for example, <code>1711929600000</code>) or <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format (for example, <code>2024-04-01T00:00:00Z</code>).<br>
+            Use the same time format consistently across both <code>modified_before</code> and <code>modified_after</code> in a request for predictable filtering.
+            <b>Note:</b> When both modified_before and modified_after are provided, modified_after must be earlier than modified_before.
+        - name: recipient
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Filter by recipient user ID. Returns chats where this user is a participant. For direct messages, this will be the other participant; for group chats, this can be any member.
+        - name: chat_type
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Filter by chat type.
+            Allowed values:<br><code>direct_message</code>, <code>group_chat</code>, <code>channel</code>, <code>thread</code>. You can specify multiple types separated by commas (e.g. <code>direct_message,group_chat</code>) to include multiple chat types in the results.
+        - name: parent_chat_id
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Restrict results to threads belonging to this parent chat. Only applicable when filtering for thread-type chats.
+        - name: sort_by
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - usage
+              - recent
+            default: recent
+          description: |
+            Sort results by usage or recent activity.<br>
+            <b>Allowed values</b>:<br>
+            <ul>
+              <li><code>usage</code>: Sort by usage frequency, with the most frequently accessed chats appearing first.</li>
+              <li><code>recent</code>: Sort by recent activity, with the most recently active chats appearing first. This is the default sorting method.</li> 
+            </ul>
+      responses:
+        '200':
+          description: The request was successfully completed. Returns a list of matching chats.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  chats:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/v3-chat'
+              examples:
+                multiple_chats:
+                  summary: Multiple chats found
+                  value:
+                    chats:
+                      - chat_id: 6795XXXXXXXXXXXXXX
+                        name: General
+                        chat_type: channel
+                        participant_count: 42
+                        created_time: '2024-01-10T09:00:00.000Z'
+                        last_modified_time: '2025-03-20T14:30:00.000Z'
+                        pinned: false
+                        removed: false
+                        creator:
+                          id: 711622XXXX
+                          name: Alice
+                        last_message_info:
+                          message_id: '1710934200000'
+                          sender: 711622XXXX
+                          time: '2025-03-20T14:30:00.000Z'
+                          content:
+                            text: Hello everyone!
+                          type: text
+                      - chat_id: 6795YYYYYYYYYYYY
+                        name: Bob
+                        chat_type: direct_message
+                        participant_count: 2
+                        created_time: '2024-06-01T10:00:00.000Z'
+                        last_modified_time: '2025-03-18T11:00:00.000Z'
+                        pinned: false
+                        removed: false
+        '400':
+          description: Bad Request. Invalid parameter values submitted.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+              examples:
+                invalid_inputs:
+                  summary: Invalid input parameters
+                  value:
+                    error:
+                      code: invalid.inputs.submitted
+                      message: An invalid value was passed. Please check chat_type or sort_by parameters.
+                invalid_time:
+                  summary: Invalid timestamp
+                  value:
+                    error:
+                      code: invalid.time.submitted
+                      message: Invalid timestamp format or modified_after must be earlier than modified_before.
+        '401':
+          description: Unauthorized. Invalid or missing authentication token.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+              examples:
+                unauthorized:
+                  summary: Invalid auth token
+                  value:
+                    error:
+                      code: unauthorized
+                      message: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden. User does not have access to this resource.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+              examples:
+                invalid_access:
+                  summary: Access denied
+                  value:
+                    error:
+                      code: invalid_access
+                      message: You are not a member of this organisation or do not have permission to access this resource.
+        '429':
+          description: Too many requests. Rate limit exceeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+              examples:
+                rate_limit:
+                  summary: Rate limit exceeded
+                  value:
+                    error:
+                      code: rate_limit_exceeded
+                      message: Too many requests within a certain time frame. Please try again later.
+        '500':
+          description: Internal Server Error. An unexpected server-side error occurred.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+              examples:
+                server_error:
+                  summary: Server error
+                  value:
+                    error:
+                      code: chat_operation_failed
+                      message: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.READ
+      tags:
+        - chats
+  /chats/{CHAT_ID}:
+    get:
+      summary: Retrieve chat details
+      operationId: getChatV3
+      description: |
+        Retrieve details of a specific chat by its unique identifier. You can specify optional fields to include in the response for more efficient data retrieval.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 60 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_access_denied</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">You must be a participant in this chat to perform this action.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_operation_failed</span></td>
+                    <td style="padding:10px 18px;">Unable to perform the action. Please retry.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: The unique identifier of the chat. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+        - name: fields
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Comma-separated list of response fields to include (max 20).<br>
+            By default, a standard set of fields is returned. Use this parameter to include additional fields or to optimize performance by excluding unnecessary data.<br>
+            <b>Example</b>: <code>https://cliq.zoho.com/api/v3/chats/{CHAT_ID}?fields=title,chat_type,participant_count,permissions</code>
+        - name: include
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Comma-separated list of additional data to include in the response.<br>
+            <b>Allowed value</b>: 
+            <ul>
+              <li><code>last_message_info</code>: Includes details of the last message in the chat, such as message ID, sender, timestamp, content preview, and message type.</li>
+            </ul>
+            By default, last message information is not returned. Specify <code>include=last_message_info</code> to include it in the response.<br>
+            <b>Example</b>: <code>https://cliq.zoho.com/api/v3/chats/{CHAT_ID}?include=last_message_info</code>
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              examples:
+                get_chat:
+                  summary: Chat details
+                  value:
+                    type: chat
+                    data:
+                      chat_id: '2890538000000012345'
+                      name: Q2 Product Review - Design, Engineering & QA
+                      chat_type: group_chat
+                      participant_count: 5
+                      created_time: '2025-06-15T10:30:00+05:30'
+                      last_modified_time: '2025-06-15T10:30:00+05:30'
+                      pinned: false
+                      removed: false
+                      creator:
+                        id: '70027934'
+                        name: Tim Harrison
+                      unread_message_count: 3
+                get_chat_with_last_message_info:
+                  summary: Chat details with last message info
+                  value:
+                    type: chat
+                    data:
+                      chat_id: '2890538000000012345'
+                      name: Q2 Product Review - Design, Engineering & QA
+                      chat_type: group_chat
+                      participant_count: 5
+                      created_time: '2025-06-15T10:30:00+05:30'
+                      last_modified_time: '2025-06-15T10:30:00+05:30'
+                      pinned: false
+                      removed: false
+                      creator:
+                        id: '70027934'
+                        name: Tim Harrison
+                      unread_message_count: 3
+                      last_message_info:
+                        message_id: '1773813859592_51531973059'
+                        sender: '70027934'
+                        time: '2025-06-15T10:30:00+05:30'
+                        content:
+                          text: Let's sync up before the review.
+                        type: text
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: chat
+                  data:
+                    $ref: '#/components/schemas/v3-chat'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.READ
+      tags:
+        - chats
+    put:
+      summary: Update chat title or history status
+      operationId: updateChatV3
+      description: |
+        Modify a chat's title or history status. Only one operation can be performed per request.<br><br>
+        <b>Supported operations:</b><br>
+        <ul>
+          <li><code>update_title</code>: Updates the <b>visible title of the chat</b>. Pass the new title in the <code>title</code> field.<br>
+          <li><code>update_history_status</code> : Controls whether <b>chat history is retained</b>. Set <code>history_status</code> to <code>enabled</code> or <code>disabled</code>.<br>
+        </ul>
+        <br>
+        <p>
+          <b>Threshold limits</b>:<br>
+          <code>update_title</code>: 60 req/min<br>
+          <code>update_history_status</code>: 60 req/min<br><br>
+          <b>Lock periods</b>:<br>
+          <code>update_title</code>: 10 min<br>
+          <code>update_history_status</code>: 10 min
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <p style="margin:0px 0 8px 0; font-weight:600; font-size:0.9em; opacity:0.75;">Possible Error Codes - Update Title (<code>update_title</code>)</p>
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">param_missing</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The param 'operation' is missing.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">param_missing</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The param 'title' is missing.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">invalid.inputs.submitted</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Incorrect values submitted.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_title_empty</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Title cannot be empty. Please enter a valid title.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">channel_title_update_not_supported</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Channel title update is not supported through this API.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">contact_rename_not_supported</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Renaming contacts in one-to-one chats is not allowed when contact display name is not preferred.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chatlet_title_modification_not_allowed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">You do not have permission to modify the title of this chatlet.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_access_denied</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">You must be a participant in this chat to perform this action.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_title_update_failed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Failed to update the chat title. Please try again.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_operation_failed</span></td>
+                    <td style="padding:10px 18px;">Unable to perform the action. Please retry.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p style="margin:14px 0 8px 0; font-weight:600; font-size:0.9em; opacity:0.75;">Possible Error Codes - Update History Status (<code>update_history_status</code>)</p>
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">param_missing</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The param 'operation' is missing.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">param_missing</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The param 'history_status' is missing.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">invalid.inputs.submitted</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Incorrect values submitted.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_access_denied</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">You must be a participant in this chat to perform this action.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_operation_failed</span></td>
+                    <td style="padding:10px 18px;">Unable to perform the action. Please retry.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: The unique identifier of the chat. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            examples:
+              update_title:
+                summary: Update chat title
+                value:
+                  operation: update_title
+                  title: Quarterly Rewards
+              update_history_status:
+                summary: Update history status
+                value:
+                  operation: update_history_status
+                  history_status: enabled
+            schema:
+              type: object
+              properties:
+                operation:
+                  type: string
+                  description: |
+                    The update operation to perform on the chat.<br>
+                    <b>Allowed values</b>:<br>
+                    <ul>
+                       <li><b>update_title</b>: Updates the visible title of the chat. Requires the <code>title</code> field.</li>
+                       <li><b>update_history_status</b>: Controls whether chat history is retained. Requires the <code>history_status</code> field set to either <code>enabled</code> or <code>disabled</code>.</li>
+                     </ul>
+                  enum:
+                    - update_title
+                    - update_history_status
+                title:
+                  type: string
+                  maxLength: 255
+                  description: |
+                    The new title for the chat. Required when <code>operation</code> is <code>update_title</code>.<br>
+                    <b>Maximum length</b>: 255 characters.
+                history_status:
+                  type: string
+                  description: |
+                    The history status for the chat. Required when <code>operation</code> is <code>update_history_status</code>.<br>
+                    <b>Allowed values</b>:<br>
+                    <ul>
+                    <li><b>enabled</b>: Chat history will be retained.</li>
+                    <li><b>disabled</b>: Chat history will not be retained.</li>
+                    </ul>
+                  enum:
+                    - enabled
+                    - disabled
+      responses:
+        '200':
+          description: OK. Returns updated chat data for <code>update_title</code>.
+          content:
+            application/json:
+              examples:
+                update_title:
+                  summary: Title updated successfully
+                  value:
+                    type: chat.title
+                    data:
+                      title: Quarterly Rewards
+                      chat_id: '1424358626334691820'
+                update_history_status:
+                  summary: History status updated successfully
+                  value: 204 No response
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: chat.title
+                  data:
+                    type: object
+                    properties:
+                      title:
+                        type: string
+                        example: qa_renamed_xwswhsyz
+                      chat_id:
+                        type: string
+                        example: '1424358626334691820'
+        '204':
+          description: No Content - returned for <code>update_history_status</code> operation. No response body.
+          content:
+            application/json:
+              examples:
+                update_history_status:
+                  summary: History status updated successfully
+                  value: {}
+              schema:
+                $ref: '#/components/schemas/NoResponse'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+      tags:
+        - chats
+  /chats/{CHAT_ID1}:
+    put:
+      summary: Update Chat Read or Unread Status
+      operationId: markChatAsUnreadV3
+      x-display-path: /chats/{CHAT_ID}
+      x-virtual-endpoint: true
+      x-virtual-operation: true
+      x-note: |
+        CHAT_ID1 is a documentation alias for CHAT_ID to differentiate the two PUT operations under the same endpoint. This is to display both operations in the API reference. In actual API calls, use /chats/{CHAT_ID} for both operations and specify the desired operation in the request body.
+      description: |
+        Marks a single chat as read or unread for the calling user.<br><br>
+        <b>Supported operations:</b><br>
+        <ul>
+          <li><code>mark_as_read</code>: <b>Marks the chat as read</b> up to a specific message. Pass the <code>last_message_id</code> of the chat till to be read.</li>
+          <li><code>mark_as_unread</code>: <b>Marks the chat as unread</b> from a specific message. Pass the target <code>message_id</code>.</li>
+        </ul>
+        <br>
+        <p>
+          <b>Threshold limit</b>: 60 requests per min<br>
+          Number of API calls allowed within a minute.
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">invalid.inputs.submitted</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Invalid inputs</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_access_denied</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Caller is not a participant of this chat</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_operation_failed</span></td>
+                    <td style="padding:10px 18px;">Unexpected server error</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - name: CHAT_ID1
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: |
+            The unique identifier of the chat. Accepts the same chat ID format as CHAT_ID. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.<br><br> 
+            <b>Note:</b> <code>CHAT_ID1</code> is a documentation alias for <code>CHAT_ID</code>, used to separate the "Update Chat Read or Unread Status" operation for better readability while sharing the same <code>/chats/{CHAT_ID}</code> endpoint.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            examples:
+              mark_as_read:
+                summary: Mark chat as read
+                value:
+                  operation: mark_as_read
+                  last_message_id: '1773813859592_51531973059'
+              mark_as_unread:
+                summary: Mark chat as unread
+                value:
+                  operation: mark_as_unread
+                  message_id: '1773813859592_51531973059'
+            schema:
+              type: object
+              required:
+                - operation
+              properties:
+                operation:
+                  type: string
+                  description: |
+                    The update operation to perform on the chat.<br>
+                    <b>Allowed values</b>:<br>
+                    <ul>
+                       <li><b>mark_as_read</b>: Marks the chat as read up to a specific message. Requires the <code>last_message_id</code> field.</li>
+                       <li><b>mark_as_unread</b>: Marks the chat as unread from a specific message. Requires the <code>message_id</code> field indicating the message from which to mark as unread.</li>
+                     </ul>
+                  enum:
+                    - mark_as_read
+                    - mark_as_unread
+                last_message_id:
+                  type: string
+                  description: |
+                    The last message ID of the chat till to be read. Required when <code>operation</code> is <code>mark_as_read</code>.
+                message_id:
+                  type: string
+                  description: |
+                    The message from which to start the unread marker. Required when <code>operation</code> is <code>mark_as_unread</code>.
+      responses:
+        '204':
+          description: No Content - operation completed successfully. No response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoResponse'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+        - Cliq_Auth:
+            - ZohoCliq.Messages.UPDATE
+      tags:
+        - chats
+  /chats/{CHAT_ID2}:
+    put:
+      summary: Clear Local Chat History
+      operationId: clearChatMessagesV3
+      x-display-path: /chats/{CHAT_ID}
+      x-virtual-endpoint: true
+      x-virtual-operation: true
+      x-note: |
+        CHAT_ID2 is a documentation alias for CHAT_ID to differentiate the two PUT operations under the same endpoint. This is to display both operations in the API reference. In actual API calls, use /chats/{CHAT_ID} for both operations and specify the desired operation in the request body.
+      description: |
+        Clears the local message history of a chat for the current user. The chat itself and all members remain intact; only the locally visible message history is cleared.
+        Only supported for direct messages and group chats.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 60 requests per min<br>
+          Number of API calls allowed within a minute.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">param_missing</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The param 'operation' is missing.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">invalid.inputs.submitted</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Incorrect values submitted.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_clear_local_history_not_supported</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Clear local history is only supported for direct messages and group chats.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_access_denied</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">You must be a participant in this chat to perform this action.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_clear_local_history_failed</span></td>
+                    <td style="padding:10px 18px;">Unable to clear local history. Please retry.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - name: CHAT_ID2
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: |
+            The unique identifier of the chat. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+            <br><br>
+            <b>Note:</b> <code>CHAT_ID2</code> is a documentation alias for <code>CHAT_ID</code>, used to separate the "Clear Local Chat History" operation for better readability while sharing the same <code>/chats/{CHAT_ID}</code> endpoint.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            examples:
+              clear_local_history:
+                summary: Clear local chat history
+                value:
+                  operation: clear_local_history
+            schema:
+              type: object
+              required:
+                - operation
+              properties:
+                operation:
+                  type: string
+                  description: The operation to perform. Must be set to <code>clear_local_history</code> to clear the local chat history.
+                  enum:
+                    - clear_local_history
+      responses:
+        '204':
+          description: No Content - local chat history cleared successfully. No response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoResponse'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+      tags:
+        - chats
+  /chats/{CHAT_ID3}:
+    put:
+      summary: Close a chat
+      operationId: closeChatV3
+      x-display-path: /chats/{CHAT_ID}
+      x-virtual-endpoint: true
+      x-virtual-operation: true
+      x-note: |
+        CHAT_ID3 is a documentation alias for CHAT_ID to differentiate the two PUT operations under the same endpoint. This is to display both operations in the API reference. In actual API calls, use /chats/{CHAT_ID} for both operations and specify the desired operation in the request body.
+      description: |
+        Closes a chat by removing it from the recent chats list of the user. The chat will still be accessible through search and other means, all members remain intact and only the visibility in recent chats is affected.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 60 requests per min<br>
+          Number of API calls allowed within a minute.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_access_denied</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Caller is not a participant of this chat.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_operation_failed</span></td>
+                    <td style="padding:10px 18px;">Unexpected server error.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - name: CHAT_ID3
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: |
+            The unique identifier of the chat. Accepts the same chat ID format as CHAT_ID. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.<br><br>
+            <b>Note:</b> <code>CHAT_ID3</code> is a documentation alias for <code>CHAT_ID</code>, used to separate the "Close a chat" operation for better readability while sharing the same <code>/chats/{CHAT_ID}</code> endpoint.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            examples:
+              close_chat:
+                summary: Close a chat
+                value:
+                  operation: close_chat
+            schema:
+              type: object
+              required:
+                - operation
+              properties:
+                operation:
+                  type: string
+                  description: The operation to perform. Must be set to <code>close_chat</code> to remove the chat from recent chats.
+                  enum:
+                    - close_chat
+      responses:
+        '204':
+          description: No Content - chat removed from recent chats successfully. No response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoResponse'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+      tags:
+        - chats
+  /chats/{CHAT_ID}/members:
+    get:
+      summary: Retrieve members of a chat
+      operationId: Retrieve members of a chat
+      description: |
+        Use this API to retrieve the list of members participating in a channel or group chat.
+        <br><br>
+        Common use cases:
+        <ul>
+          <li>Render a participant panel for a channel or group chat in your app UI.</li>
+          <li>Show participant identity fields (name, email_id, user_id) using the <code>fields</code> query parameter.</li>
+          <li>Audit chat membership before running automations or sending targeted messages.</li>
+        </ul>
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: The unique identifier of the chat. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+        - name: fields
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Use this parameter to get details of members participating in the chat.<br>
+            <b>Allowed values</b>:
+            <ul>
+              <li><b>user_id</b> - Unique identifier for the user in Cliq.</li>
+              <li><b>email_id</b> - Email address of the user.</li>
+              <li><b>name</b> - Display name of the user.</li>
+            </ul>
+            <br><br>
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/retrieve-chat-members'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.READ
+      tags:
+        - chats
+    post:
+      summary: Add members to a chat
+      operationId: addMembersToChatV3
+      description: |
+        Adds one or more users to an existing group chat.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">group_chat_participants_limit_exceeded</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The maximum number of participants for this chat has been reached.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">one_to_one_chat_add_member_not_allowed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Adding members to a one-to-one chat is not allowed.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_with_other_org_disabled</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Adding members from other organizations is disabled.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">member_add_failed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">An unexpected error occurred while adding members.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">service_unavailable</span></td>
+                    <td style="padding:10px 18px;">The messaging service is temporarily unavailable. Please try again later.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: The unique identifier of the chat. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            examples:
+              add_members:
+                summary: Add members to a group chat
+                value:
+                  user_ids:
+                    - '55743307'
+                    - '55622727'
+            schema:
+              $ref: '#/components/schemas/v3-add-members-request'
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              examples:
+                add_members:
+                  summary: Members added successfully
+                  value:
+                    type: chat.member
+                    data:
+                      chat_id: '2971901296197152390'
+                      added_user_ids:
+                        - '55743307'
+                        - '55622727'
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: chat.member
+                  data:
+                    type: object
+                    properties:
+                      chat_id:
+                        type: string
+                      added_user_ids:
+                        type: array
+                        items:
+                          type: string
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+        '503':
+          description: Service Unavailable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The messaging service is temporarily unavailable. Please try again later.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+      tags:
+        - chats
+    delete:
+      summary: Remove members from a chat
+      operationId: removeMembersFromChatV3
+      description: |
+        Removes one or more users from an existing group chat.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">one_to_one_chat_delete_member_not_allowed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Removing members from a one-to-one chat is not allowed.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">member_delete_failed</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">An unexpected error occurred while removing members.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">service_unavailable</span></td>
+                    <td style="padding:10px 18px;">The messaging service is temporarily unavailable. Please try again later.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: The unique identifier of the chat. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+        - name: user_ids
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Comma-separated list of user IDs to remove.
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              examples:
+                remove_members:
+                  summary: Members removed successfully
+                  value:
+                    type: chat.member
+                    data:
+                      chat_id: '1729901956721293190'
+                      removed_user_ids:
+                        - '55743307'
+                        - '55622727'
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: chat.member
+                  data:
+                    type: object
+                    properties:
+                      chat_id:
+                        type: string
+                      removed_user_ids:
+                        type: array
+                        items:
+                          type: string
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+        '503':
+          description: Service Unavailable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The messaging service is temporarily unavailable. Please try again later.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.DELETE
+      tags:
+        - chats
+  /chats/{CHAT_ID}/forks:
+    post:
+      summary: Fork a chat
+      operationId: forkChatV3
+      description: |
+        Fork chats help you start a new conversation from an existing one (1-1, Group Chat, Channel). You can choose how many users you want to share the chat with and from which point you want to share it.
+        <br><br>With this API , you can create a new chat with a selected set of messages from the original chat. This is useful when you want to start a new discussion based on a specific topic or context from an existing chat, without sharing the entire chat history.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 50 requests per min<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 seconds<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">invalid_request</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Fork input payload is invalid or incomplete.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">operation_failed</span></td>
+                    <td style="padding:10px 18px;">Unable to create forked chat due to an internal error.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: The unique identifier of the source chat. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v3-fork-chat-request'
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              examples:
+                fork_chat:
+                  summary: Forked chat created
+                  value:
+                    type: chat
+                    data:
+                      chat_id: '3104729000000098765'
+                      name: 'Fork: Q2 Product Review - Design, Engineering & QA'
+                      chat_type: group_chat
+                      participant_count: 3
+                      created_time: '2025-04-29T10:00:00+05:30'
+                      last_modified_time: '2025-04-29T10:00:00+05:30'
+                      pinned: false
+                      removed: false
+                      creator:
+                        id: '70027934'
+                        name: Tim Harrison
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: chat
+                  data:
+                    $ref: '#/components/schemas/v3-chat'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.CREATE
+      tags:
+        - chats
+  /chats/{CHAT_ID}/activities:
+    post:
+      summary: Send Typing Indicator
+      operationId: sendTypingActivityV3
+      description: |
+        Sends a typing indicator activity to a chat, signaling that the user is currently typing a message.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 100 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 50 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">param_missing</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The param 'action' is missing.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">invalid.inputs.submitted</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Incorrect values submitted.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_access_denied</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">You must be a participant in this chat to perform this action.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">chat_operation_failed</span></td>
+                    <td style="padding:10px 18px;">Unable to perform the action. Please retry.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: The unique identifier of the chat. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            examples:
+              Typing Indicator:
+                summary: Send typing indicator
+                value:
+                  action: typing
+              Text entered:
+                summary: Send text entered activity
+                value:
+                  action: text_entered
+              Text cleared:
+                summary: Send text cleared activity
+                value:
+                  action: text_cleared
+            schema:
+              $ref: '#/components/schemas/v3-typing-activity-request'
+      responses:
+        '204':
+          description: No Content.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoResponse'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+      tags:
+        - chats
+  /chats/{CHAT_ID}/leave:
+    post:
+      summary: Leave a chat
+      operationId: Leave a chat
+      description: |
+        Use this API to remove the authenticated user from a group chat or channel.
+        After leaving, the user is no longer an active participant in that chat.
+        <br><br>
+        This endpoint is helpful for exiting discussions that are no longer relevant to the user.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: The unique identifier of the chat that you wish to leave. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoResponse'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+      tags:
+        - chats
+  /chats/{CHAT_ID}/mute:
+    post:
+      summary: Mute a chat
+      operationId: Mute a chat
+      description: |
+        Use this API to mute notifications for any given chat while still keeping it accessible.
+        Muting is ideal for high-volume group chats or channels where the user wants to stay in the conversation but avoid constant notification interruptions.
+        <br><br>
+        This setting affects chat-level notifications and helps keep conversations organized without leaving them entirely.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: The unique identifier of the chat that needs to be muted. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoResponse'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+      tags:
+        - chats
+  /chats/{CHAT_ID}/unmute:
+    post:
+      summary: Unmute a chat
+      operationId: Unmute a chat
+      description: |
+        Use this API to restore notifications for any given previously muted chat.
+        Once unmuted, the user starts receiving chat updates again according to their notification settings.
+        <br><br>
+        Use this when a group chat or channel becomes active or relevant again and timely visibility of messages is required.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+        </p>
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: The unique identifier of the chat that needs to be unmuted. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+      responses:
+        '200':
+          description: The request was successfully completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoResponse'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Chats.UPDATE
+      tags:
+        - chats
+components:
+  schemas:
+    NoResponse:
+      type: object
+      description: Response object returned when no content is available.
+      properties:
+        Response Code:
+          type: string
+          description: HTTP response code and message indicating no content.
+          example: 204 No response
+    v3-chat:
+      type: object
+      description: Represents a chat object with comprehensive details including metadata, participants, and message information.
+      properties:
+        name:
+          type: string
+          description: Display name of the chat.
+        chat_id:
+          type: string
+          description: Unique identifier for the chat.
+        chat_type:
+          type: string
+          description: 'Type of chat: channel, bot, entity_chat, direct_message, group_chat, crossproduct_custom_chat, thread, or unknown.'
+          enum:
+            - channel
+            - bot
+            - entity_chat
+            - direct_message
+            - group_chat
+            - crossproduct_custom_chat
+            - thread
+            - unknown
+        participant_count:
+          type: integer
+          description: Number of participants in the chat.
+        created_time:
+          type: string
+          format: date-time
+          description: Timestamp when the chat was created (<a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format).
+        last_modified_time:
+          type: string
+          format: date-time
+          description: Timestamp when the chat was last active or modified (<a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format).
+        pinned:
+          type: boolean
+          description: Whether the chat is pinned by the current user.
+        removed:
+          type: boolean
+          description: Whether the current user has been removed from this chat.
+        creator:
+          type: object
+          description: Details of the user who created the chat.
+          properties:
+            id:
+              type: string
+              description: Unique identifier of the creator.
+            name:
+              type: string
+              description: Display name of the creator.
+        last_message_info:
+          type: object
+          description: Summary of the last message in the chat, if available.
+          additionalProperties: true
+        unread_time:
+          type: string
+          format: date-time
+          description: Timestamp of the first unread message, if any.
+        unread_message_count:
+          type: integer
+          description: Number of unread messages in the chat.
+        previous_titles:
+          type: string
+          description: Historical chat names, if the chat has been renamed.
+        thread_message_id:
+          type: string
+          description: ID of the thread head message. Present only for thread chats.
+        parent_chat_id:
+          type: string
+          description: Chat ID of the parent. Present only for thread chats.
+    v3-thread:
+      type: object
+      properties:
+        chat_id:
+          type: string
+        parent_chat_id:
+          type: string
+        thread_message_id:
+          type: string
+        title:
+          type: string
+        follower_count:
+          type: integer
+        is_follower:
+          type: boolean
+        thread_state:
+          type: string
+        parent_message_sender:
+          type: string
+        last_message_information:
+          type: object
+          additionalProperties: true
+    v3-create-chat-request:
+      type: object
+      description: |
+        For direct chat, send `chat_type: direct_message` with `user_id`.
+        For group chat, send `chat_type: group_chat` with `user_ids` and `title`.
+      required:
+        - chat_type
+      properties:
+        chat_type:
+          type: string
+          description: |
+            Type of chat to create.
+            <b>Allowed values</b>:
+            <ul>
+              <li><code>direct_message</code>: A one-to-one chat with another user.</li>
+              <li><code>group_chat</code>: A chat with multiple users, requires a title.</li>
+            </ul>
+          enum:
+            - direct_message
+            - group_chat
+        user_id:
+          type: string
+          description: |
+            Applicable for the <code>direct_message</code> chat type.<br>
+            User ID of the other participant for direct messages.
+        user_ids:
+          type: array
+          description: |
+            Applicable for the <code>group_chat</code> chat type.<br>
+            List of user IDs to include in the group chat. Must include at least 1 user and can include up to 50 users.
+          minItems: 1
+          maxItems: 50
+          items:
+            type: string
+        title:
+          type: string
+          description: |
+            Applicable for the <code>group_chat</code> chat type.<br>
+            Title of the group chat. Required when creating a group chat.
+          maxLength: 255
+    v3-bulk-chat-update-request:
+      type: object
+      description: |
+        Supports two payload modes, selected by the <code>operation</code> field:
+        <ul>
+          <li><b>Mark as read</b> (<code>read_status_update</code>): Set <code>operation</code> to <code>read_status_update</code>, <code>read_status</code> to <code>read</code>, and provide a <code>chats</code> array with each chat's <code>chat_id</code> and <code>last_message_id</code>. Returns <code>200 OK</code>.</li>
+          <li><b>Clear unread</b> (<code>clear_unread</code>): Set <code>operation</code> to <code>clear_unread</code> and provide a <code>chat_ids</code> array. Returns <code>204 No Content</code>.</li>
+        </ul>
+      required:
+        - operation
+      properties:
+        operation:
+          type: string
+          description: |
+            The bulk operation to perform on the specified chats.<br>
+            <b>Allowed values</b>:
+            <ul>
+              <li><code>read_status_update</code>: Marks the specified chats as read up to the given <code>last_message_id</code>. Requires <code>read_status</code> and <code>chats</code> fields.</li>
+              <li><code>clear_unread</code>: Clears the unread message count or status to zero for the specified chats. Requires <code>chat_ids</code> field.</li>
+            </ul>
+          enum:
+            - read_status_update
+            - clear_unread
+        read_status:
+          type: string
+          description: |
+            The read status to apply to the specified chats.<br>
+            Applicable for the <code>read_status_update</code> operation only.<br>
+            <b>Allowed value</b>:<br>
+            <code>read</code> - Marks the specified chats as read.
+          enum:
+            - read
+        chats:
+          type: array
+          description: |
+            List of chats to mark as read. Applicable for the <code>read_status_update</code> operation only.<br>
+            Maximum of <b>100</b> chats per request.
+          maxItems: 100
+          items:
+            type: object
+            required:
+              - chat_id
+              - last_message_id
+            properties:
+              chat_id:
+                type: string
+                description: Unique identifier of the chat to mark as read.
+              last_message_id:
+                type: string
+                description: The message ID up to which the chat should be marked as read. All messages up to and including this message will be marked read.
+        chat_ids:
+          type: array
+          description: |
+            List of chat IDs for which to clear the unread count. Applicable for the <code>clear_unread</code> operation only.<br>
+            Chats that do not have any unread entries will be skipped without error.<br>
+            <b>Maximum items</b>: 100 chat IDs.
+          maxItems: 100
+          items:
+            type: string
+    v3-bulk-mark-read-request:
+      type: object
+      required:
+        - operation
+        - read_status
+        - chats
+      properties:
+        operation:
+          type: string
+          enum:
+            - read_status_update
+        read_status:
+          type: string
+          enum:
+            - read
+        chats:
+          type: array
+          maxItems: 100
+          items:
+            type: object
+            required:
+              - chat_id
+              - last_message_id
+            properties:
+              chat_id:
+                type: string
+              last_message_id:
+                type: string
+    v3-bulk-clear-unread-request:
+      type: object
+      required:
+        - operation
+        - chat_ids
+      properties:
+        operation:
+          type: string
+          enum:
+            - clear_unread
+        chat_ids:
+          type: array
+          maxItems: 100
+          items:
+            type: string
+    v3-update-chat-title-request:
+      type: object
+      required:
+        - operation
+        - title
+      properties:
+        operation:
+          type: string
+          enum:
+            - update_title
+        title:
+          type: string
+          maxLength: 255
+    v3-update-chat-history-request:
+      type: object
+      required:
+        - operation
+        - history_status
+      properties:
+        operation:
+          type: string
+          enum:
+            - update_history_status
+        history_status:
+          type: string
+          enum:
+            - enabled
+            - disabled
+    v3-update-chat-read-status-request:
+      type: object
+      required:
+        - operation
+        - message_id
+      properties:
+        operation:
+          type: string
+          enum:
+            - mark_as_unread
+        message_id:
+          type: string
+    v3-close-chat-request:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - closed
+    v3-clear-local-history-request:
+      type: object
+      required:
+        - operation
+      properties:
+        operation:
+          type: string
+          enum:
+            - clear_local_history
+    v3-typing-activity-request:
+      type: object
+      required:
+        - action
+      properties:
+        action:
+          type: string
+          description: |
+            The typing activity to send to the chat.<br>
+            <b>Allowed values</b>:
+            <ul>
+              <li><code>typing</code>: Indicates that the user is currently typing a message.</li>
+              <li><code>text_entered</code>: Indicates that the user has entered text but has not yet sent the message.</li>
+              <li><code>text_cleared</code>: Indicates that the user has cleared the entered text.</li>
+            </ul>
+          enum:
+            - typing
+            - text_entered
+            - text_cleared
+    v3-fork-chat-request:
+      type: object
+      required:
+        - message_id
+        - title
+      properties:
+        message_id:
+          type: string
+          description: |
+            The ID of the message from which to fork the chat. The new chat will include messages starting from this message.
+          example: '1234567890123456789'
+        user_ids:
+          type: string
+          description: |
+            Comma-separated list of user IDs to include in the forked chat. Example: <code>55743307,55622727</code>
+          example: 631830848,631830849
+        include_participants:
+          type: boolean
+          default: false
+          description: |
+            Whether to include all participants from the original chat in the forked chat. If set to true, the <code>user_ids</code> field will be ignored and all participants will be included.
+          example: false
+        title:
+          type: string
+          maxLength: 255
+          description: |
+            Title of the forked chat. Required when creating a forked chat.
+          example: Discussion on Q3 Marketing Strategy
+    v3-create-direct-chat-request:
+      type: object
+      required:
+        - chat_type
+        - user_id
+      properties:
+        chat_type:
+          type: string
+          enum:
+            - direct_message
+        user_id:
+          type: string
+    v3-create-group-chat-request:
+      type: object
+      required:
+        - chat_type
+        - user_ids
+        - title
+      properties:
+        chat_type:
+          type: string
+          enum:
+            - group_chat
+        user_ids:
+          type: array
+          minItems: 1
+          maxItems: 50
+          items:
+            type: string
+        title:
+          type: string
+          maxLength: 255
+    v3-add-members-request:
+      type: object
+      required:
+        - user_ids
+      properties:
+        user_ids:
+          type: array
+          description: |
+            List of user IDs to add to the chat. Must include at least 1 user and can include up to 100 users.
+          minItems: 1
+          maxItems: 100
+          items:
+            type: string
+    no-response:
+      type: object
+      description: Response object returned when no content is available.
+      properties:
+        Response Code:
+          type: string
+          description: HTTP response code and message indicating no content.
+          example: 204 No response
+    get-chats-response:
+      type: object
+      description: Response object containing details of a chat or direct message.
+      properties:
+        name:
+          type: string
+          description: Display name of the chat or participant.
+          example: Ryan West
+        creation_time:
+          type: string
+          format: date-time
+          description: Timestamp when the chat was created.
+          example: '2019-10-15T03:37:28-07:00'
+        creator_id:
+          type: string
+          description: Unique identifier of the user who created the chat.
+          example: '631830848'
+        last_modified_time:
+          type: string
+          format: date-time
+          description: Timestamp when the chat was last modified.
+          example: '2019-10-15T03:37:28-07:00'
+        removed:
+          type: boolean
+          description: Indicates whether the chat has been removed.
+          example: false
+        recipients_summary:
+          type: array
+          description: List of participants in the chat with basic user details.
+          items:
+            $ref: '#/components/schemas/UserSummary'
+        chat_type:
+          type: string
+          enum:
+            - chat
+            - dm
+          description: Type of the chat, either a group chat (`chat`) or a direct message (`dm`).
+          example: dm
+        chat_id:
+          type: string
+          description: Unique identifier of the chat instance.
+          example: '2230748224630350194'
+        last_message_info:
+          $ref: '#/components/schemas/LastMessageInfo'
+        pinned:
+          type: boolean
+          description: Indicates if the chat is pinned by the user.
+          example: false
+        participant_count:
+          type: integer
+          description: Number of participants in the chat.
+          example: 2
+    UserSummary:
+      type: object
+      description: Basic details of a user in the chat.
+      properties:
+        user_id:
+          type: string
+          description: Unique identifier of the user.
+          example: '631830848'
+        name:
+          type: string
+          description: Full name of the user.
+          example: Ryan West
+    LastMessageInfo:
+      type: object
+      description: Information about the most recent message in the chat.
+      properties:
+        sender_id:
+          type: string
+          description: Unique identifier of the message sender.
+          example: '631830849'
+        message_type:
+          type: string
+          description: Type of the message (e.g., text, image, file).
+          example: text
+        styles:
+          $ref: '#/components/schemas/MessageStyles'
+        time:
+          type: string
+          format: date-time
+          description: Timestamp when the message was sent.
+          example: '2019-09-12T00:35:18-07:00'
+        text:
+          type: string
+          description: Text content of the message.
+          example: https://cliq.zoho.com/channels/marketing
+        bot:
+          $ref: '#/components/schemas/BotInfo'
+        sender_name:
+          type: string
+          description: Display name of the message sender.
+          example: Scott Fisher
+    MessageStyles:
+      type: object
+      description: Style attributes applied to a message.
+      properties:
+        highlight:
+          type: boolean
+          description: Indicates if the message should be visually highlighted.
+          example: true
+    BotInfo:
+      type: object
+      description: Information about a bot associated with a message.
+      properties:
+        name:
+          type: string
+          description: Display name of the bot.
+          example: Zia
+        image_url:
+          type: string
+          format: uri
+          description: URL of the bot's display image.
+          example: https://img.zohostatic.com/chat/default/officechat/images/default/event-bot.png
+    retrieve-chat-members:
+      type: object
+      description: Response object containing members of a chat.
+      properties:
+        members:
+          type: array
+          description: List of members in the chat with detailed user information.
+          items:
+            $ref: '#/components/schemas/Members'
+    Members:
+      type: object
+      description: Detailed information about a chat member.
+      properties:
+        user_id:
+          type: string
+          description: Unique identifier of the user.
+          example: '431930546'
+        email_id:
+          type: string
+          format: email
+          description: Email address of the user.
+          example: olivia.palmer@zylcal.com
+        name:
+          type: string
+          description: Full name of the user.
+          example: Olivia - Content Writer
+    pin-a-message-request:
+      type: object
+      description: Request body parameters for pinning a message in a chat.
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: Unique identifier (msguid) of the message to be pinned.
+          example: '1573708648341_375412769224'
+        expiry_time:
+          type: integer
+          format: int64
+          description: Expiry time in milliseconds for the pinned message.
+          example: 1748946453794
+        notify:
+          type: boolean
+          description: Indicates whether pinning the message should notify all participants.
+          example: false
+    pin-a-message-response:
+      type: object
+      description: Response object containing details of a pinned message.
+      properties:
+        data:
+          type: object
+          description: Details of the pinned message.
+          properties:
+            expiry_time:
+              type: integer
+              description: Expiry time set for the pinned message in milliseconds. `-1` indicates no expiry.
+              example: -1
+            creator:
+              type: object
+              description: Information about the user who pinned the message.
+              properties:
+                name:
+                  type: string
+                  description: Name of the message creator.
+                  example: Scott Fisher
+                id:
+                  type: string
+                  description: Unique identifier of the message creator.
+                  example: '690440148'
+            message:
+              type: object
+              description: Details of the pinned message.
+              properties:
+                msg:
+                  type: string
+                  description: Content of the pinned message.
+                  example: meeting at 4
+                sender:
+                  type: string
+                  description: Unique identifier of the original message sender.
+                  example: '690440148'
+                lmsgtime:
+                  type: string
+                  description: Timestamp when the message was last modified.
+                  example: '1573708493055'
+                msguid:
+                  type: string
+                  description: Unique identifier of the message.
+                  example: 1573708648341%20375412769224
+                time:
+                  type: string
+                  description: Timestamp when the message was sent.
+                  example: '1573708648341'
+                dname:
+                  type: string
+                  description: Display name of the original message sender.
+                  example: Scott Fisher
+            created_time:
+              type: integer
+              description: Timestamp when the message was pinned (in ms).
+              example: 1573708712431
+            last_modified_time:
+              type: integer
+              description: Timestamp when the pinned message was last modified (in ms).
+              example: 1573708712431
+            chat_id:
+              type: string
+              description: Unique identifier of the chat where the message was pinned.
+              example: CT_2243173626687865223_P87610291-C4
+    get-pinnedmessage-response:
+      type: object
+      description: Response object containing details of an existing pinned message.
+      properties:
+        type:
+          type: string
+          description: Type of the response object, usually `stickymessage`.
+          example: stickymessage
+        data:
+          type: object
+          description: Information about the pinned message.
+          properties:
+            expiry_time:
+              type: integer
+              description: Expiry time for the pinned message in milliseconds. `-1` indicates no expiry.
+              example: -1
+            creator:
+              type: object
+              description: Information about the user who pinned the message.
+              properties:
+                name:
+                  type: string
+                  description: Name of the creator.
+                  example: Scott Fisher
+                id:
+                  type: string
+                  description: Unique identifier of the creator.
+                  example: '692133012'
+            message:
+              type: object
+              description: Content details of the pinned message.
+              properties:
+                msg:
+                  type: string
+                  description: Text content of the message.
+                  example: 'Feature review date: 15/11/2019'
+                sender:
+                  type: string
+                  description: Unique identifier of the original message sender.
+                  example: '690440148'
+                lmsgtime:
+                  type: string
+                  description: Timestamp when the message was last modified.
+                  example: '1573641920572'
+                msguid:
+                  type: string
+                  description: Unique identifier of the message.
+                  example: 1573641936588%20345281288778
+                time:
+                  type: string
+                  description: Timestamp when the message was sent.
+                  example: '1573641936588'
+                dname:
+                  type: string
+                  description: Display name of the original message sender.
+                  example: Ryan West
+            created_time:
+              type: integer
+              description: Timestamp when the message was pinned (in ms).
+              example: 1573641961788
+            last_modified_time:
+              type: integer
+              description: Timestamp when the pinned message was last modified (in ms).
+              example: 1573641961788
+            chat_id:
+              type: string
+              description: Unique identifier of the chat where the message was pinned.
+              example: CT_2243173626687865223_P87610291-C4
+  securitySchemes:
+    Cliq_Auth:
+      type: oauth2
+      x-authorization-example: Bearer 1000.41d9xxxxxxxxxxxxxxxxxxxxxxxxc2d1.8fccxxxxxxxxxxxxxxxxxxxxxxxx125f
+      flows:
+        implicit:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          scopes:
+            ZohoCliq.Chats.CREATE: Create Chats
+            ZohoCliq.Chats.READ: Read Chats
+            ZohoCliq.Chats.UPDATE: Modify Chats
+            ZohoCliq.Chats.DELETE: Delete Chats
+            ZohoCliq.Messages.UPDATE: Modify Messages
+            ZohoCliq.Messages.DELETE: Delete Messages

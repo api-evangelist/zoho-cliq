@@ -1,0 +1,1267 @@
+openapi: 3.0.0
+info:
+  title: Scheduled Messages
+  description: |
+    The Scheduled Messages API gets a powerful upgrade with v3, giving developers full lifecycle control over message delivery to build time-aware and context-driven communication workflows. Messages can be composed in advance and delivered automatically based on a scheduled time or a participant's status change, all within the scope of a specific chat.
+    <br><br><b>Key Capabilities</b>
+    <ul>
+      <li><b>List Scheduled Messages:</b> Query all scheduled messages globally or within a specific chat to monitor and audit pending deliveries.</li>
+      <li><b>Send Now:</b> Override the scheduled trigger and immediately deliver a single message or all pending messages within a chat.</li>
+      <li><b>Bulk Reschedule:</b> Perform a single-operation update to the delivery time or status trigger across all scheduled messages in a chat, enabling scalable schedule management.</li>
+      <li><b>Edit Message:</b> Update message content, delivery time, timezone, status-based trigger, or remove an attached file from any individual scheduled message.</li>
+      <li><b>Delete:</b> Remove a specific scheduled message or clear the entire scheduled message queue from a chat.</li>
+    </ul>
+    <br><b>Scheduling Modes</b>
+    <table style="border-collapse: collapse; width: 100%; font-family: inherit;">
+      <tr>
+        <th style="padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;">Mode</th>
+        <th style="padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;">Field</th>
+        <th style="padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;">Description</th>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>Time-based</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>schedule_time</code> + <code>schedule_timezone</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Delivers at a fixed date and time. Time must be provided in epoch milliseconds.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>Status-based</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;"><code>schedule_status</code></td>
+        <td style="padding: 8px; border: 1px solid #ddd;">Delivers when the sender's status matches a trigger: <code>check_in</code>, <code>check_out</code>, <code>user_available</code>, or <code>call_end</code>.</td>
+      </tr>
+    </table>
+  contact: {}
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Zoho Cliq APIs V3
+  url: https://www.zoho.com/cliq/help/restapi/v3/
+servers:
+  - url: https://cliq.zoho.com/api/v3
+    description: Zoho Cliq US DC
+tags:
+  - name: scheduledmessages
+    description: Scheduled Messages Module
+paths:
+  /scheduledmessages:
+    get:
+      summary: List all scheduled messages
+      operationId: listAllScheduledMessagesV3
+      description: |
+        Retrieves all scheduled messages across all chats for the authenticated user. Use this to get a consolidated view of all pending time-based and status-based scheduled messages, with support for pagination and incremental updates.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>
+          Wait time before consecutive API requests.
+        </p>
+      tags:
+        - scheduledmessages
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: |
+            Number of results per page. Default is 50.<br>
+            <b>Maximum limit</b>: 100
+          schema:
+            type: integer
+            maximum: 200
+            default: 50
+        - name: next_token
+          in: query
+          required: false
+          description: Pagination cursor returned from a previous response. Pass this value to retrieve the next page of results.
+          schema:
+            type: string
+        - name: sync_token
+          in: query
+          required: false
+          description: Token from a previous response used to fetch only changes since the last sync. Pass this to retrieve only new or updated records instead of the full list.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returns all scheduled messages. Mix of time-based and status-based messages across chats.
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                all_scheduled_messages:
+                  summary: All scheduled messages across chats
+                  value:
+                    url: /api/v3/scheduledmessages
+                    type: scheduledmessages
+                    sync_token: NTB8LTF8MTkwMTMxODAwMDAxMjMxNDAyNQ==
+                    data:
+                      - id: 84fe7397-ab35-4aef-8bf7-944d688857af
+                        timezone: Asia/Kolkata
+                        created_time: '2026-05-29T04:27:40-07:00'
+                        schedule_status: user_available
+                        message:
+                          sender:
+                            name: Priya
+                            id: '697322516'
+                          type: text
+                          content:
+                            text: 'Hi Benjamin, just a quick nudge. Please update the approval status for Claim #EXP-2026-0412 when you are available. No rush, respond whenever you are free!'
+                          is_pinned: false
+                        creator:
+                          name: Priya
+                          id: '697322516'
+                      - id: 49ba8eac-8709-478d-bab3-701466b3e270
+                        timezone: Asia/Kolkata
+                        created_time: '2026-05-29T04:28:44-07:00'
+                        schedule_status: check_in
+                        message:
+                          sender:
+                            name: Priya
+                            id: '697322516'
+                          type: text
+                          content:
+                            text: Good morning Alan! Just a check-in reminder, please update your pending expense claims before the daily finance standup. Any blockers, ping @financeTeam.
+                          is_pinned: false
+                        creator:
+                          name: Priya
+                          id: '697322516'
+                      - id: de8518c4-ce33-46c1-9195-d7864b9f10ce
+                        timezone: Asia/Kolkata
+                        created_time: '2026-05-29T04:31:33-07:00'
+                        time: '2026-06-06T21:00:00-07:00'
+                        message:
+                          sender:
+                            name: Priya
+                            id: '697322516'
+                          type: file
+                          content:
+                            file_name: Expense Summary - Zylker.pdf
+                            file_size: 61.05 KB
+                            comment: Please find the attached Q2 Expense Summary report. Review before the finance sync on June 6 and flag any discrepancies to @financeTeam.
+                          is_pinned: false
+                        creator:
+                          name: Priya
+                          id: '697322516'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Messages.READ
+  /chats/{CHAT_ID}/scheduledmessages:
+    get:
+      summary: List scheduled messages in a chat
+      operationId: listScheduledMessagesInChatV3
+      description: |
+        Retrieves all scheduled messages within a specific chat or channel. Use this to inspect pending time-based and status-based messages for a particular conversation, with support for pagination and incremental updates.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>
+          Wait time before consecutive API requests.
+        </p>
+      tags:
+        - scheduledmessages
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          description: Unique identifier of the chat or channel. Use this to scope the scheduled messages retrieval to a specific conversation.<br>To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+          example: CHAT_ID
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          description: |
+            Number of results per page. Default is 50.<br>
+            <b>Maximum limit</b>: 100
+          schema:
+            type: integer
+            maximum: 200
+            default: 50
+        - name: next_token
+          in: query
+          required: false
+          description: Pagination cursor returned from a previous response. Pass this value to retrieve the next page of results.
+          schema:
+            type: string
+        - name: sync_token
+          in: query
+          required: false
+          description: Token from a previous response used to fetch only changes since the last sync. Pass this to retrieve only new or updated records instead of the full list.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Scheduled messages retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                channel_with_file_message:
+                  summary: Channel with file attachment message
+                  value:
+                    url: /api/v3/chats/CT_1424569695482328362_631836344/scheduledmessages
+                    type: scheduledmessages
+                    sync_token: NTB8MTc4MDM2NzQwMDAwMHwxOTAxMzE4MDAwMDEyNjUxMDAx
+                    data:
+                      - id: de8518c4-ce33-46c1-9195-d7864b9f10ce
+                        timezone: Asia/Kolkata
+                        created_time: '2026-05-29T04:31:33-07:00'
+                        time: '2026-06-06T21:00:00-07:00'
+                        message:
+                          sender:
+                            name: Priya
+                            id: '697322516'
+                          type: file
+                          content:
+                            file_name: Expense Summary - Zylker.pdf
+                            file_size: 61.05 KB
+                            comment: Please find the attached Q2 Expense Summary report. Review before the finance sync on June 6 and flag any discrepancies to @financeTeam.
+                          is_pinned: false
+                        creator:
+                          name: Priya
+                          id: '697322516'
+                dm_with_status_based_message:
+                  summary: DM with status-based message
+                  value:
+                    url: /api/v3/chats/1424921584119739269/scheduledmessages
+                    type: scheduledmessages
+                    sync_token: NTB8MTc4MDA0OTAzNDg4MHw=
+                    data:
+                      - id: 84fe7397-ab35-4aef-8bf7-944d688857af
+                        timezone: Asia/Kolkata
+                        created_time: '2026-05-29T04:27:40-07:00'
+                        schedule_status: user_available
+                        message:
+                          sender:
+                            name: Priya
+                            id: '697322516'
+                          type: text
+                          content:
+                            text: 'Hi Benjamin, just a quick nudge. Please update the approval status for Claim #EXP-2026-0412 when you are available. No rush, respond whenever you are free!'
+                          is_pinned: false
+                        creator:
+                          name: Priya
+                          id: '697322516'
+                empty_chat:
+                  summary: Empty chat
+                  value:
+                    url: /api/v3/chats/1608865438186287622/scheduledmessages
+                    type: scheduledmessages
+                    sync_token: NTB8MTc4MDA0OTAzNDg4MHw=
+                    data: []
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Messages.READ
+    post:
+      summary: Send scheduled messages now
+      operationId: sendScheduledMessagesNowV3
+      description: |
+        Immediately sends one or all pending scheduled messages in a chat without waiting for the scheduled time. Use this to manually trigger delivery of a specific message by ID, or all pending messages in the chat at once.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 50 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>
+          Wait time before consecutive API requests.
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">scheduled_msg_no_pending_msgs</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">No pending scheduled messages exist in this chat.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">param_missing</span></td>
+                    <td style="padding:10px 18px;">A required parameter is missing from the request.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      tags:
+        - scheduledmessages
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          description: Unique identifier of the chat or channel. Determines which chat's scheduled messages are targeted for immediate delivery.<br>To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+          example: CHAT_ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - status
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - send
+                  description: |
+                    Operation trigger to send messages immediately.<br>
+                    <b>Allowed values</b>:<br>
+                    <ul>
+                      <li><code>send</code>: Triggers immediate delivery of the specified scheduled message or all pending messages in the chat.</li>
+                    </ul>
+                id:
+                  type: string
+                  description: |
+                    Unique identifier of a specific scheduled message to send immediately. When provided, only that message is sent.<br>
+                    Omit this field and use <code>apply_to</code> instead to send all pending messages.
+                apply_to:
+                  type: string
+                  enum:
+                    - all
+                  description: |
+                    Scope of messages to send when no <code>id</code> is provided.<br>
+                    <b>Allowed values</b>:<br>
+                    <ul>
+                      <li><code>all</code>: Sends all pending scheduled messages in the chat immediately.</li>
+                    </ul>
+            examples:
+              send_specific_message:
+                summary: Send a specific message now
+                value:
+                  status: send
+                  id: 76d3978e-b782-4cbb-a98b-670a5a7cbc6e
+              send_all_pending_messages:
+                summary: Send all pending messages in the chat now
+                value:
+                  status: send
+                  apply_to: all
+      responses:
+        '204':
+          description: Message(s) sent immediately. No response body returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoResponse'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Messages.CREATE
+    put:
+      summary: Bulk reschedule scheduled messages
+      operationId: bulkRescheduleScheduledMessagesV3
+      description: |
+        Reschedules all time-based or status-based scheduled messages in a chat in a single operation. Use this to update delivery times or change status triggers across multiple messages at once without editing them individually.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>
+          Wait time before consecutive API requests.
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">param_missing</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">A required parameter is missing from the request.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">scheduled_msg_no_pending_msgs</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">No pending scheduled messages exist in this chat.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">scheduled_msg_invalid_time_format</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Invalid <code>schedule_time</code> format. Expected epoch milliseconds.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">input_pattern_mismatch</span></td>
+                    <td style="padding:10px 18px;">An unrecognized value was passed for an enum field.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      tags:
+        - scheduledmessages
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          description: Unique identifier of the chat or channel. All matching scheduled messages within this chat will be updated by the bulk reschedule operation.<br>To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+          example: CHAT_ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - status
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - reschedule
+                  description: |
+                    Operation type for this request.<br>
+                    <b>Allowed values</b>:<br>
+                    <ul>
+                      <li><code>reschedule</code>: Triggers a bulk rescheduling operation for all matching messages in the chat. Use <code>apply_to</code> to specify the message type to target.</li>
+                    </ul>
+                apply_to:
+                  type: string
+                  enum:
+                    - all_time_based
+                    - all_status_based
+                  description: |
+                    Scope of scheduled messages to update in this operation.<br>
+                    <b>Allowed values</b>:<br>
+                    <ul>
+                      <li><code>all_time_based</code>: Targets all time-based scheduled messages that match the <code>time</code> field. Requires <code>time</code> and <code>schedule_time</code>.</li>
+                      <li><code>all_status_based</code>: Targets all status-based scheduled messages that match the <code>existing_status</code> field. Requires <code>existing_status</code> and <code>schedule_status</code>.</li>
+                    </ul>
+                time:
+                  type: integer
+                  format: int64
+                  description: |
+                    Existing scheduled delivery time to match, in epoch milliseconds. Required when <code>apply_to</code> is <code>all_time_based</code>.<br>
+                    Only messages scheduled at this exact time will be updated.
+                schedule_time:
+                  type: integer
+                  format: int64
+                  description: |
+                    New delivery time to apply to all matched messages, in epoch milliseconds. Required when <code>apply_to</code> is <code>all_time_based</code>.
+                schedule_timezone:
+                  type: string
+                  maxLength: 100
+                  description: |
+                    Timezone to apply for time fields. Example: <code>Asia/Kolkata</code>.<br>
+                    <b>Maximum length</b>: 100 characters.
+                existing_status:
+                  type: string
+                  enum:
+                    - check_in
+                    - check_out
+                    - user_available
+                    - call_end
+                  description: |
+                    Current status trigger to match for bulk update. Required when <code>apply_to</code> is <code>all_status_based</code>.<br>
+                    <b>Allowed values</b>:<br>
+                    <ul>
+                      <li><code>check_in</code>: Matches messages scheduled to send when the sender checks in.</li>
+                      <li><code>check_out</code>: Matches messages scheduled to send when the sender checks out.</li>
+                      <li><code>user_available</code>: Matches messages scheduled to send when the sender becomes available.</li>
+                      <li><code>call_end</code>: Matches messages scheduled to send when the sender ends a call.</li>
+                    </ul>
+                schedule_status:
+                  type: string
+                  enum:
+                    - check_in
+                    - check_out
+                    - user_available
+                    - call_end
+                  description: |
+                    New status trigger to apply to all matched messages. Required when <code>apply_to</code> is <code>all_status_based</code>.<br>
+                    <b>Allowed values</b>:<br>
+                    <ul>
+                      <li><code>check_in</code>: Delivers the message when the sender checks in.</li>
+                      <li><code>check_out</code>: Delivers the message when the sender checks out.</li>
+                      <li><code>user_available</code>: Delivers the message when the sender becomes available.</li>
+                      <li><code>call_end</code>: Delivers the message when the sender ends a call.</li>
+                    </ul>
+            examples:
+              reschedule_all_time_based:
+                summary: Reschedule all time-based messages to a new time
+                value:
+                  status: reschedule
+                  apply_to: all_time_based
+                  time: 1748861400000
+                  schedule_time: 1748947800000
+                  schedule_timezone: Asia/Kolkata
+              reschedule_all_status_based:
+                summary: Reschedule all status-based messages from check_in to user_available
+                value:
+                  status: reschedule
+                  apply_to: all_status_based
+                  existing_status: check_in
+                  schedule_status: user_available
+      responses:
+        '200':
+          description: Scheduled messages rescheduled successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                time_based_reschedule:
+                  summary: Time-based reschedule
+                  value:
+                    url: /api/v3/chats/CT_1424569695482328362_631836344/scheduledmessages
+                    type: scheduledmessages
+                    data:
+                      - id: 3574bbf2-77ed-4b9c-99d9-8d487d6f8d11
+                        timezone: Asia/Kolkata
+                        created_time: '2026-05-29T03:15:49-07:00'
+                        time: '2026-06-02T20:30:00-07:00'
+                        message:
+                          sender:
+                            name: Priya
+                            id: '697322516'
+                          type: text
+                          content:
+                            text: 'Q2 Expense Report Deadline [UPDATED]: Submission extended to June 6. Ensure all vendor invoices above $500 have manager approval. Contact @financeTeam for help.'
+                          is_pinned: false
+                        creator:
+                          name: Priya
+                          id: '697322516'
+                status_based_reschedule:
+                  summary: Status-based reschedule (check_in to user_available)
+                  value:
+                    url: /api/v3/chats/2242125276857119940/scheduledmessages
+                    type: scheduledmessages
+                    data:
+                      - id: 49ba8eac-8709-478d-bab3-701466b3e270
+                        timezone: Asia/Kolkata
+                        created_time: '2026-05-29T04:28:44-07:00'
+                        schedule_status: user_available
+                        message:
+                          sender:
+                            name: Priya
+                            id: '697322516'
+                          type: text
+                          content:
+                            text: Good morning Alan! Just a check-in reminder, please update your pending expense claims before the daily finance standup. Any blockers, ping @financeTeam.
+                          is_pinned: false
+                        creator:
+                          name: Priya
+                          id: '697322516'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Messages.UPDATE
+    delete:
+      summary: Delete all scheduled messages in a chat
+      operationId: deleteAllScheduledMessagesInChatV3
+      description: |
+        Deletes all scheduled messages in a chat in a single operation. Use this to clear all pending scheduled messages from a conversation at once without deleting them individually.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>
+          Wait time before consecutive API requests.
+        </p>
+      tags:
+        - scheduledmessages
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          description: Unique identifier of the chat or channel. All scheduled messages within this chat will be permanently removed.<br>To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+          example: CHAT_ID
+          schema:
+            type: string
+      responses:
+        '204':
+          description: All scheduled messages deleted. No response body returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Messages.DELETE
+  /chats/{CHAT_ID}/scheduledmessages/{SCHEDULED_MESSAGE_ID}:
+    put:
+      summary: Edit a scheduled message
+      operationId: editScheduledMessageV3
+      description: |
+        Updates the text, scheduled time, timezone, status trigger, or file attachment of an existing scheduled message. Use this to modify a specific scheduled message before it is delivered, including switching between time-based and status-based scheduling.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>
+          Wait time before consecutive API requests.
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">scheduled_msg_not_found</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The requested scheduled message could not be found.</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">scheduled_msg_invalid_time_format</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">Invalid <code>schedule_time</code> format. Expected epoch milliseconds.</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">checkin_status_message_restricted</span></td>
+                    <td style="padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);">The <code>check_in</code> status trigger is not supported for this chat type (e.g. direct messages).</td>
+                  </tr>
+                  <tr style="background:rgba(148,163,184,0.05);">
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">extra_key_found</span></td>
+                    <td style="padding:10px 18px;">An unsupported key was included in the request body.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      tags:
+        - scheduledmessages
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          description: Unique identifier of the chat or channel that contains the scheduled message to be edited.<br>To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+          example: CHAT_ID
+          schema:
+            type: string
+        - name: SCHEDULED_MESSAGE_ID
+          in: path
+          required: true
+          description: Unique identifier of the scheduled message to edit. Use this to target a specific pending message within the chat.<br>To retrieve this ID, use the <a href="#list-all-scheduled-messages">List all scheduled messages</a> endpoint.
+          example: SCHEDULED_MESSAGE_ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                  maxLength: 5000
+                  description: |
+                    Updated message text content to replace the existing text.<br>
+                    <b>Maximum length</b>: 5000 characters.
+                schedule_time:
+                  type: integer
+                  format: int64
+                  description: |
+                    New scheduled delivery time for the message, in epoch milliseconds. Replaces the existing scheduled time.
+                schedule_timezone:
+                  type: string
+                  maxLength: 100
+                  description: |
+                    Timezone to use for the updated scheduled time. Example: <code>Asia/Kolkata</code>.<br>
+                    <b>Maximum length</b>: 100 characters.
+                schedule_status:
+                  type: string
+                  enum:
+                    - check_in
+                    - check_out
+                    - user_available
+                    - call_end
+                  description: |
+                    New status trigger for the message. When provided, switches the message from time-based to status-based scheduling.<br>
+                    <b>Allowed values</b>:<br>
+                    <ul>
+                      <li><code>check_in</code>: Delivers the message when the sender checks in.</li>
+                      <li><code>check_out</code>: Delivers the message when the sender checks out.</li>
+                      <li><code>user_available</code>: Delivers the message when the sender becomes available.</li>
+                      <li><code>call_end</code>: Delivers the message when the sender ends a call.</li>
+                    </ul>
+                file_remove:
+                  type: boolean
+                  description: |
+                    Controls removal of an existing file attachment from the scheduled message.<br>
+                    <b>Allowed values</b>:<br>
+                    <ul>
+                      <li><code>true</code>: Removes the existing file attachment from the message. The message text and schedule remain unchanged.</li>
+                      <li><code>false</code>: Retains the existing file attachment. This is the default behavior.</li>
+                    </ul>
+            examples:
+              edit_text_and_time:
+                summary: Edit message text and reschedule time
+                value:
+                  text: 'Q2 Expense Report Deadline [UPDATED]: Submission extended to June 6. Ensure all vendor invoices above $500 have manager approval. Contact @financeTeam for help.'
+                  schedule_time: 1748947800000
+                  schedule_timezone: Asia/Kolkata
+              change_status_trigger:
+                summary: Change status trigger from user_available to call_end
+                value:
+                  schedule_status: call_end
+              remove_file_attachment:
+                summary: Remove file attachment from scheduled message
+                value:
+                  file_remove: true
+      responses:
+        '200':
+          description: Scheduled message updated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                text_and_time_edit:
+                  summary: Text and time edit
+                  value:
+                    url: /api/v3/chats/CT_1424569695482328362_631836344/scheduledmessages/3574bbf2-77ed-4b9c-99d9-8d487d6f8d11
+                    type: scheduledmessages
+                    data:
+                      id: 3574bbf2-77ed-4b9c-99d9-8d487d6f8d11
+                      timezone: Asia/Kolkata
+                      created_time: '2026-05-29T03:15:49-07:00'
+                      time: '2026-06-01T20:30:00-07:00'
+                      message:
+                        sender:
+                          name: Priya
+                          id: '697322516'
+                        type: text
+                        content:
+                          text: 'Q2 Expense Report Deadline [UPDATED]: Submission extended to June 6. Ensure all vendor invoices above $500 have manager approval. Contact @financeTeam for help.'
+                        is_pinned: false
+                      creator:
+                        name: Priya
+                        id: '697322516'
+                status_trigger_edit:
+                  summary: Status trigger edit (user_available to call_end)
+                  value:
+                    url: /api/v3/chats/1424921584119739269/scheduledmessages/84fe7397-ab35-4aef-8bf7-944d688857af
+                    type: scheduledmessages
+                    data:
+                      id: 84fe7397-ab35-4aef-8bf7-944d688857af
+                      timezone: Asia/Kolkata
+                      created_time: '2026-05-29T04:27:40-07:00'
+                      schedule_status: call_end
+                      message:
+                        sender:
+                          name: Priya
+                          id: '697322516'
+                        type: text
+                        content:
+                          text: 'Hi Benjamin, just a quick nudge. Please update the approval status for Claim #EXP-2026-0412 when you are available. No rush, respond whenever you are free!'
+                        is_pinned: false
+                      creator:
+                        name: Priya
+                        id: '697322516'
+                file_remove:
+                  summary: File remove (file fields remain in response but attachment is detached)
+                  value:
+                    url: /api/v3/chats/CT_1424569695482328362_631836344/scheduledmessages/de8518c4-ce33-46c1-9195-d7864b9f10ce
+                    type: scheduledmessages
+                    data:
+                      id: de8518c4-ce33-46c1-9195-d7864b9f10ce
+                      timezone: Asia/Kolkata
+                      created_time: '2026-05-29T04:31:33-07:00'
+                      time: '2026-06-06T21:00:00-07:00'
+                      message:
+                        sender:
+                          id: '697322516'
+                        type: file
+                        content:
+                          file_name: Expense Summary - Zylker.pdf
+                          file_size: 61.05 KB
+                          comment: Please find the attached Q2 Expense Summary report. Review before the finance sync on June 6 and flag any discrepancies to @financeTeam.
+                        is_pinned: false
+                      creator:
+                        name: Priya
+                        id: '697322516'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Messages.UPDATE
+    delete:
+      summary: Delete a scheduled message
+      operationId: deleteScheduledMessageV3
+      description: |
+        Deletes a specific scheduled message by its ID. Use this to remove a single pending message from a chat without affecting other scheduled messages in the same conversation.
+        <br><br>
+        <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>
+          Wait time before consecutive API requests.
+        </p>
+        <details style="margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;" ontoggle="this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'">
+          <summary style="cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;">
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;">!</span>
+            Possible Error Codes
+            <span class="err-toggle-hint" style="margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;">Click to expand</span>
+          </summary>
+          <div style="padding:14px 16px 16px 16px;">
+            <div style="border-radius:6px; border:1px solid rgba(148,163,184,0.35);">
+              <table style="border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;">
+                <thead>
+                  <tr>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;">Error Code</th>
+                    <th style="padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;"><span style="display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;">scheduled_msg_not_found</span></td>
+                    <td style="padding:10px 18px;">The requested scheduled message could not be found.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;">
+              <b style="color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;">Error Response Format</b>
+              <p style="margin:0 0 8px 0; font-size:0.85em; opacity:0.75;">When an error occurs, the API returns a JSON response in this format:</p>
+              <code style="display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;">{"message": "A human-readable description of the error.", "code": "error_code"}</code>
+              <p style="margin:8px 0 0 0; font-size:0.85em; opacity:0.75;">where <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">code</code> is the error identifier (as listed above) and <code style="background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;">message</code> is a human-readable explanation of what went wrong.</p>
+            </div>
+          </div>
+        </details>
+      tags:
+        - scheduledmessages
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          description: Unique identifier of the chat or channel that contains the scheduled message to be deleted.<br>To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+          example: CHAT_ID
+          schema:
+            type: string
+        - name: SCHEDULED_MESSAGE_ID
+          in: path
+          required: true
+          description: Unique identifier of the scheduled message to delete. Use this to target the specific pending message to remove.<br>To retrieve this ID, use the <a href="#list-all-scheduled-messages">List all scheduled messages</a> endpoint.
+          example: SCHEDULED_MESSAGE_ID
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Scheduled message deleted. No response body returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Messages.DELETE
+components:
+  schemas:
+    NoResponse:
+      type: object
+      description: Response object returned when no content is available.
+      properties:
+        Response Code:
+          type: string
+          description: HTTP response code and message indicating no content.
+          example: 204 No response
+    error-response:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
+  securitySchemes:
+    Cliq_Auth:
+      type: oauth2
+      x-authorization-example: Bearer 1000.41d9xxxxxxxxxxxxxxxxxxxxxxxxc2d1.8fccxxxxxxxxxxxxxxxxxxxxxxxx125f
+      flows:
+        implicit:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          scopes:
+            ZohoCliq.Messages.READ: Read scheduled messages
+            ZohoCliq.Messages.CREATE: Send scheduled messages now
+            ZohoCliq.Messages.UPDATE: Edit and reschedule scheduled messages
+            ZohoCliq.Messages.DELETE: Delete scheduled messages

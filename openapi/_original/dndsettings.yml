@@ -1,0 +1,240 @@
+openapi: 3.0.0
+info:
+  title: DND Settings
+  description: The DND Settings API allows users to retrieve and update their Do Not Disturb preferences, including quiet hours and quiet days.
+  contact: {}
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Zoho Cliq APIs
+  url: https://www.zoho.com/cliq/help/restapi/v2/
+servers:
+  - url: https://cliq.zoho.com/api/v3
+    description: Zoho Cliq US DC
+tags:
+  - name: dndsettings
+    description: DND Settings Module
+paths:
+  /settings/dnd-preferences:
+    get:
+      summary: Get DND preferences
+      operationId: getDNDPreferences
+      description: |
+        Returns the current Do Not Disturb preferences for the authenticated user.
+        You can optionally limit the response by passing specific preference keys.
+        <br><br>
+        <p>
+          <b>OAuth Scope</b>: ZohoCliq.Profile.READ<br>
+        </p>
+      parameters:
+        - name: keys
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Comma-separated preference keys to fetch (e.g. schedule).
+          example: schedule
+      responses:
+        '200':
+          description: DND preferences were retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dnd-preferences-response'
+              example:
+                quiet_hours: 18:00-09:00
+                quiet_days: sunday,monday
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Profile.READ
+      tags:
+        - dndsettings
+    put:
+      summary: Update DND preferences
+      operationId: updateDNDPreferences
+      description: |
+        Updates "Do Not Disturb" preferences for the authenticated user.
+        <br><br>
+        <p>
+          <b>OAuth Scope</b>: ZohoCliq.Profile.UPDATE<br>
+        </p>
+      requestBody:
+        description: Updates DND preferences for the authenticated user. Send one or both fields depending on what must be changed.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update-dnd-preferences-request'
+            example:
+              quiet_days: monday,tuesday
+              quiet_hours: 18:00-21:00
+      responses:
+        '204':
+          description: No Content. DND preferences were updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoResponse'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Profile.UPDATE
+      tags:
+        - dndsettings
+components:
+  schemas:
+    NoResponse:
+      type: object
+      description: Response envelope for successful operations with no payload.
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Operation completed successfully.
+    dnd-preferences-response:
+      type: object
+      description: Current DND preference settings for the user.
+      properties:
+        quiet_hours:
+          type: string
+          description: Time range for quiet hours in HH:MM-HH:MM format.
+          example: 18:00-09:00
+        quiet_days:
+          type: string
+          description: Comma-separated list of days when DND is active.
+          example: sunday,monday
+    update-dnd-preferences-request:
+      type: object
+      description: Request payload for updating DND preferences. Omitted fields remain unchanged.
+      properties:
+        quiet_hours:
+          type: string
+          description: |
+            'Time range for quiet hours in HH:MM-HH:MM format. For example, "18:00-09:00" means DND is active from 6 PM to 9 AM the next day.'
+          example: 18:00-21:00
+        quiet_days:
+          type: string
+          description: |
+            Comma-separated list of days when DND is active.<br>
+            <b>Allowed values</b>:
+            <ul>
+               <li>sunday</li>
+               <li>monday</li>
+               <li>tuesday</li>
+               <li>wednesday</li>
+               <li>thursday</li>
+               <li>friday</li>
+               <li>saturday</li>
+            </ul>
+            For example, "monday,tuesday" means DND is active on Mondays and Tuesdays.
+          example: monday,tuesday
+  securitySchemes:
+    Cliq_Auth:
+      type: oauth2
+      x-authorization-example: Bearer 1000.41d9xxxxxxxxxxxxxxxxxxxxxxxxc2d1.8fccxxxxxxxxxxxxxxxxxxxxxxxx125f
+      flows:
+        implicit:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          scopes:
+            ZohoCliq.Profile.READ: Read user profile settings
+            ZohoCliq.Profile.UPDATE: Update user profile settings

@@ -1,0 +1,1476 @@
+openapi: 3.0.0
+info:
+  title: Message Content
+  description: |
+    <p>
+      In Cliq, users can create and deliver rich, structured message cards with customizable content, interaction elements, and presentation styles.You can build message cards in two ways:
+      <ul>
+        <li><b>No-Code Message Builder</b> – Design and configure message cards visually using Cliq’s built-in Message Builder.</li>
+        <li><b>REST APIs</b> – Programmatically construct and send message cards using the APIs described below for full control and dynamic customization.</li>
+      </ul>
+      <br>
+      With the send message API, developers can send messages in various structured formats. Instead of limiting requests to plain text, this API supports multiple request body schemas, enabling the creation of rich, customizable message payloads.
+      <br><br> 
+      To include different types of content, use the <code>slides</code> key. Any content you want to attach should be placed within the <code>slides</code> JSON object. The <code>slides</code> key is a JSON array that lets you include various textual and visual message payloads.
+      <br><br> 
+      Developers can send messages in the following formats:
+      <ul>
+        <li><b>Text:</b> Standard plain text messages.</li>
+        <li><b>Table:</b> Structured tabular data.</li>
+        <li><b>List:</b> Displays content as a bulleted or itemized points.</li>
+        <li><b>Label:</b> Highlighted key-value or tagged information.</li>
+        <li><b>Image:</b> Embedded image content.</li>
+        <li><b>Chart:</b> Visual representations of structured data (e.g., bar, pie, or line charts).</li>
+        <li><b>Graph:</b> Data visualizations that illustrate relationships, trends, or networks between data points.</li>
+      </ul>
+    </p> <p>
+          <b>Threshold limit</b>: 20 requests per min per user<br>
+          Number of API calls allowed within a minute.<br><br>
+          <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>
+    </p>
+  contact: {}
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Zoho Cliq APIs V2
+  url: https://www.zoho.com/cliq/help/restapi/v2/
+servers:
+  - url: https://cliq.zoho.com/api/v3
+    description: Zoho Cliq US DC
+tags:
+  - name: messageformat
+    description: Message Format Module
+paths:
+  /chats/{CHAT_ID}/messages:
+    post:
+      summary: Plain text
+      operationId: textmessageformat
+      description: |
+        Use this API to send plain text messages in Cliq.
+        To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+      parameters:
+        - name: CHAT_ID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: Unique identifier of the chat where the message needs to be sent.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - text
+              properties:
+                text:
+                  type: string
+                  description: |
+                    The text content of the message to be sent.<br>
+                    <b>Maximum length</b>: 10,000 characters.
+                  maxLength: 10000
+                  example: Hello team, please review the latest project updates.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Webhooks.CREATE
+      tags:
+        - messageformat
+  /chats/{CHAT_ID1}/messages:
+    post:
+      summary: Table
+      x-display-path: /chats/{CHAT_ID}/messages
+      x-virtual-endpoint: true
+      x-note: |
+        CHAT_ID1 is a documentation alias for CHAT_ID path parameter used in table operation. This alias is used to document the table message format as a separate operation while keeping it under the same POST /chats/{CHAT_ID}/messages endpoint, because the actual API path does not change and only the structured message payload differs. The actual endpoint for table operation remains /chats/{CHAT_ID}/messages as specified in the paths object.
+      operationId: table
+      description: |
+        Use this API to send message content formatted as a table.
+        <br><br>
+        <b>Note:</b> All structured content must be included within the <code>slides</code> JSON object.
+      parameters:
+        - name: CHAT_ID1
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: |
+            Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.<br><br>
+            <b>Note:</b> <code>CHAT_ID1</code> is a documentation alias for <code>CHAT_ID</code>, used to document the "Table" message format separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the structured message payload differs.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/send-table-message-request-body'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Webhooks.CREATE
+      tags:
+        - messageformat
+  /chats/{CHAT_ID2}/messages:
+    post:
+      summary: List
+      x-display-path: /chats/{CHAT_ID}/messages
+      x-virtual-endpoint: true
+      x-note: |
+        CHAT_ID2 is a documentation alias for CHAT_ID path parameter used in list operation. This alias is used to document the list message format as a separate operation while keeping it under the same POST /chats/{CHAT_ID}/messages endpoint, because the actual API path does not change and only the structured message payload differs. The actual endpoint for list operation remains /chats/{CHAT_ID}/messages as specified in the paths object.
+      operationId: list
+      description: |
+        Use this API to send message content formatted as a list.
+        <br><br>
+        <b>Note:</b> All structured content must be included within the <code>slides</code> JSON object.
+      parameters:
+        - name: CHAT_ID2
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: |
+            Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.<br><br>
+            <b>Note:</b> <code>CHAT_ID2</code> is a documentation alias for <code>CHAT_ID</code>, used to document the "List" message format separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the structured message payload differs.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/send-list-message-request-body'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Webhooks.CREATE
+      tags:
+        - messageformat
+  /chats/{CHAT_ID3}/messages:
+    post:
+      summary: Label
+      x-display-path: /chats/{CHAT_ID}/messages
+      x-virtual-endpoint: true
+      x-note: |
+        CHAT_ID3 is a documentation alias for CHAT_ID path parameter used in label operation. This alias is used to document the label message format as a separate operation while keeping it under the same POST /chats/{CHAT_ID}/messages endpoint, because the actual API path does not change and only the structured message payload differs. The actual endpoint for label operation remains /chats/{CHAT_ID}/messages as specified in the paths object.
+      operationId: label
+      description: |
+        Use this API to send message content formatted as a label.
+        <br><br>
+        <b>Note:</b> All structured content must be included within the <code>slides</code> JSON object.
+      parameters:
+        - name: CHAT_ID3
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: |
+            Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.<br><br>
+            <b>Note:</b> <code>CHAT_ID3</code> is a documentation alias for <code>CHAT_ID</code>, used to document the "Label" message format separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the structured message payload differs.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/send-label-message-request-body'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Webhooks.CREATE
+      tags:
+        - messageformat
+  /chats/{CHAT_ID4}/messages:
+    post:
+      summary: Image
+      x-display-path: /chats/{CHAT_ID}/messages
+      x-virtual-endpoint: true
+      x-note: |
+        CHAT_ID4 is a documentation alias for CHAT_ID path parameter used in image operation. This alias is used to document the image message format as a separate operation while keeping it under the same POST /chats/{CHAT_ID}/messages endpoint, because the actual API path does not change and only the structured message payload differs. The actual endpoint for image operation remains /chats/{CHAT_ID}/messages as specified in the paths object.
+      operationId: image
+      description: |
+        Use this API to send message content formatted as an image.
+        <br><br>
+        <b>Note:</b> All structured content must be included within the <code>slides</code> JSON object.
+      parameters:
+        - name: CHAT_ID4
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: |
+            Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.<br><br>
+            <b>Note:</b> <code>CHAT_ID4</code> is a documentation alias for <code>CHAT_ID</code>, used to document the "Image" message format separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the structured message payload differs.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/send-image-message-request-body'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Webhooks.CREATE
+      tags:
+        - messageformat
+  /chats/{CHAT_ID5}/messages:
+    post:
+      summary: Charts
+      x-display-path: /chats/{CHAT_ID}/messages
+      x-virtual-endpoint: true
+      x-note: |
+        CHAT_ID5 is a documentation alias for CHAT_ID path parameter used in charts operation. This alias is used to document the charts message format as a separate operation while keeping it under the same POST /chats/{CHAT_ID}/messages endpoint, because the actual API path does not change and only the structured message payload differs. The actual endpoint for charts operation remains /chats/{CHAT_ID}/messages as specified in the paths object.
+      operationId: charts
+      description: |
+        Use this API to send message content formatted as a chart.
+        <br><br>
+        <b>Note:</b> All structured content must be included within the <code>slides</code> JSON object.
+      parameters:
+        - name: CHAT_ID5
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: |
+            Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.<br><br>
+            <b>Note:</b> <code>CHAT_ID5</code> is a documentation alias for <code>CHAT_ID</code>, used to document the "Charts" message format separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the structured message payload differs.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/send-chart-message-request-body'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Webhooks.CREATE
+      tags:
+        - messageformat
+  /chats/{CHAT_ID6}/messages:
+    post:
+      summary: Graphs
+      x-display-path: /chats/{CHAT_ID}/messages
+      x-virtual-endpoint: true
+      x-note: |
+        CHAT_ID6 is a documentation alias for CHAT_ID path parameter used in graphs operation. This alias is used to document the graphs message format as a separate operation while keeping it under the same POST /chats/{CHAT_ID}/messages endpoint, because the actual API path does not change and only the structured message payload differs. The actual endpoint for graphs operation remains /chats/{CHAT_ID}/messages as specified in the paths object.
+      operationId: graphs
+      description: |
+        Use this API to send message content formatted as a graph.
+        <br><br>
+        <b>Note:</b> All structured content must be included within the <code>slides</code> JSON object.
+      parameters:
+        - name: CHAT_ID6
+          in: path
+          required: true
+          schema:
+            type: string
+          example: CHAT_ID
+          description: |
+            Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.<br><br>
+            <b>Note:</b> <code>CHAT_ID6</code> is a documentation alias for <code>CHAT_ID</code>, used to document the "Graphs" message format separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the structured message payload differs.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/send-graph-message-request-body'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/empty-response'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request cannot be performed. Usually because of malformed parameter or missing parameter.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Request was rejected because of invalid AuthToken.
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The user does not have enough permission or possibly not an user of the respective organization to access the resource.
+        '404':
+          description: Invalid URL.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.
+        '405':
+          description: Method Not Allowed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.
+        '406':
+          description: Not Acceptable.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The response has been received but the requested response type is not supported by the browser.
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Too many requests within a certain time frame.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cliq server encountered an error which prevents it from fulfilling the request.
+      security:
+        - Cliq_Auth:
+            - ZohoCliq.Webhooks.CREATE
+      tags:
+        - messageformat
+components:
+  schemas:
+    empty-response:
+      type: object
+      description: Response returned when there is no content.
+      properties:
+        Response_Code:
+          type: string
+          example: 204 No response
+    send-table-message-request-body:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          description: |
+            The text content of the message to be sent.<br>
+            <b>Maximum length</b>: 10,000 characters.
+          maxLength: 10000
+          example: New interns will be joining these teams from July.
+        card:
+          type: object
+          description: |
+            An optional object that defines the visual presentation of the message card.
+          properties:
+            title:
+              type: string
+              description: |
+                The title of the message card.
+              example: ANNOUNCEMENT
+            theme:
+              type: string
+              description: |
+                The visual theme of the message card.<br>
+                <b>Allowed values</b>: modern-inline | poll | prompt
+              example: modern-inline
+            thumbnail:
+              type: string
+              format: uri
+              description: |
+                The URL of the thumbnail image for the message card.
+              example: https://www.zoho.com/cliq/help/restapi/images/announce_icon.png
+        slides:
+          type: array
+          description: |
+            An array of structured content elements to be included in the message.
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: |
+                  The type of content.<br>
+                  <b>Allowed values</b>: table
+                example: table
+              title:
+                type: string
+                description: |
+                  The title of the table.
+                example: Details
+              data:
+                type: object
+                description: The actual content data corresponding to the specified type.
+                properties:
+                  headers:
+                    type: array
+                    description: An array of table header names for the table columns.
+                    items:
+                      type: string
+                    example:
+                      - Name
+                      - Team
+                      - Reporting To
+                  rows:
+                    type: array
+                    description: |
+                      Represents the data rows to be displayed in the table.
+                      Each row must be defined as a JSON object containing key-value pairs, where:
+                      <ul>
+                        <li>The key must exactly match one of the values defined in the headers array.</li>
+                        <li>The value represents the corresponding cell data for that column.</li>
+                        <li>Each object in the array represents one table row.</li>
+                      </ul>
+                      Syntax example for rows:
+                      <br>
+                      For every row object,<br>
+                      <code>
+                        {
+                        <br>
+                            "&lt;Header1&gt;": "&lt;RowValue1&gt;",<br>
+                            "&lt;Header2&gt;": "&lt;RowValue2&gt;",<br>
+                            ...
+                        <br>
+                        }
+                      </code>
+                      <ul>
+                        <li>Ensure that the keys in each row object match the header names defined in the headers array.</li>
+                        <li>The number of keys in each row object should align with the number of headers to maintain table integrity.</li>
+                      </ul>
+                    items:
+                      type: object
+                      additionalProperties:
+                        type: string
+                    example:
+                      - Name: Paula Rojas
+                        Team: Zylker-Sales
+                        Reporting To: Li Jung
+                  styles:
+                    type: object
+                    description: |
+                      Defines the visual styling and layout behavior of the table.
+                    properties:
+                      width:
+                        type: array
+                        description: |
+                          <ul>
+                            <li>Specifies the width distribution of each column in percentage.</li>
+                            <li>The number of values must match the number of columns defined in headers.</li>
+                            <li>The sum of all values must equal 100.</li>
+                          </ul>
+                        items:
+                          type: integer
+                          minimum: 1
+                          maximum: 100
+                        example:
+                          - 50
+                          - 30
+                          - 20
+                      sticky:
+                        type: object
+                        description: |
+                          Freezes specific rows and columns so they remain visible while scrolling.<br> <b>Note:</b> A maximum of 2 rows and 2 columns can be frozen.
+                        properties:
+                          rows:
+                            type: integer
+                            minimum: 0
+                            maximum: 2
+                            description: Number of rows to be frozen.
+                            example: 1
+                          columns:
+                            type: integer
+                            minimum: 0
+                            maximum: 2
+                            description: Number of columns to be frozen.
+                            example: 2
+    send-list-message-request-body:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          description: |
+            The text content of the message to be sent.<br>
+            <b>Maximum length</b>: 10,000 characters.
+          maxLength: 10000
+          example: Welcome to Agile Bot! I'm here to give you a brief on what Agile is all about.
+        card:
+          type: object
+          description: |
+            An optional object that defines the visual presentation of the message card.
+          properties:
+            title:
+              type: string
+              description: |
+                The title of the message card.
+              example: Features of Agile Bot
+            theme:
+              type: string
+              description: |
+                The visual theme of the message card.<br>
+                <b>Allowed values</b>: modern-inline | poll | prompt
+              example: modern-inline
+            thumbnail:
+              type: string
+              format: uri
+              description: |
+                The URL of the thumbnail image for the message card.
+              example: https://www.zoho.com/cliq/help/restapi/images/announce_icon.png
+        slides:
+          type: array
+          description: |
+            An array of structured content elements to be included in the message.
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: |
+                  The type of content.<br>
+                  <b>Allowed values</b>: list
+                example: list
+              title:
+                type: string
+                description: |
+                  The title of the list.
+                example: Key features
+              data:
+                type: array
+                description: |
+                  Represents the list items to be displayed in the message.<br>
+                  Each item in the array must be provided as a string, where each string represents a single list entry.
+                items:
+                  type: string
+                example:
+                  - Time - Tracking for Tasks
+                  - Prioritize requirements effectively
+                  - Identify and work on a fix for bugs instantly
+                  - Collaborate actively
+                  - Most important - Keep it simple
+              styles:
+                type: object
+                description: |
+                  Defines the visual styling of the list.
+                properties:
+                  type:
+                    type: string
+                    description: |
+                      Specifies the bullet or numbering style applied to the list.<br>
+                      <b>Allowed values</b>: disc | circle | square | decimal | lower-alpha | upper-alpha | lower-roman | upper-roman
+                    example: bulleted
+    send-label-message-request-body:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          description: |
+            The text content of the message to be sent.<br>
+            <b>Maximum length</b>: 10,000 characters.
+          maxLength: 10000
+          example: Hi Team! Take a look at the monthly financial reports attached.
+        card:
+          type: object
+          description: |
+            An optional object that defines the visual presentation of the message card.
+          properties:
+            title:
+              type: string
+              description: |
+                The title of the message card.
+              example: Quarterly Revenue Growth
+            theme:
+              type: string
+              description: |
+                The visual theme of the message card.<br>
+                <b>Allowed values</b>: modern-inline | poll | prompt
+              example: modern-inline
+            thumbnail:
+              type: string
+              format: uri
+              description: |
+                The URL of the thumbnail image for the message card.
+              example: https://www.zoho.com/cliq/help/restapi/images/announce_icon.png
+        slides:
+          type: array
+          description: |
+            An array of structured content elements to be included in the message.
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: |
+                  The type of content.<br>
+                  <b>Allowed values</b>: label
+                example: label
+              title:
+                type: string
+                description: |
+                  The title of the label.
+                example: Key features
+              data:
+                type: array
+                description: |
+
+                  Represents the key-value details displayed inside the label.<br>
+                  Each item in the array must be a JSON object containing a <b>key-value pair</b>, where:
+                  <ul>
+                    <li>The key represents the field name.</li>
+                    <li>The value represents the corresponding field value.</li>
+                  </ul>
+                  Syntax for key-value pairs in data array:
+                  <code>
+                        "data":[{"Key1": "Value1"},{"Key2": "Value2"},...]
+                  </code>
+                items:
+                  type: object
+                example:
+                  - Revenue: $500,000
+                  - Growth: 25%
+                  - Region: North America
+    send-image-message-request-body:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          description: |
+            The text content of the message to be sent.<br>
+            <b>Maximum length</b>: 10,000 characters.
+          maxLength: 10000
+          example: Please find the attached image for the office layout.
+        card:
+          type: object
+          description: |
+            An optional object that defines the visual presentation of the message card.
+          properties:
+            title:
+              type: string
+              description: |
+                The title of the message card.
+              example: Office Layout
+            theme:
+              type: string
+              description: |
+                The visual theme of the message card.<br>
+                <b>Allowed values</b>: modern-inline | poll | prompt
+              example: modern-inline
+            thumbnail:
+              type: string
+              format: uri
+              description: |
+                The URL of the thumbnail image for the message card.
+              example: https://www.zoho.com/cliq/help/restapi/images/announce_icon.png
+        slides:
+          type: array
+          description: |
+            An array of structured content elements to be included in the message.
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: |
+                  The type of content.<br>
+                  <b>Allowed values</b>: image
+                example: image
+              title:
+                type: string
+                description: |
+                  The title of the image.
+                example: Floor Plan
+              data:
+                type: array
+                description: |
+                  Represents the list of image URLs to be displayed in the message card.<br>
+                  Each item in the array must be a publicly accessible image URL. The URLs should point directly to image resources (e.g., .png, .jpg, .jpeg, .webp).
+                items:
+                  type: object
+                  example:
+                    - https://images.unsplash.com/photo-1522199710521-72d69614c702
+                    - https://images.unsplash.com/photo-1519389950473-47ba0277781c
+                    - https://images.unsplash.com/photo-1492724441997-5dc865305da7
+                    - https://images.unsplash.com/photo-1551434678-e076c223a692
+    send-chart-message-request-body:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          description: |
+            The text content of the message to be sent.<br>
+            <b>Maximum length</b>: 10,000 characters.
+          maxLength: 10000
+          example: Hi Team! Please find the sales performance chart for this quarter.
+        card:
+          type: object
+          description: |
+            An optional object that defines the visual presentation of the message card.
+          properties:
+            title:
+              type: string
+              description: |
+                The title of the message card.
+              example: Sales Performance
+            theme:
+              type: string
+              description: |
+                The visual theme of the message card.<br>
+                <b>Allowed values</b>: modern-inline | poll | prompt
+              example: modern-inline
+            thumbnail:
+              type: string
+              format: uri
+              description: |
+                The URL of the thumbnail image for the message card.
+              example: https://www.zoho.com/cliq/help/restapi/images/announce_icon.png
+        slides:
+          type: array
+          description: |
+            An array of structured content elements to be included in the message.
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: |
+                  The type of content.<br>
+                  <b>Allowed values</b>: percentage_chart
+                example: percentage_chart
+              title:
+                type: string
+                description: |
+                  The title of the chart.
+                example: Monthly Report
+              data:
+                type: array
+                maxItems: 5
+                description: |
+                  Represents the dataset to be displayed in the chart.<br>
+                  Each item in the array corresponds to one segment in the chart.<br>
+                  <b>Maximum Items</b>: 5
+                items:
+                  type: object
+                  properties:
+                    label:
+                      type: string
+                      maxLength: 20
+                      description: |
+                        Defines the category name for the chart segment (what the segment represents).<br>
+                        <b>Maximum length</b>: 20 characters.
+                    value:
+                      type: number
+                      format: float
+                      description: |
+                        Represents the numerical value of the chart segment.
+                        The size of each segment is calculated relative to other values in the dataset.
+                  example:
+                    - label: Social Media
+                      value: 40
+                    - label: Growth
+                      value: 25
+                    - label: Region
+                      value: 10
+              styles:
+                type: object
+                description: |
+                  Defines the visual style or appearance of the chart.<br>
+                  The style value must be provided using the preview attribute
+                properties:
+                  preview:
+                    type: string
+                    description: |
+                      Specifies the chart visualization style.
+                      <b>Allowed values</b>: pie | doughnut | semi_doughnut
+                    example: pie
+    send-graph-message-request-body:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          maxLength: 10000
+          description: |
+            The text content of the message to be sent.<br>
+            <b>Maximum length</b>: 10,000 characters.
+          example: Exploring how our customers have been leveraging integrations in the past week!
+        card:
+          type: object
+          description: |
+            Optional object that defines the visual presentation of the message card.
+          properties:
+            title:
+              type: string
+              description: |
+                The title of the message card.
+              example: Usage Analysis
+            theme:
+              type: string
+              description: |
+                The visual theme of the message card.
+              example: modern-inline
+        slides:
+          type: array
+          description: |
+            An array of structured content elements to be included in the message.
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: |
+                  Specifies the type of visualization to be generated.<br>
+                  <b>Allowed values</b>: graph
+                example: graph
+              styles:
+                type: object
+                description: |
+                  Specifies the visual styling configuration of the graph.
+                properties:
+                  preview:
+                    type: string
+                    description: |
+                      Specifies the rendering style of the graph.<br>
+                      <b>Allowed values</b>: vertical_bar | vertical_stacked_bar | trend
+                    example: trend
+                  x_axis:
+                    type: string
+                    description: |
+                      Represents the label for the x-axis of the graph.<br>
+                      <b>Maximum length</b>: 20 characters.
+                    example: Months
+                  y_axis:
+                    type: string
+                    description: |
+                      Represents the label for the y-axis of the graph.<br>
+                      <b>Maximum length</b>: 20 characters.
+                    example: Usage count
+              data:
+                type: array
+                maxItems: 5
+                description: |
+                  Represents the dataset to be plotted on the graph. Each item represents one category.<br>
+                  <b>Maximum items</b>: 5
+                items:
+                  type: object
+                  properties:
+                    category:
+                      type: string
+                      maxLength: 20
+                      description: |
+                        Specifies the category name for which data is represented (for example: Products, Months, Integrations).<br>
+                        <b>Maximum length</b>: 20 characters.
+                      example: Asana
+                    values:
+                      type: array
+                      maxItems: 20
+                      description: |
+                        Represents the list of data points within the category.<br>
+                        <b>Maximum items</b>: 20
+                      items:
+                        type: object
+                        properties:
+                          label:
+                            type: string
+                            maxLength: 20
+                            description: |
+                              Specifies the identifier or name of the data point.<br>
+                              <b>Maximum length</b>: 20 characters.
+                            example: Jan
+                          value:
+                            type: number
+                            format: float
+                            description: |
+                              Specifies the numeric value associated with the label. This value is used to plot the graph.
+                            example: 9
+      example:
+        text: Exploring how our customers have been leveraging integrations in the past week!
+        bot:
+          name: Zylker Apptics
+        card:
+          title: Usage Analysis
+          theme: modern-inline
+        slides:
+          - type: graph
+            styles:
+              preview: trend
+              x_axis: Months
+              y_axis: Usage count
+            data:
+              - category: Asana
+                values:
+                  - label: Jan
+                    value: 9
+                  - label: Feb
+                    value: 6
+                  - label: Mar
+                    value: 3
+              - category: BitBucket
+                values:
+                  - label: Jan
+                    value: 12
+                  - label: Feb
+                    value: 18
+                  - label: Mar
+                    value: 14
+  securitySchemes:
+    Cliq_Auth:
+      type: oauth2
+      x-authorization-example: Bearer 1000.41d9xxxxxxxxxxxxxxxxxxxxxxxxc2d1.8fccxxxxxxxxxxxxxxxxxxxxxxxx125f
+      flows:
+        implicit:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          scopes:
+            ZohoCliq.Webhooks.CREATE: Send messages
