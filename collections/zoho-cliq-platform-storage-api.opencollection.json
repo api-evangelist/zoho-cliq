@@ -1,0 +1,594 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bots Platform_storage API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Platform_storage",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all datastores",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/datastores",
+            "params": [
+              {
+                "name": "sync_token",
+                "value": "",
+                "type": "query",
+                "description": "Return datastores modified after the given sync token. The sync token is returned in the response when fetching the list of datastores, and can be used to retrieve only datastores that were created or updated after that request.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of datastores to return in the response. Default is 20, maximum allowed value is 100.\n"
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Token to retrieve the next page of results. This is returned in the response when the number of datastores exceeds the specified limit. To fetch the next page, include this token in the request.\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieve a paginated list of all datastores defined for the organisation.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Cl"
+        },
+        {
+          "info": {
+            "name": "Create a datastore",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/datastores",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Create a new Datastore for the organisation.<br><br>\nA Datastore is a structured storage table scoped to the organisation (or an extension) that allows platform components to persist and query data across executions.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,18"
+        },
+        {
+          "info": {
+            "name": "Get a datastore",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/datastores/:DATASTORE_ID",
+            "params": [
+              {
+                "name": "DATASTORE_ID",
+                "value": "DATASTORE_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the datastore. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#LONG_ID\">LONG_ID</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieve the metadata and field schema of a single datastore identified by its numeric ID. The response includes the datastore name, description, and the list of typed fields (columns) defined in the schema.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); b"
+        },
+        {
+          "info": {
+            "name": "Edit a datastore",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://cliq.zoho.com/api/v3/datastores/:DATASTORE_ID",
+            "params": [
+              {
+                "name": "DATASTORE_ID",
+                "value": "DATASTORE_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the datastore. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#LONG_ID\">LONG_ID</a> in the Glossary page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Update the metadata (name, description) of an existing datastore.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to e"
+        },
+        {
+          "info": {
+            "name": "Delete a datastore",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://cliq.zoho.com/api/v3/datastores/:DATASTORE_ID",
+            "params": [
+              {
+                "name": "DATASTORE_ID",
+                "value": "DATASTORE_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the datastore. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#LONG_ID\">LONG_ID</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Permanently delete a datastore and all its stored records. This operation is irreversible, and all data in the datastore will be lost. Hence, ensure no active platform components depend on this datastore before deleting it.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148"
+        },
+        {
+          "info": {
+            "name": "Add fields to a datastore",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/datastores/:DATASTORE_ID/fields",
+            "params": [
+              {
+                "name": "DATASTORE_ID",
+                "value": "DATASTORE_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the datastore.<br>\nTo learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#DATASTORE_ID\">DATASTORE_ID</a> in the Glossary page.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Add one or more new fields (columns) to an existing datastore. Existing records will have null for newly added fields unless a default value is specified.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"thi"
+        },
+        {
+          "info": {
+            "name": "Edit datastore fields",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://cliq.zoho.com/api/v3/datastores/:DATASTORE_ID/fields",
+            "params": [
+              {
+                "name": "DATASTORE_ID",
+                "value": "DATASTORE_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the datastore.<br>\nTo learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#DATASTORE_ID\">DATASTORE_ID</a> in the Glossary page.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Update the existing fields (columns) in a datastore. The modifiable attributes include the field display name, type, and required field flag. The names of fields cannot be changed after they are created.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); borde"
+        },
+        {
+          "info": {
+            "name": "Delete fields of a datastore",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://cliq.zoho.com/api/v3/datastores/:DATASTORE_ID/fields",
+            "params": [
+              {
+                "name": "DATASTORE_ID",
+                "value": "IDS",
+                "type": "path",
+                "description": "Unique numeric identifier of the datastore.<br>\nTo learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#DATASTORE_ID\">DATASTORE_ID</a> in the Glossary page.\n"
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of field IDs to delete.\nTo retrieve field IDs, use the Get Datastore Details API and refer to the <code>id</code> attribute of each field in the response.\n<br><b>Maximum number of fields that can be deleted in a single request is 10</b>\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Remove one or more fields (columns) from a Datastore schema by providing the field IDs in the <code>ids</code> query parameter. All data stored in those fields will be permanently deleted. This action is irreversible.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,1"
+        },
+        {
+          "info": {
+            "name": "List records from a datastore",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/datastores/:DATASTORE_UNIQUE_NAME/records",
+            "params": [
+              {
+                "name": "DATASTORE_UNIQUE_NAME",
+                "value": "DATASTORE_UNIQUE_NAME",
+                "type": "path",
+                "description": "Unique name of the datastore.<br>\nTo learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#DATABASE_UNIQUE_NAME\">DATABASE_UNIQUE_NAME</a> in the Glossary page.\n"
+              },
+              {
+                "name": "criteria",
+                "value": "",
+                "type": "query",
+                "description": "Expression to filter records. Use field <code>unique_name</code>s as keys. Wrap each condition in parentheses and combine with <code>&&</code> / <code>||</code>.<br>\nExample: <code>(empname=John) && (isactive=true)</code>\n<br>\n<br><b>Supported Comparison Operators</b><br><br>\n<table style=\"border-collapse: collapse; width: 100%; font-family: inherit;\">\n  <tr>\n    <th style=\"padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;\">Operator</th>\n    <th style=\"padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;\">Meaning</th>\n    <th style=\"padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;\">Notes</th>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>=</code></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Equal</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"></td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>==</code></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Equal</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Alias for <code>=</code></td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>!=</code></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Not Equal</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"></td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>&gt;</code></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Greater Than</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"></td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>&gt;=</code></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Greater Than or Equal</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"></td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>&lt;</code></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Less Than</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"></td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>&lt;=</code></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Less Than or Equal</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"></td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>like</code></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Like (pattern match)</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Case-insensitive, only for CHAR fields</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>not like</code></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Not Like</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Case-insensitive, only for CHAR fields</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>in</code></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">In (multi-value)</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Comma-separated values, max <b>10</b> values</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>not in</code></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Not In</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Comma-separated values, max <b>10</b> values</td>\n  </tr>\n</table>\n<br><b>Logical Operators (for combining criteria)</b><br><br>\n<table style=\"border-collapse: collapse; width: 100%; font-family: inherit;\">\n  <tr>\n    <th style=\"padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;\">Operator</th>\n    <th style=\"padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;\">Meaning</th>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>&&</code></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">AND</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>||</code></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">OR</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>( )</code></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Grouping / parentheses for precedence</td>\n  </tr>\n</table>\n<br><b>AND</b> has higher priority than <b>OR</b> (standard precedence).<br>\n<br><b>Limits</b>\n<ul>\n  <li><b>Max criteria clauses</b>: 10 (combined with <code>&&</code> / <code>||</code>)</li>\n  <li><b>Max values in <code>in</code> / <code>not in</code></b>: 10</li>\n</ul>\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of records to return.<br>\n<b>Default</b>: 50<br>\n<b>Maximum</b>: 100<br>\n"
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of fields to sort by, with optional sort direction (asc or desc).<br>\nIf sort direction is not specified, ascending order is used by default.<br>\nExample: <code>empname desc, empid asc</code><br>\n<b>Example syntax</b>: +timestamp (e.g. <code>+1777360402254</code>) to get records modified before the specified timestamp, or -age (e.g. <code>-3600000</code>) to get records modified within the last hour.\n"
+              },
+              {
+                "name": "sync_token",
+                "value": "",
+                "type": "query",
+                "description": "Token to retrieve records modified before a certain point in time. This is useful for incremental synchronization. The token value should be the <code>sync_token</code> returned in a previous response, which encodes a timestamp. Records modified before that timestamp will be returned.<br>\n"
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Token to retrieve records modified after a certain point in time. This is useful for incremental synchronization. The token value should be the <code>sync_token</code> returned in a previous response, which encodes a timestamp. Records modified after that timestamp will be returned.\n"
+              },
+              {
+                "name": "extension_key",
+                "value": "",
+                "type": "query",
+                "description": "Unique key of the extension that the datastore belongs to. Required if the datastore is owned by an extension. To learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#EXTENSION_KEY\">EXTENSION_KEY</a> in the Glossary page.\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieve records from a datastore with optional filtering, sorting, and pagination.\n<ul>\n  <li>Use the <code>criteria</code> query parameter to filter records based on field values (e.g. <code>(empname=John) && (isactive=true)</code>).</li>\n  <li>Use the <code>sync_token</code> parameter to retrieve records modified before a certain point in time, or the <code>next_token</code> parameter for records modified after a certain point in time. This is useful for incremental synchronization.</li>\n  <l"
+        },
+        {
+          "info": {
+            "name": "Add records to a datastore",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/datastores/:DATASTORE_UNIQUE_NAME/records",
+            "params": [
+              {
+                "name": "DATASTORE_UNIQUE_NAME",
+                "value": "DATASTORE_UNIQUE_NAME",
+                "type": "path",
+                "description": "Unique name of the datastore. To learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#DATABASE_UNIQUE_NAME\">DATABASE_UNIQUE_NAME</a> in the Glossary page."
+              },
+              {
+                "name": "extension_key",
+                "value": "",
+                "type": "query",
+                "description": "Encrypted app ID. Required if the target datastore is owned by an extension."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Insert a record into a datastore.\n<br><br>\n<blockquote><b>Note</b>: To manage records of a datastore bundled with an extension, use the extension-scoped endpoint instead:<br><code>v3/extensions/{EXTENSION_ID}/datastores/{DATASTORE_UNIQUE_NAME}/records</code><br>and pass the <code>extension_key</code> as a query parameter.</blockquote>\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>W"
+        },
+        {
+          "info": {
+            "name": "Bulk update records in a datastore",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://cliq.zoho.com/api/v3/datastores/:DATASTORE_UNIQUE_NAME/records",
+            "params": [
+              {
+                "name": "DATASTORE_UNIQUE_NAME",
+                "value": "DATASTORE_UNIQUE_NAME",
+                "type": "path",
+                "description": "Unique name of the datastore.<br>\nTo learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#DATABASE_UNIQUE_NAME\">DATABASE_UNIQUE_NAME</a> in the Glossary page.'\n"
+              },
+              {
+                "name": "extension_key",
+                "value": "",
+                "type": "query",
+                "description": "Unique key of the extension that the datastore belongs to. Required if the datastore is owned by an extension. To learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#EXTENSION_KEY\">EXTENSION_KEY</a> in the Glossary\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Update multiple records in a datastore with a single request. Identify target records by specifying record IDs or a criteria expression in the request body.\n<br><br>\n<blockquote><b>Note</b>: To manage records of a datastore bundled with an extension, use the extension-scoped endpoint instead:<br><code>v3/extensions/{EXTENSION_ID}/datastores/{DATASTORE_UNIQUE_NAME}/records</code><br>and pass the <code>extension_key</code> as a query parameter.</blockquote>\n<br><br>\n<p>\n  <b>Threshold limit</b>: 3"
+        },
+        {
+          "info": {
+            "name": "Delete records from a datastore",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://cliq.zoho.com/api/v3/datastores/:DATASTORE_UNIQUE_NAME/records",
+            "params": [
+              {
+                "name": "DATASTORE_UNIQUE_NAME",
+                "value": "DATASTORE_UNIQUE_NAME",
+                "type": "path",
+                "description": "Unique name of the datastore. To learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#DATABASE_UNIQUE_NAME\">DATABASE_UNIQUE_NAME</a> in the Glossary page."
+              },
+              {
+                "name": "criteria",
+                "value": "",
+                "type": "query",
+                "description": "Expression to select records for bulk deletion. Use field <code>unique_name</code>s as keys. Supported comparison operators: <code>=</code>, <code>==</code>, <code>!=</code>, <code>&gt;</code>, <code>&gt;=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>like</code>, <code>not like</code>, <code>in</code> (max 10 values), <code>not in</code> (max 10 values). Combine conditions with <code>&&</code> (AND) or <code>||</code> (OR), and use parentheses for grouping. Max 10 clauses.\n"
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "ids of the records to be deleted"
+              },
+              {
+                "name": "extension_key",
+                "value": "",
+                "type": "query",
+                "description": "Encrypted app id"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Delete one or more records from a datastore. Specify the records to delete by providing comma-separated record <code>ids</code> in the query string, or by providing a <code>criteria</code> expression to match records. Deletions are irreversible.\n<br><br>\n<blockquote><b>Note</b>: To manage records of a datastore bundled with an extension, use the extension-scoped endpoint instead:<br><code>v3/extensions/{EXTENSION_ID}/datastores/{DATASTORE_UNIQUE_NAME}/records</code><br>and pass the <code>extensi"
+        },
+        {
+          "info": {
+            "name": "Get a record from a datastore",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/datastores/:DATASTORE_UNIQUE_NAME/records/:RECORD_ID",
+            "params": [
+              {
+                "name": "DATASTORE_UNIQUE_NAME",
+                "value": "DATASTORE_UNIQUE_NAME",
+                "type": "path",
+                "description": "Unique name of the datastore. To learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#DATABASE_UNIQUE_NAME\">DATABASE_UNIQUE_NAME</a> in the Glossary page."
+              },
+              {
+                "name": "RECORD_ID",
+                "value": "RECORD_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the record to retrieve.<br>\nTo learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#RECORD_ID\">RECORD_ID</a> in the Glossary page.\n"
+              },
+              {
+                "name": "extension_key",
+                "value": "",
+                "type": "query",
+                "description": "Unique key of the extension that the datastore belongs to. Required if the datastore is owned by  an extension.<br>\nTo learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#EXTENSION_KEY\">EXTENSION_KEY</a> in the Glossary page.\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieve a single record from a datastore.\n<br><br>\n<blockquote><b>Note</b>: To manage records of a datastore bundled with an extension, use the extension-scoped endpoint instead:<br><code>v3/extensions/{EXTENSION_ID}/datastores/{DATASTORE_UNIQUE_NAME}/records/{RECORD_ID}</code><br>and pass the <code>extension_key</code> as a query parameter.</blockquote>\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock perio"
+        },
+        {
+          "info": {
+            "name": "Update a record in a datastore",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://cliq.zoho.com/api/v3/datastores/:DATASTORE_UNIQUE_NAME/records/:RECORD_ID",
+            "params": [
+              {
+                "name": "DATASTORE_UNIQUE_NAME",
+                "value": "DATASTORE_UNIQUE_NAME",
+                "type": "path",
+                "description": "Unique name of the datastore. To learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#DATABASE_UNIQUE_NAME\">DATABASE_UNIQUE_NAME</a> in the Glossary page."
+              },
+              {
+                "name": "RECORD_ID",
+                "value": "RECORD_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the record to update.<br>\nTo learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#RECORD_ID\">RECORD_ID</a> in the Glossary page.\n"
+              },
+              {
+                "name": "extension_key",
+                "value": "",
+                "type": "query",
+                "description": "Unique key of the extension that the datastore belongs to. Required if the datastore is owned by an extension.<br>\nTo learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#EXTENSION_KEY\">EXTENSION_KEY</a> in the Glossary page.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Update a single record in a datastore.\n<br><br>\n<blockquote><b>Note</b>: To manage records of a datastore bundled with an extension, use the extension-scoped endpoint instead:<br><code>v3/extensions/{EXTENSION_ID}/datastores/{DATASTORE_UNIQUE_NAME}/records/{RECORD_ID}</code><br>and pass the <code>extension_key</code> as a query parameter.</blockquote>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minu"
+        },
+        {
+          "info": {
+            "name": "Delete a record from a datastore",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://cliq.zoho.com/api/v3/datastores/:DATASTORE_UNIQUE_NAME/records/:RECORD_ID",
+            "params": [
+              {
+                "name": "DATASTORE_UNIQUE_NAME",
+                "value": "DATASTORE_UNIQUE_NAME",
+                "type": "path",
+                "description": "Unique name of the datastore. To learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#DATABASE_UNIQUE_NAME\">DATABASE_UNIQUE_NAME</a> in the Glossary page."
+              },
+              {
+                "name": "RECORD_ID",
+                "value": "RECORD_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the record to delete.<br>\nTo learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#RECORD_ID\">RECORD_ID</a> in the Glossary page.\n"
+              },
+              {
+                "name": "extension_key",
+                "value": "",
+                "type": "query",
+                "description": "Unique key of the extension that the datastore belongs to. Required if the datastore is owned by an extension.<br>\nTo learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#EXTENSION_KEY\">EXTENSION_KEY</a> in the Glossary page.\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Permanently delete a single record from a datastore.\n<br><br>\n<blockquote><b>Note</b>: To manage records of a datastore bundled with an extension, use the extension-scoped endpoint instead:<br><code>v3/extensions/{EXTENSION_ID}/datastores/{DATASTORE_UNIQUE_NAME}/records/{RECORD_ID}</code><br>and pass the <code>extension_key</code> as a query parameter.</blockquote>\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>"
+        },
+        {
+          "info": {
+            "name": "Export datastore records",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/datastores/:DATASTORE_ID/export",
+            "params": [
+              {
+                "name": "DATASTORE_ID",
+                "value": "DATASTORE_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the datastore. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#LONG_ID\">LONG_ID</a> in the Glossary page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Initiate a bulk export of all records from a datastore, identified by its numeric ID. This export is useful for data migration, backups, or analyzing platform storage data.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 5 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inher"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

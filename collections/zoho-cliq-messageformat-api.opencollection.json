@@ -1,0 +1,235 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bots messageformat API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "messageformat",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Plain text",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID/messages",
+            "params": [
+              {
+                "name": "CHAT_ID",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat where the message needs to be sent."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Use this API to send plain text messages in Cliq.\nTo learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.\n"
+        },
+        {
+          "info": {
+            "name": "Table",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID1/messages",
+            "params": [
+              {
+                "name": "CHAT_ID1",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID1</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Table\" message format separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the structured message payload differs.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Use this API to send message content formatted as a table.\n<br><br>\n<b>Note:</b> All structured content must be included within the <code>slides</code> JSON object.\n"
+        },
+        {
+          "info": {
+            "name": "List",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID2/messages",
+            "params": [
+              {
+                "name": "CHAT_ID2",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID2</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"List\" message format separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the structured message payload differs.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Use this API to send message content formatted as a list.\n<br><br>\n<b>Note:</b> All structured content must be included within the <code>slides</code> JSON object.\n"
+        },
+        {
+          "info": {
+            "name": "Label",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID3/messages",
+            "params": [
+              {
+                "name": "CHAT_ID3",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID3</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Label\" message format separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the structured message payload differs.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Use this API to send message content formatted as a label.\n<br><br>\n<b>Note:</b> All structured content must be included within the <code>slides</code> JSON object.\n"
+        },
+        {
+          "info": {
+            "name": "Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID4/messages",
+            "params": [
+              {
+                "name": "CHAT_ID4",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID4</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Image\" message format separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the structured message payload differs.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Use this API to send message content formatted as an image.\n<br><br>\n<b>Note:</b> All structured content must be included within the <code>slides</code> JSON object.\n"
+        },
+        {
+          "info": {
+            "name": "Charts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID5/messages",
+            "params": [
+              {
+                "name": "CHAT_ID5",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID5</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Charts\" message format separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the structured message payload differs.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Use this API to send message content formatted as a chart.\n<br><br>\n<b>Note:</b> All structured content must be included within the <code>slides</code> JSON object.\n"
+        },
+        {
+          "info": {
+            "name": "Graphs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID6/messages",
+            "params": [
+              {
+                "name": "CHAT_ID6",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID6</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Graphs\" message format separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the structured message payload differs.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Use this API to send message content formatted as a graph.\n<br><br>\n<b>Note:</b> All structured content must be included within the <code>slides</code> JSON object.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

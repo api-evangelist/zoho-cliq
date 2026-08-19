@@ -1,0 +1,138 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bots reminders API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "reminders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get reminders in a chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID/reminders",
+            "params": [
+              {
+                "name": "CHAT_ID",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat or channel. Use this to scope the reminders retrieval to a specific conversation."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page.<br>\n<b>Maximum limit</b>: 100\n"
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor returned from a previous response. Pass this value to retrieve the next page of results."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieves all reminders set on messages within a specific chat. Use this to list all active reminder alerts across direct messages, group chats, and channels, including single-user and multi-user assigned reminders.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>\n  Wait time before consecutive API requests.\n</p>\n<br><b>Note</b>: This endpoint uses a different base URL: <code>https:"
+        },
+        {
+          "info": {
+            "name": "Update reminder status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://cliq.zoho.com/api/v3/reminders/:REMINDER_ID",
+            "params": [
+              {
+                "name": "REMINDER_ID",
+                "value": "REMINDER_ID",
+                "type": "path",
+                "description": "Unique identifier of the reminder to update. Use this to target the specific recurring reminder whose status needs to be marked as completed.<br>To retrieve this ID, use the <a href=\"#get-reminders-in-a-chat\">Get reminders in a chat</a> endpoint or the <a href=\"https://www.zoho.com/cliq/help/restapi/v2/reminders/#get-list-of-all-reminders\">List all reminders (v2)</a>."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Marks a recurring reminder as completed across all occurrences. Use this to close out a recurring reminder entirely once the associated task or event no longer requires follow-up.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>\n  Wait time before consecutive API requests.\n</p>\n<br><b>Note</b>: <code>apply_to: all_occurrences</code> is applicable only for recurring reminders. For on"
+        },
+        {
+          "info": {
+            "name": "Trigger reminder notification to assignees",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/reminders/:REMINDER_ID/notifications",
+            "params": [
+              {
+                "name": "REMINDER_ID",
+                "value": "REMINDER_ID",
+                "type": "path",
+                "description": "Unique identifier of the reminder whose assignees should be notified immediately. Must be a reminder assigned to other users, not a self-assigned reminder.<br>To retrieve this ID, use the <a href=\"#get-reminders-in-a-chat\">Get reminders in a chat</a> endpoint or the <a href=\"https://www.zoho.com/cliq/help/restapi/v2/reminders/#get-list-of-all-reminders\">List all reminders (v2)</a>."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Immediately notifies all assignees of a reminder, bypassing the scheduled time. Use this to push a reminder notification to all assigned users on demand, without waiting for the reminder to fire automatically. Supported only for reminders assigned to other users.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>\n  Wait time before consecutive API requests.\n</p>\n<details style=\"margin"
+        },
+        {
+          "info": {
+            "name": "Batch edit reminders",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://cliq.zoho.com/api/v3/reminders/edits",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Reschedules multiple reminders in a single request. Use this to update the delivery time of several reminders at once, avoiding the need to make individual edit calls for each one.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>\n  Wait time before consecutive API requests.\n</p>\n<br><b>Note</b>: Use <code>reminder_id</code> (not <code>id</code>) as the key for each reminder object. "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

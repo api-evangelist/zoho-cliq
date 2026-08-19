@@ -1,0 +1,242 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bots mentions API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "mentions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve Mentions and Replies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/mentions",
+            "params": [
+              {
+                "name": "from_time",
+                "value": "",
+                "type": "query",
+                "description": "<ul>\n  <li>Return mentions created after this epoch time (ms).</li>\n  <li>By default, mentions from the last 30 days are returned.</li>\n  <li>If both <code>from_time</code> and <code>to_time</code> are provided, the API will return mentions created within that time range.</li>\n</ul>\n<b>Example:</b> 1622217600000 (June 1, 2021 12:00:00 AM GMT).\n"
+              },
+              {
+                "name": "to_time",
+                "value": "",
+                "type": "query",
+                "description": "<ul> \n  <li>Return mentions created before this epoch time (ms).</li>\n  <li>By default, mentions up to the current time are returned.</li>\n  <li>If both <code>from_time</code> and <code>to_time</code> are provided, the API will return mentions created within that time range.</li>\n</ul>\n<b>Example:</b> 1624809600000 (July 1, 2021 12:00:00 AM GMT).  \n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of mentions to return in the response.<br>\n<ul>\n  <li>Default value is 25 if not specified.</li>\n  <li>Maximum allowed value is 100.</li>\n  <li>If the total number of mentions exceeds this limit, a pagination token will be provided in the response to fetch the next set of results.</li>\n</ul>\n"
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Pagination token to retrieve the next set of mentions when the total number exceeds the specified limit. This token is provided in the response when there are more mentions to fetch.\n"
+              },
+              {
+                "name": "chid",
+                "value": "",
+                "type": "query",
+                "description": "Filter mentions by a specific chat ID.<br>\nTo learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.\n"
+              },
+              {
+                "name": "chat_ids",
+                "value": "",
+                "type": "query",
+                "description": "Filter mentions by multiple chat IDs (comma-separated, maximum 5).<br>\nExample: <code>chat_ids = CT_1207124854_60002085329,CT_17960055085329-T-12915799199</code><br>\nTo learn how to retrieve these IDs, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.\n"
+              },
+              {
+                "name": "user_ids",
+                "value": "",
+                "type": "query",
+                "description": "Filter mentions by sender user IDs (comma-separated, maximum 5).<br>\nExample: <code>user_ids = 60040396507,60040376665</code><br>\nTo learn how to retrieve these IDs, see <a href=\"/cliq/help/restapi/v3/glossary/#USER_ID\">USER_ID</a> in the Glossary page.\n"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter results by activity type.<br>\n<ul>\n  <li><code>mentions</code>: Returns messages where the user was mentioned.</li>\n  <li><code>replies</code>: Returns messages where the user was replied to.</li>\n  <li><code>all</code>: Returns both mentions and replies.</li>\n</ul>\n<b>Default</b>: mentions  \n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Fetches a list of messages in which the authenticated user has been mentioned or replied to.<br><br>\nThe results are returned in descending order (newest to oldest) and can be filtered using various query parameters such as time range, chat IDs, sender user IDs, and activity type (mentions or replies).<br><br>\nThis endpoint allows users to easily track conversations that require their attention based on mentions and replies.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>"
+        },
+        {
+          "info": {
+            "name": "Mentioning a User",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID/messages",
+            "params": [
+              {
+                "name": "CHAT_ID",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat where the message needs to be sent."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "To mention a user, use the syntax <b>{@zohoid}</b> or <b>{@email}</b>.<br><br>\nWhen you mention a user in any team-level or organization-level channel, the user will be notified. This syntax applies only to the <code>text</code> and <code>comments</code> fields of the payload.\nTo learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.\n"
+        },
+        {
+          "info": {
+            "name": "Silent mentions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID1/messages",
+            "params": [
+              {
+                "name": "CHAT_ID1",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID1</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Silent mentions\" use case separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the message text syntax differs.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Silent mentions allow you to reference a user in a conversation without triggering a notification.<br><br>\nUse the syntax <code>[User Name](zohoid:userid)</code> or <code>[User Name](mail:user_email)</code> to mention a user silently in any conversation. This will not notify the user. This format can also be used to mention a user in fields other than the <code>text</code> and <code>comments</code> keys.\n"
+        },
+        {
+          "info": {
+            "name": "Mentioning a Channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID2/messages",
+            "params": [
+              {
+                "name": "CHAT_ID2",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID2</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Mentioning a Channel\" use case separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the message content pattern differs.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "To mention a channel, use the syntax <code>{#CHANNEL_ID}</code>.<br><br>\nWhen you mention a team-level or organization-level channel, all participants of that channel will be notified. Additionally, an informational message will be posted in the channel indicating that it has been mentioned.\n"
+        },
+        {
+          "info": {
+            "name": "Mentioning all users in a channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID3/messages",
+            "params": [
+              {
+                "name": "CHAT_ID3",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID3</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Mentioning all users in a channel\" use case separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the message content pattern differs.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "To mention all users in a channel, use the syntax {@all}.<br>\nThis will notify every participant who is a member of the channel.<br>\n<b>Note:</b> The ability to use {@all} depends on the authenticated user's role and channel permissions. If the user does not have permission to mention all participants, the message posting request will fail.\n"
+        },
+        {
+          "info": {
+            "name": "Mentioning a Team",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID5/messages",
+            "params": [
+              {
+                "name": "CHAT_ID5",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID5</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Mentioning a Team\" use case separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the message content pattern differs.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "To mention a team in a message, use the syntax <code>{@team_id}</code>.<br><br>\nYou can mention a team only within team-level or organization-level channels. When a team is mentioned, all members of that team will be notified.\nTo learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

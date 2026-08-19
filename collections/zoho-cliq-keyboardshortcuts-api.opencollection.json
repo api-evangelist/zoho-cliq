@@ -1,0 +1,83 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bots keyboardshortcuts API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "keyboardshortcuts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch all keyboard shortcuts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/settings/keyboard-shortcuts",
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieves all keyboard shortcuts for the authenticated user, including default shortcuts and any custom shortcuts. If the user does not have any custom shortcuts, all default shortcuts will be returned.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-rad"
+        },
+        {
+          "info": {
+            "name": "Update keyboard shortcuts",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://cliq.zoho.com/api/v3/settings/keyboard-shortcuts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Updates default or custom keyboard shortcuts for the authenticated user. The shortcut details must be passed in JSON format.\n<br><br>\n<ul>\n  <li><b>Default shortcuts:</b> Provide the category (e.g., <code>basic</code>, <code>composer</code>, <code>message_action</code>, <code>annotate</code>, <code>media</code>, <code>networks</code>), the shortcut name, and the OS key (<code>windows</code> or <code>mac</code>).</li>\n  <li><b>Custom shortcuts:</b>\n    <ul>\n      <li><b>Chat / Widget:</b> Require"
+        },
+        {
+          "info": {
+            "name": "Delete keyboard shortcuts customization",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://cliq.zoho.com/api/v3/settings/keyboard-shortcuts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Resets all custom shortcuts to defaults, or deletes only the specific mappings provided in the request payload. To delete a single shortcut key, pass the same input structure as the update (PUT) request with the target shortcut details.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

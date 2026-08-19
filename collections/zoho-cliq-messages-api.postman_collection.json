@@ -1,0 +1,4221 @@
+{
+  "item": [
+    {
+      "id": "7c410652-87e4-40bb-84a3-17cc0cbd3942",
+      "name": "messages",
+      "description": {
+        "content": "Messages Module",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6dd56c6d-fb14-4d6c-af9e-5aef29b4947f",
+          "name": "Delete multiple messages",
+          "request": {
+            "name": "Delete multiple messages",
+            "description": {
+              "content": "Deletes up to 25 messages in a chat in a single request. Returns a per-message result indicating success or failure for each ID.<br><br>\nAdmins deleting messages on behalf of other users must supply a <b>reason</b>(an optional <b>comment</b>) can also be provided.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">message_delete_limit_exceeded</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">You can only delete up to 25 messages at once.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">invalid_parameters</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The message_ids parameter is invalid or empty.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">invalid_delete_reason</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The provided reason for deletion is not valid.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">access_denied</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">You do not have permission to delete one or more of the selected messages.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">message_delete_timeout</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The time limit to delete one or more of these messages has expired.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">message_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Requested message could not be found.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">chat_not_found</span></td>\n            <td style=\"padding:10px 18px;\">The requested chat does not exist or you are not a participant.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "chats",
+                ":CHAT_ID",
+                "messagess"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "message_ids",
+                  "value": "<string>",
+                  "description": "(Required) Comma-separated list of message IDs to delete.<br>\n<b>Maximum of 25 IDs allowed.</b>\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "reason",
+                  "value": "<string>",
+                  "description": "Reason for deletion when an admin is deleting messages on behalf of other users.<br>\n<b>Allowed values:</b><br>\n<ul>\n  <li><code>irrelevant_information</code>: The message contains information that is no longer relevant.</li>\n  <li><code>obscene_content</code>: The message contains inappropriate or offensive content.</li>\n  <li><code>others</code>: Any other reason not covered by the above options.</li>  \n</ul>\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "comment",
+                  "value": "<string>",
+                  "description": "Optional comment providing additional context for the deletion reason when an admin is deleting messages on behalf of other users.<br>\n<b>Maximum length</b>: 250 characters.\n"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "CHAT_ID",
+                  "description": "(Required) The unique identifier of the chat. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "ZohoCliq.Bots.READ ZohoCliq.Bots.CREATE ZohoCliq.Bots.UPDATE ZohoCliq.Bots.DELETE ZohoCliq.Webhooks.CREATE ZohoCliq.BotMessages.CREATE ZohoCliq.Channels.UPDATE"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://accounts.zoho.com/oauth/v2/auth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "implicit"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9e5d26a0-5c71-459c-88ea-1ae28e94f302",
+              "name": "The request was successfully completed. Returns a per-message result.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messagess"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "message_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "reason",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "comment",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) The unique identifier of the chat. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"message.delete_result\",\n  \"data\": [\n    {\n      \"id\": \"1773813859592_51531973059\",\n      \"status\": \"success\"\n    },\n    {\n      \"id\": \"1773813860210_51531973060\",\n      \"status\": \"success\"\n    },\n    {\n      \"id\": \"1773813861300_51531973061\",\n      \"status\": \"success\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "89f795fa-9994-49a9-b159-1d9f4bd8a661",
+              "name": "Bad Request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messagess"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "message_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "reason",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "comment",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) The unique identifier of the chat. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"message_delete_limit_exceeded\",\n  \"message\": \"You can only delete up to 25 messages at once.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "04822a3b-8af4-45ab-aea2-250cc455d6c6",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messagess"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "message_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "reason",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "comment",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) The unique identifier of the chat. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Request was rejected because of invalid AuthToken.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4b89be77-3930-4e7a-9ef9-a5b0ae821177",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messagess"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "message_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "reason",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "comment",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) The unique identifier of the chat. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"access_denied\",\n  \"message\": \"You do not have permission to delete one or more of the selected messages.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "62a517f6-1541-4014-83e4-a3ae4fa44893",
+              "name": "Not Found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messagess"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "message_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "reason",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "comment",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) The unique identifier of the chat. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"message_not_found\",\n  \"message\": \"Requested message could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "92f14bfd-5de0-413c-918e-dd1c31b1bb77",
+              "name": "Too many requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messagess"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "message_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "reason",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "comment",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) The unique identifier of the chat. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too many requests within a certain time frame.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d0fc683e-dc21-48f8-b22c-f54af1d0d4f9",
+              "name": "Internal Server Error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messagess"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "message_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "reason",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "comment",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) The unique identifier of the chat. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Cliq server encountered an error which prevents it from fulfilling the request.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f3992690-1f7b-4343-9491-347fe354c7a3",
+          "name": "Post message in a channel with CHANNEL_UNIQUE_NAME",
+          "request": {
+            "name": "Post message in a channel with CHANNEL_UNIQUE_NAME",
+            "description": {
+              "content": "Use this API to post a message in a channel using its <b>CHANNEL_UNIQUE_NAME</b>.\n<br><br>\nYou can also post a message using the following alternative endpoint:<br>\n<ul>\n  <li><a href=\"#operation/postMessageInChannelByChannelId\"><code>POST /channels/{CHANNEL_ID}/messages</code></a> - Use the <b>CHANNEL_ID</b> of the channel.</li>\n</ul>\n<br><br>  \n<p>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br>\n  This limit is per user, not per token — even if messages are sent using multiple OAuth tokens by the same user, all requests count toward this shared limit.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "channelsbyname",
+                ":CHANNEL_UNIQUE_NAME",
+                "messages"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "bot_unique_name",
+                  "value": "<string>",
+                  "description": "Use this parameter to send a message in a channel as a bot. Note that the bot should already be a participant in the channel."
+                },
+                {
+                  "disabled": false,
+                  "key": "appkey",
+                  "value": "<string>",
+                  "description": "Extension authentication key. Use this along with bot_unique_name when sending messages as an extension bot.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "mark_as_read",
+                  "value": "<boolean>",
+                  "description": "Use these APIs to mark the sent message as read for the user. By default, the message will be unread for the message posted by the user."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "CHANNEL_UNIQUE_NAME",
+                  "description": "(Required) Unique name of the channel. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "ZohoCliq.Bots.READ ZohoCliq.Bots.CREATE ZohoCliq.Bots.UPDATE ZohoCliq.Bots.DELETE ZohoCliq.Webhooks.CREATE ZohoCliq.BotMessages.CREATE ZohoCliq.Channels.UPDATE"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://accounts.zoho.com/oauth/v2/auth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "implicit"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"<string>\",\n  \"reply_to\": \"<string>\",\n  \"sync_message\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "494f9deb-fec3-4a79-bb20-729934a29d72",
+              "name": "The request was successfully completed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channelsbyname",
+                    ":CHANNEL_UNIQUE_NAME",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "bot_unique_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "appkey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mark_as_read",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_UNIQUE_NAME",
+                      "description": "(Required) Unique name of the channel. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hello team, please review the project status update and share your feedback by EOD.\",\n  \"reply_to\": \"72374289911\",\n  \"sync_message\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"Response Code\": \"204 No response\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "379b8c39-c9cb-4be1-8c68-3524fa97300e",
+              "name": "Bad Request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channelsbyname",
+                    ":CHANNEL_UNIQUE_NAME",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "bot_unique_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "appkey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mark_as_read",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_UNIQUE_NAME",
+                      "description": "(Required) Unique name of the channel. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hello team, please review the project status update and share your feedback by EOD.\",\n  \"reply_to\": \"72374289911\",\n  \"sync_message\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The request cannot be performed. Usually because of malformed parameter or missing parameter.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "87f58887-5a95-4fdf-980d-b24ba69d5955",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channelsbyname",
+                    ":CHANNEL_UNIQUE_NAME",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "bot_unique_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "appkey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mark_as_read",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_UNIQUE_NAME",
+                      "description": "(Required) Unique name of the channel. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hello team, please review the project status update and share your feedback by EOD.\",\n  \"reply_to\": \"72374289911\",\n  \"sync_message\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Request was rejected because of invalid AuthToken.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c1958067-c473-4e8e-8a56-d7ef0cba1a52",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channelsbyname",
+                    ":CHANNEL_UNIQUE_NAME",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "bot_unique_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "appkey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mark_as_read",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_UNIQUE_NAME",
+                      "description": "(Required) Unique name of the channel. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hello team, please review the project status update and share your feedback by EOD.\",\n  \"reply_to\": \"72374289911\",\n  \"sync_message\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The user does not have enough permission or possibly not an user of the respective organization to access the resource.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "57c13e5f-e316-4761-96f4-448f61ec688c",
+              "name": "Invalid URL.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channelsbyname",
+                    ":CHANNEL_UNIQUE_NAME",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "bot_unique_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "appkey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mark_as_read",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_UNIQUE_NAME",
+                      "description": "(Required) Unique name of the channel. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hello team, please review the project status update and share your feedback by EOD.\",\n  \"reply_to\": \"72374289911\",\n  \"sync_message\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "22028fe6-fd81-4e3b-816e-a1af442d1110",
+              "name": "Method Not Allowed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channelsbyname",
+                    ":CHANNEL_UNIQUE_NAME",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "bot_unique_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "appkey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mark_as_read",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_UNIQUE_NAME",
+                      "description": "(Required) Unique name of the channel. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hello team, please review the project status update and share your feedback by EOD.\",\n  \"reply_to\": \"72374289911\",\n  \"sync_message\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d1e99d0c-f47d-40ba-a561-b1acba195b4c",
+              "name": "Not Acceptable.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channelsbyname",
+                    ":CHANNEL_UNIQUE_NAME",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "bot_unique_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "appkey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mark_as_read",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_UNIQUE_NAME",
+                      "description": "(Required) Unique name of the channel. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hello team, please review the project status update and share your feedback by EOD.\",\n  \"reply_to\": \"72374289911\",\n  \"sync_message\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The response has been received but the requested response type is not supported by the browser.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "688056b7-a3a8-4dbd-9c5c-df0c7e7f6ddb",
+              "name": "Too many requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channelsbyname",
+                    ":CHANNEL_UNIQUE_NAME",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "bot_unique_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "appkey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mark_as_read",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_UNIQUE_NAME",
+                      "description": "(Required) Unique name of the channel. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hello team, please review the project status update and share your feedback by EOD.\",\n  \"reply_to\": \"72374289911\",\n  \"sync_message\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too many requests within a certain time frame.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d7071267-e742-4860-8bd1-17416ed469b9",
+              "name": "Internal Server Error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channelsbyname",
+                    ":CHANNEL_UNIQUE_NAME",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "bot_unique_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "appkey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mark_as_read",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_UNIQUE_NAME",
+                      "description": "(Required) Unique name of the channel. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hello team, please review the project status update and share your feedback by EOD.\",\n  \"reply_to\": \"72374289911\",\n  \"sync_message\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Cliq server encountered an error which prevents it from fulfilling the request.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "03957eaf-2950-4392-8483-e90fa1d48646",
+          "name": "Post message in a channel with CHANNEL_ID",
+          "request": {
+            "name": "Post message in a channel with CHANNEL_ID",
+            "description": {
+              "content": "Use this API to post a message in a channel using its <b>CHANNEL_ID</b>.\n<br><br>\nYou can also post a message using the following alternative endpoint:<br>\n<ul>\n  <li><a href=\"#operation/postMessageInChannelByChannelUniqueName\"><code>POST /channelsbyname/{CHANNEL_UNIQUE_NAME}/messages</code></a> - Use the <b>CHANNEL_UNIQUE_NAME</b> of the channel.</li>\n</ul>\n<br><br>\n<p>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br>\n  This limit is per user, not per token — even if messages are sent using multiple OAuth tokens by the same user, all requests count toward this shared limit.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "channels",
+                ":CHANNEL_ID",
+                "messages"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "bot_unique_name",
+                  "value": "<string>",
+                  "description": "Bot identifier for bot-sent messages. The bot must already be a participant in the channel."
+                },
+                {
+                  "disabled": false,
+                  "key": "appkey",
+                  "value": "<string>",
+                  "description": "Extension authentication key. Use this along with bot_unique_name when sending messages as an extension bot."
+                },
+                {
+                  "disabled": false,
+                  "key": "mark_as_read",
+                  "value": "<boolean>",
+                  "description": "Use these APIs to mark the sent message as read for the user. By default, the message will be unread for the message posted by the user."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "CHANNEL_ID",
+                  "description": "(Required) ID of the channel. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_ID\">CHANNEL_ID</a> in the Glossary page."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "ZohoCliq.Bots.READ ZohoCliq.Bots.CREATE ZohoCliq.Bots.UPDATE ZohoCliq.Bots.DELETE ZohoCliq.Webhooks.CREATE ZohoCliq.BotMessages.CREATE ZohoCliq.Channels.UPDATE"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://accounts.zoho.com/oauth/v2/auth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "implicit"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"<string>\",\n  \"reply_to\": \"<string>\",\n  \"sync_message\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ac37be91-6871-4598-ad2b-8c83fe5610eb",
+              "name": "The request was successfully completed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channels",
+                    ":CHANNEL_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "bot_unique_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "appkey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mark_as_read",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_ID",
+                      "description": "(Required) ID of the channel. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_ID\">CHANNEL_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hello team, please review the project status update and share your feedback by EOD.\",\n  \"reply_to\": \"72374289911\",\n  \"sync_message\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"Response Code\": \"204 No response\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dd113f1a-e58a-4770-a7f0-0d5808702775",
+              "name": "Bad Request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channels",
+                    ":CHANNEL_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "bot_unique_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "appkey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mark_as_read",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_ID",
+                      "description": "(Required) ID of the channel. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_ID\">CHANNEL_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hello team, please review the project status update and share your feedback by EOD.\",\n  \"reply_to\": \"72374289911\",\n  \"sync_message\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The request cannot be performed. Usually because of malformed parameter or missing parameter.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "17957b6d-dcaf-459b-83ee-0c1ff1940b26",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channels",
+                    ":CHANNEL_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "bot_unique_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "appkey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mark_as_read",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_ID",
+                      "description": "(Required) ID of the channel. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_ID\">CHANNEL_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hello team, please review the project status update and share your feedback by EOD.\",\n  \"reply_to\": \"72374289911\",\n  \"sync_message\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Request was rejected because of invalid AuthToken.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "44190a07-889f-4901-b9c4-7b089d0d150d",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channels",
+                    ":CHANNEL_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "bot_unique_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "appkey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mark_as_read",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_ID",
+                      "description": "(Required) ID of the channel. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_ID\">CHANNEL_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hello team, please review the project status update and share your feedback by EOD.\",\n  \"reply_to\": \"72374289911\",\n  \"sync_message\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The user does not have enough permission or possibly not an user of the respective organization to access the resource.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3c17f578-2f45-407e-a922-b5111f47c2e3",
+              "name": "Invalid URL.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channels",
+                    ":CHANNEL_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "bot_unique_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "appkey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mark_as_read",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_ID",
+                      "description": "(Required) ID of the channel. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_ID\">CHANNEL_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hello team, please review the project status update and share your feedback by EOD.\",\n  \"reply_to\": \"72374289911\",\n  \"sync_message\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "638b26a5-01a8-451d-a00f-32957473fc91",
+              "name": "Method Not Allowed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channels",
+                    ":CHANNEL_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "bot_unique_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "appkey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mark_as_read",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_ID",
+                      "description": "(Required) ID of the channel. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_ID\">CHANNEL_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hello team, please review the project status update and share your feedback by EOD.\",\n  \"reply_to\": \"72374289911\",\n  \"sync_message\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "252d2024-721b-4136-a43f-d8c1c7a71615",
+              "name": "Not Acceptable.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channels",
+                    ":CHANNEL_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "bot_unique_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "appkey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mark_as_read",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_ID",
+                      "description": "(Required) ID of the channel. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_ID\">CHANNEL_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hello team, please review the project status update and share your feedback by EOD.\",\n  \"reply_to\": \"72374289911\",\n  \"sync_message\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The response has been received but the requested response type is not supported by the browser.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9bf7a121-fd62-4735-a070-12ebbb3df77d",
+              "name": "Too many requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channels",
+                    ":CHANNEL_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "bot_unique_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "appkey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mark_as_read",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_ID",
+                      "description": "(Required) ID of the channel. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_ID\">CHANNEL_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hello team, please review the project status update and share your feedback by EOD.\",\n  \"reply_to\": \"72374289911\",\n  \"sync_message\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too many requests within a certain time frame.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "54d60a50-c21f-46c2-b848-009b5cc54b47",
+              "name": "Internal Server Error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channels",
+                    ":CHANNEL_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "bot_unique_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "appkey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mark_as_read",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_ID",
+                      "description": "(Required) ID of the channel. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_ID\">CHANNEL_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hello team, please review the project status update and share your feedback by EOD.\",\n  \"reply_to\": \"72374289911\",\n  \"sync_message\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Cliq server encountered an error which prevents it from fulfilling the request.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b97da1a3-3ee5-4262-9f2b-258d48c31a1f",
+          "name": "Post message in chat",
+          "request": {
+            "name": "Post message in chat",
+            "description": {
+              "content": "To post message in a chat (or thread), the chat_id (thread_id in case of threads) can be used in the request URL.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br>\n  This limit is per user, not per token — even if messages are sent using multiple OAuth tokens by the same user, all requests count toward this shared limit.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>\n</p>  \n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "chats",
+                ":CHAT_ID",
+                "messages"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "CHAT_ID",
+                  "description": "(Required) The ID of the chat where the message should be posted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "ZohoCliq.Bots.READ ZohoCliq.Bots.CREATE ZohoCliq.Bots.UPDATE ZohoCliq.Bots.DELETE ZohoCliq.Webhooks.CREATE ZohoCliq.BotMessages.CREATE ZohoCliq.Channels.UPDATE"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://accounts.zoho.com/oauth/v2/auth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "implicit"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"<string>\",\n  \"reply_to\": \"<string>\",\n  \"sync_message\": \"<boolean>\",\n  \"mark_as_read\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3c79a000-8104-438d-83b3-e90a71862470",
+              "name": "The request was successfully completed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) The ID of the chat where the message should be posted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hey!\",\n  \"reply_to\": \"55743307\",\n  \"sync_message\": true,\n  \"mark_as_read\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message_id\": \"1599387839188_229293271789\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8bf1d535-ed4d-4aea-a00d-c06bc3abaf58",
+              "name": "Bad Request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) The ID of the chat where the message should be posted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hey!\",\n  \"reply_to\": \"55743307\",\n  \"sync_message\": true,\n  \"mark_as_read\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The request cannot be performed. Usually because of malformed parameter or missing parameter.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "47c4b883-0753-426d-ab37-d5522af2c3c5",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) The ID of the chat where the message should be posted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hey!\",\n  \"reply_to\": \"55743307\",\n  \"sync_message\": true,\n  \"mark_as_read\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Request was rejected because of invalid AuthToken.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a5067b49-701a-4c26-9e81-5bb35a85b7d7",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) The ID of the chat where the message should be posted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hey!\",\n  \"reply_to\": \"55743307\",\n  \"sync_message\": true,\n  \"mark_as_read\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The user does not have enough permission or possibly not an user of the respective organization to access the resource.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "87142c5f-0a02-454c-b0c9-0573ec7426f5",
+              "name": "Invalid URL.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) The ID of the chat where the message should be posted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hey!\",\n  \"reply_to\": \"55743307\",\n  \"sync_message\": true,\n  \"mark_as_read\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "872a5d8e-b67b-411b-be0e-1215e0dfffbd",
+              "name": "Method Not Allowed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) The ID of the chat where the message should be posted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hey!\",\n  \"reply_to\": \"55743307\",\n  \"sync_message\": true,\n  \"mark_as_read\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "957debdc-fa7a-4cb5-8673-6bf433375021",
+              "name": "Not Acceptable.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) The ID of the chat where the message should be posted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hey!\",\n  \"reply_to\": \"55743307\",\n  \"sync_message\": true,\n  \"mark_as_read\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The response has been received but the requested response type is not supported by the browser.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ab0759dd-6825-491a-87d6-d9c3865d772c",
+              "name": "Too many requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) The ID of the chat where the message should be posted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hey!\",\n  \"reply_to\": \"55743307\",\n  \"sync_message\": true,\n  \"mark_as_read\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too many requests within a certain time frame.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "663f0295-dba8-41f0-84f1-96d1013b431e",
+              "name": "Internal Server Error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) The ID of the chat where the message should be posted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Hey!\",\n  \"reply_to\": \"55743307\",\n  \"sync_message\": true,\n  \"mark_as_read\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Cliq server encountered an error which prevents it from fulfilling the request.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6699748b-cd0e-4a08-90e9-cfc9f394bad6",
+          "name": "Forward Messages",
+          "request": {
+            "name": "Forward Messages",
+            "description": {
+              "content": "Forwards one or more messages from a source chat to other chats or users.\n<br><br>\n<p>\n  <b>OAuth Scope</b>: ZohoCliq.Messages.CREATE<br>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "messages"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "ZohoCliq.Bots.READ ZohoCliq.Bots.CREATE ZohoCliq.Bots.UPDATE ZohoCliq.Bots.DELETE ZohoCliq.Webhooks.CREATE ZohoCliq.BotMessages.CREATE ZohoCliq.Channels.UPDATE"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://accounts.zoho.com/oauth/v2/auth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "implicit"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"source\": {\n    \"chat_id\": \"<string>\",\n    \"message_ids\": [\n      \"<string>\"\n    ]\n  },\n  \"recipients\": {\n    \"chat_ids\": \"<string>\",\n    \"user_ids\": \"<string>\",\n    \"forward_as_group\": \"<boolean>\",\n    \"show_original_sender\": \"<boolean>\",\n    \"title\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d04589e2-588b-43d5-b3d4-9e26ecaf8168",
+              "name": "The request was successfully completed. The response uses a partial-success model. Successfully forwarded IDs appear under forwarded, while per-recipient failures appear in the failures array with specific error details.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"source\": {\n    \"chat_id\": \"2890538000000012345\",\n    \"message_ids\": [\n      \"1773813859592_51531973059\",\n      \"1773813860210_51531973060\"\n    ]\n  },\n  \"recipients\": {\n    \"chat_ids\": \"2890538000000067890\",\n    \"user_ids\": \"70027934\",\n    \"forward_as_group\": true,\n    \"show_original_sender\": true,\n    \"title\": \"Login Bug - Critical Issue (Forwarded from Engineering)\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"source_chat_id\": \"2890538000000012345\",\n    \"forwarded\": {\n      \"chat_ids\": [\n        \"2890538000000067890\"\n      ],\n      \"user_ids\": []\n    },\n    \"failures\": [\n      {\n        \"id\": \"70027934\",\n        \"status\": \"failed\",\n        \"error\": {\n          \"code\": \"chat_access_denied\",\n          \"message\": \"You must be a participant in this chat to perform this action.\"\n        }\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d2936740-cb49-4933-a808-81876e7fc466",
+              "name": "Bad Request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"source\": {\n    \"chat_id\": \"2890538000000012345\",\n    \"message_ids\": [\n      \"1773813859592_51531973059\",\n      \"1773813860210_51531973060\"\n    ]\n  },\n  \"recipients\": {\n    \"chat_ids\": \"2890538000000067890\",\n    \"user_ids\": \"70027934\",\n    \"forward_as_group\": true,\n    \"show_original_sender\": true,\n    \"title\": \"Login Bug - Critical Issue (Forwarded from Engineering)\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The request cannot be performed. Usually because of malformed parameter or missing parameter.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7f36921b-d8ff-4225-a8b2-e6c894d50418",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"source\": {\n    \"chat_id\": \"2890538000000012345\",\n    \"message_ids\": [\n      \"1773813859592_51531973059\",\n      \"1773813860210_51531973060\"\n    ]\n  },\n  \"recipients\": {\n    \"chat_ids\": \"2890538000000067890\",\n    \"user_ids\": \"70027934\",\n    \"forward_as_group\": true,\n    \"show_original_sender\": true,\n    \"title\": \"Login Bug - Critical Issue (Forwarded from Engineering)\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Request was rejected because of invalid AuthToken.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7aa3d2ad-03d6-49df-ba96-ef1297106a92",
+              "name": "Forbidden. You do not have permission to read from the source chat or you are not a participant of a recipient chat.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"source\": {\n    \"chat_id\": \"2890538000000012345\",\n    \"message_ids\": [\n      \"1773813859592_51531973059\",\n      \"1773813860210_51531973060\"\n    ]\n  },\n  \"recipients\": {\n    \"chat_ids\": \"2890538000000067890\",\n    \"user_ids\": \"70027934\",\n    \"forward_as_group\": true,\n    \"show_original_sender\": true,\n    \"title\": \"Login Bug - Critical Issue (Forwarded from Engineering)\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The user does not have enough permission or possibly not an user of the respective organization to access the resource.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ea2f641c-a2ac-4845-a5f6-edd3c2ec4bd0",
+              "name": "Invalid URL.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"source\": {\n    \"chat_id\": \"2890538000000012345\",\n    \"message_ids\": [\n      \"1773813859592_51531973059\",\n      \"1773813860210_51531973060\"\n    ]\n  },\n  \"recipients\": {\n    \"chat_ids\": \"2890538000000067890\",\n    \"user_ids\": \"70027934\",\n    \"forward_as_group\": true,\n    \"show_original_sender\": true,\n    \"title\": \"Login Bug - Critical Issue (Forwarded from Engineering)\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1d3fd17e-03a1-4528-973f-681a386c1f9c",
+              "name": "Method Not Allowed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"source\": {\n    \"chat_id\": \"2890538000000012345\",\n    \"message_ids\": [\n      \"1773813859592_51531973059\",\n      \"1773813860210_51531973060\"\n    ]\n  },\n  \"recipients\": {\n    \"chat_ids\": \"2890538000000067890\",\n    \"user_ids\": \"70027934\",\n    \"forward_as_group\": true,\n    \"show_original_sender\": true,\n    \"title\": \"Login Bug - Critical Issue (Forwarded from Engineering)\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The requested resource does not support the HTTP method used.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "29454aec-c14b-461a-8229-8f3d4b755165",
+              "name": "Not Acceptable.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"source\": {\n    \"chat_id\": \"2890538000000012345\",\n    \"message_ids\": [\n      \"1773813859592_51531973059\",\n      \"1773813860210_51531973060\"\n    ]\n  },\n  \"recipients\": {\n    \"chat_ids\": \"2890538000000067890\",\n    \"user_ids\": \"70027934\",\n    \"forward_as_group\": true,\n    \"show_original_sender\": true,\n    \"title\": \"Login Bug - Critical Issue (Forwarded from Engineering)\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The response has been received but the requested response type is not supported by the browser.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "431670da-6056-4e81-b3a0-75af26ce0a25",
+              "name": "Too many requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"source\": {\n    \"chat_id\": \"2890538000000012345\",\n    \"message_ids\": [\n      \"1773813859592_51531973059\",\n      \"1773813860210_51531973060\"\n    ]\n  },\n  \"recipients\": {\n    \"chat_ids\": \"2890538000000067890\",\n    \"user_ids\": \"70027934\",\n    \"forward_as_group\": true,\n    \"show_original_sender\": true,\n    \"title\": \"Login Bug - Critical Issue (Forwarded from Engineering)\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too many requests within a certain time frame.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b12acd38-a8ae-4609-a67e-7fc71dd28c06",
+              "name": "Internal Server Error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"source\": {\n    \"chat_id\": \"2890538000000012345\",\n    \"message_ids\": [\n      \"1773813859592_51531973059\",\n      \"1773813860210_51531973060\"\n    ]\n  },\n  \"recipients\": {\n    \"chat_ids\": \"2890538000000067890\",\n    \"user_ids\": \"70027934\",\n    \"forward_as_group\": true,\n    \"show_original_sender\": true,\n    \"title\": \"Login Bug - Critical Issue (Forwarded from Engineering)\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Cliq server encountered an error which prevents it from fulfilling the request.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8a0f095a-19c7-4851-ae00-24dd6ecc74c5",
+          "name": "Search Messages",
+          "request": {
+            "name": "Search Messages",
+            "description": {
+              "content": "Search for messages across chats with extensive filtering options. This endpoint supports keyword search, filtering by sender/recipient, date range, file attributes, and more to help you find specific messages efficiently.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "messages",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "query",
+                  "value": "<string>",
+                  "description": "Full-text search query to match message content. Supports keywords and phrases (in quotes)<br>\n<b>Maximum length</b>: 1000 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50",
+                  "description": "Maximum number of messages to return per page. Default is 50, maximum allowed is 50.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "next_token",
+                  "value": "<long>",
+                  "description": "Pagination cursor returned from a previous response.\nPass the <code>next_token</code> value exactly as received to fetch the next page.\nThis value is a 64-bit integer cursor.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "from_user_ids",
+                  "value": "<string>",
+                  "description": "Filter by sender ZUIDs. Provide a comma-separated list of user IDs to restrict results to messages sent by specific users.<br>\n<b>Maximum of 5 user IDs allowed.</b>\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "to_user_ids",
+                  "value": "<string>",
+                  "description": "Filter by recipient ZUIDs. Provide a comma-separated list of user IDs to restrict results to messages sent to specific users.<br>\n<b>Maximum of 5 user IDs allowed.</b>\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "mentioned_user_ids",
+                  "value": "<string>",
+                  "description": "Filter messages that mention specific users. Provide a comma-separated list of user IDs to find messages that contain mentions of those users.<br>\n<b>Maximum of 5 user IDs allowed.</b>\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "chat_ids",
+                  "value": "<string>",
+                  "description": "Filter by chat IDs. Provide a comma-separated list of chat IDs to restrict results to specific chats.<br>\n<b>Maximum of 5 chat IDs allowed.</b>\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "chat_type",
+                  "value": "<string>",
+                  "description": "Filter by chat type.<br>\n<b>Allowed values:</b><br>\n<ul>\n  <li><code>direct_message</code>: One-on-one chats between two users.</li>\n  <li><code>group_chat</code>: Group chats with multiple participants.</li>\n  <li><code>channel</code>: Organization-wide or team-specific channels.</li>\n  <li><code>threads</code>: Threads within channels or group chats.</li>\n  <li><code>bot</code>: Bot conversation chats.</li>\n  <li><code>guests</code>: Chats with external guest participants.</li>\n</ul>\n<b>Maximum of 6 values allowed.</b>\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "parent_chatid",
+                  "value": "<string>",
+                  "description": "Filter messages within a specific thread by providing the parent chat ID (thread ID). This will return messages that are part of the specified thread.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "channel_type",
+                  "value": "<string>",
+                  "description": "Filter by channel type when searching within channels.<br>\n<b>Allowed values:</b><br>\n<ul>\n  <li><code>organisation</code>: Channels that are open to the entire organization.</li>\n  <li><code>team</code>: Channels that are specific to certain teams.</li>\n  <li><code>personal</code>: Private channels that are only accessible to invited members.</li>\n  <li><code>external</code>: Channels that include external users outside the organization.</li>\n</ul>\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "team_ids",
+                  "value": "<string>",
+                  "description": "Filter by team IDs when searching within team channels. Provide a comma-separated list of team IDs to restrict results to channels associated with specific teams.<br>\n<b>Maximum of 5 team IDs allowed.</b>\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "include_allowed_channels",
+                  "value": "<boolean>",
+                  "description": "When true, include messages from channels that the user has access to, even if they are not explicitly listed in the chat_ids parameter. This allows users to find relevant messages in channels they are part of without needing to specify each channel ID.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "from_time",
+                  "value": "<string>",
+                  "description": "Start of the date range for the search. Accepts epoch time in milliseconds (Long) or <a href=\"https://en.wikipedia.org/wiki/ISO_8601\">ISO 8601</a> format (e.g., 2024-01-01T00:00:00Z). Messages sent at or after this time will be included in the results.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "to_time",
+                  "value": "<string>",
+                  "description": "End of the date range for the search. Accepts epoch time in milliseconds (Long) or <a href=\"https://en.wikipedia.org/wiki/ISO_8601\">ISO 8601</a> format (e.g., 2024-01-01T00:00:00Z). Note: from_time must be earlier than to_time, otherwise the request fails.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "file_name",
+                  "value": "<string>",
+                  "description": "Match by file name for messages that contain attachments. Supports partial matches and wildcards (e.g., \"report*\" to match \"report_Q1.pdf\"). Accepts a comma-separated list of file names.<br>\n<b>Maximum of 10 values allowed. Total maximum length:</b> 500 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "file_type",
+                  "value": "<string>",
+                  "description": "Filter by file type for messages that contain attachments. Provide a comma-separated list of MIME types (e.g., <code>image/png</code>, <code>application/pdf</code>) to find messages with specific types of attached files.<br>\n<b>Maximum of 10 values allowed. Total maximum length:</b> 500 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "file_content_query",
+                  "value": "<string>",
+                  "description": "Full-text search query to match the content of attached files. This allows you to find messages based on the text within attachments, such as documents or PDFs. Supports keywords, phrases (in quotes), and boolean operators (AND, OR, NOT).<br>\n<b>Maximum length:</b> 500 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "message_type",
+                  "value": "<string>",
+                  "description": "Filter by message type.<br>\n<b>Allowed values:</b><br>\n<ul>\n  <li><code>text</code>: Messages that contain only text content.</li>\n  <li><code>link</code>: Messages containing URLs.</li>\n  <li><code>file</code>: Messages that include file attachments.</li>\n</ul>\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_pinned",
+                  "value": "<boolean>",
+                  "description": "When true, only return messages that are pinned in their respective chats. Note: If this parameter is true, the chat_ids parameter must include exactly one chat ID to specify which chat's pinned messages to search within.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "has_mentions",
+                  "value": "<boolean>",
+                  "description": "When true, only return messages that contain mentions of users.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "star_types",
+                  "value": "<string>",
+                  "description": "Filter messages by star types. Provide a comma-separated list of star types to find messages that have been starred with specific types (e.g., \"important,followup\").<br>\n<b>Maximum of 5 star types allowed.</b>\n<br><b>Allowed star types:</b><br>\n<ul>\n  <li><code>important</code>: Messages marked as requiring attention.</li>\n  <li><code>to_do</code>: Messages flagged as action items.</li>\n  <li><code>note</code>: Messages saved for reference.</li>\n  <li><code>manager</code>: Messages related to managerial communications.</li>\n  <li><code>follow_up</code>: Messages requiring follow-up.</li>\n  <li><code>followup</code>: Messages marked for follow-up.</li>\n  <li><code>question</code>: Messages marked as questions.</li>\n  <li><code>idea</code>: Messages marked as ideas.</li>\n  <li><code>other</code>: Messages marked with a custom star type.</li>\n</ul> \n"
+                },
+                {
+                  "disabled": false,
+                  "key": "include_bot_messages",
+                  "value": "<boolean>",
+                  "description": "When true, include messages sent by bots in the search results. By default, bot messages are excluded from search results.\n"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "ZohoCliq.Bots.READ ZohoCliq.Bots.CREATE ZohoCliq.Bots.UPDATE ZohoCliq.Bots.DELETE ZohoCliq.Webhooks.CREATE ZohoCliq.BotMessages.CREATE ZohoCliq.Channels.UPDATE"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://accounts.zoho.com/oauth/v2/auth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "implicit"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "289e72e3-38b8-4038-94ae-b2ac3b77c158",
+              "name": "The request was successfully completed. Returns a list of matching messages.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "messages",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "next_token",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "from_user_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to_user_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mentioned_user_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "chat_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "chat_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parent_chatid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "channel_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "team_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_allowed_channels",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "from_time",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to_time",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "file_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "file_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "file_content_query",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "message_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "is_pinned",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "has_mentions",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "star_types",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_bot_messages",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"messages\": [\n    {\n      \"message_id\": \"1710934200000\",\n      \"time\": \"2025-03-20T14:30:00.000Z\",\n      \"sender\": \"711622XXXX\",\n      \"chat_id\": \"6795XXXXXXXXXXXXXX\",\n      \"chat_title\": \"General\",\n      \"type\": \"text\",\n      \"content\": {\n        \"text\": \"Please review the updated proposal.\"\n      }\n    },\n    {\n      \"message_id\": \"1710920100000\",\n      \"time\": \"2025-03-20T10:35:00.000Z\",\n      \"sender\": \"711633XXXX\",\n      \"chat_id\": \"6795YYYYYYYYYYYY\",\n      \"chat_title\": \"Project Alpha\",\n      \"type\": \"file\",\n      \"content\": {\n        \"file_name\": \"proposal_v2.pdf\",\n        \"file_type\": \"application/pdf\",\n        \"file_size\": 204800\n      },\n      \"channel_type\": \"organisation\"\n    }\n  ],\n  \"next_token\": 1710920099000,\n  \"matched_search_value\": \"proposal\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6a5e787d-8fa5-4caa-8ee7-ca2c2aa2dcea",
+              "name": "Bad Request. An invalid parameter value was passed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "messages",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "next_token",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "from_user_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to_user_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mentioned_user_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "chat_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "chat_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parent_chatid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "channel_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "team_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_allowed_channels",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "from_time",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to_time",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "file_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "file_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "file_content_query",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "message_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "is_pinned",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "has_mentions",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "star_types",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_bot_messages",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"invalid.inputs.submitted\",\n    \"message\": \"An invalid parameter value was passed. For is_pinned, this also means fewer or more than one chat ID was provided.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8099e03c-4e52-43c7-9599-b199d4cbd6bc",
+              "name": "Unauthorized. Invalid or missing authentication token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "messages",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "next_token",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "from_user_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to_user_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mentioned_user_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "chat_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "chat_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parent_chatid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "channel_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "team_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_allowed_channels",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "from_time",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to_time",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "file_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "file_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "file_content_query",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "message_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "is_pinned",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "has_mentions",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "star_types",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_bot_messages",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"unauthorized\",\n    \"message\": \"Request was rejected because of invalid AuthToken.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c125abc7-9c2f-4001-b990-3b044a45579a",
+              "name": "Forbidden. The user is not a member of the organisation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "messages",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "next_token",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "from_user_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to_user_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mentioned_user_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "chat_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "chat_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parent_chatid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "channel_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "team_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_allowed_channels",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "from_time",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to_time",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "file_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "file_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "file_content_query",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "message_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "is_pinned",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "has_mentions",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "star_types",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_bot_messages",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"invalid_access\",\n    \"message\": \"You are not a member of the organisation or do not have permission to access this resource.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b9b224d2-1557-4868-aa60-dd76d30cfc59",
+              "name": "Too many requests. Rate limit exceeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "messages",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "next_token",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "from_user_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to_user_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mentioned_user_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "chat_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "chat_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parent_chatid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "channel_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "team_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_allowed_channels",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "from_time",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to_time",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "file_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "file_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "file_content_query",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "message_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "is_pinned",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "has_mentions",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "star_types",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_bot_messages",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"rate_limit_exceeded\",\n    \"message\": \"Too many requests within a certain time frame. Please try again later.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d6e56d0e-33b1-422a-972b-4b69cfe131cd",
+              "name": "Internal Server Error. An unexpected error occurred while executing the search.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "messages",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "next_token",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "from_user_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to_user_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mentioned_user_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "chat_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "chat_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "parent_chatid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "channel_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "team_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_allowed_channels",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "from_time",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to_time",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "file_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "file_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "file_content_query",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "message_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "is_pinned",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "has_mentions",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "star_types",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_bot_messages",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"error_message_search\",\n    \"message\": \"An unexpected error occurred while executing the search.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://cliq.zoho.com/api/v3",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "17791918-4ba8-4ffa-bbd2-3c75c7ef1364",
+    "name": "Bots messages API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "<p>Bots are conversational assistants designed to automate repetitive tasks and manage simple user interactions. Their behavior is fully customizable through predefined Bot Handlers, which are activated by specific actions or through Webhooks that communicate with your own external server.</p> <p>For more information about Bots, please refer to the <b><a href=\"https://www.zoho.com/cliq/help/platform/bots.html\" target=\"_blank\">Bots Help Documentation</a></b>.</p> <p><b>Bot Handlers</b></p> <ul>\n  <li>Bot Handlers are the building blocks of a bot's functionality. Each handler is associated with a specific trigger event, such as receiving a direct message, being @mentioned in a channel, or a user subscribing to the bot.</li>\n  <li>When the trigger event occurs, the corresponding handler executes it's script to perform actions like sending messages, making API calls, or updating data.</li>\n  <li>By configuring different handlers, you can create bots that respond intelligently to various user interactions and automate complex workflows within Zoho Cliq.</li>\n</ul> <p><b>Types of Bot Handlers</b></p> <table style=\"border-collapse: collapse; width: 100%;\">\n  <tr>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Handler</th>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Description</th>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Menu Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Adds up to 5 quick-action items to the bot's chat menu. Triggered when a user interacts with the menu.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Message Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot receives a message.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Welcome Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Defines the greeting message sent when a user subscribes to the bot.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Mention Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot is @mentioned in a chat or channel.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Incoming Webhook Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Allows external services to post messages into the bot via outgoing webhooks.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Context Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Manages multi-turn conversations, maintaining context across a user's interaction with the bot.</td>\n  </tr>\n</table> <p><b>What you can do with the Bots API?</b></p> <p>With the Bots API, you can retrieve information about a specific bot, list all bots within your organization, manage configurations specific to handlers, trigger bot calls programmatically, manage subscribers, and much more.</p> <p>Each bot has an <code>execution_type</code> that defines how its handlers run when a trigger event occurs. The Bots API allows developers to create two types of bots:</p> <p id=\"deluge-bots\"><b>Deluge Bots (default)</b><br> Deluge bot executes handler logic using Zoho's Deluge scripting language, hosted entirely within the Zoho Cliq Developer platform, where no external server is required.</p> <ul>\n  <li>If <code>execution_type</code> is not specified during bot creation, it defaults to deluge.</li>\n  <li>Handler logic is defined as a script field (Deluge source code) when creating or updating handlers.</li>\n  <li>Suitable for teams that want to build and manage bot logic entirely within Zoho's ecosystem.</li>\n</ul> <p id=\"webhook-bots\"><b>Webhook Bots</b><br> A Webhook bot delegates all handler execution to your own external server. When a trigger event fires, Zoho Cliq sends an HTTP POST request to the <code>execution_url</code> you configure, and your server processes the event and returns a response.</p> <ul>\n  <li>To create a Webhook bot, set <code>execution_type</code> to webhook during bot creation and provide the <code>execution_url</code> where event payloads should be sent.</li>\n  <li>Your server must be publicly accessible and able to handle incoming POST requests from Zoho Cliq.</li>\n  <li>Ideal for teams seeking complete control over bot logic and possessing the resources to manage an external server. Also suitable for integrations requiring access to external databases, third-party APIs, or custom business logic that cannot be executed in Deluge.</li>\n</ul>\n",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,222 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bots Extensions API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Extensions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Install an extension",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/extensions/:EXTENSION_ID/installation",
+            "params": [
+              {
+                "name": "EXTENSION_ID",
+                "value": "EXTENSION_ID",
+                "type": "path",
+                "description": "Unique numeric identifier for the installed Extension (Application) in Cliq. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#EXTENSION_ID\">EXTENSION_ID</a> in the Glossary page."
+              },
+              {
+                "name": "extension_key",
+                "value": "",
+                "type": "query",
+                "description": "Encrypted identifier for the Extension (Application). Generated when the extension is registered on the Cliq Developer Platform. Used as an authentication credential for all Extension API requests. Refer to <a href=\"/cliq/help/restapi/v3/glossary/#EXTENSION_KEY\">EXTENSION_KEY</a> in the Glossary page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Install a Cliq extension in an organisation. After installation, the extension's bundled platform components (bots, commands, message actions, etc.) become available to users.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-"
+        },
+        {
+          "info": {
+            "name": "Upgrade an extension",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://cliq.zoho.com/api/v3/extensions/:EXTENSION_ID/installation",
+            "params": [
+              {
+                "name": "extension_key",
+                "value": "",
+                "type": "query",
+                "description": "Encrypted identifier for the Extension (Application). Generated when the extension is registered on the Cliq Developer Platform. Used as an authentication credential for all Extension API requests. Refer to <a href=\"/cliq/help/restapi/v3/glossary/#EXTENSION_KEY\">EXTENSION_KEY</a> in the Glossary page."
+              },
+              {
+                "name": "EXTENSION_ID",
+                "value": "EXTENSION_ID",
+                "type": "path",
+                "description": "Unique numeric identifier for the installed Extension (Application) in Cliq. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#EXTENSION_ID\">EXTENSION_ID</a> in the Glossary page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Upgrade an already-installed Cliq Extension to a newer version.\n<br><br> \n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'C"
+        },
+        {
+          "info": {
+            "name": "Get extension properties",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/extensions/:EXTENSION_ID/properties",
+            "params": [
+              {
+                "name": "keys",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of property key names to retrieve. Each key must match the pattern <code>([a-z_]+)</code>, max 30 characters per key. Maximum 10 keys per request."
+              },
+              {
+                "name": "extension_key",
+                "value": "",
+                "type": "query",
+                "description": "Encrypted identifier for the Extension (Application). Generated when the extension is registered on the Cliq Developer Platform. Used as an authentication credential for all Extension API requests. Refer to <a href=\"/cliq/help/restapi/v3/glossary/#EXTENSION_KEY\">EXTENSION_KEY</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieve one or more application properties of an installed Extension.<br><br>\n<b>What are extension properties?</b><br>\n<p>\n  Extension properties are values associated with the extension. They are quite similar to regular data properties, wherein you map a key of type string with a value string.  The main purpose is to store data configurations for the extension. They can be added, retrieved for use and deleted and even the Organization admin does not have access to view these configurations. "
+        },
+        {
+          "info": {
+            "name": "Add or update extension properties",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://cliq.zoho.com/api/v3/extensions/:EXTENSION_ID/properties",
+            "params": [
+              {
+                "name": "extension_key",
+                "value": "",
+                "type": "query",
+                "description": "Encrypted identifier for the Extension (Application). Generated when the extension is registered on the Cliq Developer Platform. Used as an authentication credential for all Extension API requests. Refer to <a href=\"/cliq/help/restapi/v3/glossary/#EXTENSION_KEY\">EXTENSION_KEY</a> in the Glossary page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Add new or update existing configuration properties for an installed Extension. Extension properties are key-value pairs used to store extension-level settings (e.g. API keys, configuration flags) that are accessible to the extension's platform components. The `extension_key` parameter is required.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshol"
+        },
+        {
+          "info": {
+            "name": "Get a specific extension property",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/extensions/:EXTENSION_ID/properties/:EXTENSION_PROPERTY_KEY_NAME",
+            "params": [
+              {
+                "name": "EXTENSION_PROPERTY_KEY_NAME",
+                "value": "EXTENSION_PROPERTY_KEY_NAME",
+                "type": "path",
+                "description": "The string key uniquely identifying a single extension property. Must match the pattern <code>([a-z_]+)</code>, max 30 characters. To learn more, see <a href=\"/cliq/help/restapi/v3/glossary/#EXTENSION_PROPERTY_KEY_NAME\">EXTENSION_PROPERTY_KEY_NAME</a> in the Glossary page."
+              },
+              {
+                "name": "extension_key",
+                "value": "",
+                "type": "query",
+                "description": "Encrypted identifier for the Extension (Application). Generated when the extension is registered on the Cliq Developer Platform. Used as an authentication credential for all Extension API requests. Refer to <a href=\"/cliq/help/restapi/v3/glossary/#EXTENSION_KEY\">EXTENSION_KEY</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieve a single extension property of an installed extension.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Cli"
+        },
+        {
+          "info": {
+            "name": "Delete a specific extension property",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://cliq.zoho.com/api/v3/extensions/:EXTENSION_ID/properties/:EXTENSION_PROPERTY_KEY_NAME",
+            "params": [
+              {
+                "name": "EXTENSION_PROPERTY_KEY_NAME",
+                "value": "EXTENSION_PROPERTY_KEY_NAME",
+                "type": "path",
+                "description": "The string key uniquely identifying a single extension property to delete. Must match the pattern <code>([a-z_]+)</code>, max 30 characters. To learn more, see <a href=\"/cliq/help/restapi/v3/glossary/#EXTENSION_PROPERTY_KEY_NAME\">EXTENSION_PROPERTY_KEY_NAME</a> in the Glossary page."
+              },
+              {
+                "name": "extension_key",
+                "value": "",
+                "type": "query",
+                "description": "Encrypted identifier for the Extension (Application). Generated when the extension is registered on the Cliq Developer Platform. Used as an authentication credential for all Extension API requests. Refer to <a href=\"/cliq/help/restapi/v3/glossary/#EXTENSION_KEY\">EXTENSION_KEY</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Permanently delete a single extension property of an installed extension.<br>\nDeleted properties cannot be recovered, but new properties with the same key can be created after deletion.\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

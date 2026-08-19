@@ -1,0 +1,299 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bots slashcommands API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "slashcommands",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all commands",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/commands",
+            "params": [
+              {
+                "name": "sync_token",
+                "value": "",
+                "type": "query",
+                "description": "Sync token to fetch only commands that have changed since the last request. This token is returned in the <code>sync_token</code> field of the API response and can be used for incremental synchronization.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of commands to return in the response. This can be used to control pagination and manage response size.\n"
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Pagination token to retrieve the next page of results. This token is returned in the <code>next_token</code> field of the API response when there are more results available beyond the current page.\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieve a paginated list of all slash commands.\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n"
+        },
+        {
+          "info": {
+            "name": "Create a slash command",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/commands",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "<a id=\"creating_extension_command\"></a>\n<p>\n  Create a new slash command. Commands are invoked by users from the message compose bar by typing a forward slash followed by the command name (e.g. <b>/report</b>).\n</p>\n<p>\n  Slash Commands support two execution types:\n</p>\n<ul>\n  <li><b>Deluge</b> (default): Handler logic runs on Zoho's platform via Deluge scripts. No external server needed. Best for Zoho-native integrations.</li>\n  <li><b>Webhook</b>: When the command is invoked, Cliq sends a POST"
+        },
+        {
+          "info": {
+            "name": "Get a command",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/commands/:SLASH_COMMAND_ID",
+            "params": [
+              {
+                "name": "SLASH_COMMAND_ID",
+                "value": "SLASH_COMMAND_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the slash command. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#SLASH_COMMAND_ID\">SLASH_COMMAND_ID</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieve details of a specific slash command.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  "
+        },
+        {
+          "info": {
+            "name": "Update a slash command",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://cliq.zoho.com/api/v3/commands/:SLASH_COMMAND_ID",
+            "params": [
+              {
+                "name": "SLASH_COMMAND_ID",
+                "value": "SLASH_COMMAND_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the slash command. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#SLASH_COMMAND_ID\">SLASH_COMMAND_ID</a> in the Glossary page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Update the configuration of an existing slash command.\n<p>\n  All fields are optional. Only the fields you provide will be updated; omitted fields remain unchanged.\n</p>\n<p>\n  For <b>Webhook commands</b>, you can update the <code>execution_url</code> independently at any time to redirect the command to a new server endpoint without recreating it.\n</p>\n<br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 "
+        },
+        {
+          "info": {
+            "name": "Delete a slash command",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://cliq.zoho.com/api/v3/commands/:SLASH_COMMAND_ID",
+            "params": [
+              {
+                "name": "SLASH_COMMAND_ID",
+                "value": "SLASH_COMMAND_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the slash command. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#SLASH_COMMAND_ID\">SLASH_COMMAND_ID</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Permanently delete a custom Slash Command and all its associated handlers. The command will be removed from all accessible scopes and can no longer be invoked by users. This action is irreversible.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); bo"
+        },
+        {
+          "info": {
+            "name": "Create a handler for a specific command",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/commands/:SLASH_COMMAND_ID/handlers",
+            "params": [
+              {
+                "name": "SLASH_COMMAND_ID",
+                "value": "SLASH_COMMAND_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the slash command.<br>\nTo learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#SLASH_COMMAND_ID\">SLASH_COMMAND_ID</a> in the Glossary page.'\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "<a id=\"createCommandHandler\"></a>\n<p>\n  Add a new handler to an existing slash command. Commands support two handler types:\n</p>\n<ul>\n  <li><b>Execution handler</b>: Executes the command's primary function when invoked.</li>\n  <li><b>Suggestion handler</b>: Provides dynamic autocomplete suggestions as users type the command.</li>\n</ul>\n<p>\n  The field you provide depends on the command's execution type:\n</p>\n<ul>\n  <li><b>Deluge command</b>: Provide the <code>script</code> field with the Deluge "
+        },
+        {
+          "info": {
+            "name": "Get details of a specific command handler",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/commands/:SLASH_COMMAND_ID/handlers/:COMMAND_HANDLER_TYPE",
+            "params": [
+              {
+                "name": "COMMAND_HANDLER_TYPE",
+                "value": "COMMAND_HANDLER_TYPE",
+                "type": "path",
+                "description": "Type of the handler to retrieve.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>execution_handler</code>: The main handler that executes when the command is invoked.</li>\n  <li><code>suggestion_handler</code>: The handler that generates autocomplete suggestions as users type the command.</li>\n</ul>\n"
+              },
+              {
+                "name": "SLASH_COMMAND_ID",
+                "value": "SLASH_COMMAND_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the slash command.<br>\nTo learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#SLASH_COMMAND_ID\">SLASH_COMMAND_ID</a> in the Glossary page.'\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieve the configuration and deluge source code of a specific handler associated with a slash command.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textC"
+        },
+        {
+          "info": {
+            "name": "Update a handler for a specific command",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://cliq.zoho.com/api/v3/commands/:SLASH_COMMAND_ID/handlers/:COMMAND_HANDLER_TYPE",
+            "params": [
+              {
+                "name": "COMMAND_HANDLER_TYPE",
+                "value": "COMMAND_HANDLER_TYPE",
+                "type": "path",
+                "description": "Type of the handler to update.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>execution_handler</code>: The main handler that executes when the command is invoked.</li>\n  <li><code>suggestion_handler</code>: The handler that generates autocomplete suggestions as users type the command.</li>\n</ul>\n"
+              },
+              {
+                "name": "SLASH_COMMAND_ID",
+                "value": "SLASH_COMMAND_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the slash command. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#SLASH_COMMAND_ID\">SLASH_COMMAND_ID</a> in the Glossary page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Update a handler for a specific slash command. What you provide depends on the command's execution type:\n<ul>\n  <li><b>Deluge command</b>: Update the <code>script</code> attribute with the revised Deluge source code.</li>\n  <li><b>Webhook command</b>: Update the <code>permissions</code> array to change which data attributes are forwarded to your server.</li>\n</ul>\n<br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock "
+        },
+        {
+          "info": {
+            "name": "Delete a handler from a specific command",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://cliq.zoho.com/api/v3/commands/:SLASH_COMMAND_ID/handlers/:COMMAND_HANDLER_TYPE",
+            "params": [
+              {
+                "name": "COMMAND_HANDLER_TYPE",
+                "value": "COMMAND_HANDLER_TYPE",
+                "type": "path",
+                "description": "Name of the slash command handler.<br>\n<b>Allowed value</b>:\n<ul>\n  <li><code>suggestion_handler</code>: The handler that generates autocomplete suggestions as users type the command.</li>\n</ul>\n<b>Note</b>: Only the <code>suggestion_handler</code> can be deleted. The <code>execution_handler</code> is mandatory for a slash command and cannot be removed.  \n"
+              },
+              {
+                "name": "SLASH_COMMAND_ID",
+                "value": "SLASH_COMMAND_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the slash command. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#SLASH_COMMAND_ID\">SLASH_COMMAND_ID</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Permanently remove a specified handler from a slash command. This action is irreversible, and once removed, the associated deluge code is lost, and the handler will no longer activate on its trigger event.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

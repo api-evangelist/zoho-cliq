@@ -1,0 +1,261 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bots scheduledmessages API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "scheduledmessages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all scheduled messages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/scheduledmessages",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Default is 50.<br>\n<b>Maximum limit</b>: 100\n"
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor returned from a previous response. Pass this value to retrieve the next page of results."
+              },
+              {
+                "name": "sync_token",
+                "value": "",
+                "type": "query",
+                "description": "Token from a previous response used to fetch only changes since the last sync. Pass this to retrieve only new or updated records instead of the full list."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieves all scheduled messages across all chats for the authenticated user. Use this to get a consolidated view of all pending time-based and status-based scheduled messages, with support for pagination and incremental updates.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>\n  Wait time before consecutive API requests.\n</p>\n"
+        },
+        {
+          "info": {
+            "name": "List scheduled messages in a chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID/scheduledmessages",
+            "params": [
+              {
+                "name": "CHAT_ID",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat or channel. Use this to scope the scheduled messages retrieval to a specific conversation.<br>To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Default is 50.<br>\n<b>Maximum limit</b>: 100\n"
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor returned from a previous response. Pass this value to retrieve the next page of results."
+              },
+              {
+                "name": "sync_token",
+                "value": "",
+                "type": "query",
+                "description": "Token from a previous response used to fetch only changes since the last sync. Pass this to retrieve only new or updated records instead of the full list."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieves all scheduled messages within a specific chat or channel. Use this to inspect pending time-based and status-based messages for a particular conversation, with support for pagination and incremental updates.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>\n  Wait time before consecutive API requests.\n</p>\n"
+        },
+        {
+          "info": {
+            "name": "Send scheduled messages now",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID/scheduledmessages",
+            "params": [
+              {
+                "name": "CHAT_ID",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat or channel. Determines which chat's scheduled messages are targeted for immediate delivery.<br>To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Immediately sends one or all pending scheduled messages in a chat without waiting for the scheduled time. Use this to manually trigger delivery of a specific message by ID, or all pending messages in the chat at once.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>\n  Wait time before consecutive API requests.\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,1"
+        },
+        {
+          "info": {
+            "name": "Bulk reschedule scheduled messages",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID/scheduledmessages",
+            "params": [
+              {
+                "name": "CHAT_ID",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat or channel. All matching scheduled messages within this chat will be updated by the bulk reschedule operation.<br>To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Reschedules all time-based or status-based scheduled messages in a chat in a single operation. Use this to update delivery times or change status triggers across multiple messages at once without editing them individually.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>\n  Wait time before consecutive API requests.\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,"
+        },
+        {
+          "info": {
+            "name": "Delete all scheduled messages in a chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID/scheduledmessages",
+            "params": [
+              {
+                "name": "CHAT_ID",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat or channel. All scheduled messages within this chat will be permanently removed.<br>To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Deletes all scheduled messages in a chat in a single operation. Use this to clear all pending scheduled messages from a conversation at once without deleting them individually.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>\n  Wait time before consecutive API requests.\n</p>\n"
+        },
+        {
+          "info": {
+            "name": "Edit a scheduled message",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID/scheduledmessages/:SCHEDULED_MESSAGE_ID",
+            "params": [
+              {
+                "name": "CHAT_ID",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat or channel that contains the scheduled message to be edited.<br>To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+              },
+              {
+                "name": "SCHEDULED_MESSAGE_ID",
+                "value": "SCHEDULED_MESSAGE_ID",
+                "type": "path",
+                "description": "Unique identifier of the scheduled message to edit. Use this to target a specific pending message within the chat.<br>To retrieve this ID, use the <a href=\"#list-all-scheduled-messages\">List all scheduled messages</a> endpoint."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Updates the text, scheduled time, timezone, status trigger, or file attachment of an existing scheduled message. Use this to modify a specific scheduled message before it is delivered, including switching between time-based and status-based scheduling.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>\n  Wait time before consecutive API requests.\n</p>\n<details style=\"margin:16px 0 8px"
+        },
+        {
+          "info": {
+            "name": "Delete a scheduled message",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID/scheduledmessages/:SCHEDULED_MESSAGE_ID",
+            "params": [
+              {
+                "name": "CHAT_ID",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat or channel that contains the scheduled message to be deleted.<br>To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+              },
+              {
+                "name": "SCHEDULED_MESSAGE_ID",
+                "value": "SCHEDULED_MESSAGE_ID",
+                "type": "path",
+                "description": "Unique identifier of the scheduled message to delete. Use this to target the specific pending message to remove.<br>To retrieve this ID, use the <a href=\"#list-all-scheduled-messages\">List all scheduled messages</a> endpoint."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Deletes a specific scheduled message by its ID. Use this to remove a single pending message from a chat without affecting other scheduled messages in the same conversation.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>\n  Wait time before consecutive API requests.\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inher"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

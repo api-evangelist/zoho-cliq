@@ -1,0 +1,368 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bots messages API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "messages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Delete multiple messages",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID/messagess",
+            "params": [
+              {
+                "name": "CHAT_ID",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "The unique identifier of the chat. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+              },
+              {
+                "name": "message_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of message IDs to delete.<br>\n<b>Maximum of 25 IDs allowed.</b>\n"
+              },
+              {
+                "name": "reason",
+                "value": "",
+                "type": "query",
+                "description": "Reason for deletion when an admin is deleting messages on behalf of other users.<br>\n<b>Allowed values:</b><br>\n<ul>\n  <li><code>irrelevant_information</code>: The message contains information that is no longer relevant.</li>\n  <li><code>obscene_content</code>: The message contains inappropriate or offensive content.</li>\n  <li><code>others</code>: Any other reason not covered by the above options.</li>  \n</ul>\n"
+              },
+              {
+                "name": "comment",
+                "value": "",
+                "type": "query",
+                "description": "Optional comment providing additional context for the deletion reason when an admin is deleting messages on behalf of other users.<br>\n<b>Maximum length</b>: 250 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Deletes up to 25 messages in a chat in a single request. Returns a per-message result indicating success or failure for each ID.<br><br>\nAdmins deleting messages on behalf of other users must supply a <b>reason</b>(an optional <b>comment</b>) can also be provided.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margi"
+        },
+        {
+          "info": {
+            "name": "Post message in a channel with CHANNEL_UNIQUE_NAME",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/channelsbyname/:CHANNEL_UNIQUE_NAME/messages",
+            "params": [
+              {
+                "name": "CHANNEL_UNIQUE_NAME",
+                "value": "CHANNEL_UNIQUE_NAME",
+                "type": "path",
+                "description": "Unique name of the channel. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page."
+              },
+              {
+                "name": "bot_unique_name",
+                "value": "",
+                "type": "query",
+                "description": "Use this parameter to send a message in a channel as a bot. Note that the bot should already be a participant in the channel."
+              },
+              {
+                "name": "appkey",
+                "value": "",
+                "type": "query",
+                "description": "Extension authentication key. Use this along with bot_unique_name when sending messages as an extension bot.\n"
+              },
+              {
+                "name": "mark_as_read",
+                "value": "",
+                "type": "query",
+                "description": "Use these APIs to mark the sent message as read for the user. By default, the message will be unread for the message posted by the user."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Use this API to post a message in a channel using its <b>CHANNEL_UNIQUE_NAME</b>.\n<br><br>\nYou can also post a message using the following alternative endpoint:<br>\n<ul>\n  <li><a href=\"#operation/postMessageInChannelByChannelId\"><code>POST /channels/{CHANNEL_ID}/messages</code></a> - Use the <b>CHANNEL_ID</b> of the channel.</li>\n</ul>\n<br><br>  \n<p>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br>\n  This limit is per user, not per tok"
+        },
+        {
+          "info": {
+            "name": "Post message in a channel with CHANNEL_ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/channels/:CHANNEL_ID/messages",
+            "params": [
+              {
+                "name": "CHANNEL_ID",
+                "value": "CHANNEL_ID",
+                "type": "path",
+                "description": "ID of the channel. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_ID\">CHANNEL_ID</a> in the Glossary page."
+              },
+              {
+                "name": "bot_unique_name",
+                "value": "",
+                "type": "query",
+                "description": "Bot identifier for bot-sent messages. The bot must already be a participant in the channel."
+              },
+              {
+                "name": "appkey",
+                "value": "",
+                "type": "query",
+                "description": "Extension authentication key. Use this along with bot_unique_name when sending messages as an extension bot."
+              },
+              {
+                "name": "mark_as_read",
+                "value": "",
+                "type": "query",
+                "description": "Use these APIs to mark the sent message as read for the user. By default, the message will be unread for the message posted by the user."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Use this API to post a message in a channel using its <b>CHANNEL_ID</b>.\n<br><br>\nYou can also post a message using the following alternative endpoint:<br>\n<ul>\n  <li><a href=\"#operation/postMessageInChannelByChannelUniqueName\"><code>POST /channelsbyname/{CHANNEL_UNIQUE_NAME}/messages</code></a> - Use the <b>CHANNEL_UNIQUE_NAME</b> of the channel.</li>\n</ul>\n<br><br>\n<p>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br>\n  This limit is "
+        },
+        {
+          "info": {
+            "name": "Post message in chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID/messages",
+            "params": [
+              {
+                "name": "CHAT_ID",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "The ID of the chat where the message should be posted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "To post message in a chat (or thread), the chat_id (thread_id in case of threads) can be used in the request URL.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br>\n  This limit is per user, not per token — even if messages are sent using multiple OAuth tokens by the same user, all requests count toward this shared limit.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>\n</p>  \n"
+        },
+        {
+          "info": {
+            "name": "Forward Messages",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/messages",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Forwards one or more messages from a source chat to other chats or users.\n<br><br>\n<p>\n  <b>OAuth Scope</b>: ZohoCliq.Messages.CREATE<br>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n"
+        },
+        {
+          "info": {
+            "name": "Search Messages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/messages/search",
+            "params": [
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "Full-text search query to match message content. Supports keywords and phrases (in quotes)<br>\n<b>Maximum length</b>: 1000 characters.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of messages to return per page. Default is 50, maximum allowed is 50.\n"
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor returned from a previous response.\nPass the <code>next_token</code> value exactly as received to fetch the next page.\nThis value is a 64-bit integer cursor.\n"
+              },
+              {
+                "name": "from_user_ids",
+                "value": "",
+                "type": "query",
+                "description": "Filter by sender ZUIDs. Provide a comma-separated list of user IDs to restrict results to messages sent by specific users.<br>\n<b>Maximum of 5 user IDs allowed.</b>\n"
+              },
+              {
+                "name": "to_user_ids",
+                "value": "",
+                "type": "query",
+                "description": "Filter by recipient ZUIDs. Provide a comma-separated list of user IDs to restrict results to messages sent to specific users.<br>\n<b>Maximum of 5 user IDs allowed.</b>\n"
+              },
+              {
+                "name": "mentioned_user_ids",
+                "value": "",
+                "type": "query",
+                "description": "Filter messages that mention specific users. Provide a comma-separated list of user IDs to find messages that contain mentions of those users.<br>\n<b>Maximum of 5 user IDs allowed.</b>\n"
+              },
+              {
+                "name": "chat_ids",
+                "value": "",
+                "type": "query",
+                "description": "Filter by chat IDs. Provide a comma-separated list of chat IDs to restrict results to specific chats.<br>\n<b>Maximum of 5 chat IDs allowed.</b>\n"
+              },
+              {
+                "name": "chat_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by chat type.<br>\n<b>Allowed values:</b><br>\n<ul>\n  <li><code>direct_message</code>: One-on-one chats between two users.</li>\n  <li><code>group_chat</code>: Group chats with multiple participants.</li>\n  <li><code>channel</code>: Organization-wide or team-specific channels.</li>\n  <li><code>threads</code>: Threads within channels or group chats.</li>\n  <li><code>bot</code>: Bot conversation chats.</li>\n  <li><code>guests</code>: Chats with external guest participants.</li>\n</ul>\n<b>Maximum of 6 values allowed.</b>\n"
+              },
+              {
+                "name": "parent_chatid",
+                "value": "",
+                "type": "query",
+                "description": "Filter messages within a specific thread by providing the parent chat ID (thread ID). This will return messages that are part of the specified thread.\n"
+              },
+              {
+                "name": "channel_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by channel type when searching within channels.<br>\n<b>Allowed values:</b><br>\n<ul>\n  <li><code>organisation</code>: Channels that are open to the entire organization.</li>\n  <li><code>team</code>: Channels that are specific to certain teams.</li>\n  <li><code>personal</code>: Private channels that are only accessible to invited members.</li>\n  <li><code>external</code>: Channels that include external users outside the organization.</li>\n</ul>\n"
+              },
+              {
+                "name": "team_ids",
+                "value": "",
+                "type": "query",
+                "description": "Filter by team IDs when searching within team channels. Provide a comma-separated list of team IDs to restrict results to channels associated with specific teams.<br>\n<b>Maximum of 5 team IDs allowed.</b>\n"
+              },
+              {
+                "name": "include_allowed_channels",
+                "value": "",
+                "type": "query",
+                "description": "When true, include messages from channels that the user has access to, even if they are not explicitly listed in the chat_ids parameter. This allows users to find relevant messages in channels they are part of without needing to specify each channel ID.\n"
+              },
+              {
+                "name": "from_time",
+                "value": "",
+                "type": "query",
+                "description": "Start of the date range for the search. Accepts epoch time in milliseconds (Long) or <a href=\"https://en.wikipedia.org/wiki/ISO_8601\">ISO 8601</a> format (e.g., 2024-01-01T00:00:00Z). Messages sent at or after this time will be included in the results.\n"
+              },
+              {
+                "name": "to_time",
+                "value": "",
+                "type": "query",
+                "description": "End of the date range for the search. Accepts epoch time in milliseconds (Long) or <a href=\"https://en.wikipedia.org/wiki/ISO_8601\">ISO 8601</a> format (e.g., 2024-01-01T00:00:00Z). Note: from_time must be earlier than to_time, otherwise the request fails.\n"
+              },
+              {
+                "name": "file_name",
+                "value": "",
+                "type": "query",
+                "description": "Match by file name for messages that contain attachments. Supports partial matches and wildcards (e.g., \"report*\" to match \"report_Q1.pdf\"). Accepts a comma-separated list of file names.<br>\n<b>Maximum of 10 values allowed. Total maximum length:</b> 500 characters.\n"
+              },
+              {
+                "name": "file_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by file type for messages that contain attachments. Provide a comma-separated list of MIME types (e.g., <code>image/png</code>, <code>application/pdf</code>) to find messages with specific types of attached files.<br>\n<b>Maximum of 10 values allowed. Total maximum length:</b> 500 characters.\n"
+              },
+              {
+                "name": "file_content_query",
+                "value": "",
+                "type": "query",
+                "description": "Full-text search query to match the content of attached files. This allows you to find messages based on the text within attachments, such as documents or PDFs. Supports keywords, phrases (in quotes), and boolean operators (AND, OR, NOT).<br>\n<b>Maximum length:</b> 500 characters.\n"
+              },
+              {
+                "name": "message_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by message type.<br>\n<b>Allowed values:</b><br>\n<ul>\n  <li><code>text</code>: Messages that contain only text content.</li>\n  <li><code>link</code>: Messages containing URLs.</li>\n  <li><code>file</code>: Messages that include file attachments.</li>\n</ul>\n"
+              },
+              {
+                "name": "is_pinned",
+                "value": "",
+                "type": "query",
+                "description": "When true, only return messages that are pinned in their respective chats. Note: If this parameter is true, the chat_ids parameter must include exactly one chat ID to specify which chat's pinned messages to search within.\n"
+              },
+              {
+                "name": "has_mentions",
+                "value": "",
+                "type": "query",
+                "description": "When true, only return messages that contain mentions of users.\n"
+              },
+              {
+                "name": "star_types",
+                "value": "",
+                "type": "query",
+                "description": "Filter messages by star types. Provide a comma-separated list of star types to find messages that have been starred with specific types (e.g., \"important,followup\").<br>\n<b>Maximum of 5 star types allowed.</b>\n<br><b>Allowed star types:</b><br>\n<ul>\n  <li><code>important</code>: Messages marked as requiring attention.</li>\n  <li><code>to_do</code>: Messages flagged as action items.</li>\n  <li><code>note</code>: Messages saved for reference.</li>\n  <li><code>manager</code>: Messages related to managerial communications.</li>\n  <li><code>follow_up</code>: Messages requiring follow-up.</li>\n  <li><code>followup</code>: Messages marked for follow-up.</li>\n  <li><code>question</code>: Messages marked as questions.</li>\n  <li><code>idea</code>: Messages marked as ideas.</li>\n  <li><code>other</code>: Messages marked with a custom star type.</li>\n</ul> \n"
+              },
+              {
+                "name": "include_bot_messages",
+                "value": "",
+                "type": "query",
+                "description": "When true, include messages sent by bots in the search results. By default, bot messages are excluded from search results.\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Search for messages across chats with extensive filtering options. This endpoint supports keyword search, filtering by sender/recipient, date range, file attributes, and more to help you find specific messages efficiently.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

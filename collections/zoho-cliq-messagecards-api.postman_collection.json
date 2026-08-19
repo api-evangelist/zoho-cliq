@@ -1,0 +1,1156 @@
+{
+  "item": [
+    {
+      "id": "4f1417a1-0f9a-4dd8-a69f-96bc35d216ec",
+      "name": "messagecards",
+      "description": {
+        "content": "APIs for sending structured interactive message cards (Poll, Modern Inline, and Prompt) inside Zoho Cliq conversations.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7f0a072b-75c0-484e-a168-b8d114dc7466",
+          "name": "Post a message card to a channel",
+          "request": {
+            "name": "Post a message card to a channel",
+            "description": {
+              "content": "Send a structured Message Card to a specific channel. Use this to deliver polls, inline data cards, or approval prompts into a channel conversation. The <code>card</code> object in the request body varies depending on the card type: <code>poll</code>, <code>modern-inline</code>, or <code>prompt</code>.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>\n  Wait time before consecutive API requests.\n</p>\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "channels",
+                ":CHANNEL_UNIQUE_NAME",
+                "message"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "CHANNEL_UNIQUE_NAME",
+                  "description": "(Required) The unique name of the channel to post the message card into. To learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "ZohoCliq.Bots.READ ZohoCliq.Bots.CREATE ZohoCliq.Bots.UPDATE ZohoCliq.Bots.DELETE ZohoCliq.Webhooks.CREATE ZohoCliq.BotMessages.CREATE ZohoCliq.Channels.UPDATE"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://accounts.zoho.com/oauth/v2/auth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "implicit"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card\": {\n    \"theme\": \"<string>\",\n    \"title\": \"<string>\",\n    \"options\": [\n      {\n        \"text\": \"<string>\"\n      },\n      {\n        \"text\": \"<string>\"\n      }\n    ],\n    \"thumbnail\": \"<string>\",\n    \"sections\": [\n      {\n        \"title\": \"<string>\",\n        \"fields\": [\n          {\n            \"title\": \"<string>\",\n            \"value\": \"<string>\"\n          },\n          {\n            \"title\": \"<string>\",\n            \"value\": \"<string>\"\n          }\n        ]\n      },\n      {\n        \"title\": \"<string>\",\n        \"fields\": [\n          {\n            \"title\": \"<string>\",\n            \"value\": \"<string>\"\n          },\n          {\n            \"title\": \"<string>\",\n            \"value\": \"<string>\"\n          }\n        ]\n      }\n    ],\n    \"buttons\": [\n      {\n        \"label\": \"<string>\",\n        \"action\": {\n          \"type\": \"<string>\",\n          \"data\": {\n            \"key_0\": \"string\"\n          }\n        }\n      },\n      {\n        \"label\": \"<string>\",\n        \"action\": {\n          \"type\": \"<string>\",\n          \"data\": {\n            \"key_0\": 6898,\n            \"key_1\": 8167\n          }\n        }\n      }\n    ]\n  },\n  \"text\": \"<string>\",\n  \"slides\": [\n    {\n      \"type\": \"<string>\",\n      \"title\": \"<string>\",\n      \"data\": {}\n    },\n    {\n      \"type\": \"<string>\",\n      \"title\": \"<string>\",\n      \"data\": {}\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "aa1b5504-e9c6-4dbd-9968-0b970ca529c7",
+              "name": "Message card posted successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channels",
+                    ":CHANNEL_UNIQUE_NAME",
+                    "message"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_UNIQUE_NAME",
+                      "description": "(Required) The unique name of the channel to post the message card into. To learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Sprint 42 - Please vote on which feature we prioritize this cycle.\",\n  \"card\": {\n    \"theme\": \"poll\",\n    \"title\": \"Which feature should we prioritize in Sprint 42?\",\n    \"options\": [\n      {\n        \"text\": \"OAuth 2.0 support for third-party integrations\"\n      },\n      {\n        \"text\": \"Bulk export for audit logs\"\n      },\n      {\n        \"text\": \"Dark mode for the web app\"\n      },\n      {\n        \"text\": \"Push notifications for mobile\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"url\": \"/api/v3/channels/engineering/message\",\n  \"type\": \"message\",\n  \"data\": {\n    \"id\": \"1701234567890_1234567890\",\n    \"card\": {\n      \"theme\": \"poll\",\n      \"title\": \"Which feature should we prioritize in Sprint 42?\",\n      \"options\": [\n        {\n          \"text\": \"OAuth 2.0 support for third-party integrations\",\n          \"votes\": 0\n        },\n        {\n          \"text\": \"Bulk export for audit logs\",\n          \"votes\": 0\n        },\n        {\n          \"text\": \"Dark mode for the web app\",\n          \"votes\": 0\n        },\n        {\n          \"text\": \"Push notifications for mobile\",\n          \"votes\": 0\n        }\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1f240ec9-a313-4b54-8873-d7454f3da61f",
+              "name": "Bad Request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channels",
+                    ":CHANNEL_UNIQUE_NAME",
+                    "message"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_UNIQUE_NAME",
+                      "description": "(Required) The unique name of the channel to post the message card into. To learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Sprint 42 - Please vote on which feature we prioritize this cycle.\",\n  \"card\": {\n    \"theme\": \"poll\",\n    \"title\": \"Which feature should we prioritize in Sprint 42?\",\n    \"options\": [\n      {\n        \"text\": \"OAuth 2.0 support for third-party integrations\"\n      },\n      {\n        \"text\": \"Bulk export for audit logs\"\n      },\n      {\n        \"text\": \"Dark mode for the web app\"\n      },\n      {\n        \"text\": \"Push notifications for mobile\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The request cannot be performed. Usually because of malformed parameter or missing parameter.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "20d44182-deb4-4e4b-bcb2-555c291a160f",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channels",
+                    ":CHANNEL_UNIQUE_NAME",
+                    "message"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_UNIQUE_NAME",
+                      "description": "(Required) The unique name of the channel to post the message card into. To learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Sprint 42 - Please vote on which feature we prioritize this cycle.\",\n  \"card\": {\n    \"theme\": \"poll\",\n    \"title\": \"Which feature should we prioritize in Sprint 42?\",\n    \"options\": [\n      {\n        \"text\": \"OAuth 2.0 support for third-party integrations\"\n      },\n      {\n        \"text\": \"Bulk export for audit logs\"\n      },\n      {\n        \"text\": \"Dark mode for the web app\"\n      },\n      {\n        \"text\": \"Push notifications for mobile\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Request was rejected because of invalid AuthToken.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "32c65576-9742-44d9-a1c9-724b84750ee8",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channels",
+                    ":CHANNEL_UNIQUE_NAME",
+                    "message"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_UNIQUE_NAME",
+                      "description": "(Required) The unique name of the channel to post the message card into. To learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Sprint 42 - Please vote on which feature we prioritize this cycle.\",\n  \"card\": {\n    \"theme\": \"poll\",\n    \"title\": \"Which feature should we prioritize in Sprint 42?\",\n    \"options\": [\n      {\n        \"text\": \"OAuth 2.0 support for third-party integrations\"\n      },\n      {\n        \"text\": \"Bulk export for audit logs\"\n      },\n      {\n        \"text\": \"Dark mode for the web app\"\n      },\n      {\n        \"text\": \"Push notifications for mobile\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The user does not have enough permission or possibly not an user of the respective organization to access the resource.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e8691635-acac-4c1c-b3a6-5129d5c64b46",
+              "name": "Invalid URL.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channels",
+                    ":CHANNEL_UNIQUE_NAME",
+                    "message"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_UNIQUE_NAME",
+                      "description": "(Required) The unique name of the channel to post the message card into. To learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Sprint 42 - Please vote on which feature we prioritize this cycle.\",\n  \"card\": {\n    \"theme\": \"poll\",\n    \"title\": \"Which feature should we prioritize in Sprint 42?\",\n    \"options\": [\n      {\n        \"text\": \"OAuth 2.0 support for third-party integrations\"\n      },\n      {\n        \"text\": \"Bulk export for audit logs\"\n      },\n      {\n        \"text\": \"Dark mode for the web app\"\n      },\n      {\n        \"text\": \"Push notifications for mobile\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1f08c69e-7acb-433e-8033-68506433dcc0",
+              "name": "Method Not Allowed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channels",
+                    ":CHANNEL_UNIQUE_NAME",
+                    "message"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_UNIQUE_NAME",
+                      "description": "(Required) The unique name of the channel to post the message card into. To learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Sprint 42 - Please vote on which feature we prioritize this cycle.\",\n  \"card\": {\n    \"theme\": \"poll\",\n    \"title\": \"Which feature should we prioritize in Sprint 42?\",\n    \"options\": [\n      {\n        \"text\": \"OAuth 2.0 support for third-party integrations\"\n      },\n      {\n        \"text\": \"Bulk export for audit logs\"\n      },\n      {\n        \"text\": \"Dark mode for the web app\"\n      },\n      {\n        \"text\": \"Push notifications for mobile\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b6f334e6-2891-441d-98af-321b036cca45",
+              "name": "Too many requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channels",
+                    ":CHANNEL_UNIQUE_NAME",
+                    "message"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_UNIQUE_NAME",
+                      "description": "(Required) The unique name of the channel to post the message card into. To learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Sprint 42 - Please vote on which feature we prioritize this cycle.\",\n  \"card\": {\n    \"theme\": \"poll\",\n    \"title\": \"Which feature should we prioritize in Sprint 42?\",\n    \"options\": [\n      {\n        \"text\": \"OAuth 2.0 support for third-party integrations\"\n      },\n      {\n        \"text\": \"Bulk export for audit logs\"\n      },\n      {\n        \"text\": \"Dark mode for the web app\"\n      },\n      {\n        \"text\": \"Push notifications for mobile\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too many requests within a certain time frame.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d97b836b-0af7-4827-b4b9-10be09d45d90",
+              "name": "Internal Server Error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "channels",
+                    ":CHANNEL_UNIQUE_NAME",
+                    "message"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHANNEL_UNIQUE_NAME",
+                      "description": "(Required) The unique name of the channel to post the message card into. To learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Sprint 42 - Please vote on which feature we prioritize this cycle.\",\n  \"card\": {\n    \"theme\": \"poll\",\n    \"title\": \"Which feature should we prioritize in Sprint 42?\",\n    \"options\": [\n      {\n        \"text\": \"OAuth 2.0 support for third-party integrations\"\n      },\n      {\n        \"text\": \"Bulk export for audit logs\"\n      },\n      {\n        \"text\": \"Dark mode for the web app\"\n      },\n      {\n        \"text\": \"Push notifications for mobile\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Cliq server encountered an error which prevents it from fulfilling the request.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "363d0751-5a99-4d18-a285-79e1d64776de",
+          "name": "Post a message card to a chat",
+          "request": {
+            "name": "Post a message card to a chat",
+            "description": {
+              "content": "Send a structured Message Card into any chat conversation. Use this to deliver polls, inline data cards, or approval prompts into a direct message, group chat, or channel conversation. The <code>card</code> object in the request body varies depending on the card type: <code>poll</code>, <code>modern-inline</code>, or <code>prompt</code>.\n<br><br>\nRecommended for bot and agentic workflows where the target conversation is resolved dynamically at runtime.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>\n  Wait time before consecutive API requests.\n</p>\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "chats",
+                ":CHAT_ID",
+                "messages"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "CHAT_ID",
+                  "description": "(Required) Unique identifier of the chat where the message card should be posted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "ZohoCliq.Bots.READ ZohoCliq.Bots.CREATE ZohoCliq.Bots.UPDATE ZohoCliq.Bots.DELETE ZohoCliq.Webhooks.CREATE ZohoCliq.BotMessages.CREATE ZohoCliq.Channels.UPDATE"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://accounts.zoho.com/oauth/v2/auth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "implicit"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card\": {\n    \"theme\": \"<string>\",\n    \"title\": \"<string>\",\n    \"options\": [\n      {\n        \"text\": \"<string>\"\n      },\n      {\n        \"text\": \"<string>\"\n      }\n    ],\n    \"thumbnail\": \"<string>\",\n    \"sections\": [\n      {\n        \"title\": \"<string>\",\n        \"fields\": [\n          {\n            \"title\": \"<string>\",\n            \"value\": \"<string>\"\n          },\n          {\n            \"title\": \"<string>\",\n            \"value\": \"<string>\"\n          }\n        ]\n      },\n      {\n        \"title\": \"<string>\",\n        \"fields\": [\n          {\n            \"title\": \"<string>\",\n            \"value\": \"<string>\"\n          },\n          {\n            \"title\": \"<string>\",\n            \"value\": \"<string>\"\n          }\n        ]\n      }\n    ],\n    \"buttons\": [\n      {\n        \"label\": \"<string>\",\n        \"action\": {\n          \"type\": \"<string>\",\n          \"data\": {\n            \"key_0\": 7369\n          }\n        }\n      },\n      {\n        \"label\": \"<string>\",\n        \"action\": {\n          \"type\": \"<string>\",\n          \"data\": {\n            \"key_0\": \"string\",\n            \"key_1\": false\n          }\n        }\n      }\n    ]\n  },\n  \"text\": \"<string>\",\n  \"slides\": [\n    {\n      \"type\": \"<string>\",\n      \"title\": \"<string>\",\n      \"data\": {}\n    },\n    {\n      \"type\": \"<string>\",\n      \"title\": \"<string>\",\n      \"data\": {}\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8f3a0c3d-e961-4f21-bea6-1f43dcdf13e5",
+              "name": "Message card posted successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) Unique identifier of the chat where the message card should be posted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Sprint 42 - Please vote on which feature we prioritize this cycle.\",\n  \"card\": {\n    \"theme\": \"poll\",\n    \"title\": \"Which feature should we prioritize in Sprint 42?\",\n    \"options\": [\n      {\n        \"text\": \"OAuth 2.0 support for third-party integrations\"\n      },\n      {\n        \"text\": \"Bulk export for audit logs\"\n      },\n      {\n        \"text\": \"Dark mode for the web app\"\n      },\n      {\n        \"text\": \"Push notifications for mobile\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"url\": \"/api/v3/chats/CHAT_ID/messages\",\n  \"type\": \"message\",\n  \"data\": {\n    \"id\": \"1701234567890_1234567890\",\n    \"card\": {\n      \"theme\": \"poll\",\n      \"title\": \"Which feature should we prioritize in Sprint 42?\",\n      \"options\": [\n        {\n          \"text\": \"OAuth 2.0 support for third-party integrations\",\n          \"votes\": 0\n        },\n        {\n          \"text\": \"Bulk export for audit logs\",\n          \"votes\": 0\n        },\n        {\n          \"text\": \"Dark mode for the web app\",\n          \"votes\": 0\n        },\n        {\n          \"text\": \"Push notifications for mobile\",\n          \"votes\": 0\n        }\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d274d998-41f0-44e4-bacb-f33e6d1d9756",
+              "name": "Bad Request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) Unique identifier of the chat where the message card should be posted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Sprint 42 - Please vote on which feature we prioritize this cycle.\",\n  \"card\": {\n    \"theme\": \"poll\",\n    \"title\": \"Which feature should we prioritize in Sprint 42?\",\n    \"options\": [\n      {\n        \"text\": \"OAuth 2.0 support for third-party integrations\"\n      },\n      {\n        \"text\": \"Bulk export for audit logs\"\n      },\n      {\n        \"text\": \"Dark mode for the web app\"\n      },\n      {\n        \"text\": \"Push notifications for mobile\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The request cannot be performed. Usually because of malformed parameter or missing parameter.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5b2e3ae9-8e07-4480-84d7-47b154fd19ee",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) Unique identifier of the chat where the message card should be posted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Sprint 42 - Please vote on which feature we prioritize this cycle.\",\n  \"card\": {\n    \"theme\": \"poll\",\n    \"title\": \"Which feature should we prioritize in Sprint 42?\",\n    \"options\": [\n      {\n        \"text\": \"OAuth 2.0 support for third-party integrations\"\n      },\n      {\n        \"text\": \"Bulk export for audit logs\"\n      },\n      {\n        \"text\": \"Dark mode for the web app\"\n      },\n      {\n        \"text\": \"Push notifications for mobile\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Request was rejected because of invalid AuthToken.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "17002d23-04d4-4b14-bf8f-319e06860eef",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) Unique identifier of the chat where the message card should be posted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Sprint 42 - Please vote on which feature we prioritize this cycle.\",\n  \"card\": {\n    \"theme\": \"poll\",\n    \"title\": \"Which feature should we prioritize in Sprint 42?\",\n    \"options\": [\n      {\n        \"text\": \"OAuth 2.0 support for third-party integrations\"\n      },\n      {\n        \"text\": \"Bulk export for audit logs\"\n      },\n      {\n        \"text\": \"Dark mode for the web app\"\n      },\n      {\n        \"text\": \"Push notifications for mobile\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The user does not have enough permission or possibly not an user of the respective organization to access the resource.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "395ce633-2c50-4a27-bce1-9ee7c38c9bd4",
+              "name": "Invalid URL.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) Unique identifier of the chat where the message card should be posted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Sprint 42 - Please vote on which feature we prioritize this cycle.\",\n  \"card\": {\n    \"theme\": \"poll\",\n    \"title\": \"Which feature should we prioritize in Sprint 42?\",\n    \"options\": [\n      {\n        \"text\": \"OAuth 2.0 support for third-party integrations\"\n      },\n      {\n        \"text\": \"Bulk export for audit logs\"\n      },\n      {\n        \"text\": \"Dark mode for the web app\"\n      },\n      {\n        \"text\": \"Push notifications for mobile\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4930526e-7109-4f59-809c-e3a5af9c243c",
+              "name": "Method Not Allowed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) Unique identifier of the chat where the message card should be posted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Sprint 42 - Please vote on which feature we prioritize this cycle.\",\n  \"card\": {\n    \"theme\": \"poll\",\n    \"title\": \"Which feature should we prioritize in Sprint 42?\",\n    \"options\": [\n      {\n        \"text\": \"OAuth 2.0 support for third-party integrations\"\n      },\n      {\n        \"text\": \"Bulk export for audit logs\"\n      },\n      {\n        \"text\": \"Dark mode for the web app\"\n      },\n      {\n        \"text\": \"Push notifications for mobile\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "df50b50d-3b95-426f-b96f-cc8362bfe0e4",
+              "name": "Too many requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) Unique identifier of the chat where the message card should be posted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Sprint 42 - Please vote on which feature we prioritize this cycle.\",\n  \"card\": {\n    \"theme\": \"poll\",\n    \"title\": \"Which feature should we prioritize in Sprint 42?\",\n    \"options\": [\n      {\n        \"text\": \"OAuth 2.0 support for third-party integrations\"\n      },\n      {\n        \"text\": \"Bulk export for audit logs\"\n      },\n      {\n        \"text\": \"Dark mode for the web app\"\n      },\n      {\n        \"text\": \"Push notifications for mobile\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too many requests within a certain time frame.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2a2dc9ca-5220-49e1-a9dc-cdac37798f5b",
+              "name": "Internal Server Error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) Unique identifier of the chat where the message card should be posted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Sprint 42 - Please vote on which feature we prioritize this cycle.\",\n  \"card\": {\n    \"theme\": \"poll\",\n    \"title\": \"Which feature should we prioritize in Sprint 42?\",\n    \"options\": [\n      {\n        \"text\": \"OAuth 2.0 support for third-party integrations\"\n      },\n      {\n        \"text\": \"Bulk export for audit logs\"\n      },\n      {\n        \"text\": \"Dark mode for the web app\"\n      },\n      {\n        \"text\": \"Push notifications for mobile\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Cliq server encountered an error which prevents it from fulfilling the request.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://cliq.zoho.com/api/v3",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "d965ea98-ab79-482b-9b0d-19bae2c2f290",
+    "name": "Bots messagecards API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "<p>Bots are conversational assistants designed to automate repetitive tasks and manage simple user interactions. Their behavior is fully customizable through predefined Bot Handlers, which are activated by specific actions or through Webhooks that communicate with your own external server.</p> <p>For more information about Bots, please refer to the <b><a href=\"https://www.zoho.com/cliq/help/platform/bots.html\" target=\"_blank\">Bots Help Documentation</a></b>.</p> <p><b>Bot Handlers</b></p> <ul>\n  <li>Bot Handlers are the building blocks of a bot's functionality. Each handler is associated with a specific trigger event, such as receiving a direct message, being @mentioned in a channel, or a user subscribing to the bot.</li>\n  <li>When the trigger event occurs, the corresponding handler executes it's script to perform actions like sending messages, making API calls, or updating data.</li>\n  <li>By configuring different handlers, you can create bots that respond intelligently to various user interactions and automate complex workflows within Zoho Cliq.</li>\n</ul> <p><b>Types of Bot Handlers</b></p> <table style=\"border-collapse: collapse; width: 100%;\">\n  <tr>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Handler</th>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Description</th>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Menu Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Adds up to 5 quick-action items to the bot's chat menu. Triggered when a user interacts with the menu.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Message Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot receives a message.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Welcome Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Defines the greeting message sent when a user subscribes to the bot.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Mention Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot is @mentioned in a chat or channel.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Incoming Webhook Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Allows external services to post messages into the bot via outgoing webhooks.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Context Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Manages multi-turn conversations, maintaining context across a user's interaction with the bot.</td>\n  </tr>\n</table> <p><b>What you can do with the Bots API?</b></p> <p>With the Bots API, you can retrieve information about a specific bot, list all bots within your organization, manage configurations specific to handlers, trigger bot calls programmatically, manage subscribers, and much more.</p> <p>Each bot has an <code>execution_type</code> that defines how its handlers run when a trigger event occurs. The Bots API allows developers to create two types of bots:</p> <p id=\"deluge-bots\"><b>Deluge Bots (default)</b><br> Deluge bot executes handler logic using Zoho's Deluge scripting language, hosted entirely within the Zoho Cliq Developer platform, where no external server is required.</p> <ul>\n  <li>If <code>execution_type</code> is not specified during bot creation, it defaults to deluge.</li>\n  <li>Handler logic is defined as a script field (Deluge source code) when creating or updating handlers.</li>\n  <li>Suitable for teams that want to build and manage bot logic entirely within Zoho's ecosystem.</li>\n</ul> <p id=\"webhook-bots\"><b>Webhook Bots</b><br> A Webhook bot delegates all handler execution to your own external server. When a trigger event fires, Zoho Cliq sends an HTTP POST request to the <code>execution_url</code> you configure, and your server processes the event and returns a response.</p> <ul>\n  <li>To create a Webhook bot, set <code>execution_type</code> to webhook during bot creation and provide the <code>execution_url</code> where event payloads should be sent.</li>\n  <li>Your server must be publicly accessible and able to handle incoming POST requests from Zoho Cliq.</li>\n  <li>Ideal for teams seeking complete control over bot logic and possessing the resources to manage an external server. Also suitable for integrations requiring access to external databases, third-party APIs, or custom business logic that cannot be executed in Deluge.</li>\n</ul>\n",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bots dndsettings API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "dndsettings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get DND preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/settings/dnd-preferences",
+            "params": [
+              {
+                "name": "keys",
+                "value": "schedule",
+                "type": "query",
+                "description": "Comma-separated preference keys to fetch (e.g. schedule)."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Returns the current Do Not Disturb preferences for the authenticated user.\nYou can optionally limit the response by passing specific preference keys.\n<br><br>\n<p>\n  <b>OAuth Scope</b>: ZohoCliq.Profile.READ<br>\n</p>\n"
+        },
+        {
+          "info": {
+            "name": "Update DND preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://cliq.zoho.com/api/v3/settings/dnd-preferences",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Updates \"Do Not Disturb\" preferences for the authenticated user.\n<br><br>\n<p>\n  <b>OAuth Scope</b>: ZohoCliq.Profile.UPDATE<br>\n</p>\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,82 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bots mobilesettings API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "mobilesettings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get mobile settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/settings/mobile",
+            "params": [
+              {
+                "name": "keys",
+                "value": "",
+                "type": "query",
+                "description": "Key name for which you need to get the value."
+              },
+              {
+                "name": "fetch_all",
+                "value": "",
+                "type": "query",
+                "description": "If true, returns all mobile setting keys (used by clients)."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Returns the current mobile settings for the authenticated user.\nThe response includes notification preferences, media settings, AV behavior, and summary-related options.\n<br><br>\n<p>\n  <b>OAuth Scope</b>: ZohoCliq.Profile.READ<br>\n  <b>Duration</b>: 5<br>\n  <b>Threshold</b>: 20 requests per min per user<br>\n  <b>Lock period</b>: 5 minutes<br>\n</p>\n"
+        },
+        {
+          "info": {
+            "name": "Update mobile settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://cliq.zoho.com/api/v3/settings/mobile",
+            "params": [
+              {
+                "name": "file_summary",
+                "value": "",
+                "type": "query",
+                "description": "Quickly toggle file summary without a request body."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Updates mobile settings for the authenticated user.\nSend only the fields you want to modify. For nested objects (for example, `notification` or `media_to_gallery`), send the object with the intended values. You can also update `file_summary` directly using the query parameter.\n<br><br>\n<p>\n  <b>OAuth Scope</b>: ZohoCliq.Profile.UPDATE<br>\n  <b>Duration</b>: 5<br>\n  <b>Threshold</b>: 20 requests per min per user<br>\n  <b>Lock period</b>: 5 minutes<br>\n</p>\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

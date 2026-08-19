@@ -1,0 +1,299 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bots Functions API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Functions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all functions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/functions",
+            "params": [
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Token for fetching the next page of results. Omit this parameter to retrieve the first page."
+              },
+              {
+                "name": "sync_token",
+                "value": "",
+                "type": "query",
+                "description": "Token for incremental synchronization. Provide the <code>sync_token</code> value from a previous response to retrieve only functions that were created or updated since that response was generated."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of functions to return per page.<br>\n<b>Default</b>: 20<br>\n<b>Maximum</b>: 50\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieve a paginated list of all functions defined by the authenicated user.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n"
+        },
+        {
+          "info": {
+            "name": "Create a new function",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/functions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "<a id=\"create_a_new_function\"></a>\n<p>\n  Create a new Function in the Cliq platform. Functions are reusable UI-triggered components that execute when a user clicks a button, submits a form, or interacts with a widget button. The <code>function_type</code> determines the UI trigger.\n</p>\n<p>\n  Functions support two execution types:\n</p>\n<ul>\n  <li><b>Deluge</b> (default): Handler logic runs on Zoho's platform via Deluge scripts. Best for UI interactions within the Zoho ecosystem - approvals, form"
+        },
+        {
+          "info": {
+            "name": "Get details of a specific function",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/functions/:FUNCTION_ID",
+            "params": [
+              {
+                "name": "FUNCTION_ID",
+                "value": "FUNCTION_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the function. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#FUNCTION_ID\">FUNCTION_ID</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieve the full configuration of a single Function identified by its `FUNCTION_ID`. The response includes the function name, description, and a summary of the configured handlers.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px;"
+        },
+        {
+          "info": {
+            "name": "Update an existing function",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://cliq.zoho.com/api/v3/functions/:FUNCTION_ID",
+            "params": [
+              {
+                "name": "FUNCTION_ID",
+                "value": "FUNCTION_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the function. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#FUNCTION_ID\">FUNCTION_ID</a> in the Glossary page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Update the configuration (name and description) of an existing function.<br>\nTo modify the function's handler logic, use the <a href=\"/cliq/help/restapi/v3/functions/#updateFunctionHandler\">handler-level endpoints</a>.\n<p>\n  For <b>Webhook functions</b>, you can also update the <code>execution_url</code> independently at any time to redirect all handler events to a new server endpoint.\n</p>\n<br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one"
+        },
+        {
+          "info": {
+            "name": "Delete a specific function",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://cliq.zoho.com/api/v3/functions/:FUNCTION_ID",
+            "params": [
+              {
+                "name": "FUNCTION_ID",
+                "value": "FUNCTION_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the function. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#FUNCTION_ID\">FUNCTION_ID</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Permanently delete a Function and all its associated handlers. Any platform component that calls this function will stop working once it is deleted. This action is irreversible.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; fon"
+        },
+        {
+          "info": {
+            "name": "Create a handler for a specific function",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/functions/:FUNCTION_ID/handlers",
+            "params": [
+              {
+                "name": "FUNCTION_ID",
+                "value": "FUNCTION_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the function. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#FUNCTION_ID\">FUNCTION_ID</a> in the Glossary page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "<a id=\"createFunctionHandler\"></a>\n<p>\n  Create a handler for a function. Handlers define the logic that executes when a user triggers the UI element (button click, form submit, widget interaction, etc.).\n</p>\n<p>\n  The field you provide depends on the function's execution type:\n</p>\n<ul>\n  <li><b>Deluge function</b>: Provide the <code>script</code> field with the Deluge source code to execute when the handler fires.</li>\n  <li><b>Webhook function</b>: Provide the <code>permissions</code> field "
+        },
+        {
+          "info": {
+            "name": "Get details of a specific function handler",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/functions/:FUNCTION_ID/handlers/:FUNCTION_HANDLER_TYPE",
+            "params": [
+              {
+                "name": "FUNCTION_HANDLER_TYPE",
+                "value": "FUNCTION_HANDLER_TYPE",
+                "type": "path",
+                "description": "Name of the function execution handler. For functions with multiple handlers, this parameter is required to specify which handler's details to retrieve.\n<br><b>Allowed values</b>:\n<ul>\n  <li><code>button_handler</code>: Handler for button click events.</li>\n  <li><code>form_submit_handler</code>: Handler for form submission events.</li>\n  <li><code>form_view_handler</code>: Handler for rendering form views.</li>\n  <li><code>form_change_handler</code>: Handler for form field change events.</li>\n  <li><code>form_dynamic_select_handler</code>: Handler for dynamic select field load events.</li>\n  <li><code>widget_button_handler</code>: Handler for widget button click events.</li>\n</ul>\n"
+              },
+              {
+                "name": "FUNCTION_ID",
+                "value": "FUNCTION_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the function. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#FUNCTION_ID\">FUNCTION_ID</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieve the configuration and deluge source code of a function handler.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to colla"
+        },
+        {
+          "info": {
+            "name": "Update a handler for a specific function",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://cliq.zoho.com/api/v3/functions/:FUNCTION_ID/handlers/:FUNCTION_HANDLER_TYPE",
+            "params": [
+              {
+                "name": "FUNCTION_HANDLER_TYPE",
+                "value": "FUNCTION_HANDLER_TYPE",
+                "type": "path",
+                "description": "Type of the function handler to update. Supported handler types are:\n<ul>\n  <li><code>button_handler</code> - for button functions</li>\n  <li><code>form_submit_handler</code> - for form functions, triggered on form submission</li>\n  <li><code>form_change_handler</code> - for form functions, triggered on form field value change</li>\n  <li><code>form_view_handler</code> - for form functions, triggered when the form is rendered</li>\n  <li><code>form_dynamic_select_handler</code> - for form functions, triggered when a dynamic select field is loaded</li>\n  <li><code>widget_button_handler</code> - for widget functions, triggered on widget button click</li>\n</ul>\n"
+              },
+              {
+                "name": "FUNCTION_ID",
+                "value": "FUNCTION_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the function. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#FUNCTION_ID\">FUNCTION_ID</a> in the Glossary page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Update a handler for a specific function. What you provide depends on the function's execution type:\n<ul>\n  <li><b>Deluge function</b>: Update the <code>script</code> attribute with the revised Deluge source code to execute when the handler fires.</li>\n  <li><b>Webhook function</b>: Update the <code>permissions</code> array to change which data attributes (<code>chat</code>, <code>message</code>, <code>user</code>) are forwarded to your server. Note: <code>attachments</code> and <code>location</"
+        },
+        {
+          "info": {
+            "name": "Delete a handler from a specific function",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://cliq.zoho.com/api/v3/functions/:FUNCTION_ID/handlers/:FUNCTION_HANDLER_TYPE",
+            "params": [
+              {
+                "name": "FUNCTION_HANDLER_TYPE",
+                "value": "FUNCTION_HANDLER_TYPE",
+                "type": "path",
+                "description": "Name of the function execution handler. For functions with multiple handlers, this parameter is required to specify which handler to delete.\n<br><b>Allowed values</b>:\n<ul>\n  <li><code>button_handler</code>: Handler for button click events.</li>\n  <li><code>form_submit_handler</code>: Handler for form submission events.</li>\n  <li><code>form_view_handler</code>: Handler for rendering form views.</li>\n  <li><code>form_change_handler</code>: Handler for form field change events.</li>\n  <li><code>form_dynamic_select_handler</code>: Handler for dynamic select field load events.</li>\n  <li><code>widget_button_handler</code>: Handler for widget button click events.</li>\n</ul>\n"
+              },
+              {
+                "name": "FUNCTION_ID",
+                "value": "FUNCTION_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the function. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#FUNCTION_ID\">FUNCTION_ID</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Permanently remove a named execution handler from a Function. Once deleted, the handler's Deluge code is lost and the function will no longer be executable until a new handler is added.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

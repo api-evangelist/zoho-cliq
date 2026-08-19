@@ -1,0 +1,235 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bots messageactions API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "messageactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all message actions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/messageactions",
+            "params": [
+              {
+                "name": "sync_token",
+                "value": "",
+                "type": "query",
+                "description": "Sync token for incremental synchronization. To fetch only message actions created or updated since the last request, provide the <code>sync_token</code> value from the previous response. For the initial request, omit this parameter or set it to null to retrieve all message actions.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of message actions to return per page.<br>\n<b>Default</b>: 20<br>\n<b>Maximum limit</b>: 100\n"
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Token for fetching the next page of results. If the response includes a <code>next_token</code>, use its value in this parameter to retrieve the next page. Omit this parameter or set it to null if there are no more pages to fetch.\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieve a paginated list of all message Actions available to the user.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n"
+        },
+        {
+          "info": {
+            "name": "Create a new message action",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/messageactions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "<a id=\"create_a_new_message_action\"></a>\n<p>\n  Create a new Message Action. Message actions appear in the right-click / long-press context menu for individual chat messages. When a user selects the action, the configured handler executes with the selected message as input.\n</p>\n<p>\n  Message Actions support two execution types:\n</p>\n<ul>\n  <li><b>Deluge</b> (default): Handler logic runs on Zoho's platform via Deluge scripts. The script receives full message context including content, sender, and"
+        },
+        {
+          "info": {
+            "name": "Get details of a specific message action",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/messageactions/:MESSAGE_ACTION_ID",
+            "params": [
+              {
+                "name": "MESSAGE_ACTION_ID",
+                "value": "MESSAGE_ACTION_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the message action. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#MESSAGE_ACTION_ID\">MESSAGE_ACTION_ID</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieve details of a specific message action.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n "
+        },
+        {
+          "info": {
+            "name": "Update an existing message action",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://cliq.zoho.com/api/v3/messageactions/:MESSAGE_ACTION_ID",
+            "params": [
+              {
+                "name": "MESSAGE_ACTION_ID",
+                "value": "MESSAGE_ACTION_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the message action.<br>\nTo learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#MESSAGE_ACTION_ID\">MESSAGE_ACTION_ID</a> in the Glossary page.'\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Update the configuration of an existing message action.\n<p>\n  All fields are optional. Only the fields you provide will be updated; omitted fields remain unchanged.\n</p>\n<p>\n  For <b>Webhook message actions</b>, you can update the <code>execution_url</code> independently at any time to redirect the action to a new server endpoint.\n</p>\n<br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cool"
+        },
+        {
+          "info": {
+            "name": "Delete a specific message action",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://cliq.zoho.com/api/v3/messageactions/:MESSAGE_ACTION_ID",
+            "params": [
+              {
+                "name": "MESSAGE_ACTION_ID",
+                "value": "MESSAGE_ACTION_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the message action. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#MESSAGE_ACTION_ID\">MESSAGE_ACTION_ID</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Permanently delete a Message Action and its associated handler.Deletion is irreversible and the message action will be removed from all message context menus.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" "
+        },
+        {
+          "info": {
+            "name": "Get details of a specific message action handler",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/messageactions/:MESSAGE_ACTION_ID/handlers/:HANDLER_TYPE",
+            "params": [
+              {
+                "name": "HANDLER_TYPE",
+                "value": "HANDLER_TYPE",
+                "type": "path",
+                "description": "Type of the message action handler. The only supported value is <code>execution_handler</code>, which is triggered when the message action is invoked."
+              },
+              {
+                "name": "MESSAGE_ACTION_ID",
+                "value": "MESSAGE_ACTION_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the message action. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#MESSAGE_ACTION_ID\">MESSAGE_ACTION_ID</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieve the configuration and Deluge source code of the execution handler attached to a specific Message Action.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hin"
+        },
+        {
+          "info": {
+            "name": "Update a handler for a specific message action",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://cliq.zoho.com/api/v3/messageactions/:MESSAGE_ACTION_ID/handlers/:HANDLER_TYPE",
+            "params": [
+              {
+                "name": "HANDLER_TYPE",
+                "value": "HANDLER_TYPE",
+                "type": "path",
+                "description": "Type of the message action handler. The only supported value is <code>execution_handler</code>, which is triggered when the message action is invoked."
+              },
+              {
+                "name": "MESSAGE_ACTION_ID",
+                "value": "MESSAGE_ACTION_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the message action. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#MESSAGE_ACTION_ID\">MESSAGE_ACTION_ID</a> in the Glossary page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Update a handler for a specific message action. What you provide depends on the action's execution type:\n<ul>\n  <li><b>Deluge message action</b>: Update the <code>script</code> attribute with the revised Deluge source code to execute when the action fires.</li>\n  <li><b>Webhook message action</b>: Update the <code>permissions</code> array to change which data attributes are forwarded to your server. All 5 permissions are available for message action handlers.</li>\n</ul>\n<br>\n<p>\n  <b>Threshold l"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

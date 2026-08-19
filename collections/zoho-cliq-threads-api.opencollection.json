@@ -1,0 +1,520 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bots threads API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "threads",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create and send a thread message with CHANNEL_ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/channels/:CHANNEL_ID/messages",
+            "params": [
+              {
+                "name": "CHANNEL_ID",
+                "value": "CHANNEL_ID",
+                "type": "path",
+                "description": "The unique identifier of the channel in which the thread needs to be created. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_ID\">CHANNEL_ID</a> in the Glossary page."
+              },
+              {
+                "name": "bot_unique_name",
+                "value": "",
+                "type": "query",
+                "description": "Use this parameter to send a message in a channel as a bot.   <b>Note</b>: The bot should already be a participant in the channel.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Use this API to create a thread from a message sent in a channel, identified by its <b>CHANNEL_ID</b>. <br><br> You can also create a thread using one of the following alternative endpoints:<br> <ul>\n  <li><a href=\"#operation/createThreadMessageByChatId\"><code>POST /chats/{CHAT_ID}/messages</code></a> - Use the <b>CHAT_ID</b> of the channel (same channel, accessed via its chat identifier).</li>\n  <li><a href=\"#operation/createThreadMessageByChannelUniqueName\"><code>POST /channelsbyname/{CHANNEL_"
+        },
+        {
+          "info": {
+            "name": "Create and send a thread message with CHAT_ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID/messages",
+            "params": [
+              {
+                "name": "CHAT_ID",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "The chat ID of the channel in which the thread needs to be created. Every channel has a corresponding chat ID. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+              },
+              {
+                "name": "bot_unique_name",
+                "value": "",
+                "type": "query",
+                "description": "Use this parameter to send a message in a channel as a bot.   <b>Note</b>: The bot should already be a participant in the channel.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Use this API to create a thread from a message sent in a channel, identified by its <b>CHAT_ID</b>. Every channel in Cliq also has a corresponding chat ID. This endpoint is functionally equivalent to using <code>POST /channels/{CHANNEL_ID}/messages</code> - both target the same channel, just identified differently. <br><br> You can also create a thread using one of the following alternative endpoints:<br> <ul>\n  <li><a href=\"#operation/createThreadMessageByChannelId\"><code>POST /channels/{CHANNE"
+        },
+        {
+          "info": {
+            "name": "Create and send a thread message with CHANNEL_UNIQUE_NAME",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/channelsbyname/:CHANNEL_UNIQUE_NAME/messages",
+            "params": [
+              {
+                "name": "CHANNEL_UNIQUE_NAME",
+                "value": "CHANNEL_UNIQUE_NAME",
+                "type": "path",
+                "description": "The unique name of the channel in which the thread needs to be created. To learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page."
+              },
+              {
+                "name": "bot_unique_name",
+                "value": "",
+                "type": "query",
+                "description": "Use this parameter to send a message in a channel as a bot.   <b>Note</b>: The bot should already be a participant in the channel.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Use this API to create a thread from a message sent in a channel, identified by its <b>unique name</b>. This is useful when you know the channel's unique name but not its ID. <br><br> You can also create a thread using one of the following alternative endpoints:<br> <ul>\n  <li><a href=\"#operation/createThreadMessageByChannelId\"><code>POST /channels/{CHANNEL_ID}/messages</code></a> - Use the <b>CHANNEL_ID</b> of the channel.</li>\n  <li><a href=\"#operation/createThreadMessageByChatId\"><code>POST /"
+        },
+        {
+          "info": {
+            "name": "Send a message to an existing thread",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:THREAD_CHAT_ID/messages",
+            "params": [
+              {
+                "name": "THREAD_CHAT_ID",
+                "value": "THREAD_CHAT_ID",
+                "type": "path",
+                "description": "Chat ID of the thread where the message should be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID\">THREAD_CHAT_ID</a> in the Glossary page."
+              },
+              {
+                "name": "bot_unique_name",
+                "value": "",
+                "type": "query",
+                "description": "Use this parameter to send a message in a thread as a bot.   Note that the bot should already be a participant in the channel.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Use this API to send a message to an existing thread.\n  <br><br>  \n  <p>\n    <b>Threshold limit</b>: 20 requests per min per user<br>\n    Number of API calls allowed within a minute.<br><br>\n    <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>\n  </p>  \n"
+        },
+        {
+          "info": {
+            "name": "Update the state of a thread",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://cliq.zoho.com/api/v3/threads/:THREAD_CHAT_ID",
+            "params": [
+              {
+                "name": "THREAD_CHAT_ID",
+                "value": "THREAD_CHAT_ID",
+                "type": "path",
+                "description": "CHAT ID of the thread whose state is to be updated (closed or reopened). To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID\">THREAD_CHAT_ID</a> in the Glossary page."
+              },
+              {
+                "name": "bot_unique_name",
+                "value": "",
+                "type": "query",
+                "description": "To use when the action is to be performed by a bot that is already a participant in the channel."
+              },
+              {
+                "name": "appkey",
+                "value": "",
+                "type": "query",
+                "description": "Must be provided if the specified bot is from an extension. This parameter is to be used along with bot_unique_name."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Use this API to update the state or follow status of a thread.\n<ul>\n  <li><b>Thread state</b>: Close a thread to stop further replies, or reopen it to resume discussion.</li>\n  <li><b>Follow state</b>: Follow a thread to receive notifications for new replies, or unfollow to stop them.</li>\n</ul>\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API request"
+        },
+        {
+          "info": {
+            "name": "Get main message of a thread",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/threads/:THREAD_CHAT_ID/messages/main",
+            "params": [
+              {
+                "name": "THREAD_CHAT_ID",
+                "value": "THREAD_CHAT_ID",
+                "type": "path",
+                "description": "The CHAT_ID of the thread whose main (original) message is to be retrieved To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID\">THREAD_CHAT_ID</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Use this API to retrieve the main message from which the thread was created.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n"
+        },
+        {
+          "info": {
+            "name": "Get thread followers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/threads/:THREAD_CHAT_ID/followers",
+            "params": [
+              {
+                "name": "THREAD_CHAT_ID",
+                "value": "THREAD_CHAT_ID",
+                "type": "path",
+                "description": "Chat ID of the thread for which the list of followers needs to be retrieved To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID\">THREAD_CHAT_ID</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Use this API to get the followers of the thread.\n"
+        },
+        {
+          "info": {
+            "name": "Add followers to a thread",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/threads/:THREAD_CHAT_ID/followers",
+            "params": [
+              {
+                "name": "THREAD_CHAT_ID",
+                "value": "THREAD_CHAT_ID",
+                "type": "path",
+                "description": "Chat ID of the thread for which the list of followers needs to be added To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID\">THREAD_CHAT_ID</a> in the Glossary page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Use this API to add one or more users as followers to an existing thread.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n"
+        },
+        {
+          "info": {
+            "name": "Remove followers from a thread",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://cliq.zoho.com/api/v3/threads/:THREAD_CHAT_ID/followers",
+            "params": [
+              {
+                "name": "THREAD_CHAT_ID",
+                "value": "THREAD_CHAT_ID",
+                "type": "path",
+                "description": "Chat ID of the thread for which the list of followers needs to be removed To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID\">THREAD_CHAT_ID</a> in the Glossary page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Removes one or more specified users from the followers list of a given thread.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n"
+        },
+        {
+          "info": {
+            "name": "Get non-followers of a thread",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/threads/:THREAD_CHAT_ID/nonfollowers",
+            "params": [
+              {
+                "name": "THREAD_CHAT_ID",
+                "value": "THREAD_CHAT_ID",
+                "type": "path",
+                "description": "Chat ID of the thread for which the list of non-followers needs to be retrieved To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID\">THREAD_CHAT_ID</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Use this API to retrieve the list of channel members who are not currently following the specified thread.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n"
+        },
+        {
+          "info": {
+            "name": "Join (follow) a thread",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/threads/:THREAD_CHAT_ID/follow",
+            "params": [
+              {
+                "name": "THREAD_CHAT_ID",
+                "value": "THREAD_CHAT_ID",
+                "type": "path",
+                "description": "CHAT ID of the thread to which the authenticated user should be added as a follower To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID\">THREAD_CHAT_ID</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Allows the authenticated user to join a thread as a follower.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n"
+        },
+        {
+          "info": {
+            "name": "Leave (unfollow) a thread",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/threads/:THREAD_CHAT_ID/unfollow",
+            "params": [
+              {
+                "name": "THREAD_CHAT_ID",
+                "value": "THREAD_CHAT_ID",
+                "type": "path",
+                "description": "CHAT ID of the thread to which the authenticated user should be removed as a follower To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID\">THREAD_CHAT_ID</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Allows the authenticated user to leave a thread they are currently following.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve members of a thread",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/chats/:THREAD_CHAT_ID/members",
+            "params": [
+              {
+                "name": "THREAD_CHAT_ID",
+                "value": "THREAD_CHAT_ID",
+                "type": "path",
+                "description": "The ID of the thread from which members need to be retrieved. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID\">THREAD_CHAT_ID</a> in the Glossary page."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Use this parameter to get details of members participating in the thread.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><b>user_id</b> - Unique identifier for the user in Cliq.</li>\n  <li><b>email_id</b> - Email address of the user.</li>\n  <li><b>name</b> - Display name of the user.</li>\n</ul>\n<br><br>\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Use this API to fetch participants of a specific thread conversation.\nThis is useful when you want to display who is currently involved in a focused topic discussion without scanning the parent channel.\n<br><br>\nCommon use cases:\n<ul>\n  <li>Render a thread participant panel in your app UI.</li>\n  <li>Show participant identity fields (name, email_id, user_id) using the <code>fields</code> query parameter.</li>\n  <li>Audit collaboration context before automations post follow-up replies in the same"
+        },
+        {
+          "info": {
+            "name": "Leave a thread",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:THREAD_CHAT_ID/leave",
+            "params": [
+              {
+                "name": "THREAD_CHAT_ID",
+                "value": "THREAD_CHAT_ID",
+                "type": "path",
+                "description": "The ID of the thread that you wish to leave. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID\">THREAD_CHAT_ID</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Use this API to remove the authenticated user from a thread conversation.\nAfter leaving, the user is no longer an active participant in that thread context.\n<br><br>\nThis endpoint is helpful for reducing noise in discussions that are no longer relevant to the user while keeping the parent channel membership unchanged.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before "
+        },
+        {
+          "info": {
+            "name": "Mute a thread",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:THREAD_CHAT_ID/mute",
+            "params": [
+              {
+                "name": "THREAD_CHAT_ID",
+                "value": "THREAD_CHAT_ID",
+                "type": "path",
+                "description": "The ID of the thread that needs to be muted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID\">THREAD_CHAT_ID</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Use this API to mute notifications for a thread while still keeping the thread accessible.\nMuting is ideal for high-volume threads where the user wants to stay in the conversation but avoid immediate notification interruptions.\n<br><br>\nThis setting affects thread-level notifications and helps keep topic-based discussions organized without muting the entire parent chat.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n"
+        },
+        {
+          "info": {
+            "name": "Unmute a thread",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:THREAD_CHAT_ID/unmute",
+            "params": [
+              {
+                "name": "THREAD_CHAT_ID",
+                "value": "THREAD_CHAT_ID",
+                "type": "path",
+                "description": "The ID of the thread that needs to be unmuted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#THREAD_CHAT_ID\">THREAD_CHAT_ID</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Use this API to restore notifications for a previously muted thread.\nOnce unmuted, the user starts receiving thread updates again according to their notification settings.\n<br><br>\nUse this when a discussion becomes active or relevant again and timely visibility of thread replies is required.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

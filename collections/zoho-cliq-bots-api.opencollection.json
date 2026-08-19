@@ -1,0 +1,534 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bots API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Bots",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Trigger Bot Calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/bots/:BOT_UNIQUE_NAME/calls",
+            "params": [
+              {
+                "name": "BOT_UNIQUE_NAME",
+                "value": "BOT_UNIQUE_NAME",
+                "type": "path",
+                "description": "Unique identifier of the bot from which bot call needs to be triggered. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#BOT_UNIQUE_NAME\">BOT_UNIQUE_NAME</a> in the Glossary page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Utilize this API to send a voice alert to specific users via the bot.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per 5 min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 30 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Cli"
+        },
+        {
+          "info": {
+            "name": "List all bots",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/bots",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Size of the set to be fetched.<br>\nDefault value is <b>20</b> and maximum allowed value is <b>50</b>.\n"
+              },
+              {
+                "name": "sync_token",
+                "value": "",
+                "type": "query",
+                "description": "To fetch the bots which recently got added or updated after the previous request was made. \n"
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Pagination token to fetch the next set of bots.\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieves a paginated list of all Bots available to the user.<br><br>\nUse <b>limit</b> and <b>next_token</b> for cursor-based pagination, <b>sync_token</b> for incremental sync, and <b>search</b> and <b>scope</b> to filter results when browsing the Marketplace catalogue.\n<br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n"
+        },
+        {
+          "info": {
+            "name": "Create a bot",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/bots",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Create a new bot in Cliq by specifying the bot's display name, description, and access level (organization or team). Upon creation, Cliq auto-assigns a <code>unique_name</code> as a permanent identifier for the bot - this cannot be changed even if the display name is updated later.<br><br>After creation, add handlers to define the bot's behaviour for each trigger event.<br>\nWith this API, you can create both <a href=\"/cliq/help/restapi/v3/bots/#deluge-bots\">Deluge bots</a> (which run handler log"
+        },
+        {
+          "info": {
+            "name": "Retrieve details of a specific bot",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/bots/:BOT_ID",
+            "params": [
+              {
+                "name": "BOT_ID",
+                "value": "BOT_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the bot.<br>\nTo learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#BOT_ID\">BOT_ID</a> in the Glossary page.\n"
+              },
+              {
+                "name": "fields",
+                "value": "subscription_details",
+                "type": "query",
+                "description": "Additonal field to be fetched in the response. By default, the API returns basic details of the bot along with a summary of its handlers (type and count).\n<br>\n<b>Allowed value</b><br>\n<ul>\n  <li>subscription_details - Returns the list of subscribers along with their details like name, email, etc.</li>\n</ul>\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieves the full configuration and details of a specific bot, including its name, description, unique name, access level, and handler summary.<br>\nUse the <code>fields</code> query parameter to fetch additional details such as subscriber count or handler code.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:"
+        },
+        {
+          "info": {
+            "name": "Update an existing bot",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://cliq.zoho.com/api/v3/bots/:BOT_ID",
+            "params": [
+              {
+                "name": "BOT_ID",
+                "value": "BOT_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the bot.<br>\nTo learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#BOT_ID\">BOT_ID</a> in the Glossary page.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Update the details and configuration of an existing bot. You can change the bot's display name, description, access level (organization-wide, team, or personal), and logo.<br>\n<br><b>Note:</b>\n<ul>\n  <li>The bot's <code>unique_name</code> is auto-assigned by Cliq upon creation and serves as a permanent identifier. It cannot be changed even if the display name is updated.</li>\n  <li>For <b>Webhook bots</b>, the <code>execution_url</code> can be updated independently - you can point the bot to a n"
+        },
+        {
+          "info": {
+            "name": "Delete a specific bot",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://cliq.zoho.com/api/v3/bots/:BOT_ID",
+            "params": [
+              {
+                "name": "BOT_ID",
+                "value": "BOT_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the bot.\n<b>How to retrieve BOT_ID?</b><br>\nTo learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#BOT_ID\">BOT_ID</a> in the Glossary page.\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Permanently delete a bot and all its associated handlers and configuration. All subscribers will lose access to the bot and any channel associations will be removed. This action is irreversible.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:"
+        },
+        {
+          "info": {
+            "name": "Send a bot message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/bots/:BOT_UNIQUE_NAME/messages",
+            "params": [
+              {
+                "name": "BOT_UNIQUE_NAME",
+                "value": "BOT_UNIQUE_NAME",
+                "type": "path",
+                "description": "Unique name of the bot to send the message from.<br>\nTo learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#BOT_UNIQUE_NAME\">BOT_UNIQUE_NAME</a> in the Glossary page.\n"
+              },
+              {
+                "name": "extension_key",
+                "value": "",
+                "type": "query",
+                "description": "Encrypted application key for authentication."
+              },
+              {
+                "name": "CHANNEL_UNIQUE_NAME",
+                "value": "",
+                "type": "query",
+                "description": "Channel unique name to deliver the bot message.<br>\nTo find the unique name of a channel, refer to <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page.\n"
+              },
+              {
+                "name": "user_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated user IDs to send the message to."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Send a message from the bot to specific users, a channel, or all subscribers.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse"
+        },
+        {
+          "info": {
+            "name": "Send an incoming webhook message to a bot",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/bots/:BOT_UNIQUE_NAME/incoming",
+            "params": [
+              {
+                "name": "BOT_UNIQUE_NAME",
+                "value": "BOT_UNIQUE_NAME",
+                "type": "path",
+                "description": "Unique name of the bot. To learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#BOT_UNIQUE_NAME\">BOT_UNIQUE_NAME</a> in the Glossary page."
+              },
+              {
+                "name": "user_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated user IDs to send the message to.<br>\n<b>Maxium 100 user IDs allowed.</b><br>\nRefer to <a href=\"/cliq/help/restapi/v3/glossary/#USER_ID\">USER_ID</a> in the Glossary page for more details.\n"
+              },
+              {
+                "name": "extension_key",
+                "value": "",
+                "type": "query",
+                "description": "Encrypted application key for the bot, used as an authentication alternative to OAuth.<br>\nRefer to <a href=\"/cliq/help/restapi/v3/glossary/#EXTENSION_KEY\">EXTENSION_KEY</a> in the Glossary page.'\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Post a message to a bot using its incoming webhook URL. This endpoint allows external systems to push notifications into Cliq through a bot.\n<br><br>\n<b>Note:</b> Up to 50 additional custom parameters can be passed as query parameters (max 10,000 characters each).\n<br><br>\n<p>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"marg"
+        },
+        {
+          "info": {
+            "name": "Create a handler for a specific bot",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/bots/:BOT_ID/handlers",
+            "params": [
+              {
+                "name": "BOT_ID",
+                "value": "BOT_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the bot. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#BOT_ID\">BOT_ID</a> in the Glossary page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "<a id=\"create_a_handler_for_a_bot\"></a>\n<p>\n  Create a handler for a specific bot by providing the handler type and the execution logic for that event.<br>\n  Handlers define the bot's behavior for different trigger events. Refer <b><a href=\"https://www.zoho.com/cliq/help/platform/bots.html\">introduction to bot handlers</a></b> in the documentation for more details on each handler type and when it is triggered.\n</p>\n<p>\n  The way you define a handler depends on the bot's execution type:\n</p>\n<ul>"
+        },
+        {
+          "info": {
+            "name": "Get details of a specific bot handler",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/bots/:BOT_ID/handlers/:HANDLER_TYPE",
+            "params": [
+              {
+                "name": "BOT_ID",
+                "value": "BOT_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the bot. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#BOT_ID\">BOT_ID</a> in the Glossary page."
+              },
+              {
+                "name": "HANDLER_TYPE",
+                "value": "HANDLER_TYPE",
+                "type": "path",
+                "description": "Type of the handler to fetch details for. Determines the event or trigger associated with the handler script.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>welcome_handler</code>: Executes when a user subscribes to the bot.</li>\n  <li><code>message_handler</code>: Executes when the bot receives a message.</li>\n  <li><code>mention_handler</code>: Executes when the bot is mentioned in a message.</li>\n  <li><code>context_handler</code>: Executes based on specific contextual triggers defined by the bot.</li>\n  <li><code>participation_handler</code>: Executes when the bot is added to or removed from a channel.</li>\n  <li><code>incoming_webhook_handler</code>: Executes when a message is received via an incoming webhook.</li>\n  <li><code>menu_handler</code>: Executes when a user interacts with a menu action associated with the bot.</li>\n  \n  <li><code>call_handler</code>: Executes on bot call state events (e.g., ringing, answered, ended).</li>\n</ul>\n"
+              },
+              {
+                "name": "handler_id",
+                "value": "1901318000009075000",
+                "type": "query",
+                "description": "ID of the handler. Used for menu handler alone, to target a specific variant of a multi-variant menu handler."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieve the details and configuration of a specific handler for a bot, including the Deluge source code and any associated menu action configuration. \n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.q"
+        },
+        {
+          "info": {
+            "name": "Update a handler for a specific bot",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://cliq.zoho.com/api/v3/bots/:BOT_ID/handlers/:HANDLER_TYPE",
+            "params": [
+              {
+                "name": "BOT_ID",
+                "value": "BOT_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the bot. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#BOT_ID\">BOT_ID</a> in the Glossary page."
+              },
+              {
+                "name": "HANDLER_TYPE",
+                "value": "HANDLER_TYPE",
+                "type": "path",
+                "description": "Type of the handler to be updated. Determines the event or trigger that will use the revised handler script or configuration.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>welcome_handler</code>: Executes when a user subscribes to the bot.</li>\n  <li><code>message_handler</code>: Executes when the bot receives a message.</li>\n  <li><code>mention_handler</code>: Executes when the bot is mentioned in a message.</li>\n  <li><code>context_handler</code>: Executes based on specific contextual triggers defined by the bot.</li>\n  <li><code>participation_handler</code>: Executes when the bot is added to or removed from a channel.</li>\n  <li><code>incoming_webhook_handler</code>: Executes when a message is received via an incoming webhook.</li>\n  <li><code>menu_handler</code>: Executes when a user interacts with a menu action associated with the bot.</li>\n  \n  <li><code>call_handler</code>: Executes on bot call state events (e.g., ringing, answered, ended).</li>\n</ul>\n"
+              },
+              {
+                "name": "handler_id",
+                "value": "1901318000009075000",
+                "type": "query",
+                "description": "ID of the handler. Used for menu handler alone, to target a specific variant of a multi-variant menu handler."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "<p>\n  Update a handler for a specific bot by providing the handler type and the revised execution logic or configuration to apply for that event.<br>\n  Handlers define the bot's behavior for different trigger events. Refer <b><a href=\"https://www.zoho.com/cliq/help/platform/bots.html\">introduction to bot handlers</a></b> in the documentation for more details on each handler type and when it is triggered.\n</p>\n<p>\n  What you can update depends on the bot's execution type:\n</p>\n<ul>\n  <li><b>Delug"
+        },
+        {
+          "info": {
+            "name": "Delete a handler from a specific bot",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://cliq.zoho.com/api/v3/bots/:BOT_ID/handlers/:HANDLER_TYPE",
+            "params": [
+              {
+                "name": "BOT_ID",
+                "value": "BOT_ID",
+                "type": "path",
+                "description": "Unique numeric identifier of the bot. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#BOT_ID\">BOT_ID</a> in the Glossary page."
+              },
+              {
+                "name": "HANDLER_TYPE",
+                "value": "HANDLER_TYPE",
+                "type": "path",
+                "description": "Type of the handler to be deleted. Determines the event or trigger associated with the handler script.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>welcome_handler</code>: Executes when a user subscribes to the bot.</li>\n  <li><code>message_handler</code>: Executes when the bot receives a message.</li>\n  <li><code>mention_handler</code>: Executes when the bot is mentioned in a message.</li>\n  <li><code>context_handler</code>: Executes based on specific contextual triggers defined by the bot.</li>\n  <li><code>participation_handler</code>: Executes when the bot is added to or removed from a channel.</li>\n  <li><code>incoming_webhook_handler</code>: Executes when a message is received via an incoming webhook.</li>\n  <li><code>menu_handler</code>: Executes when a user interacts with a menu action associated with the bot.</li>\n  \n  <li><code>call_handler</code>: Executes on bot call state events (e.g., ringing, answered, ended).</li>\n</ul>\n"
+              },
+              {
+                "name": "handler_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the handler. Used for menu handler alone, to target a specific variant of a multi-variant menu handler."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Permanently remove a handler from a bot. Once deleted, the associated Deluge code and configuration are lost and the handler will no longer respond to its trigger event.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;"
+        },
+        {
+          "info": {
+            "name": "Associate bot to a channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/bots/:BOT_UNIQUE_NAME/associate",
+            "params": [
+              {
+                "name": "BOT_UNIQUE_NAME",
+                "value": "BOT_UNIQUE_NAME",
+                "type": "path",
+                "description": "Unique name of the bot. To learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#BOT_UNIQUE_NAME\">BOT_UNIQUE_NAME</a> in the Glossary page."
+              },
+              {
+                "name": "extension_key",
+                "value": "",
+                "type": "query",
+                "description": "Encrypted application key for authentication. Required if the bot belongs to an extension. For bots created within the organization, this parameter is not needed.\n<br>To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#EXTENSION_KEY\">EXTENSION_KEY</a> in the Glossary page.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Add a bot to a specific channel by providing the bot's unique name and the target channel ID. Once associated, the bot can interact with users in that channel based on its configured handlers and permissions.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 5 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); b"
+        },
+        {
+          "info": {
+            "name": "List all subscribers of a specific bot",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/bots/:BOT_ID_OR_UNIQUE_NAME/subscribers",
+            "params": [
+              {
+                "name": "BOT_ID_OR_UNIQUE_NAME",
+                "value": "BOT_ID_OR_UNIQUE_NAME",
+                "type": "path",
+                "description": "Either the numeric bot ID (e.g. <code>b-1901318000009075007</code>) or the bot's unique name (e.g. <code>supportbot</code>).<br>\nTo learn more, see <a href=\"/cliq/help/restapi/v3/glossary/#BOT_ID\">BOT_ID</a> or <a href=\"/cliq/help/restapi/v3/glossary/#BOT_UNIQUE_NAME\">BOT_UNIQUE_NAME</a> in the Glossary page.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of subscribers to return."
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Pagination token to fetch the next set of subscribers."
+              },
+              {
+                "name": "sync_token",
+                "value": "",
+                "type": "query",
+                "description": "Token to fetch only the subscribers who were added or updated after the previous request was made."
+              },
+              {
+                "name": "extension_key",
+                "value": "",
+                "type": "query",
+                "description": "Encrypted application key for authentication. Required if the bot belongs to an extension. For bots created within the organization, this parameter is not needed.\n<br>To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#EXTENSION_KEY\">EXTENSION_KEY</a> in the Glossary page.\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieve a paginated list of users who have subscribed to a specific bot, identified by its bot ID or unique bot name. Access to bot subscribers is limited to the bot creator or the administrator of the organization.<br><br>\nUse <b>limit</b> and <b>next_token</b> for cursor-based pagination. Use <b>sync_token</b> for incremental sync to receive only changes since the last request. \n<br><br>\n<p>\n  <b>Threshold limit</b>: 100 requests per min per user<br>\n  Number of API calls allowed within a min"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

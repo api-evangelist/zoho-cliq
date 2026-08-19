@@ -1,0 +1,80 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bots messagecards API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "messagecards",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Post a message card to a channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/channels/:CHANNEL_UNIQUE_NAME/message",
+            "params": [
+              {
+                "name": "CHANNEL_UNIQUE_NAME",
+                "value": "CHANNEL_UNIQUE_NAME",
+                "type": "path",
+                "description": "The unique name of the channel to post the message card into. To learn how to retrieve this, see <a href=\"/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME\">CHANNEL_UNIQUE_NAME</a> in the Glossary page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Send a structured Message Card to a specific channel. Use this to deliver polls, inline data cards, or approval prompts into a channel conversation. The <code>card</code> object in the request body varies depending on the card type: <code>poll</code>, <code>modern-inline</code>, or <code>prompt</code>.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>\n  Wait time before consecutive A"
+        },
+        {
+          "info": {
+            "name": "Post a message card to a chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID/messages",
+            "params": [
+              {
+                "name": "CHAT_ID",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat where the message card should be posted. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Send a structured Message Card into any chat conversation. Use this to deliver polls, inline data cards, or approval prompts into a direct message, group chat, or channel conversation. The <code>card</code> object in the request body varies depending on the card type: <code>poll</code>, <code>modern-inline</code>, or <code>prompt</code>.\n<br><br>\nRecommended for bot and agentic workflows where the target conversation is resolved dynamically at runtime.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 r"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

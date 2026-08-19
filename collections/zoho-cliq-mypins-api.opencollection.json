@@ -1,0 +1,310 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bots mypins API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "mypins",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve chat folders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cliq.zoho.com/api/v3/pin-categories",
+            "params": [
+              {
+                "name": "include_fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of additional fields to include for each pinned chat. By default, only basic details are returned for pinned chats, but you can specify additional fields as needed. Available fields include:\n<ul>\n  <li><code>chats</code>: Include the full chat objects for each pinned chat.</li>\n  <li><code>recipients_summary</code>: Include a summary of recipients for each pinned chat.</li>\n  <li><code>last_message_info</code>: Include details about the last message in each pinned chat.</li>\n</ul>\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Retrieve the list of chat folders for the current user, along with the chats pinned within each folder. By default, only basic details are returned for each pinned chat, but additional fields can be included as needed.\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5);"
+        },
+        {
+          "info": {
+            "name": "Create a chat folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/pin-categories",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Create a new chat folder under the <b>My Pins</b> section. The folder must include a title and a symbol, and may optionally include a list of chats to pin within it.\n<br><br>If chat IDs are provided, the folder will be created with those chats already pinned. Otherwise, an empty chat folder will be created.\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API reque"
+        },
+        {
+          "info": {
+            "name": "Remove pinned chats across chat folders",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://cliq.zoho.com/api/v3/pin-categories",
+            "params": [
+              {
+                "name": "chat_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of chat IDs to unpin from all folders. For each provided chat ID, the chat will be removed from every folder it is currently pinned in.<br>\n<b>Maximum limit:</b> 25 chat IDs per request.\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Remove specific pinned chats from all chat folders in one request. Provide the list of chat IDs to unpin those chats from every folder they are pinned in.<br><br>This is a bulk operation that can be used when a chat is no longer relevant and needs to be removed from multiple folders at once.\n<br><p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p"
+        },
+        {
+          "info": {
+            "name": "Modify a chat folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://cliq.zoho.com/api/v3/pin-categories/:CATEGORY_ID",
+            "params": [
+              {
+                "name": "CATEGORY_ID",
+                "value": "CATEGORY_ID",
+                "type": "path",
+                "description": "Unique ID of the chat folder to update. You can obtain this ID from the <a href=\"/cliq/help/restapi/v3/mypins/#retrieve-chat-folders\">Retrieve Chat Folders API</a>, where <code>category_id</code> represents the ID of the chat folder.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Update the title, symbol and state of a chat folder.\n<p>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary st"
+        },
+        {
+          "info": {
+            "name": "Delete a chat folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://cliq.zoho.com/api/v3/pin-categories/:CATEGORY_ID",
+            "params": [
+              {
+                "name": "CATEGORY_ID",
+                "value": "CATEGORY_ID",
+                "type": "path",
+                "description": "Unique ID of the chat folder to delete. You can obtain this ID from the <a href=\"/cliq/help/restapi/v3/mypins/#retrieve-chat-folders\">Retrieve Chat Folders API</a>, where <code>category_id</code> represents the ID of the chat folder.\n"
+              },
+              {
+                "name": "unpin_all",
+                "value": "",
+                "type": "query",
+                "description": "Determines whether to unpin all chats within the folder instead of moving them to the default folder i.e <b>My Pins</b> section.\n<br><b>Allowed values:</b><br>\n<ul>\n  <li><code>true</code>: Unpin all chats within the folder instead of moving them to the default folder.</li>\n  <li><code>false</code> (default): Move chats pinned within the deleted folder to the default folder.</li>\n</ul>\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Delete a chat folder and optionally unpin all chats within it.\n<br><b>Note:</b> The default folder i.e <b>My Pins</b> section cannot be deleted.\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.e"
+        },
+        {
+          "info": {
+            "name": "Reorder a chat within a chat folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://cliq.zoho.com/api/v3/pin-categories/:CATEGORY_ID1",
+            "params": [
+              {
+                "name": "CATEGORY_ID1",
+                "value": "CATEGORY_ID",
+                "type": "path",
+                "description": "Unique ID of the chat folder to update. You can obtain this ID from the <a href=\"/cliq/help/restapi/v3/mypins/#retrieve-chat-folders\">Retrieve Chat Folders API</a>, where <code>category_id</code> represents the ID of the chat folder.<br><br> \n<b>Note:</b> <code>CATEGORY_ID1</code> is a documentation alias for <code>CATEGORY_ID</code>, used to separate the \"Reorder a chat within a chat folder\" operation for better readability while sharing the same <code>/pin-categories/{CATEGORY_ID}</code> endpoint.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Reorder a pinned chat within a chat folder. This allows users to prioritise certain chats within a folder by moving them up or down the list.\n<p>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-"
+        },
+        {
+          "info": {
+            "name": "Reorder a chat folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://cliq.zoho.com/api/v3/pin-categories/:CATEGORY_ID2",
+            "params": [
+              {
+                "name": "CATEGORY_ID2",
+                "value": "CATEGORY_ID",
+                "type": "path",
+                "description": "Unique ID of the chat folder to update. You can obtain this ID from the <a href=\"/cliq/help/restapi/v3/mypins/#retrieve-chat-folders\">Retrieve Chat Folders API</a>, where <code>category_id</code> represents the ID of the chat folder.<br><br>\n<b>Note:</b> <code>CATEGORY_ID2</code> is a documentation alias for <code>CATEGORY_ID</code>, used to separate the \"Reorder a chat folder\" operation for better readability while sharing the same <code>/pin-categories/{CATEGORY_ID}</code> endpoint.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Reorder a chat folder within the list of chat folders. This allows users to prioritise certain folders by moving them up or down the list.\n<p>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-tog"
+        },
+        {
+          "info": {
+            "name": "Replace chats in a chat folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://cliq.zoho.com/api/v3/pin-categories/:CATEGORY_ID3",
+            "params": [
+              {
+                "name": "CATEGORY_ID3",
+                "value": "CATEGORY_ID",
+                "type": "path",
+                "description": "Unique ID of the chat folder to update. You can obtain this ID from the <a href=\"/cliq/help/restapi/v3/mypins/#retrieve-chat-folders\">Retrieve Chat Folders API</a>, where <code>category_id</code> represents the ID of the chat folder.<br><br>\n<b>Note:</b> <code>CATEGORY_ID3</code> is a documentation alias for <code>CATEGORY_ID</code>, used to separate the \"Replace chats in a chat folder\" operation for better readability while sharing the same <code>/pin-categories/{CATEGORY_ID}</code> endpoint. \n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Replace the existing chats in the specified chat folder with a new set of chats. Chats not included in the request will be removed from the folder.\n<p>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector("
+        },
+        {
+          "info": {
+            "name": "Pin a chat to a chat folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID/pins",
+            "params": [
+              {
+                "name": "CHAT_ID",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique ID of the chat to pin. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Pin a chat for quick access either directly under the My Pins section or within a specific chat folder.\n<p>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'C"
+        },
+        {
+          "info": {
+            "name": "Unpin a chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID/pins",
+            "params": [
+              {
+                "name": "CHAT_ID",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique ID of the chat to unpin. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Remove a pinned chat from the <b>My Pins</b> section and all associated chat folders. The chat will no longer appear in any pinned location.\n<p>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-t"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

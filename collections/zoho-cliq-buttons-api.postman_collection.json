@@ -1,0 +1,1901 @@
+{
+  "item": [
+    {
+      "id": "4122df08-58f7-4d88-a81d-66f31ecee902",
+      "name": "buttons",
+      "description": {
+        "content": "Buttons Module",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "be5498c5-e037-43b1-ba7f-62b7c9b470ff",
+          "name": "Message card buttons",
+          "request": {
+            "name": "Message card buttons",
+            "description": {
+              "content": "Message cards can be made interactive by attaching buttons to them. These buttons allow users to perform actions directly from the card without leaving the conversation.<br><br>\nA single message card can include a maximum of 5 buttons.\nTo learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "chats",
+                ":CHAT_ID",
+                "messages"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "CHAT_ID",
+                  "description": "(Required) Unique identifier of the chat where the message needs to be sent."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "ZohoCliq.Bots.READ ZohoCliq.Bots.CREATE ZohoCliq.Bots.UPDATE ZohoCliq.Bots.DELETE ZohoCliq.Webhooks.CREATE ZohoCliq.BotMessages.CREATE ZohoCliq.Channels.UPDATE"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://accounts.zoho.com/oauth/v2/auth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "implicit"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"<string>\",\n  \"card\": {\n    \"title\": \"<string>\",\n    \"theme\": \"<string>\",\n    \"thumbnail\": \"<uri>\"\n  },\n  \"buttons\": [\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    },\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    }\n  ],\n  \"confirm\": {\n    \"title\": \"<string>\",\n    \"input\": \"<string>\",\n    \"button_label\": \"<string>\",\n    \"description\": \"<string>\",\n    \"emotion\": \"<string>\",\n    \"cancel_button_label\": \"<string>\",\n    \"mandatory\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7ebfab6d-079c-4487-a560-42687d40c3db",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"New interns will be joining these teams from July.\",\n  \"card\": {\n    \"title\": \"ANNOUNCEMENT\",\n    \"theme\": \"modern-inline\",\n    \"thumbnail\": \"https://www.zoho.com/cliq/help/restapi/images/announce_icon.png\"\n  },\n  \"buttons\": [\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    },\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    }\n  ],\n  \"confirm\": {\n    \"title\": \"<string>\",\n    \"input\": \"<string>\",\n    \"button_label\": \"<string>\",\n    \"description\": \"<string>\",\n    \"emotion\": \"<string>\",\n    \"cancel_button_label\": \"<string>\",\n    \"mandatory\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"Response_Code\": \"204 No response\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "df4b42e4-9a03-4c5f-b0b8-600ec898e18d",
+              "name": "Bad Request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"New interns will be joining these teams from July.\",\n  \"card\": {\n    \"title\": \"ANNOUNCEMENT\",\n    \"theme\": \"modern-inline\",\n    \"thumbnail\": \"https://www.zoho.com/cliq/help/restapi/images/announce_icon.png\"\n  },\n  \"buttons\": [\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    },\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    }\n  ],\n  \"confirm\": {\n    \"title\": \"<string>\",\n    \"input\": \"<string>\",\n    \"button_label\": \"<string>\",\n    \"description\": \"<string>\",\n    \"emotion\": \"<string>\",\n    \"cancel_button_label\": \"<string>\",\n    \"mandatory\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The request cannot be performed. Usually because of malformed parameter or missing parameter.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "39e37380-5f6c-4ef7-9ff8-507f5069270b",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"New interns will be joining these teams from July.\",\n  \"card\": {\n    \"title\": \"ANNOUNCEMENT\",\n    \"theme\": \"modern-inline\",\n    \"thumbnail\": \"https://www.zoho.com/cliq/help/restapi/images/announce_icon.png\"\n  },\n  \"buttons\": [\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    },\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    }\n  ],\n  \"confirm\": {\n    \"title\": \"<string>\",\n    \"input\": \"<string>\",\n    \"button_label\": \"<string>\",\n    \"description\": \"<string>\",\n    \"emotion\": \"<string>\",\n    \"cancel_button_label\": \"<string>\",\n    \"mandatory\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Request was rejected because of invalid AuthToken.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4c59315f-0208-49f4-8806-99393e2a011b",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"New interns will be joining these teams from July.\",\n  \"card\": {\n    \"title\": \"ANNOUNCEMENT\",\n    \"theme\": \"modern-inline\",\n    \"thumbnail\": \"https://www.zoho.com/cliq/help/restapi/images/announce_icon.png\"\n  },\n  \"buttons\": [\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    },\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    }\n  ],\n  \"confirm\": {\n    \"title\": \"<string>\",\n    \"input\": \"<string>\",\n    \"button_label\": \"<string>\",\n    \"description\": \"<string>\",\n    \"emotion\": \"<string>\",\n    \"cancel_button_label\": \"<string>\",\n    \"mandatory\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The user does not have enough permission or possibly not an user of the respective organization to access the resource.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6555ac87-a30b-4461-ba4f-cac2b8d101b7",
+              "name": "Invalid URL.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"New interns will be joining these teams from July.\",\n  \"card\": {\n    \"title\": \"ANNOUNCEMENT\",\n    \"theme\": \"modern-inline\",\n    \"thumbnail\": \"https://www.zoho.com/cliq/help/restapi/images/announce_icon.png\"\n  },\n  \"buttons\": [\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    },\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    }\n  ],\n  \"confirm\": {\n    \"title\": \"<string>\",\n    \"input\": \"<string>\",\n    \"button_label\": \"<string>\",\n    \"description\": \"<string>\",\n    \"emotion\": \"<string>\",\n    \"cancel_button_label\": \"<string>\",\n    \"mandatory\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bee61cf9-3144-41d4-a032-74a1fba8245a",
+              "name": "Method Not Allowed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"New interns will be joining these teams from July.\",\n  \"card\": {\n    \"title\": \"ANNOUNCEMENT\",\n    \"theme\": \"modern-inline\",\n    \"thumbnail\": \"https://www.zoho.com/cliq/help/restapi/images/announce_icon.png\"\n  },\n  \"buttons\": [\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    },\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    }\n  ],\n  \"confirm\": {\n    \"title\": \"<string>\",\n    \"input\": \"<string>\",\n    \"button_label\": \"<string>\",\n    \"description\": \"<string>\",\n    \"emotion\": \"<string>\",\n    \"cancel_button_label\": \"<string>\",\n    \"mandatory\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0a2913dc-67ba-4245-b8d3-eaabc55d3bb6",
+              "name": "Not Acceptable.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"New interns will be joining these teams from July.\",\n  \"card\": {\n    \"title\": \"ANNOUNCEMENT\",\n    \"theme\": \"modern-inline\",\n    \"thumbnail\": \"https://www.zoho.com/cliq/help/restapi/images/announce_icon.png\"\n  },\n  \"buttons\": [\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    },\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    }\n  ],\n  \"confirm\": {\n    \"title\": \"<string>\",\n    \"input\": \"<string>\",\n    \"button_label\": \"<string>\",\n    \"description\": \"<string>\",\n    \"emotion\": \"<string>\",\n    \"cancel_button_label\": \"<string>\",\n    \"mandatory\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The response has been received but the requested response type is not supported by the browser.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "98441dcb-358a-4342-983e-52633666921b",
+              "name": "Too many requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"New interns will be joining these teams from July.\",\n  \"card\": {\n    \"title\": \"ANNOUNCEMENT\",\n    \"theme\": \"modern-inline\",\n    \"thumbnail\": \"https://www.zoho.com/cliq/help/restapi/images/announce_icon.png\"\n  },\n  \"buttons\": [\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    },\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    }\n  ],\n  \"confirm\": {\n    \"title\": \"<string>\",\n    \"input\": \"<string>\",\n    \"button_label\": \"<string>\",\n    \"description\": \"<string>\",\n    \"emotion\": \"<string>\",\n    \"cancel_button_label\": \"<string>\",\n    \"mandatory\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too many requests within a certain time frame.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cd85ee45-d7ce-4e67-9def-1233a916239b",
+              "name": "Internal Server Error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"New interns will be joining these teams from July.\",\n  \"card\": {\n    \"title\": \"ANNOUNCEMENT\",\n    \"theme\": \"modern-inline\",\n    \"thumbnail\": \"https://www.zoho.com/cliq/help/restapi/images/announce_icon.png\"\n  },\n  \"buttons\": [\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    },\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    }\n  ],\n  \"confirm\": {\n    \"title\": \"<string>\",\n    \"input\": \"<string>\",\n    \"button_label\": \"<string>\",\n    \"description\": \"<string>\",\n    \"emotion\": \"<string>\",\n    \"cancel_button_label\": \"<string>\",\n    \"mandatory\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Cliq server encountered an error which prevents it from fulfilling the request.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1930d8b4-a1db-4afc-ad0c-33ee5151c065",
+          "name": "Confirmation popup",
+          "request": {
+            "name": "Confirmation popup",
+            "description": {
+              "content": "The confirmation popup displays a dialogue box before executing a button action. It is used to collect user confirmation and optional input (such as authentication keys, feedback, or remarks) before proceeding.<br><br>\nThis object is optional and can be included in the button's action object attributes as a JSON object called \"confirm.\" It contains properties for the confirmation dialogue that appears before the action is executed.<br><br> \nYou can include this based on your specific requirements. When configured, the action will only execute after the user confirms their choice.\nTo learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "chats",
+                ":CHAT_ID1",
+                "messages"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "CHAT_ID1",
+                  "description": "(Required) Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID1</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Confirmation popup\" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload includes the <code>confirm</code> object.\n"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "ZohoCliq.Bots.READ ZohoCliq.Bots.CREATE ZohoCliq.Bots.UPDATE ZohoCliq.Bots.DELETE ZohoCliq.Webhooks.CREATE ZohoCliq.BotMessages.CREATE ZohoCliq.Channels.UPDATE"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://accounts.zoho.com/oauth/v2/auth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "implicit"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"<string>\",\n  \"card\": {\n    \"title\": \"<string>\",\n    \"theme\": \"<string>\",\n    \"thumbnail\": \"<uri>\"\n  },\n  \"buttons\": [\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    },\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    }\n  ],\n  \"confirm\": {\n    \"title\": \"<string>\",\n    \"input\": \"<string>\",\n    \"button_label\": \"<string>\",\n    \"description\": \"<string>\",\n    \"emotion\": \"<string>\",\n    \"cancel_button_label\": \"<string>\",\n    \"mandatory\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8ca09a83-6be1-4433-8b86-a4e8da746fc9",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID1",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID1",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID1</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Confirmation popup\" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload includes the <code>confirm</code> object.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"New interns will be joining these teams from July.\",\n  \"card\": {\n    \"title\": \"ANNOUNCEMENT\",\n    \"theme\": \"modern-inline\",\n    \"thumbnail\": \"https://www.zoho.com/cliq/help/restapi/images/announce_icon.png\"\n  },\n  \"buttons\": [\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    },\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    }\n  ],\n  \"confirm\": {\n    \"title\": \"<string>\",\n    \"input\": \"<string>\",\n    \"button_label\": \"<string>\",\n    \"description\": \"<string>\",\n    \"emotion\": \"<string>\",\n    \"cancel_button_label\": \"<string>\",\n    \"mandatory\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"Response_Code\": \"204 No response\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "21b550e2-6cba-44a8-9f25-b12da0d6b360",
+              "name": "Bad Request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID1",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID1",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID1</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Confirmation popup\" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload includes the <code>confirm</code> object.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"New interns will be joining these teams from July.\",\n  \"card\": {\n    \"title\": \"ANNOUNCEMENT\",\n    \"theme\": \"modern-inline\",\n    \"thumbnail\": \"https://www.zoho.com/cliq/help/restapi/images/announce_icon.png\"\n  },\n  \"buttons\": [\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    },\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    }\n  ],\n  \"confirm\": {\n    \"title\": \"<string>\",\n    \"input\": \"<string>\",\n    \"button_label\": \"<string>\",\n    \"description\": \"<string>\",\n    \"emotion\": \"<string>\",\n    \"cancel_button_label\": \"<string>\",\n    \"mandatory\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The request cannot be performed. Usually because of malformed parameter or missing parameter.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dbe82bb1-ed55-4b72-9c0b-ccff01ae3c00",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID1",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID1",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID1</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Confirmation popup\" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload includes the <code>confirm</code> object.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"New interns will be joining these teams from July.\",\n  \"card\": {\n    \"title\": \"ANNOUNCEMENT\",\n    \"theme\": \"modern-inline\",\n    \"thumbnail\": \"https://www.zoho.com/cliq/help/restapi/images/announce_icon.png\"\n  },\n  \"buttons\": [\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    },\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    }\n  ],\n  \"confirm\": {\n    \"title\": \"<string>\",\n    \"input\": \"<string>\",\n    \"button_label\": \"<string>\",\n    \"description\": \"<string>\",\n    \"emotion\": \"<string>\",\n    \"cancel_button_label\": \"<string>\",\n    \"mandatory\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Request was rejected because of invalid AuthToken.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e2b57370-d65c-46b9-bd7a-a6f40e6afce2",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID1",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID1",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID1</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Confirmation popup\" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload includes the <code>confirm</code> object.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"New interns will be joining these teams from July.\",\n  \"card\": {\n    \"title\": \"ANNOUNCEMENT\",\n    \"theme\": \"modern-inline\",\n    \"thumbnail\": \"https://www.zoho.com/cliq/help/restapi/images/announce_icon.png\"\n  },\n  \"buttons\": [\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    },\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    }\n  ],\n  \"confirm\": {\n    \"title\": \"<string>\",\n    \"input\": \"<string>\",\n    \"button_label\": \"<string>\",\n    \"description\": \"<string>\",\n    \"emotion\": \"<string>\",\n    \"cancel_button_label\": \"<string>\",\n    \"mandatory\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The user does not have enough permission or possibly not an user of the respective organization to access the resource.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "901d2d50-a7c1-4f9b-a8b9-3aec7aadee7d",
+              "name": "Invalid URL.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID1",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID1",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID1</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Confirmation popup\" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload includes the <code>confirm</code> object.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"New interns will be joining these teams from July.\",\n  \"card\": {\n    \"title\": \"ANNOUNCEMENT\",\n    \"theme\": \"modern-inline\",\n    \"thumbnail\": \"https://www.zoho.com/cliq/help/restapi/images/announce_icon.png\"\n  },\n  \"buttons\": [\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    },\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    }\n  ],\n  \"confirm\": {\n    \"title\": \"<string>\",\n    \"input\": \"<string>\",\n    \"button_label\": \"<string>\",\n    \"description\": \"<string>\",\n    \"emotion\": \"<string>\",\n    \"cancel_button_label\": \"<string>\",\n    \"mandatory\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1a2b0f74-ff01-4a01-b32f-931e3b623aab",
+              "name": "Method Not Allowed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID1",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID1",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID1</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Confirmation popup\" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload includes the <code>confirm</code> object.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"New interns will be joining these teams from July.\",\n  \"card\": {\n    \"title\": \"ANNOUNCEMENT\",\n    \"theme\": \"modern-inline\",\n    \"thumbnail\": \"https://www.zoho.com/cliq/help/restapi/images/announce_icon.png\"\n  },\n  \"buttons\": [\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    },\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    }\n  ],\n  \"confirm\": {\n    \"title\": \"<string>\",\n    \"input\": \"<string>\",\n    \"button_label\": \"<string>\",\n    \"description\": \"<string>\",\n    \"emotion\": \"<string>\",\n    \"cancel_button_label\": \"<string>\",\n    \"mandatory\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "759581cd-8aa9-4ec3-ae2b-78bfa0de3b03",
+              "name": "Not Acceptable.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID1",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID1",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID1</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Confirmation popup\" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload includes the <code>confirm</code> object.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"New interns will be joining these teams from July.\",\n  \"card\": {\n    \"title\": \"ANNOUNCEMENT\",\n    \"theme\": \"modern-inline\",\n    \"thumbnail\": \"https://www.zoho.com/cliq/help/restapi/images/announce_icon.png\"\n  },\n  \"buttons\": [\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    },\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    }\n  ],\n  \"confirm\": {\n    \"title\": \"<string>\",\n    \"input\": \"<string>\",\n    \"button_label\": \"<string>\",\n    \"description\": \"<string>\",\n    \"emotion\": \"<string>\",\n    \"cancel_button_label\": \"<string>\",\n    \"mandatory\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The response has been received but the requested response type is not supported by the browser.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dc2e646b-5c64-4ce1-8793-7e0b9bad4aaf",
+              "name": "Too many requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID1",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID1",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID1</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Confirmation popup\" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload includes the <code>confirm</code> object.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"New interns will be joining these teams from July.\",\n  \"card\": {\n    \"title\": \"ANNOUNCEMENT\",\n    \"theme\": \"modern-inline\",\n    \"thumbnail\": \"https://www.zoho.com/cliq/help/restapi/images/announce_icon.png\"\n  },\n  \"buttons\": [\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    },\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    }\n  ],\n  \"confirm\": {\n    \"title\": \"<string>\",\n    \"input\": \"<string>\",\n    \"button_label\": \"<string>\",\n    \"description\": \"<string>\",\n    \"emotion\": \"<string>\",\n    \"cancel_button_label\": \"<string>\",\n    \"mandatory\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too many requests within a certain time frame.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "57a5b6ec-36e4-451a-b972-be5e61a7ed29",
+              "name": "Internal Server Error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID1",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID1",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID1</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Confirmation popup\" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload includes the <code>confirm</code> object.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"New interns will be joining these teams from July.\",\n  \"card\": {\n    \"title\": \"ANNOUNCEMENT\",\n    \"theme\": \"modern-inline\",\n    \"thumbnail\": \"https://www.zoho.com/cliq/help/restapi/images/announce_icon.png\"\n  },\n  \"buttons\": [\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    },\n    {\n      \"label\": \"<string>\",\n      \"type\": \"<string>\",\n      \"action\": {\n        \"type\": \"<string>\",\n        \"data\": \"<object>\"\n      },\n      \"hint\": \"<string>\",\n      \"key\": \"<string>\"\n    }\n  ],\n  \"confirm\": {\n    \"title\": \"<string>\",\n    \"input\": \"<string>\",\n    \"button_label\": \"<string>\",\n    \"description\": \"<string>\",\n    \"emotion\": \"<string>\",\n    \"cancel_button_label\": \"<string>\",\n    \"mandatory\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Cliq server encountered an error which prevents it from fulfilling the request.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ec62ce6b-8c6f-4358-a11c-95b0640e1048",
+          "name": "Instant buttons",
+          "request": {
+            "name": "Instant buttons",
+            "description": {
+              "content": "Instant buttons can be easily specified along with the message text. Instant buttons, when clicked, can perform an action in the following ways:<br><br>\n<ul>\n  <li><a href=\"#instant-invoke-function\"><b>invoke.function</b></a>: Triggering a deluge task through invoke function.</li>\n  <li><a href=\"#instant-system-api\"><b>system.api</b></a>: Perform any of the below given system actions:\n    <ul>\n      <li>Audio Call</li>\n      <li>Video Call</li>\n      <li>Start Chat</li>\n      <li>Contact Invite</li>\n      <li>Location Access</li>\n    </ul>\n  </li>\n  <li><a href=\"#instant-copy\"><b>copy</b></a>: Copies specified text to the user's clipboard.</li>\n</ul>\nInstant buttons are defined as references within the message text and can be used to create interactive messages without needing a separate buttons array in the request payload. This makes them quick and easy to implement for simple use cases.\n<br>\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "chats",
+                ":CHAT_ID2",
+                "messages"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "CHAT_ID2",
+                  "description": "(Required) Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID2</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Instant buttons\" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload uses the <code>references</code> object for inline button definitions.\n"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "ZohoCliq.Bots.READ ZohoCliq.Bots.CREATE ZohoCliq.Bots.UPDATE ZohoCliq.Bots.DELETE ZohoCliq.Webhooks.CREATE ZohoCliq.BotMessages.CREATE ZohoCliq.Channels.UPDATE"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://accounts.zoho.com/oauth/v2/auth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "implicit"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"<string>\",\n  \"references\": {\n    \"reference_key\": {\n      \"type\": \"<string>\",\n      \"object\": {\n        \"label\": \"<string>\",\n        \"action\": {\n          \"type\": \"<string>\",\n          \"data\": \"<object>\"\n        },\n        \"type\": \"<string>\",\n        \"arguments\": {\n          \"key_0\": 9781,\n          \"key_1\": 5517.670125185061\n        }\n      }\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fcf669e0-79d3-4e0a-91d8-ee8280a26091",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID2",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID2",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID2</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Instant buttons\" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload uses the <code>references</code> object for inline button definitions.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Who's up for lunch after the match on Friday? [Yes]($1)  [Call Support]($2)  [Copy Details]($3)\",\n  \"references\": {\n    \"1\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Yes\",\n        \"action\": {\n          \"type\": \"invoke.function\",\n          \"data\": {\n            \"name\": \"teammatch\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    },\n    \"2\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Call Support\",\n        \"action\": {\n          \"type\": \"system.api\",\n          \"data\": {\n            \"api\": \"videocall/12345678\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    },\n    \"3\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Copy Details\",\n        \"action\": {\n          \"type\": \"copy\",\n          \"data\": {\n            \"text\": \"Match Details: Friday 6 PM at Central Stadium\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"Response_Code\": \"204 No response\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "93b3deb0-28c7-4ecb-93ba-7a54c94b2d2e",
+              "name": "Bad Request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID2",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID2",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID2</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Instant buttons\" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload uses the <code>references</code> object for inline button definitions.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Who's up for lunch after the match on Friday? [Yes]($1)  [Call Support]($2)  [Copy Details]($3)\",\n  \"references\": {\n    \"1\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Yes\",\n        \"action\": {\n          \"type\": \"invoke.function\",\n          \"data\": {\n            \"name\": \"teammatch\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    },\n    \"2\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Call Support\",\n        \"action\": {\n          \"type\": \"system.api\",\n          \"data\": {\n            \"api\": \"videocall/12345678\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    },\n    \"3\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Copy Details\",\n        \"action\": {\n          \"type\": \"copy\",\n          \"data\": {\n            \"text\": \"Match Details: Friday 6 PM at Central Stadium\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The request cannot be performed. Usually because of malformed parameter or missing parameter.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f28603cb-acac-4a17-a147-532ec6d67afc",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID2",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID2",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID2</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Instant buttons\" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload uses the <code>references</code> object for inline button definitions.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Who's up for lunch after the match on Friday? [Yes]($1)  [Call Support]($2)  [Copy Details]($3)\",\n  \"references\": {\n    \"1\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Yes\",\n        \"action\": {\n          \"type\": \"invoke.function\",\n          \"data\": {\n            \"name\": \"teammatch\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    },\n    \"2\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Call Support\",\n        \"action\": {\n          \"type\": \"system.api\",\n          \"data\": {\n            \"api\": \"videocall/12345678\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    },\n    \"3\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Copy Details\",\n        \"action\": {\n          \"type\": \"copy\",\n          \"data\": {\n            \"text\": \"Match Details: Friday 6 PM at Central Stadium\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Request was rejected because of invalid AuthToken.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "841f6598-3329-4187-b4d5-6214b759a085",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID2",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID2",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID2</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Instant buttons\" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload uses the <code>references</code> object for inline button definitions.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Who's up for lunch after the match on Friday? [Yes]($1)  [Call Support]($2)  [Copy Details]($3)\",\n  \"references\": {\n    \"1\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Yes\",\n        \"action\": {\n          \"type\": \"invoke.function\",\n          \"data\": {\n            \"name\": \"teammatch\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    },\n    \"2\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Call Support\",\n        \"action\": {\n          \"type\": \"system.api\",\n          \"data\": {\n            \"api\": \"videocall/12345678\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    },\n    \"3\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Copy Details\",\n        \"action\": {\n          \"type\": \"copy\",\n          \"data\": {\n            \"text\": \"Match Details: Friday 6 PM at Central Stadium\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The user does not have enough permission or possibly not an user of the respective organization to access the resource.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0b2e0d11-b97c-4bf1-94ad-6d129e7f9c1b",
+              "name": "Invalid URL.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID2",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID2",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID2</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Instant buttons\" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload uses the <code>references</code> object for inline button definitions.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Who's up for lunch after the match on Friday? [Yes]($1)  [Call Support]($2)  [Copy Details]($3)\",\n  \"references\": {\n    \"1\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Yes\",\n        \"action\": {\n          \"type\": \"invoke.function\",\n          \"data\": {\n            \"name\": \"teammatch\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    },\n    \"2\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Call Support\",\n        \"action\": {\n          \"type\": \"system.api\",\n          \"data\": {\n            \"api\": \"videocall/12345678\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    },\n    \"3\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Copy Details\",\n        \"action\": {\n          \"type\": \"copy\",\n          \"data\": {\n            \"text\": \"Match Details: Friday 6 PM at Central Stadium\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The URL you've sent is wrong. It's possible that the resource you've requested has been moved to another URL.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "84d668b7-89cd-4ec4-a9c8-3f94c409942a",
+              "name": "Method Not Allowed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID2",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID2",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID2</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Instant buttons\" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload uses the <code>references</code> object for inline button definitions.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Who's up for lunch after the match on Friday? [Yes]($1)  [Call Support]($2)  [Copy Details]($3)\",\n  \"references\": {\n    \"1\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Yes\",\n        \"action\": {\n          \"type\": \"invoke.function\",\n          \"data\": {\n            \"name\": \"teammatch\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    },\n    \"2\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Call Support\",\n        \"action\": {\n          \"type\": \"system.api\",\n          \"data\": {\n            \"api\": \"videocall/12345678\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    },\n    \"3\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Copy Details\",\n        \"action\": {\n          \"type\": \"copy\",\n          \"data\": {\n            \"text\": \"Match Details: Friday 6 PM at Central Stadium\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The requested resource does not support the HTTP method used. For example, requesting List of all customers API with PUT as the HTTP method.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5cf987f2-8ccf-41bb-a52f-d312a6df1df5",
+              "name": "Not Acceptable.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID2",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID2",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID2</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Instant buttons\" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload uses the <code>references</code> object for inline button definitions.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Who's up for lunch after the match on Friday? [Yes]($1)  [Call Support]($2)  [Copy Details]($3)\",\n  \"references\": {\n    \"1\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Yes\",\n        \"action\": {\n          \"type\": \"invoke.function\",\n          \"data\": {\n            \"name\": \"teammatch\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    },\n    \"2\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Call Support\",\n        \"action\": {\n          \"type\": \"system.api\",\n          \"data\": {\n            \"api\": \"videocall/12345678\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    },\n    \"3\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Copy Details\",\n        \"action\": {\n          \"type\": \"copy\",\n          \"data\": {\n            \"text\": \"Match Details: Friday 6 PM at Central Stadium\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The response has been received but the requested response type is not supported by the browser.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c9ec9a6a-ce46-48a9-8f10-dd85e37133a7",
+              "name": "Too many requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID2",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID2",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID2</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Instant buttons\" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload uses the <code>references</code> object for inline button definitions.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Who's up for lunch after the match on Friday? [Yes]($1)  [Call Support]($2)  [Copy Details]($3)\",\n  \"references\": {\n    \"1\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Yes\",\n        \"action\": {\n          \"type\": \"invoke.function\",\n          \"data\": {\n            \"name\": \"teammatch\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    },\n    \"2\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Call Support\",\n        \"action\": {\n          \"type\": \"system.api\",\n          \"data\": {\n            \"api\": \"videocall/12345678\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    },\n    \"3\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Copy Details\",\n        \"action\": {\n          \"type\": \"copy\",\n          \"data\": {\n            \"text\": \"Match Details: Friday 6 PM at Central Stadium\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too many requests within a certain time frame.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "74771246-56d2-40bd-ab0f-e14cdf5be358",
+              "name": "Internal Server Error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chats",
+                    ":CHAT_ID2",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "CHAT_ID2",
+                      "description": "(Required) Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID2</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Instant buttons\" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload uses the <code>references</code> object for inline button definitions.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Who's up for lunch after the match on Friday? [Yes]($1)  [Call Support]($2)  [Copy Details]($3)\",\n  \"references\": {\n    \"1\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Yes\",\n        \"action\": {\n          \"type\": \"invoke.function\",\n          \"data\": {\n            \"name\": \"teammatch\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    },\n    \"2\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Call Support\",\n        \"action\": {\n          \"type\": \"system.api\",\n          \"data\": {\n            \"api\": \"videocall/12345678\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    },\n    \"3\": {\n      \"type\": \"button\",\n      \"object\": {\n        \"label\": \"Copy Details\",\n        \"action\": {\n          \"type\": \"copy\",\n          \"data\": {\n            \"text\": \"Match Details: Friday 6 PM at Central Stadium\"\n          }\n        },\n        \"type\": \"+\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Cliq server encountered an error which prevents it from fulfilling the request.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://cliq.zoho.com/api/v3",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "d6cfb105-6230-48d6-8ae8-c8cdb3a42f9b",
+    "name": "Bots buttons API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "<p>Bots are conversational assistants designed to automate repetitive tasks and manage simple user interactions. Their behavior is fully customizable through predefined Bot Handlers, which are activated by specific actions or through Webhooks that communicate with your own external server.</p> <p>For more information about Bots, please refer to the <b><a href=\"https://www.zoho.com/cliq/help/platform/bots.html\" target=\"_blank\">Bots Help Documentation</a></b>.</p> <p><b>Bot Handlers</b></p> <ul>\n  <li>Bot Handlers are the building blocks of a bot's functionality. Each handler is associated with a specific trigger event, such as receiving a direct message, being @mentioned in a channel, or a user subscribing to the bot.</li>\n  <li>When the trigger event occurs, the corresponding handler executes it's script to perform actions like sending messages, making API calls, or updating data.</li>\n  <li>By configuring different handlers, you can create bots that respond intelligently to various user interactions and automate complex workflows within Zoho Cliq.</li>\n</ul> <p><b>Types of Bot Handlers</b></p> <table style=\"border-collapse: collapse; width: 100%;\">\n  <tr>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Handler</th>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Description</th>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Menu Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Adds up to 5 quick-action items to the bot's chat menu. Triggered when a user interacts with the menu.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Message Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot receives a message.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Welcome Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Defines the greeting message sent when a user subscribes to the bot.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Mention Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot is @mentioned in a chat or channel.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Incoming Webhook Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Allows external services to post messages into the bot via outgoing webhooks.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Context Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Manages multi-turn conversations, maintaining context across a user's interaction with the bot.</td>\n  </tr>\n</table> <p><b>What you can do with the Bots API?</b></p> <p>With the Bots API, you can retrieve information about a specific bot, list all bots within your organization, manage configurations specific to handlers, trigger bot calls programmatically, manage subscribers, and much more.</p> <p>Each bot has an <code>execution_type</code> that defines how its handlers run when a trigger event occurs. The Bots API allows developers to create two types of bots:</p> <p id=\"deluge-bots\"><b>Deluge Bots (default)</b><br> Deluge bot executes handler logic using Zoho's Deluge scripting language, hosted entirely within the Zoho Cliq Developer platform, where no external server is required.</p> <ul>\n  <li>If <code>execution_type</code> is not specified during bot creation, it defaults to deluge.</li>\n  <li>Handler logic is defined as a script field (Deluge source code) when creating or updating handlers.</li>\n  <li>Suitable for teams that want to build and manage bot logic entirely within Zoho's ecosystem.</li>\n</ul> <p id=\"webhook-bots\"><b>Webhook Bots</b><br> A Webhook bot delegates all handler execution to your own external server. When a trigger event fires, Zoho Cliq sends an HTTP POST request to the <code>execution_url</code> you configure, and your server processes the event and returns a response.</p> <ul>\n  <li>To create a Webhook bot, set <code>execution_type</code> to webhook during bot creation and provide the <code>execution_url</code> where event payloads should be sent.</li>\n  <li>Your server must be publicly accessible and able to handle incoming POST requests from Zoho Cliq.</li>\n  <li>Ideal for teams seeking complete control over bot logic and possessing the resources to manage an external server. Also suitable for integrations requiring access to external databases, third-party APIs, or custom business logic that cannot be executed in Deluge.</li>\n</ul>\n",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bots buttons API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "buttons",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Message card buttons",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID/messages",
+            "params": [
+              {
+                "name": "CHAT_ID",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat where the message needs to be sent."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Message cards can be made interactive by attaching buttons to them. These buttons allow users to perform actions directly from the card without leaving the conversation.<br><br>\nA single message card can include a maximum of 5 buttons.\nTo learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.\n"
+        },
+        {
+          "info": {
+            "name": "Confirmation popup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID1/messages",
+            "params": [
+              {
+                "name": "CHAT_ID1",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID1</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Confirmation popup\" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload includes the <code>confirm</code> object.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "The confirmation popup displays a dialogue box before executing a button action. It is used to collect user confirmation and optional input (such as authentication keys, feedback, or remarks) before proceeding.<br><br>\nThis object is optional and can be included in the button's action object attributes as a JSON object called \"confirm.\" It contains properties for the confirmation dialogue that appears before the action is executed.<br><br> \nYou can include this based on your specific requirement"
+        },
+        {
+          "info": {
+            "name": "Instant buttons",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cliq.zoho.com/api/v3/chats/:CHAT_ID2/messages",
+            "params": [
+              {
+                "name": "CHAT_ID2",
+                "value": "CHAT_ID",
+                "type": "path",
+                "description": "Unique identifier of the chat where the message needs to be sent. To learn how to retrieve this ID, see <a href=\"/cliq/help/restapi/v3/glossary/#CHAT_ID\">CHAT_ID</a> in the Glossary page.<br><br>\n<b>Note:</b> <code>CHAT_ID2</code> is a documentation alias for <code>CHAT_ID</code>, used to document the \"Instant buttons\" variation separately while sharing the same <code>/chats/{CHAT_ID}/messages</code> endpoint, since the path is unchanged and only the request payload uses the <code>references</code> object for inline button definitions.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "implicit",
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "credentials": {
+                "clientId": "{{clientId}}"
+              }
+            }
+          },
+          "docs": "Instant buttons can be easily specified along with the message text. Instant buttons, when clicked, can perform an action in the following ways:<br><br>\n<ul>\n  <li><a href=\"#instant-invoke-function\"><b>invoke.function</b></a>: Triggering a deluge task through invoke function.</li>\n  <li><a href=\"#instant-system-api\"><b>system.api</b></a>: Perform any of the below given system actions:\n    <ul>\n      <li>Audio Call</li>\n      <li>Video Call</li>\n      <li>Start Chat</li>\n      <li>Contact Invite<"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
