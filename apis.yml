@@ -24,6 +24,14 @@ tags:
   - Team Collaboration
   - Chat
   - Bots
+  - Webhook
+  - Slash Commands
+  - Communications
+tags_raw:
+  - Messaging
+  - Team Collaboration
+  - Chat
+  - Bots
   - Webhooks
   - Slash Commands
   - Communication
@@ -86,6 +94,8 @@ apis:
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
   tags:
+  - Chats
+  tags_raw:
   - chats
   properties:
   - type: OpenAPI
@@ -216,6 +226,8 @@ apis:
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
   tags:
+  - Mentions
+  tags_raw:
   - mentions
   properties:
   - type: OpenAPI
@@ -322,6 +334,8 @@ apis:
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
   tags:
+  - Message
+  tags_raw:
   - messages
   properties:
   - type: OpenAPI
@@ -456,6 +470,8 @@ apis:
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
   tags:
+  - Reminders
+  tags_raw:
   - reminders
   properties:
   - type: OpenAPI
@@ -482,6 +498,8 @@ apis:
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
   tags:
+  - Scheduled Messages
+  tags_raw:
   - scheduledmessages
   properties:
   - type: OpenAPI
@@ -508,6 +526,8 @@ apis:
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
   tags:
+  - Slash Commands
+  tags_raw:
   - slashcommands
   properties:
   - type: OpenAPI
@@ -560,6 +580,8 @@ apis:
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
   tags:
+  - Threads
+  tags_raw:
   - threads
   properties:
   - type: OpenAPI
@@ -586,6 +608,8 @@ apis:
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
   tags:
+  - User Preferences
+  tags_raw:
   - userpreferences
   properties:
   - type: OpenAPI
