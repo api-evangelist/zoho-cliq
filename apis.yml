@@ -510,7 +510,7 @@ apis:
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
   tags:
-  - scheduledmessages
+  - Scheduled Messages
   tags_raw:
   - scheduledmessages
   properties:
@@ -538,7 +538,7 @@ apis:
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
   tags:
-  - slashcommands
+  - Slash Commands
   tags_raw:
   - slashcommands
   properties:
@@ -620,7 +620,7 @@ apis:
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
   tags:
-  - userpreferences
+  - User Preferences
   tags_raw:
   - userpreferences
   properties:
