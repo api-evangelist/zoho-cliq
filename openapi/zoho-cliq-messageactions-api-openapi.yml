@@ -1,6 +1,6 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Bots messageactions API
+  title: Bots Messageactions API
   description: "<p>Bots are conversational assistants designed to automate repetitive tasks and manage simple user interactions. Their behavior is fully customizable through predefined Bot Handlers, which are activated by specific actions or through Webhooks that communicate with your own external server.</p> <p>For more information about Bots, please refer to the <b><a href=\"https://www.zoho.com/cliq/help/platform/bots.html\" target=\"_blank\">Bots Help Documentation</a></b>.</p> <p><b>Bot Handlers</b></p> <ul>\n  <li>Bot Handlers are the building blocks of a bot's functionality. Each handler is associated with a specific trigger event, such as receiving a direct message, being @mentioned in a channel, or a user subscribing to the bot.</li>\n  <li>When the trigger event occurs, the corresponding handler executes it's script to perform actions like sending messages, making API calls, or updating data.</li>\n  <li>By configuring different handlers, you can create bots that respond intelligently to various user interactions and automate complex workflows within Zoho Cliq.</li>\n</ul> <p><b>Types of Bot Handlers</b></p> <table style=\"border-collapse: collapse; width: 100%;\">\n  <tr>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Handler</th>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Description</th>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Menu Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Adds up to 5 quick-action items to the bot's chat menu. Triggered when a user interacts with the menu.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Message Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot receives a message.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Welcome Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Defines the greeting message sent when a user subscribes to the bot.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Mention Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot is @mentioned in a chat or channel.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Incoming Webhook Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Allows external services to post messages into the bot via outgoing webhooks.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Context Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Manages multi-turn conversations, maintaining context across a user's interaction with the bot.</td>\n  </tr>\n</table> <p><b>What you can do with the Bots API?</b></p> <p>With the Bots API, you can retrieve information about a specific bot, list all bots within your organization, manage configurations specific to handlers, trigger bot calls programmatically, manage subscribers, and much more.</p> <p>Each bot has an <code>execution_type</code> that defines how its handlers run when a trigger event occurs. The Bots API allows developers to create two types of bots:</p> <p id=\"deluge-bots\"><b>Deluge Bots (default)</b><br> Deluge bot executes handler logic using Zoho's Deluge scripting language, hosted entirely within the Zoho Cliq Developer platform, where no external server is required.</p> <ul>\n  <li>If <code>execution_type</code> is not specified during bot creation, it defaults to deluge.</li>\n  <li>Handler logic is defined as a script field (Deluge source code) when creating or updating handlers.</li>\n  <li>Suitable for teams that want to build and manage bot logic entirely within Zoho's ecosystem.</li>\n</ul> <p id=\"webhook-bots\"><b>Webhook Bots</b><br> A Webhook bot delegates all handler execution to your own external server. When a trigger event fires, Zoho Cliq sends an HTTP POST request to the <code>execution_url</code> you configure, and your server processes the event and returns a response.</p> <ul>\n  <li>To create a Webhook bot, set <code>execution_type</code> to webhook during bot creation and provide the <code>execution_url</code> where event payloads should be sent.</li>\n  <li>Your server must be publicly accessible and able to handle incoming POST requests from Zoho Cliq.</li>\n  <li>Ideal for teams seeking complete control over bot logic and possessing the resources to manage an external server. Also suitable for integrations requiring access to external databases, third-party APIs, or custom business logic that cannot be executed in Deluge.</li>\n</ul>\n"
   contact: {}
   version: 1.0.0
@@ -1158,171 +1158,6 @@ paths:
       - messageactions
 components:
   schemas:
-    MessageActionHandlerResponse:
-      type: object
-      description: Response schema for message action handler operations.
-      properties:
-        url:
-          type: string
-        type:
-          type: string
-          example: execution_handler
-        data:
-          type: object
-          additionalProperties: true
-    updateMessageActionHandlerResponse:
-      type: object
-      description: Response schema for message action handler update operations.
-      properties:
-        url:
-          type: string
-          description: API endpoint URL for the handler resource.
-        type:
-          type: string
-          description: Handler type.
-          example: execution_handler
-        data:
-          type: object
-          additionalProperties: true
-          properties:
-            name:
-              type: string
-              description: Handler name.
-            script:
-              type: string
-              description: Updated Deluge script source code.
-            function_id:
-              type: string
-              description: Unique identifier of the underlying function associated with this handler.
-      example:
-        url: /api/v3/messageactions/53719000002124010/handlers/execution_handler
-        type: execution_handler
-        data:
-          name: execution_handler
-          script: 'response = Map();
-
-            message = info.get("message").get("text");
-
-            response.put("text", "Ticket created for: " + message);
-
-            return response;
-
-            '
-          function_id: '53719000002124010'
-    HANDLER_TYPE_regex:
-      type: string
-      description: Type of the message action handler. Message actions support only one handler type&#58; <code>execution_handler</code>, which is triggered when the action is invoked.
-      enum:
-      - execution_handler
-    v3-exehandler-edit:
-      type: object
-      description: Payload for updating the message action execution handler. For Deluge actions, provide `script`. For Webhook actions, provide `permissions`.
-      properties:
-        script:
-          type: string
-          description: 'Updated Deluge script for the execution handler. This script is executed when the message action is invoked by users.<br>
-
-            <b>Maximum size:</b> 250KB.<br>
-
-            <b>Note:</b> Applicable only for <b>Deluge message actions</b>.
-
-            '
-        permissions:
-          type: array
-          maxItems: 5
-          description: "Updated list of data attributes to forward to your server in the webhook payload.<br>\n<b>Note:</b> Applicable only for <b>Webhook message actions</b>.<br>\nMessage action handlers support all 5 permissions.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>chat</code>: Chat context (chat ID, type, participants).</li>\n  <li><code>message</code>: Message content and metadata.</li>\n  <li><code>user</code>: Sender's user profile details.</li>\n  <li><code>location</code>: Sender's location data.</li>\n  <li><code>attachments</code>: Attachment metadata and download info.</li>\n</ul>\n"
-          items:
-            type: string
-            enum:
-            - chat
-            - message
-            - user
-            - location
-            - attachments
-    base64_regex:
-      type: string
-      description: Base64-encoded pagination or sync token used for cursor-based pagination and incremental data sync.
-    MessageActionListItemsResponse:
-      type: object
-      description: Response schema for listing message actions.
-      properties:
-        url:
-          type: string
-          example: /api/v3/messageactions
-        type:
-          type: string
-          example: messageaction
-        sync_token:
-          type: string
-          description: Token for incremental sync. Pass this in the next request to retrieve only message actions updated since this response.
-        next_token:
-          type: string
-          description: Pagination token for the next page of results.
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-              id:
-                type: string
-              hint:
-                type: string
-              scope:
-                type: string
-              multi_selectable:
-                type: boolean
-              message_types:
-                type: array
-                items:
-                  type: string
-              handlers:
-                type: array
-              creator:
-                type: object
-              execution_type:
-                type: string
-              status:
-                type: string
-              type:
-                type: string
-      example:
-        url: /api/v3/messageactions
-        type: messageaction
-        sync_token: NTB8MTc3NzQzMjI3NjY1OHw1MzcxOTAwMDAwMjEyNDAxMA==
-        data:
-        - multi_selectable: true
-          name: Create Ticket
-          id: '53719000002124010'
-          handlers:
-          - type: execution_handler
-          creator:
-            name: James
-            id: '65113112'
-          execution_type: deluge
-          hint: Create a helpdesk ticket
-          status: enabled
-          type: custom
-          message_types:
-          - text
-          - link
-          scope: organization
-        - multi_selectable: false
-          name: Translate
-          id: '53719000002124013'
-          handlers:
-          - type: execution_handler
-          creator:
-            name: James
-            id: '65113112'
-          execution_type: deluge
-          hint: Translate selected message to English
-          status: enabled
-          type: custom
-          message_types:
-          - text
-          scope: personal
     v3-msgaction-create:
       type: object
       description: Payload for creating a message action.
@@ -1402,6 +1237,163 @@ components:
             - text
             - link
             - attachment
+    MessageActionHandlerResponse:
+      type: object
+      description: Response schema for message action handler operations.
+      properties:
+        url:
+          type: string
+        type:
+          type: string
+          example: execution_handler
+        data:
+          type: object
+          additionalProperties: true
+    base64_regex:
+      type: string
+      description: Base64-encoded pagination or sync token used for cursor-based pagination and incremental data sync.
+    v3-exehandler-edit:
+      type: object
+      description: Payload for updating the message action execution handler. For Deluge actions, provide `script`. For Webhook actions, provide `permissions`.
+      properties:
+        script:
+          type: string
+          description: 'Updated Deluge script for the execution handler. This script is executed when the message action is invoked by users.<br>
+
+            <b>Maximum size:</b> 250KB.<br>
+
+            <b>Note:</b> Applicable only for <b>Deluge message actions</b>.
+
+            '
+        permissions:
+          type: array
+          maxItems: 5
+          description: "Updated list of data attributes to forward to your server in the webhook payload.<br>\n<b>Note:</b> Applicable only for <b>Webhook message actions</b>.<br>\nMessage action handlers support all 5 permissions.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>chat</code>: Chat context (chat ID, type, participants).</li>\n  <li><code>message</code>: Message content and metadata.</li>\n  <li><code>user</code>: Sender's user profile details.</li>\n  <li><code>location</code>: Sender's location data.</li>\n  <li><code>attachments</code>: Attachment metadata and download info.</li>\n</ul>\n"
+          items:
+            type: string
+            enum:
+            - chat
+            - message
+            - user
+            - location
+            - attachments
+    MessageActionResponse:
+      type: object
+      description: Response schema for message action create, get, and update operations.
+      properties:
+        url:
+          type: string
+          description: API endpoint URL for the message action resource.
+          example: /api/v3/messageactions
+        type:
+          type: string
+          description: Resource type.
+          example: messageaction
+        data:
+          type: object
+          description: Message action details.
+          properties:
+            multi_selectable:
+              type: boolean
+              example: true
+            name:
+              type: string
+              example: Create Ticket
+            id:
+              type: string
+              example: '53719000002124010'
+            handlers:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+            creator:
+              type: object
+              properties:
+                name:
+                  type: string
+                id:
+                  type: string
+            execution_type:
+              type: string
+              example: deluge
+            hint:
+              type: string
+              example: Create a helpdesk ticket
+            status:
+              type: string
+              example: enabled
+            type:
+              type: string
+              example: custom
+            message_types:
+              type: array
+              items:
+                type: string
+            scope:
+              type: string
+              example: organization
+      example:
+        url: /api/v3/messageactions
+        type: messageaction
+        data:
+          multi_selectable: true
+          name: Create Ticket
+          id: '53719000002124010'
+          handlers:
+          - type: execution_handler
+          creator:
+            name: James
+            id: '65113112'
+          execution_type: deluge
+          hint: Create a helpdesk ticket
+          status: enabled
+          type: custom
+          message_types:
+          - text
+          - link
+          scope: organization
+    updateMessageActionHandlerResponse:
+      type: object
+      description: Response schema for message action handler update operations.
+      properties:
+        url:
+          type: string
+          description: API endpoint URL for the handler resource.
+        type:
+          type: string
+          description: Handler type.
+          example: execution_handler
+        data:
+          type: object
+          additionalProperties: true
+          properties:
+            name:
+              type: string
+              description: Handler name.
+            script:
+              type: string
+              description: Updated Deluge script source code.
+            function_id:
+              type: string
+              description: Unique identifier of the underlying function associated with this handler.
+      example:
+        url: /api/v3/messageactions/53719000002124010/handlers/execution_handler
+        type: execution_handler
+        data:
+          name: execution_handler
+          script: 'response = Map();
+
+            message = info.get("message").get("text");
+
+            response.put("text", "Ticket created for: " + message);
+
+            return response;
+
+            '
+          function_id: '53719000002124010'
     v3-msgaction-edit:
       type: object
       description: Payload for updating a message action. All fields are optional; only the fields provided will be updated.
@@ -1483,6 +1475,92 @@ components:
     longid_regex:
       type: string
       description: Numeric long integer identifier used to reference platform components such as Commands, Functions, Widgets, Message Actions, Schedulers, and Extensions.
+    HANDLER_TYPE_regex:
+      type: string
+      description: Type of the message action handler. Message actions support only one handler type&#58; <code>execution_handler</code>, which is triggered when the action is invoked.
+      enum:
+      - execution_handler
+    MessageActionListItemsResponse:
+      type: object
+      description: Response schema for listing message actions.
+      properties:
+        url:
+          type: string
+          example: /api/v3/messageactions
+        type:
+          type: string
+          example: messageaction
+        sync_token:
+          type: string
+          description: Token for incremental sync. Pass this in the next request to retrieve only message actions updated since this response.
+        next_token:
+          type: string
+          description: Pagination token for the next page of results.
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              id:
+                type: string
+              hint:
+                type: string
+              scope:
+                type: string
+              multi_selectable:
+                type: boolean
+              message_types:
+                type: array
+                items:
+                  type: string
+              handlers:
+                type: array
+              creator:
+                type: object
+              execution_type:
+                type: string
+              status:
+                type: string
+              type:
+                type: string
+      example:
+        url: /api/v3/messageactions
+        type: messageaction
+        sync_token: NTB8MTc3NzQzMjI3NjY1OHw1MzcxOTAwMDAwMjEyNDAxMA==
+        data:
+        - multi_selectable: true
+          name: Create Ticket
+          id: '53719000002124010'
+          handlers:
+          - type: execution_handler
+          creator:
+            name: James
+            id: '65113112'
+          execution_type: deluge
+          hint: Create a helpdesk ticket
+          status: enabled
+          type: custom
+          message_types:
+          - text
+          - link
+          scope: organization
+        - multi_selectable: false
+          name: Translate
+          id: '53719000002124013'
+          handlers:
+          - type: execution_handler
+          creator:
+            name: James
+            id: '65113112'
+          execution_type: deluge
+          hint: Translate selected message to English
+          status: enabled
+          type: custom
+          message_types:
+          - text
+          scope: personal
     MessageActionUpdateResponse:
       type: object
       description: Response schema for message action update operations.
@@ -1548,84 +1626,6 @@ components:
           execution_type: deluge
           status: enabled
           type: custom
-    MessageActionResponse:
-      type: object
-      description: Response schema for message action create, get, and update operations.
-      properties:
-        url:
-          type: string
-          description: API endpoint URL for the message action resource.
-          example: /api/v3/messageactions
-        type:
-          type: string
-          description: Resource type.
-          example: messageaction
-        data:
-          type: object
-          description: Message action details.
-          properties:
-            multi_selectable:
-              type: boolean
-              example: true
-            name:
-              type: string
-              example: Create Ticket
-            id:
-              type: string
-              example: '53719000002124010'
-            handlers:
-              type: array
-              items:
-                type: object
-                properties:
-                  type:
-                    type: string
-            creator:
-              type: object
-              properties:
-                name:
-                  type: string
-                id:
-                  type: string
-            execution_type:
-              type: string
-              example: deluge
-            hint:
-              type: string
-              example: Create a helpdesk ticket
-            status:
-              type: string
-              example: enabled
-            type:
-              type: string
-              example: custom
-            message_types:
-              type: array
-              items:
-                type: string
-            scope:
-              type: string
-              example: organization
-      example:
-        url: /api/v3/messageactions
-        type: messageaction
-        data:
-          multi_selectable: true
-          name: Create Ticket
-          id: '53719000002124010'
-          handlers:
-          - type: execution_handler
-          creator:
-            name: James
-            id: '65113112'
-          execution_type: deluge
-          hint: Create a helpdesk ticket
-          status: enabled
-          type: custom
-          message_types:
-          - text
-          - link
-          scope: organization
   securitySchemes:
     Cliq_Auth:
       type: oauth2

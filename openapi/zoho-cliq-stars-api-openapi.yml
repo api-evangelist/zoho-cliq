@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
   title: Bots Stars API
   description: "<p>Bots are conversational assistants designed to automate repetitive tasks and manage simple user interactions. Their behavior is fully customizable through predefined Bot Handlers, which are activated by specific actions or through Webhooks that communicate with your own external server.</p> <p>For more information about Bots, please refer to the <b><a href=\"https://www.zoho.com/cliq/help/platform/bots.html\" target=\"_blank\">Bots Help Documentation</a></b>.</p> <p><b>Bot Handlers</b></p> <ul>\n  <li>Bot Handlers are the building blocks of a bot's functionality. Each handler is associated with a specific trigger event, such as receiving a direct message, being @mentioned in a channel, or a user subscribing to the bot.</li>\n  <li>When the trigger event occurs, the corresponding handler executes it's script to perform actions like sending messages, making API calls, or updating data.</li>\n  <li>By configuring different handlers, you can create bots that respond intelligently to various user interactions and automate complex workflows within Zoho Cliq.</li>\n</ul> <p><b>Types of Bot Handlers</b></p> <table style=\"border-collapse: collapse; width: 100%;\">\n  <tr>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Handler</th>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Description</th>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Menu Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Adds up to 5 quick-action items to the bot's chat menu. Triggered when a user interacts with the menu.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Message Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot receives a message.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Welcome Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Defines the greeting message sent when a user subscribes to the bot.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Mention Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot is @mentioned in a chat or channel.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Incoming Webhook Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Allows external services to post messages into the bot via outgoing webhooks.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Context Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Manages multi-turn conversations, maintaining context across a user's interaction with the bot.</td>\n  </tr>\n</table> <p><b>What you can do with the Bots API?</b></p> <p>With the Bots API, you can retrieve information about a specific bot, list all bots within your organization, manage configurations specific to handlers, trigger bot calls programmatically, manage subscribers, and much more.</p> <p>Each bot has an <code>execution_type</code> that defines how its handlers run when a trigger event occurs. The Bots API allows developers to create two types of bots:</p> <p id=\"deluge-bots\"><b>Deluge Bots (default)</b><br> Deluge bot executes handler logic using Zoho's Deluge scripting language, hosted entirely within the Zoho Cliq Developer platform, where no external server is required.</p> <ul>\n  <li>If <code>execution_type</code> is not specified during bot creation, it defaults to deluge.</li>\n  <li>Handler logic is defined as a script field (Deluge source code) when creating or updating handlers.</li>\n  <li>Suitable for teams that want to build and manage bot logic entirely within Zoho's ecosystem.</li>\n</ul> <p id=\"webhook-bots\"><b>Webhook Bots</b><br> A Webhook bot delegates all handler execution to your own external server. When a trigger event fires, Zoho Cliq sends an HTTP POST request to the <code>execution_url</code> you configure, and your server processes the event and returns a response.</p> <ul>\n  <li>To create a Webhook bot, set <code>execution_type</code> to webhook during bot creation and provide the <code>execution_url</code> where event payloads should be sent.</li>\n  <li>Your server must be publicly accessible and able to handle incoming POST requests from Zoho Cliq.</li>\n  <li>Ideal for teams seeking complete control over bot logic and possessing the resources to manage an external server. Also suitable for integrations requiring access to external databases, third-party APIs, or custom business logic that cannot be executed in Deluge.</li>\n</ul>\n"
@@ -549,6 +549,34 @@ paths:
       - Stars
 components:
   schemas:
+    ChatInformation:
+      type: object
+      description: Information about the chat containing the starred message.
+      properties:
+        chat_id:
+          type: string
+          description: The unique identifier of the chat.
+          example: '2000000012345_2000000067890'
+        chat_type:
+          type: string
+          description: The type of chat (e.g., direct, channel, group).
+          example: direct
+        title:
+          type: string
+          description: The title of the chat.
+          example: John Doe
+        display_name:
+          type: string
+          description: The display name shown for the chat.
+          example: John Doe
+        joined:
+          type: boolean
+          description: Indicates if the user has joined the chat.
+          example: true
+        receiver:
+          type: string
+          description: The user ID of the message receiver (for direct chats).
+          example: '2000000012345'
     StarMessageResponse:
       type: object
       properties:
@@ -664,34 +692,6 @@ components:
           - manager
           - follow_up
           example: important
-    ChatInformation:
-      type: object
-      description: Information about the chat containing the starred message.
-      properties:
-        chat_id:
-          type: string
-          description: The unique identifier of the chat.
-          example: '2000000012345_2000000067890'
-        chat_type:
-          type: string
-          description: The type of chat (e.g., direct, channel, group).
-          example: direct
-        title:
-          type: string
-          description: The title of the chat.
-          example: John Doe
-        display_name:
-          type: string
-          description: The display name shown for the chat.
-          example: John Doe
-        joined:
-          type: boolean
-          description: Indicates if the user has joined the chat.
-          example: true
-        receiver:
-          type: string
-          description: The user ID of the message receiver (for direct chats).
-          example: '2000000012345'
   securitySchemes:
     Cliq_Auth:
       type: oauth2

@@ -1,6 +1,6 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Bots mobilesettings API
+  title: Bots Mobilesettings API
   description: "<p>Bots are conversational assistants designed to automate repetitive tasks and manage simple user interactions. Their behavior is fully customizable through predefined Bot Handlers, which are activated by specific actions or through Webhooks that communicate with your own external server.</p> <p>For more information about Bots, please refer to the <b><a href=\"https://www.zoho.com/cliq/help/platform/bots.html\" target=\"_blank\">Bots Help Documentation</a></b>.</p> <p><b>Bot Handlers</b></p> <ul>\n  <li>Bot Handlers are the building blocks of a bot's functionality. Each handler is associated with a specific trigger event, such as receiving a direct message, being @mentioned in a channel, or a user subscribing to the bot.</li>\n  <li>When the trigger event occurs, the corresponding handler executes it's script to perform actions like sending messages, making API calls, or updating data.</li>\n  <li>By configuring different handlers, you can create bots that respond intelligently to various user interactions and automate complex workflows within Zoho Cliq.</li>\n</ul> <p><b>Types of Bot Handlers</b></p> <table style=\"border-collapse: collapse; width: 100%;\">\n  <tr>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Handler</th>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Description</th>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Menu Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Adds up to 5 quick-action items to the bot's chat menu. Triggered when a user interacts with the menu.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Message Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot receives a message.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Welcome Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Defines the greeting message sent when a user subscribes to the bot.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Mention Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot is @mentioned in a chat or channel.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Incoming Webhook Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Allows external services to post messages into the bot via outgoing webhooks.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Context Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Manages multi-turn conversations, maintaining context across a user's interaction with the bot.</td>\n  </tr>\n</table> <p><b>What you can do with the Bots API?</b></p> <p>With the Bots API, you can retrieve information about a specific bot, list all bots within your organization, manage configurations specific to handlers, trigger bot calls programmatically, manage subscribers, and much more.</p> <p>Each bot has an <code>execution_type</code> that defines how its handlers run when a trigger event occurs. The Bots API allows developers to create two types of bots:</p> <p id=\"deluge-bots\"><b>Deluge Bots (default)</b><br> Deluge bot executes handler logic using Zoho's Deluge scripting language, hosted entirely within the Zoho Cliq Developer platform, where no external server is required.</p> <ul>\n  <li>If <code>execution_type</code> is not specified during bot creation, it defaults to deluge.</li>\n  <li>Handler logic is defined as a script field (Deluge source code) when creating or updating handlers.</li>\n  <li>Suitable for teams that want to build and manage bot logic entirely within Zoho's ecosystem.</li>\n</ul> <p id=\"webhook-bots\"><b>Webhook Bots</b><br> A Webhook bot delegates all handler execution to your own external server. When a trigger event fires, Zoho Cliq sends an HTTP POST request to the <code>execution_url</code> you configure, and your server processes the event and returns a response.</p> <ul>\n  <li>To create a Webhook bot, set <code>execution_type</code> to webhook during bot creation and provide the <code>execution_url</code> where event payloads should be sent.</li>\n  <li>Your server must be publicly accessible and able to handle incoming POST requests from Zoho Cliq.</li>\n  <li>Ideal for teams seeking complete control over bot logic and possessing the resources to manage an external server. Also suitable for integrations requiring access to external databases, third-party APIs, or custom business logic that cannot be executed in Deluge.</li>\n</ul>\n"
   contact: {}
   version: 1.0.0
@@ -224,6 +224,96 @@ paths:
       - mobilesettings
 components:
   schemas:
+    media-auto-download-settings:
+      type: object
+      description: Controls automatic media download behavior based on media type or network mode.
+      properties:
+        images:
+          type: string
+          example: enabled
+          description: "Controls automatic download behavior for image files.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Images are downloaded automatically.</li>\n  <li><code>disabled</code>: Images are not downloaded automatically.</li>\n  <li><code>wifi</code>: Images are downloaded automatically only when connected to Wi-Fi.</li>\n  <li><code>mobile</code>: Images are downloaded automatically only when on mobile data.</li>\n</ul>\n"
+        videos:
+          type: string
+          example: disabled
+          description: "Controls automatic download behavior for video files.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Videos are downloaded automatically.</li>\n  <li><code>disabled</code>: Videos are not downloaded automatically.</li>\n  <li><code>wifi</code>: Videos are downloaded automatically only when connected to Wi-Fi.</li>\n  <li><code>mobile</code>: Videos are downloaded automatically only when on mobile data.</li>\n</ul>\n"
+        others:
+          type: string
+          example: mobile
+          description: "Controls automatic download behavior for all other file types.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Other files are downloaded automatically.</li>\n  <li><code>disabled</code>: Other files are not downloaded automatically.</li>\n  <li><code>wifi</code>: Other files are downloaded automatically only when connected to Wi-Fi.</li>\n  <li><code>mobile</code>: Other files are downloaded automatically only when on mobile data.</li>\n</ul>\n"
+    NoResponse:
+      type: object
+      description: Response envelope for successful operations with no payload.
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Operation completed successfully.
+    update-mobile-settings-request:
+      type: object
+      description: Provide only the settings to update. For nested settings, send the nested object with intended values.
+      x-enum-descriptions:
+      - enabled: Turn this setting on.
+      - disabled: Turn this setting off.
+      properties:
+        av_noise_cancellation:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Controls noise cancellation during audio/video calls.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Noise cancellation is active.</li>\n  <li><code>disabled</code>: Noise cancellation is turned off.</li>\n</ul>\n"
+        media_to_gallery:
+          $ref: '#/components/schemas/media-gallery-settings'
+          description: Controls whether downloaded media is saved to the device gallery.
+        conference_recording:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Controls whether conference call recording is allowed.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Conference recording is permitted.</li>\n  <li><code>disabled</code>: Conference recording is not permitted.</li>\n</ul>\n"
+        last_seen:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Controls the visibility of the user's last seen status.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Last seen is visible to others.</li>\n  <li><code>disabled</code>: Last seen is hidden from others.</li>\n</ul>\n"
+        file_summary:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Controls whether file summaries are shown for shared files.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: File summaries are displayed.</li>\n  <li><code>disabled</code>: File summaries are hidden.</li>\n</ul>\n"
+        media_upload_quality:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Controls whether media is uploaded in high quality.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Media is uploaded at high quality.</li>\n  <li><code>disabled</code>: Media is uploaded at reduced quality.</li>\n</ul>\n"
+        notification:
+          $ref: '#/components/schemas/notification-settings'
+          description: Notification controls by conversation type and notification mode (alert, sound, and preview).
+        media_auto_download:
+          $ref: '#/components/schemas/media-auto-download-settings'
+          description: Controls automatic media download behavior based on media type or network mode.
+        huddle_join_video_muted:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Controls whether the camera is muted by default when joining a huddle.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Camera is muted on huddle join.</li>\n  <li><code>disabled</code>: Camera is active on huddle join.</li>\n</ul>\n"
+        av_hd_video:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Controls whether HD video is used during audio/video calls.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: HD video is active.</li>\n  <li><code>disabled</code>: HD video is turned off.</li>\n</ul>\n"
+        chat_summary:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Controls whether chat summaries are shown for conversations.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Chat summaries are displayed.</li>\n  <li><code>disabled</code>: Chat summaries are hidden.</li>\n</ul>\n"
     notification-settings:
       type: object
       description: Notification controls by conversation type and notification mode (alert, sound, and preview).
@@ -375,70 +465,6 @@ components:
           - enabled
           - disabled
           description: "Toggles message preview for MT notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Message content is shown in the MT notification preview.</li>\n  <li><code>disabled</code>: Message content is hidden in the MT notification preview.</li>\n</ul>\n"
-    update-mobile-settings-request:
-      type: object
-      description: Provide only the settings to update. For nested settings, send the nested object with intended values.
-      x-enum-descriptions:
-      - enabled: Turn this setting on.
-      - disabled: Turn this setting off.
-      properties:
-        av_noise_cancellation:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Controls noise cancellation during audio/video calls.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Noise cancellation is active.</li>\n  <li><code>disabled</code>: Noise cancellation is turned off.</li>\n</ul>\n"
-        media_to_gallery:
-          $ref: '#/components/schemas/media-gallery-settings'
-          description: Controls whether downloaded media is saved to the device gallery.
-        conference_recording:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Controls whether conference call recording is allowed.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Conference recording is permitted.</li>\n  <li><code>disabled</code>: Conference recording is not permitted.</li>\n</ul>\n"
-        last_seen:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Controls the visibility of the user's last seen status.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Last seen is visible to others.</li>\n  <li><code>disabled</code>: Last seen is hidden from others.</li>\n</ul>\n"
-        file_summary:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Controls whether file summaries are shown for shared files.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: File summaries are displayed.</li>\n  <li><code>disabled</code>: File summaries are hidden.</li>\n</ul>\n"
-        media_upload_quality:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Controls whether media is uploaded in high quality.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Media is uploaded at high quality.</li>\n  <li><code>disabled</code>: Media is uploaded at reduced quality.</li>\n</ul>\n"
-        notification:
-          $ref: '#/components/schemas/notification-settings'
-          description: Notification controls by conversation type and notification mode (alert, sound, and preview).
-        media_auto_download:
-          $ref: '#/components/schemas/media-auto-download-settings'
-          description: Controls automatic media download behavior based on media type or network mode.
-        huddle_join_video_muted:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Controls whether the camera is muted by default when joining a huddle.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Camera is muted on huddle join.</li>\n  <li><code>disabled</code>: Camera is active on huddle join.</li>\n</ul>\n"
-        av_hd_video:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Controls whether HD video is used during audio/video calls.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: HD video is active.</li>\n  <li><code>disabled</code>: HD video is turned off.</li>\n</ul>\n"
-        chat_summary:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Controls whether chat summaries are shown for conversations.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Chat summaries are displayed.</li>\n  <li><code>disabled</code>: Chat summaries are hidden.</li>\n</ul>\n"
     media-gallery-settings:
       type: object
       description: Controls whether downloaded media is saved to the device gallery.
@@ -529,32 +555,6 @@ components:
           enum:
           - enabled
           - disabled
-    media-auto-download-settings:
-      type: object
-      description: Controls automatic media download behavior based on media type or network mode.
-      properties:
-        images:
-          type: string
-          example: enabled
-          description: "Controls automatic download behavior for image files.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Images are downloaded automatically.</li>\n  <li><code>disabled</code>: Images are not downloaded automatically.</li>\n  <li><code>wifi</code>: Images are downloaded automatically only when connected to Wi-Fi.</li>\n  <li><code>mobile</code>: Images are downloaded automatically only when on mobile data.</li>\n</ul>\n"
-        videos:
-          type: string
-          example: disabled
-          description: "Controls automatic download behavior for video files.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Videos are downloaded automatically.</li>\n  <li><code>disabled</code>: Videos are not downloaded automatically.</li>\n  <li><code>wifi</code>: Videos are downloaded automatically only when connected to Wi-Fi.</li>\n  <li><code>mobile</code>: Videos are downloaded automatically only when on mobile data.</li>\n</ul>\n"
-        others:
-          type: string
-          example: mobile
-          description: "Controls automatic download behavior for all other file types.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Other files are downloaded automatically.</li>\n  <li><code>disabled</code>: Other files are not downloaded automatically.</li>\n  <li><code>wifi</code>: Other files are downloaded automatically only when connected to Wi-Fi.</li>\n  <li><code>mobile</code>: Other files are downloaded automatically only when on mobile data.</li>\n</ul>\n"
-    NoResponse:
-      type: object
-      description: Response envelope for successful operations with no payload.
-      properties:
-        status:
-          type: string
-          example: success
-        message:
-          type: string
-          example: Operation completed successfully.
   securitySchemes:
     Cliq_Auth:
       type: oauth2
