@@ -74,32 +74,6 @@ apis:
     url: json-ld/zoho-cliq.jsonld
   - type: Vocabulary
     url: vocabulary/zoho-cliq.yml
-- aid: zoho-cliq:zoho-cliq-buttons-api
-  name: Zoho Cliq buttons API
-  description: Buttons Module
-  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
-  baseURL: https://cliq.zoho.com/api/v3
-  tags:
-  - buttons
-  properties:
-  - type: OpenAPI
-    url: openapi/zoho-cliq-buttons-api-openapi.yml
-  - type: Documentation
-    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
-  - type: Authentication
-    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
-  - type: JSONSchema
-    url: json-schema/chats.json
-  - type: JSONSchema
-    url: json-schema/messages.json
-  - type: JSONSchema
-    url: json-schema/bots.json
-  - type: JSONSchema
-    url: json-schema/datastores.json
-  - type: JSONLD
-    url: json-ld/zoho-cliq.jsonld
-  - type: Vocabulary
-    url: vocabulary/zoho-cliq.yml
 - aid: zoho-cliq:zoho-cliq-chats-api
   name: Zoho Cliq chats API
   description: Chats Module
@@ -504,34 +478,6 @@ apis:
     url: json-ld/zoho-cliq.jsonld
   - type: Vocabulary
     url: vocabulary/zoho-cliq.yml
-- aid: zoho-cliq:zoho-cliq-scheduledmessages-api
-  name: Zoho Cliq scheduledmessages API
-  description: Scheduled Messages Module
-  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
-  baseURL: https://cliq.zoho.com/api/v3
-  tags:
-  - Scheduled Messages
-  tags_raw:
-  - scheduledmessages
-  properties:
-  - type: OpenAPI
-    url: openapi/zoho-cliq-scheduledmessages-api-openapi.yml
-  - type: Documentation
-    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
-  - type: Authentication
-    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
-  - type: JSONSchema
-    url: json-schema/chats.json
-  - type: JSONSchema
-    url: json-schema/messages.json
-  - type: JSONSchema
-    url: json-schema/bots.json
-  - type: JSONSchema
-    url: json-schema/datastores.json
-  - type: JSONLD
-    url: json-ld/zoho-cliq.jsonld
-  - type: Vocabulary
-    url: vocabulary/zoho-cliq.yml
 - aid: zoho-cliq:zoho-cliq-slashcommands-api
   name: Zoho Cliq slashcommands API
   description: Slash Commands Module
@@ -614,18 +560,42 @@ apis:
     url: json-ld/zoho-cliq.jsonld
   - type: Vocabulary
     url: vocabulary/zoho-cliq.yml
-- aid: zoho-cliq:zoho-cliq-userpreferences-api
-  name: Zoho Cliq userpreferences API
+- aid: zoho-cliq:zoho-cliq-scheduled-messages-api
+  name: Zoho Cliq Scheduled Messages API
+  description: Scheduled Messages Module
+  humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  baseURL: https://cliq.zoho.com/api/v3
+  tags:
+  - Scheduled Messages
+  properties:
+  - type: OpenAPI
+    url: openapi/zoho-cliq-scheduled-messages-api-openapi.yml
+  - type: Documentation
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
+  - type: Authentication
+    url: https://www.zoho.com/cliq/help/restapi/v3/introduction/oauth2/
+  - type: JSONSchema
+    url: json-schema/chats.json
+  - type: JSONSchema
+    url: json-schema/messages.json
+  - type: JSONSchema
+    url: json-schema/bots.json
+  - type: JSONSchema
+    url: json-schema/datastores.json
+  - type: JSONLD
+    url: json-ld/zoho-cliq.jsonld
+  - type: Vocabulary
+    url: vocabulary/zoho-cliq.yml
+- aid: zoho-cliq:zoho-cliq-user-preferences-api
+  name: Zoho Cliq User Preferences API
   description: User Preferences Module
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
   tags:
   - User Preferences
-  tags_raw:
-  - userpreferences
   properties:
   - type: OpenAPI
-    url: openapi/zoho-cliq-userpreferences-api-openapi.yml
+    url: openapi/zoho-cliq-user-preferences-api-openapi.yml
   - type: Documentation
     url: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   - type: Authentication
