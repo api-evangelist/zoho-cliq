@@ -1,21 +1,38 @@
 openapi: 3.2.0
 info:
-  title: Bots Mentions API
-  description: "<p>Bots are conversational assistants designed to automate repetitive tasks and manage simple user interactions. Their behavior is fully customizable through predefined Bot Handlers, which are activated by specific actions or through Webhooks that communicate with your own external server.</p> <p>For more information about Bots, please refer to the <b><a href=\"https://www.zoho.com/cliq/help/platform/bots.html\" target=\"_blank\">Bots Help Documentation</a></b>.</p> <p><b>Bot Handlers</b></p> <ul>\n  <li>Bot Handlers are the building blocks of a bot's functionality. Each handler is associated with a specific trigger event, such as receiving a direct message, being @mentioned in a channel, or a user subscribing to the bot.</li>\n  <li>When the trigger event occurs, the corresponding handler executes it's script to perform actions like sending messages, making API calls, or updating data.</li>\n  <li>By configuring different handlers, you can create bots that respond intelligently to various user interactions and automate complex workflows within Zoho Cliq.</li>\n</ul> <p><b>Types of Bot Handlers</b></p> <table style=\"border-collapse: collapse; width: 100%;\">\n  <tr>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Handler</th>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Description</th>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Menu Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Adds up to 5 quick-action items to the bot's chat menu. Triggered when a user interacts with the menu.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Message Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot receives a message.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Welcome Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Defines the greeting message sent when a user subscribes to the bot.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Mention Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot is @mentioned in a chat or channel.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Incoming Webhook Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Allows external services to post messages into the bot via outgoing webhooks.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Context Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Manages multi-turn conversations, maintaining context across a user's interaction with the bot.</td>\n  </tr>\n</table> <p><b>What you can do with the Bots API?</b></p> <p>With the Bots API, you can retrieve information about a specific bot, list all bots within your organization, manage configurations specific to handlers, trigger bot calls programmatically, manage subscribers, and much more.</p> <p>Each bot has an <code>execution_type</code> that defines how its handlers run when a trigger event occurs. The Bots API allows developers to create two types of bots:</p> <p id=\"deluge-bots\"><b>Deluge Bots (default)</b><br> Deluge bot executes handler logic using Zoho's Deluge scripting language, hosted entirely within the Zoho Cliq Developer platform, where no external server is required.</p> <ul>\n  <li>If <code>execution_type</code> is not specified during bot creation, it defaults to deluge.</li>\n  <li>Handler logic is defined as a script field (Deluge source code) when creating or updating handlers.</li>\n  <li>Suitable for teams that want to build and manage bot logic entirely within Zoho's ecosystem.</li>\n</ul> <p id=\"webhook-bots\"><b>Webhook Bots</b><br> A Webhook bot delegates all handler execution to your own external server. When a trigger event fires, Zoho Cliq sends an HTTP POST request to the <code>execution_url</code> you configure, and your server processes the event and returns a response.</p> <ul>\n  <li>To create a Webhook bot, set <code>execution_type</code> to webhook during bot creation and provide the <code>execution_url</code> where event payloads should be sent.</li>\n  <li>Your server must be publicly accessible and able to handle incoming POST requests from Zoho Cliq.</li>\n  <li>Ideal for teams seeking complete control over bot logic and possessing the resources to manage an external server. Also suitable for integrations requiring access to external databases, third-party APIs, or custom business logic that cannot be executed in Deluge.</li>\n</ul>\n"
+  title: Mentions API
+  description: In Zoho Cliq, you can use mentions (by using @) to tag users and send notifications, even in muted channels.
   contact: {}
   version: 1.0.0
 servers:
 - url: https://cliq.zoho.com/api/v3
   description: Zoho Cliq US DC
 tags:
-- name: mentions
+- name: Mentions
   description: Mentions Module
 paths:
   /mentions:
     get:
       summary: Retrieve Mentions and Replies
       operationId: getMentions
-      description: "Fetches a list of messages in which the authenticated user has been mentioned or replied to.<br><br>\nThe results are returned in descending order (newest to oldest) and can be filtered using various query parameters such as time range, chat IDs, sender user IDs, and activity type (mentions or replies).<br><br>\nThis endpoint allows users to easily track conversations that require their attention based on mentions and replies.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n"
+      description: 'Fetches a list of messages in which the authenticated user has been mentioned or replied to.
+
+
+        The results are returned in descending order (newest to oldest) and can be filtered using various query parameters such as time range, chat IDs, sender user IDs, and activity type (mentions or replies).
+
+
+        This endpoint allows users to easily track conversations that require their attention based on mentions and replies.
+
+
+        Threshold limit: 30 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 10 minutes
+
+        Wait time before consecutive API requests.'
       parameters:
       - name: from_time
         in: query
@@ -130,18 +147,17 @@ paths:
       - Cliq_Auth:
         - ZohoCliq.Chats.READ
       tags:
-      - mentions
+      - Mentions
   /chats/{CHAT_ID}/messages:
     post:
       summary: Mentioning a User
       operationId: mentioningUser
-      description: 'To mention a user, use the syntax <b>{@zohoid}</b> or <b>{@email}</b>.<br><br>
+      description: 'To mention a user, use the syntax {@zohoid} or {@email}.
 
-        When you mention a user in any team-level or organization-level channel, the user will be notified. This syntax applies only to the <code>text</code> and <code>comments</code> fields of the payload.
 
-        To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
+        When you mention a user in any team-level or organization-level channel, the user will be notified. This syntax applies only to the text and comments fields of the payload.
 
-        '
+        To learn how to retrieve this ID, see CHAT_ID in the Glossary page.'
       parameters:
       - name: CHAT_ID
         in: path
@@ -268,7 +284,7 @@ paths:
       - Cliq_Auth:
         - ZohoCliq.Webhooks.CREATE
       tags:
-      - mentions
+      - Mentions
   /chats/{CHAT_ID1}/messages:
     post:
       summary: Silent mentions
@@ -278,11 +294,10 @@ paths:
 
         '
       operationId: silentMentions
-      description: 'Silent mentions allow you to reference a user in a conversation without triggering a notification.<br><br>
+      description: 'Silent mentions allow you to reference a user in a conversation without triggering a notification.
 
-        Use the syntax <code>[User Name](zohoid:userid)</code> or <code>[User Name](mail:user_email)</code> to mention a user silently in any conversation. This will not notify the user. This format can also be used to mention a user in fields other than the <code>text</code> and <code>comments</code> keys.
 
-        '
+        Use the syntax User Name or User Name to mention a user silently in any conversation. This will not notify the user. This format can also be used to mention a user in fields other than the text and comments keys.'
       parameters:
       - name: CHAT_ID1
         in: path
@@ -413,7 +428,7 @@ paths:
       - Cliq_Auth:
         - ZohoCliq.Webhooks.CREATE
       tags:
-      - mentions
+      - Mentions
   /chats/{CHAT_ID2}/messages:
     post:
       summary: Mentioning a Channel
@@ -423,11 +438,10 @@ paths:
 
         '
       operationId: mentioningChannel
-      description: 'To mention a channel, use the syntax <code>{#CHANNEL_ID}</code>.<br><br>
+      description: 'To mention a channel, use the syntax {#CHANNEL_ID}.
 
-        When you mention a team-level or organization-level channel, all participants of that channel will be notified. Additionally, an informational message will be posted in the channel indicating that it has been mentioned.
 
-        '
+        When you mention a team-level or organization-level channel, all participants of that channel will be notified. Additionally, an informational message will be posted in the channel indicating that it has been mentioned.'
       parameters:
       - name: CHAT_ID2
         in: path
@@ -543,7 +557,7 @@ paths:
       - Cliq_Auth:
         - ZohoCliq.Webhooks.CREATE
       tags:
-      - mentions
+      - Mentions
   /chats/{CHAT_ID3}/messages:
     post:
       summary: Mentioning all users in a channel
@@ -553,13 +567,13 @@ paths:
 
         '
       operationId: mentioningAllUsers
-      description: 'To mention all users in a channel, use the syntax {@all}.<br>
+      description: 'To mention all users in a channel, use the syntax {@all}.
 
-        This will notify every participant who is a member of the channel.<br>
 
-        <b>Note:</b> The ability to use {@all} depends on the authenticated user''s role and channel permissions. If the user does not have permission to mention all participants, the message posting request will fail.
+        This will notify every participant who is a member of the channel.
 
-        '
+
+        Note: The ability to use {@all} depends on the authenticated user''s role and channel permissions. If the user does not have permission to mention all participants, the message posting request will fail.'
       parameters:
       - name: CHAT_ID3
         in: path
@@ -675,7 +689,7 @@ paths:
       - Cliq_Auth:
         - ZohoCliq.Webhooks.CREATE
       tags:
-      - mentions
+      - Mentions
   /chats/{CHAT_ID5}/messages:
     post:
       summary: Mentioning a Team
@@ -685,13 +699,12 @@ paths:
 
         '
       operationId: mentioningTeam
-      description: 'To mention a team in a message, use the syntax <code>{@team_id}</code>.<br><br>
+      description: 'To mention a team in a message, use the syntax {@team_id}.
+
 
         You can mention a team only within team-level or organization-level channels. When a team is mentioned, all members of that team will be notified.
 
-        To learn how to retrieve this ID, see <a href="/cliq/help/restapi/v3/glossary/#CHAT_ID">CHAT_ID</a> in the Glossary page.
-
-        '
+        To learn how to retrieve this ID, see CHAT_ID in the Glossary page.'
       parameters:
       - name: CHAT_ID5
         in: path
@@ -807,7 +820,7 @@ paths:
       - Cliq_Auth:
         - ZohoCliq.Webhooks.CREATE
       tags:
-      - mentions
+      - Mentions
 components:
   schemas:
     mention-sender:
@@ -819,6 +832,57 @@ components:
         name:
           type: string
           description: Sender name.
+    mention-metadata:
+      type: object
+      properties:
+        recipient_id:
+          type: string
+          description: ID of the mentioned user.
+        mentioned_users:
+          type: array
+          description: List of mentioned users or entities.
+          items:
+            $ref: '#/components/schemas/mentioned-user'
+    mentions-error-response:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code identifier.
+          example: INVALID_PARAMS
+        message:
+          type: string
+          description: Human-readable error message.
+          example: Invalid query parameter value.
+    empty-response:
+      type: object
+      description: Response returned when there is no content.
+      properties:
+        Response_Code:
+          type: string
+          example: 204 No response
+    mentioned-user:
+      type: object
+      properties:
+        id:
+          type: string
+          description: User or entity ID.
+        name:
+          type: string
+          description: Name.
+        display_name:
+          type: string
+          description: Display name (for example, @John).
+        type:
+          type: string
+          description: user, group, channel, bot, participants, or available.
+          enum:
+          - user
+          - group
+          - channel
+          - bot
+          - participants
+          - available
     get-mentions-response:
       type: object
       required:
@@ -945,53 +1009,6 @@ components:
               name: Ryan West
               display_name: '@Ryan West'
               type: user
-    mention-entry:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique mention entry ID.
-        status:
-          type: string
-          description: unread, read, or deleted.
-          enum:
-          - unread
-          - read
-          - deleted
-        activity_type:
-          type: string
-          description: mentions or replies.
-          enum:
-          - mentions
-          - replies
-        chat:
-          $ref: '#/components/schemas/mention-chat'
-        message:
-          $ref: '#/components/schemas/mention-message'
-        mention:
-          $ref: '#/components/schemas/mention-metadata'
-    mentioned-user:
-      type: object
-      properties:
-        id:
-          type: string
-          description: User or entity ID.
-        name:
-          type: string
-          description: Name.
-        display_name:
-          type: string
-          description: Display name (for example, @John).
-        type:
-          type: string
-          description: user, group, channel, bot, participants, or available.
-          enum:
-          - user
-          - group
-          - channel
-          - bot
-          - participants
-          - available
     mention-message:
       type: object
       properties:
@@ -1025,35 +1042,6 @@ components:
               additionalProperties: true
             sender:
               $ref: '#/components/schemas/mention-sender'
-    mention-metadata:
-      type: object
-      properties:
-        recipient_id:
-          type: string
-          description: ID of the mentioned user.
-        mentioned_users:
-          type: array
-          description: List of mentioned users or entities.
-          items:
-            $ref: '#/components/schemas/mentioned-user'
-    mentions-error-response:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code identifier.
-          example: INVALID_PARAMS
-        message:
-          type: string
-          description: Human-readable error message.
-          example: Invalid query parameter value.
-    empty-response:
-      type: object
-      description: Response returned when there is no content.
-      properties:
-        Response_Code:
-          type: string
-          example: 204 No response
     mention-chat:
       type: object
       properties:
@@ -1084,6 +1072,31 @@ components:
         channel_display_name:
           type: string
           description: Display name of the channel.
+    mention-entry:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique mention entry ID.
+        status:
+          type: string
+          description: unread, read, or deleted.
+          enum:
+          - unread
+          - read
+          - deleted
+        activity_type:
+          type: string
+          description: mentions or replies.
+          enum:
+          - mentions
+          - replies
+        chat:
+          $ref: '#/components/schemas/mention-chat'
+        message:
+          $ref: '#/components/schemas/mention-message'
+        mention:
+          $ref: '#/components/schemas/mention-metadata'
   securitySchemes:
     Cliq_Auth:
       type: oauth2
@@ -1092,13 +1105,8 @@ components:
         implicit:
           authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
           scopes:
-            ZohoCliq.Bots.READ: Read Bot Information
-            ZohoCliq.Bots.CREATE: Create Bots
-            ZohoCliq.Bots.UPDATE: Update Bots
-            ZohoCliq.Bots.DELETE: Delete Bots
-            ZohoCliq.Webhooks.CREATE: Post messages to conversations via webhooks
-            ZohoCliq.BotMessages.CREATE: Send messages via bot incoming webhooks
-            ZohoCliq.Channels.UPDATE: Update Channel Settings
+            ZohoCliq.Chats.READ: Read Chats
+            ZohoCliq.Webhooks.CREATE: Send messages
 externalDocs:
-  description: Find out more about Zoho Cliq APIs V3
-  url: https://www.zoho.com/cliq/help/restapi/v3/
+  description: Find out more about Zoho Cliq APIs V2
+  url: https://www.zoho.com/cliq/help/restapi/v2/

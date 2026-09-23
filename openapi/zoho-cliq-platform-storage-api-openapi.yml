@@ -1,9 +1,17 @@
 openapi: 3.2.0
 info:
-  title: Bots Platform Storage API
-  description: "<p>Bots are conversational assistants designed to automate repetitive tasks and manage simple user interactions. Their behavior is fully customizable through predefined Bot Handlers, which are activated by specific actions or through Webhooks that communicate with your own external server.</p> <p>For more information about Bots, please refer to the <b><a href=\"https://www.zoho.com/cliq/help/platform/bots.html\" target=\"_blank\">Bots Help Documentation</a></b>.</p> <p><b>Bot Handlers</b></p> <ul>\n  <li>Bot Handlers are the building blocks of a bot's functionality. Each handler is associated with a specific trigger event, such as receiving a direct message, being @mentioned in a channel, or a user subscribing to the bot.</li>\n  <li>When the trigger event occurs, the corresponding handler executes it's script to perform actions like sending messages, making API calls, or updating data.</li>\n  <li>By configuring different handlers, you can create bots that respond intelligently to various user interactions and automate complex workflows within Zoho Cliq.</li>\n</ul> <p><b>Types of Bot Handlers</b></p> <table style=\"border-collapse: collapse; width: 100%;\">\n  <tr>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Handler</th>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Description</th>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Menu Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Adds up to 5 quick-action items to the bot's chat menu. Triggered when a user interacts with the menu.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Message Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot receives a message.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Welcome Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Defines the greeting message sent when a user subscribes to the bot.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Mention Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot is @mentioned in a chat or channel.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Incoming Webhook Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Allows external services to post messages into the bot via outgoing webhooks.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Context Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Manages multi-turn conversations, maintaining context across a user's interaction with the bot.</td>\n  </tr>\n</table> <p><b>What you can do with the Bots API?</b></p> <p>With the Bots API, you can retrieve information about a specific bot, list all bots within your organization, manage configurations specific to handlers, trigger bot calls programmatically, manage subscribers, and much more.</p> <p>Each bot has an <code>execution_type</code> that defines how its handlers run when a trigger event occurs. The Bots API allows developers to create two types of bots:</p> <p id=\"deluge-bots\"><b>Deluge Bots (default)</b><br> Deluge bot executes handler logic using Zoho's Deluge scripting language, hosted entirely within the Zoho Cliq Developer platform, where no external server is required.</p> <ul>\n  <li>If <code>execution_type</code> is not specified during bot creation, it defaults to deluge.</li>\n  <li>Handler logic is defined as a script field (Deluge source code) when creating or updating handlers.</li>\n  <li>Suitable for teams that want to build and manage bot logic entirely within Zoho's ecosystem.</li>\n</ul> <p id=\"webhook-bots\"><b>Webhook Bots</b><br> A Webhook bot delegates all handler execution to your own external server. When a trigger event fires, Zoho Cliq sends an HTTP POST request to the <code>execution_url</code> you configure, and your server processes the event and returns a response.</p> <ul>\n  <li>To create a Webhook bot, set <code>execution_type</code> to webhook during bot creation and provide the <code>execution_url</code> where event payloads should be sent.</li>\n  <li>Your server must be publicly accessible and able to handle incoming POST requests from Zoho Cliq.</li>\n  <li>Ideal for teams seeking complete control over bot logic and possessing the resources to manage an external server. Also suitable for integrations requiring access to external databases, third-party APIs, or custom business logic that cannot be executed in Deluge.</li>\n</ul>\n"
-  contact: {}
-  version: 1.0.0
+  title: Datastores Platform Storage API
+  version: '3.0'
+  description: 'Cliq Database serves as an ideal storage interface for building integrations on the Cliq Platform. It allows you to create, modify, store, and synchronize easily accessible data items.
+
+
+    You can access the Cliq Record APIs using the following OAuth scope:
+
+
+    OAuth Scope for Record APIs: ZohoCliq.Datastores.ALL , ZohoCliq.DatastoreRecords.ALL
+
+
+    This scope provides basic CRUD (Create, Read, Update, Delete) access to the Record APIs.'
 servers:
 - url: https://cliq.zoho.com/api/v3
   description: Zoho Cliq US DC
@@ -15,7 +23,110 @@ paths:
     post:
       summary: Create a datastore
       operationId: creating_datastores_for_an_org
-      description: "Create a new Datastore for the organisation.<br><br>\nA Datastore is a structured storage table scoped to the organisation (or an extension) that allows platform components to persist and query data across executions.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_creation_limit_exceeded</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The maximum number of datastores allowed for the organisation has been reached.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_name_already_exists</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">A datastore with the same name already exists in the organisation.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_invalid_creation_data</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The request body contains invalid or malformed data for datastore creation.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_fields_required</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">At least one field definition must be provided to create a datastore.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_fields_invalid_value</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">One or more field definitions contain an invalid value.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_fields_limit_exceeded</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The number of fields exceeds the maximum limit of 19 (plus the default record ID field).</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_fields_duplicate_column</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Two or more fields share the same column name. Field names must be unique within a datastore.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_access_denied</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The authenticated user does not have permission to create a datastore.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_unique_key_column_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">A field referenced in a unique key constraint does not exist in the datastore's field definitions.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_field_name_reserved</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">One or more field names use a reserved keyword that cannot be used as a field name.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_field_unique_key_not_supported</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">A field of type <code>encrypted-text</code> or <code>large-text</code> was included in a unique key constraint, which is not supported.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_field_mask_not_supported</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Masking was specified for a field type that does not support it. Only <code>limited-text</code> and <code>number</code> fields support masking.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_invalid</span></td>\n            <td style=\"padding:10px 18px;\">The datastore data is invalid or in an unexpected state.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Create a new Datastore for the organisation.
+
+
+        A Datastore is a structured storage table scoped to the organisation (or an extension) that allows platform components to persist and query data across executions.
+
+
+        Threshold limit: 10 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        datastore_creation_limit_exceeded
+
+        The maximum number of datastores allowed for the organisation has been reached.
+
+
+        datastore_name_already_exists
+
+        A datastore with the same name already exists in the organisation.
+
+
+        datastore_invalid_creation_data
+
+        The request body contains invalid or malformed data for datastore creation.
+
+
+        datastore_fields_required
+
+        At least one field definition must be provided to create a datastore.
+
+
+        datastore_fields_invalid_value
+
+        One or more field definitions contain an invalid value.
+
+
+        datastore_fields_limit_exceeded
+
+        The number of fields exceeds the maximum limit of 19 (plus the default record ID field).
+
+
+        datastore_fields_duplicate_column
+
+        Two or more fields share the same column name. Field names must be unique within a datastore.
+
+
+        datastore_access_denied
+
+        The authenticated user does not have permission to create a datastore.
+
+
+        datastore_unique_key_column_not_found
+
+        A field referenced in a unique key constraint does not exist in the datastore''s field definitions.
+
+
+        datastore_field_name_reserved
+
+        One or more field names use a reserved keyword that cannot be used as a field name.
+
+
+        datastore_field_unique_key_not_supported
+
+        A field of type encrypted-text or large-text was included in a unique key constraint, which is not supported.
+
+
+        datastore_field_mask_not_supported
+
+        Masking was specified for a field type that does not support it. Only limited-text and number fields support masking.
+
+
+        datastore_invalid
+
+        The datastore data is invalid or in an unexpected state.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters: []
       requestBody:
         description: Creates a datastore. Provide `unique_name`, `name`, `description`, and at least one field definition.
@@ -164,7 +275,57 @@ paths:
     get:
       summary: List all datastores
       operationId: get_list_of_datastores
-      description: "Retrieve a paginated list of all datastores defined for the organisation.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">bulk_record_update_failed</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Failed to update one or more records.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">invalid_record_criteria</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Criteria expression is invalid.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_not_found</span></td>\n            <td style=\"padding:10px 18px;\">Datastore with the given identifier does not exist.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Retrieve a paginated list of all datastores defined for the organisation.
+
+
+        Threshold limit: 30 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        bulk_record_update_failed
+
+        Failed to update one or more records.
+
+
+        invalid_record_criteria
+
+        Criteria expression is invalid.
+
+
+        datastore_not_found
+
+        Datastore with the given identifier does not exist.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - schema:
           description: ''
@@ -335,7 +496,72 @@ paths:
     patch:
       summary: Edit a datastore
       operationId: edit_datastores
-      description: "Update the metadata (name, description) of an existing datastore.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Datastore with the given identifier does not exist.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_name_already_exists</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">A datastore with the same name already exists in the organisation.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_access_denied</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The authenticated user does not have permission to edit this datastore.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_unique_key_column_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">A field referenced in a unique key constraint does not exist in the datastore's field definitions.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_field_unique_key_not_supported</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">A field of type <code>encrypted-text</code> or <code>large-text</code> was included in a unique key constraint, which is not supported.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_invalid</span></td>\n            <td style=\"padding:10px 18px;\">The datastore data is invalid or in an unexpected state.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Update the metadata (name, description) of an existing datastore.
+
+
+        Threshold limit: 10 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        datastore_not_found
+
+        Datastore with the given identifier does not exist.
+
+
+        datastore_name_already_exists
+
+        A datastore with the same name already exists in the organisation.
+
+
+        datastore_access_denied
+
+        The authenticated user does not have permission to edit this datastore.
+
+
+        datastore_unique_key_column_not_found
+
+        A field referenced in a unique key constraint does not exist in the datastore''s field definitions.
+
+
+        datastore_field_unique_key_not_supported
+
+        A field of type encrypted-text or large-text was included in a unique key constraint, which is not supported.
+
+
+        datastore_invalid
+
+        The datastore data is invalid or in an unexpected state.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: DATASTORE_ID
         in: path
@@ -513,7 +739,52 @@ paths:
     get:
       summary: Get a datastore
       operationId: get_a_datastores
-      description: "Retrieve the metadata and field schema of a single datastore identified by its numeric ID. The response includes the datastore name, description, and the list of typed fields (columns) defined in the schema.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">record_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Record with the given ID does not exist.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_not_found</span></td>\n            <td style=\"padding:10px 18px;\">Datastore with the given identifier does not exist.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Retrieve the metadata and field schema of a single datastore identified by its numeric ID. The response includes the datastore name, description, and the list of typed fields (columns) defined in the schema.
+
+
+        Threshold limit: 30 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        record_not_found
+
+        Record with the given ID does not exist.
+
+
+        datastore_not_found
+
+        Datastore with the given identifier does not exist.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: DATASTORE_ID
         in: path
@@ -662,7 +933,52 @@ paths:
     delete:
       summary: Delete a datastore
       operationId: delete_a_datastore
-      description: "Permanently delete a datastore and all its stored records. This operation is irreversible, and all data in the datastore will be lost. Hence, ensure no active platform components depend on this datastore before deleting it.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Datastore with the given identifier does not exist.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_access_denied</span></td>\n            <td style=\"padding:10px 18px;\">The authenticated user does not have permission to delete this datastore.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Permanently delete a datastore and all its stored records. This operation is irreversible, and all data in the datastore will be lost. Hence, ensure no active platform components depend on this datastore before deleting it.
+
+
+        Threshold limit: 10 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        datastore_not_found
+
+        Datastore with the given identifier does not exist.
+
+
+        datastore_access_denied
+
+        The authenticated user does not have permission to delete this datastore.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: DATASTORE_ID
         in: path
@@ -763,7 +1079,62 @@ paths:
     patch:
       summary: Edit datastore fields
       operationId: edit_datastore_fields
-      description: "Update the existing fields (columns) in a datastore. The modifiable attributes include the field display name, type, and required field flag. The names of fields cannot be changed after they are created.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Datastore with the given identifier does not exist.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_access_denied</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The authenticated user does not have permission to modify this datastore.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_field_update_failed</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Failed to update one or more datastore fields.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_field_not_found</span></td>\n            <td style=\"padding:10px 18px;\">A field with the given ID does not exist in this datastore.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Update the existing fields (columns) in a datastore. The modifiable attributes include the field display name, type, and required field flag. The names of fields cannot be changed after they are created.
+
+
+        Threshold limit: 10 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        datastore_not_found
+
+        Datastore with the given identifier does not exist.
+
+
+        datastore_access_denied
+
+        The authenticated user does not have permission to modify this datastore.
+
+
+        datastore_field_update_failed
+
+        Failed to update one or more datastore fields.
+
+
+        datastore_field_not_found
+
+        A field with the given ID does not exist in this datastore.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: DATASTORE_ID
         in: path
@@ -931,7 +1302,82 @@ paths:
     post:
       summary: Add fields to a datastore
       operationId: add_datastore_fields
-      description: "Add one or more new fields (columns) to an existing datastore. Existing records will have null for newly added fields unless a default value is specified.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Datastore with the given identifier does not exist.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_fields_invalid_value</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">One or more field definitions contain an invalid value.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_fields_limit_exceeded</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The number of fields exceeds the maximum limit of 19 (plus the default record ID field).</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_fields_duplicate_column</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Two or more fields in the request share the same column name.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_access_denied</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The authenticated user does not have permission to modify this datastore.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_field_name_already_exists</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">A field with this unique name already exists in the datastore.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_field_name_reserved</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">One or more field names use a reserved keyword that cannot be used as a field name.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_field_mask_not_supported</span></td>\n            <td style=\"padding:10px 18px;\">Masking was specified for a field type that does not support it. Only <code>limited-text</code> and <code>number</code> fields support masking.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Add one or more new fields (columns) to an existing datastore. Existing records will have null for newly added fields unless a default value is specified.
+
+
+        Threshold limit: 10 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        datastore_not_found
+
+        Datastore with the given identifier does not exist.
+
+
+        datastore_fields_invalid_value
+
+        One or more field definitions contain an invalid value.
+
+
+        datastore_fields_limit_exceeded
+
+        The number of fields exceeds the maximum limit of 19 (plus the default record ID field).
+
+
+        datastore_fields_duplicate_column
+
+        Two or more fields in the request share the same column name.
+
+
+        datastore_access_denied
+
+        The authenticated user does not have permission to modify this datastore.
+
+
+        datastore_field_name_already_exists
+
+        A field with this unique name already exists in the datastore.
+
+
+        datastore_field_name_reserved
+
+        One or more field names use a reserved keyword that cannot be used as a field name.
+
+
+        datastore_field_mask_not_supported
+
+        Masking was specified for a field type that does not support it. Only limited-text and number fields support masking.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: DATASTORE_ID
         in: path
@@ -1117,7 +1563,57 @@ paths:
     delete:
       summary: Delete fields of a datastore
       operationId: delete_datastore_fields
-      description: "Remove one or more fields (columns) from a Datastore schema by providing the field IDs in the <code>ids</code> query parameter. All data stored in those fields will be permanently deleted. This action is irreversible.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Datastore with the given identifier does not exist.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_column_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">A field with the given ID does not exist in this datastore.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_access_denied</span></td>\n            <td style=\"padding:10px 18px;\">The authenticated user does not have permission to modify this datastore.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Remove one or more fields (columns) from a Datastore schema by providing the field IDs in the ids query parameter. All data stored in those fields will be permanently deleted. This action is irreversible.
+
+
+        Threshold limit: 10 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        datastore_not_found
+
+        Datastore with the given identifier does not exist.
+
+
+        datastore_column_not_found
+
+        A field with the given ID does not exist in this datastore.
+
+
+        datastore_access_denied
+
+        The authenticated user does not have permission to modify this datastore.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: DATASTORE_ID
         in: path
@@ -1234,7 +1730,84 @@ paths:
     patch:
       summary: Bulk update records in a datastore
       operationId: update_records_in_storage
-      description: "Update multiple records in a datastore with a single request. Identify target records by specifying record IDs or a criteria expression in the request body.\n<br><br>\n<blockquote><b>Note</b>: To manage records of a datastore bundled with an extension, use the extension-scoped endpoint instead:<br><code>v3/extensions/{EXTENSION_ID}/datastores/{DATASTORE_UNIQUE_NAME}/records</code><br>and pass the <code>extension_key</code> as a query parameter.</blockquote>\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Datastore with the given identifier does not exist.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_invalid_criteria</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The criteria expression provided is invalid or malformed.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_criteria_invalid_operator</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The criteria expression uses an invalid or unsupported operator.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_criteria_limit_exceeded</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The number of conditions in the criteria expression exceeds the allowed limit.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_column_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">A field key in <code>values</code> or <code>criteria</code> does not match any field <code>unique_name</code> in this datastore.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_update_violates_unique_key</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The update would violate a unique key constraint defined on the datastore.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_access_denied</span></td>\n            <td style=\"padding:10px 18px;\">The authenticated user does not have permission to update records in this datastore.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Update multiple records in a datastore with a single request. Identify target records by specifying record IDs or a criteria expression in the request body.
+
+
+        Note: To manage records of a datastore bundled with an extension, use the extension-scoped endpoint instead:
+
+        v3/extensions/{EXTENSION_ID}/datastores/{DATASTORE_UNIQUE_NAME}/records
+
+        and pass the extension_key as a query parameter.
+
+
+        Threshold limit: 30 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        datastore_not_found
+
+        Datastore with the given identifier does not exist.
+
+
+        datastore_invalid_criteria
+
+        The criteria expression provided is invalid or malformed.
+
+
+        datastore_criteria_invalid_operator
+
+        The criteria expression uses an invalid or unsupported operator.
+
+
+        datastore_criteria_limit_exceeded
+
+        The number of conditions in the criteria expression exceeds the allowed limit.
+
+
+        datastore_column_not_found
+
+        A field key in values or criteria does not match any field unique_name in this datastore.
+
+
+        datastore_update_violates_unique_key
+
+        The update would violate a unique key constraint defined on the datastore.
+
+
+        datastore_access_denied
+
+        The authenticated user does not have permission to update records in this datastore.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: DATASTORE_UNIQUE_NAME
         in: path
@@ -1374,7 +1947,84 @@ paths:
     post:
       summary: Add records to a datastore
       operationId: insert_record_in_storage
-      description: "Insert a record into a datastore.\n<br><br>\n<blockquote><b>Note</b>: To manage records of a datastore bundled with an extension, use the extension-scoped endpoint instead:<br><code>v3/extensions/{EXTENSION_ID}/datastores/{DATASTORE_UNIQUE_NAME}/records</code><br>and pass the <code>extension_key</code> as a query parameter.</blockquote>\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Datastore with the given identifier does not exist.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_data_limit_exceeded</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The record data exceeds the maximum allowed size (max 20 fields, each value up to 1000 characters, total max 2500 bytes).</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_column_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">A field key in <code>values</code> does not match any field unique_name in this datastore.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_invalid_number_value</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">A value provided for a number-type field is not a valid number.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_access_denied</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The authenticated user does not have permission to insert records into this datastore.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_unique_key_violation</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The record violates a unique key constraint defined on the datastore.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_required_field_missing</span></td>\n            <td style=\"padding:10px 18px;\">A mandatory field was not provided in the request.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Insert a record into a datastore.
+
+
+        Note: To manage records of a datastore bundled with an extension, use the extension-scoped endpoint instead:
+
+        v3/extensions/{EXTENSION_ID}/datastores/{DATASTORE_UNIQUE_NAME}/records
+
+        and pass the extension_key as a query parameter.
+
+
+        Threshold limit: 30 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        datastore_not_found
+
+        Datastore with the given identifier does not exist.
+
+
+        datastore_data_limit_exceeded
+
+        The record data exceeds the maximum allowed size (max 20 fields, each value up to 1000 characters, total max 2500 bytes).
+
+
+        datastore_column_not_found
+
+        A field key in values does not match any field unique_name in this datastore.
+
+
+        datastore_invalid_number_value
+
+        A value provided for a number-type field is not a valid number.
+
+
+        datastore_access_denied
+
+        The authenticated user does not have permission to insert records into this datastore.
+
+
+        datastore_unique_key_violation
+
+        The record violates a unique key constraint defined on the datastore.
+
+
+        datastore_required_field_missing
+
+        A mandatory field was not provided in the request.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: DATASTORE_UNIQUE_NAME
         in: path
@@ -1545,7 +2195,111 @@ paths:
     get:
       summary: List records from a datastore
       operationId: get_records
-      description: "Retrieve records from a datastore with optional filtering, sorting, and pagination.\n<ul>\n  <li>Use the <code>criteria</code> query parameter to filter records based on field values (e.g. <code>(empname=John) && (isactive=true)</code>).</li>\n  <li>Use the <code>sync_token</code> parameter to retrieve records modified before a certain point in time, or the <code>next_token</code> parameter for records modified after a certain point in time. This is useful for incremental synchronization.</li>\n  <li>Use the <code>order_by</code> parameter to sort results by specific fields.</li>\n  <li>Use the <code>limit</code> parameter to restrict the number of records returned.</li>\n</ul>\n<blockquote><b>Note</b>: To manage records of a datastore bundled with an extension, use the extension-scoped endpoint instead:<br><code>v3/extensions/{EXTENSION_ID}/datastores/{DATASTORE_UNIQUE_NAME}/records</code><br>and pass the <code>extension_key</code> as a query parameter.</blockquote>\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Datastore with the given identifier does not exist.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_invalid_criteria</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The criteria expression provided is invalid or malformed.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_criteria_invalid_operator</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The criteria expression uses an invalid or unsupported operator.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_criteria_limit_exceeded</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The number of conditions in the criteria expression exceeds the allowed limit.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_column_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">A field used in the criteria does not exist in this datastore.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_invalid_next_token</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The <code>next_token</code> value provided is invalid or expired.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_invalid_number_value</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">A value used in the criteria for a number-type field is not a valid number.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_in_query_limit_exceeded</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The number of values in an <code>in</code> query exceeds the allowed limit.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_duplicate_sort_field</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The same field was specified more than once in the <code>order_by</code> parameter.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_access_denied</span></td>\n            <td style=\"padding:10px 18px;\">The authenticated user does not have permission to read records from this datastore.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Retrieve records from a datastore with optional filtering, sorting, and pagination.
+
+
+        Use the criteria query parameter to filter records based on field values (e.g. (empname=John) && (isactive=true)).
+
+
+        Use the sync_token parameter to retrieve records modified before a certain point in time, or the next_token parameter for records modified after a certain point in time. This is useful for incremental synchronization.
+
+
+        Use the order_by parameter to sort results by specific fields.
+
+
+        Use the limit parameter to restrict the number of records returned.
+
+
+        Note: To manage records of a datastore bundled with an extension, use the extension-scoped endpoint instead:
+
+        v3/extensions/{EXTENSION_ID}/datastores/{DATASTORE_UNIQUE_NAME}/records
+
+        and pass the extension_key as a query parameter.
+
+
+        Threshold limit: 30 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        datastore_not_found
+
+        Datastore with the given identifier does not exist.
+
+
+        datastore_invalid_criteria
+
+        The criteria expression provided is invalid or malformed.
+
+
+        datastore_criteria_invalid_operator
+
+        The criteria expression uses an invalid or unsupported operator.
+
+
+        datastore_criteria_limit_exceeded
+
+        The number of conditions in the criteria expression exceeds the allowed limit.
+
+
+        datastore_column_not_found
+
+        A field used in the criteria does not exist in this datastore.
+
+
+        datastore_invalid_next_token
+
+        The next_token value provided is invalid or expired.
+
+
+        datastore_invalid_number_value
+
+        A value used in the criteria for a number-type field is not a valid number.
+
+
+        datastore_in_query_limit_exceeded
+
+        The number of values in an in query exceeds the allowed limit.
+
+
+        datastore_duplicate_sort_field
+
+        The same field was specified more than once in the order_by parameter.
+
+
+        datastore_access_denied
+
+        The authenticated user does not have permission to read records from this datastore.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: DATASTORE_UNIQUE_NAME
         in: path
@@ -1712,7 +2466,25 @@ paths:
     delete:
       summary: Delete records from a datastore
       operationId: delete_records_of_given_ids_in
-      description: "Delete one or more records from a datastore. Specify the records to delete by providing comma-separated record <code>ids</code> in the query string, or by providing a <code>criteria</code> expression to match records. Deletions are irreversible.\n<br><br>\n<blockquote><b>Note</b>: To manage records of a datastore bundled with an extension, use the extension-scoped endpoint instead:<br><code>v3/extensions/{EXTENSION_ID}/datastores/{DATASTORE_UNIQUE_NAME}/records</code><br>and pass the <code>extension_key</code> as a query parameter.</blockquote>\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n"
+      description: 'Delete one or more records from a datastore. Specify the records to delete by providing comma-separated record ids in the query string, or by providing a criteria expression to match records. Deletions are irreversible.
+
+
+        Note: To manage records of a datastore bundled with an extension, use the extension-scoped endpoint instead:
+
+        v3/extensions/{EXTENSION_ID}/datastores/{DATASTORE_UNIQUE_NAME}/records
+
+        and pass the extension_key as a query parameter.
+
+
+        Threshold limit: 30 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.'
       parameters:
       - name: DATASTORE_UNIQUE_NAME
         in: path
@@ -1836,7 +2608,79 @@ paths:
     patch:
       summary: Update a record in a datastore
       operationId: update_a_record_in_storage
-      description: "Update a single record in a datastore.\n<br><br>\n<blockquote><b>Note</b>: To manage records of a datastore bundled with an extension, use the extension-scoped endpoint instead:<br><code>v3/extensions/{EXTENSION_ID}/datastores/{DATASTORE_UNIQUE_NAME}/records/{RECORD_ID}</code><br>and pass the <code>extension_key</code> as a query parameter.</blockquote>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_record_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The record with the given ID does not exist in this datastore.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Datastore with the given identifier does not exist.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_column_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">A field key in <code>values</code> does not match any field <code>unique_name</code> in this datastore.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_update_violates_unique_key</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The update would violate a unique key constraint defined on the datastore.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_invalid_number_value</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">A value provided for a number-type field is not a valid number.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_access_denied</span></td>\n            <td style=\"padding:10px 18px;\">The authenticated user does not have permission to update records in this datastore.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Update a single record in a datastore.
+
+
+        Note: To manage records of a datastore bundled with an extension, use the extension-scoped endpoint instead:
+
+        v3/extensions/{EXTENSION_ID}/datastores/{DATASTORE_UNIQUE_NAME}/records/{RECORD_ID}
+
+        and pass the extension_key as a query parameter.
+
+
+        Threshold limit: 30 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        datastore_record_not_found
+
+        The record with the given ID does not exist in this datastore.
+
+
+        datastore_not_found
+
+        Datastore with the given identifier does not exist.
+
+
+        datastore_column_not_found
+
+        A field key in values does not match any field unique_name in this datastore.
+
+
+        datastore_update_violates_unique_key
+
+        The update would violate a unique key constraint defined on the datastore.
+
+
+        datastore_invalid_number_value
+
+        A value provided for a number-type field is not a valid number.
+
+
+        datastore_access_denied
+
+        The authenticated user does not have permission to update records in this datastore.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: DATASTORE_UNIQUE_NAME
         in: path
@@ -1968,7 +2812,64 @@ paths:
     get:
       summary: Get a record from a datastore
       operationId: get_a_record
-      description: "Retrieve a single record from a datastore.\n<br><br>\n<blockquote><b>Note</b>: To manage records of a datastore bundled with an extension, use the extension-scoped endpoint instead:<br><code>v3/extensions/{EXTENSION_ID}/datastores/{DATASTORE_UNIQUE_NAME}/records/{RECORD_ID}</code><br>and pass the <code>extension_key</code> as a query parameter.</blockquote>\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_record_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The record with the given ID does not exist in this datastore.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Datastore with the given identifier does not exist.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_access_denied</span></td>\n            <td style=\"padding:10px 18px;\">The authenticated user does not have permission to read records from this datastore.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Retrieve a single record from a datastore.
+
+
+        Note: To manage records of a datastore bundled with an extension, use the extension-scoped endpoint instead:
+
+        v3/extensions/{EXTENSION_ID}/datastores/{DATASTORE_UNIQUE_NAME}/records/{RECORD_ID}
+
+        and pass the extension_key as a query parameter.
+
+
+        Threshold limit: 30 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        datastore_record_not_found
+
+        The record with the given ID does not exist in this datastore.
+
+
+        datastore_not_found
+
+        Datastore with the given identifier does not exist.
+
+
+        datastore_access_denied
+
+        The authenticated user does not have permission to read records from this datastore.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: DATASTORE_UNIQUE_NAME
         in: path
@@ -2093,7 +2994,64 @@ paths:
     delete:
       summary: Delete a record from a datastore
       operationId: delete_a_record_in_storage
-      description: "Permanently delete a single record from a datastore.\n<br><br>\n<blockquote><b>Note</b>: To manage records of a datastore bundled with an extension, use the extension-scoped endpoint instead:<br><code>v3/extensions/{EXTENSION_ID}/datastores/{DATASTORE_UNIQUE_NAME}/records/{RECORD_ID}</code><br>and pass the <code>extension_key</code> as a query parameter.</blockquote>\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_record_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The record with the given ID does not exist in this datastore.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Datastore with the given identifier does not exist.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_access_denied</span></td>\n            <td style=\"padding:10px 18px;\">The authenticated user does not have permission to delete records from this datastore.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Permanently delete a single record from a datastore.
+
+
+        Note: To manage records of a datastore bundled with an extension, use the extension-scoped endpoint instead:
+
+        v3/extensions/{EXTENSION_ID}/datastores/{DATASTORE_UNIQUE_NAME}/records/{RECORD_ID}
+
+        and pass the extension_key as a query parameter.
+
+
+        Threshold limit: 30 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        datastore_record_not_found
+
+        The record with the given ID does not exist in this datastore.
+
+
+        datastore_not_found
+
+        Datastore with the given identifier does not exist.
+
+
+        datastore_access_denied
+
+        The authenticated user does not have permission to delete records from this datastore.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: DATASTORE_UNIQUE_NAME
         in: path
@@ -2215,7 +3173,57 @@ paths:
     post:
       summary: Export datastore records
       operationId: export_datastore_records
-      description: "Initiate a bulk export of all records from a datastore, identified by its numeric ID. This export is useful for data migration, backups, or analyzing platform storage data.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 5 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Datastore with the given identifier does not exist.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_access_denied</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The authenticated user does not have permission to export this datastore.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">datastore_export_password_missing</span></td>\n            <td style=\"padding:10px 18px;\">A password is required when <code>password_protected</code> is set to <code>true</code>.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Initiate a bulk export of all records from a datastore, identified by its numeric ID. This export is useful for data migration, backups, or analyzing platform storage data.
+
+
+        Threshold limit: 5 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 10 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        datastore_not_found
+
+        Datastore with the given identifier does not exist.
+
+
+        datastore_access_denied
+
+        The authenticated user does not have permission to export this datastore.
+
+
+        datastore_export_password_missing
+
+        A password is required when password_protected is set to true.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: DATASTORE_ID
         in: path
@@ -2333,6 +3341,150 @@ paths:
       - Platform_storage
 components:
   schemas:
+    platformstorage_records_export:
+      type: object
+      description: Configuration payload for a Datastore bulk export operation. Specifies the fields to include, filter criteria, and output format.
+      required:
+      - file_type
+      properties:
+        file_type:
+          type: string
+          description: "Format of the exported file.<br>\n<ul>\n <li><b>csv</b>: Comma-separated values format, suitable for spreadsheets and data analysis tools.</li>\n <li><b>xlsx</b>: Microsoft Excel format, supports multiple sheets, formatting, and larger data volumes.</li>\n <li><b>pdf</b>: Portable Document Format, ideal for sharing and printing.</li>\n</ul>\n"
+          enum:
+          - csv
+          - xlsx
+          - pdf
+        password_protected:
+          type: boolean
+          description: 'Indicates whether the exported file should be protected with a password. If true, the <code>password</code> field must be provided to specify the password to use for protecting the file.
+
+            '
+        password:
+          type: string
+          minLength: 8
+          maxLength: 20
+          description: 'Password to protect the exported file. This field is required if <code>password_protected</code> is true.<br>
+
+            Must be between 8 and 20 characters in length and should include a mix of letters, numbers, and special characters for better security.
+
+            <br><b>Minimum length</b>: 8 characters<br>
+
+            <b>Maximum length</b>: 20 characters
+
+            '
+    editplatformdatabase_v2:
+      type: object
+      description: Payload for updating datastore metadata.
+      properties:
+        unique_name:
+          type: string
+          maxLength: 20
+          description: 'Updated datastore unique name.<br>
+
+            Accepts lowercase letters, numbers, and underscores only, and must start with a letter. This is used in API endpoints and should be unique across datastores.<br>
+
+            <b>Maximum length</b>: 20 characters.
+
+            '
+        name:
+          type: string
+          maxLength: 20
+          description: 'Updated datastore display name.<br>
+
+            Can contain letters, numbers, and spaces. This is used for display purposes in the UI and can be non-unique.<br>
+
+            <b>Maximum length</b>: 20 characters.
+
+            '
+        description:
+          type: string
+          maxLength: 250
+          description: 'Updated datastore description.<br>
+
+            A brief description about the datastore''s purpose or contents.<br>
+
+            <b>Maximum length</b>: 250 characters.
+
+            '
+        unique_keys:
+          type: array
+          maxItems: 4
+          description: "Updated unique key constraints for the datastore. Replaces the existing set of constraints entirely.<br>\n<ul>\n  <li>A maximum of <b>4</b> unique key constraints can be defined per datastore.</li>\n  <li>Each constraint is an array of one or more field <code>unique_name</code> values that must be collectively unique across all records.</li>\n  <li>Fields of type <b>encrypted-text</b> or <b>large-text</b> cannot be included in a unique key constraint.</li>\n</ul>\n"
+          items:
+            type: array
+            description: 'An array of field unique_names that form a single unique key constraint. Each unique key constraint ensures that the combination of values in the specified fields is unique across all records in the datastore.
+
+              '
+            items:
+              type: string
+      example:
+        unique_name: empdir
+        name: Employee Directory
+        description: Tracks employee records and department data
+        unique_keys:
+        - - empid
+          - empname
+    datastores_records_add:
+      type: object
+      description: Payload for inserting or updating a single datastore record.
+      required:
+      - values
+      properties:
+        values:
+          type: object
+          description: 'Key-value pairs of field unique_name and the new value to update.
+
+            '
+          additionalProperties: true
+          example:
+            empid: '1001'
+            empname: John Doe
+            isactive: true
+            salary: '50000'
+            department: Engineering
+            notes: Senior Engineer in Platform Team
+    updaterecord_response:
+      type: object
+      description: Response envelope returned when a datastore record is retrieved or updated.
+      properties:
+        url:
+          type: string
+          description: API endpoint URL for the record resource.
+          example: /api/v3/datastores/shejbwfz/records/227828000000128010
+        type:
+          type: string
+          description: Resource type identifier.
+          example: datastore_record
+        data:
+          type: object
+          description: The record's field values along with system-managed metadata fields.
+          properties:
+            modified_time:
+              type: string
+              description: Unix epoch timestamp (ms) when the record was last modified.
+              example: '1777360403455'
+            added_time:
+              type: string
+              description: Unix epoch timestamp (ms) when the record was first created.
+              example: '1777360402254'
+            id:
+              type: string
+              description: Unique numeric identifier of the record.
+              example: '227828000000128010'
+          additionalProperties: true
+      example:
+        url: /api/v3/datastores/shejbwfz/records/227828000000128010
+        type: datastore_record
+        data:
+          modified_time: '1777360403455'
+          empid: '1001'
+          isactive: false
+          salary: '0'
+          department: ''
+          id: '227828000000128010'
+          empname: John Doe Jr.
+          added_time: '1777360402254'
+          notes: Senior Engineer in Platform Team
     add_platform_db_fields:
       type: object
       description: Payload for adding new fields to a datastore schema.
@@ -2412,195 +3564,6 @@ components:
           type: limited-text
           mandatory: false
           default_value: ''
-    DatastoreResponse:
-      type: object
-      description: Datastores API response envelope.
-      properties:
-        url:
-          type: string
-          example: /api/v3/datastores
-        type:
-          type: string
-          example: datastore
-        data:
-          type: object
-          additionalProperties: true
-      example:
-        url: /api/v3/datastores
-        type: datastore
-        data:
-          unique_name: empdir
-          name: Employee Directory
-          id: '227828000000132001'
-          creator:
-            name: NP NTC
-            id: '119440882'
-          status: enabled
-          fields:
-          - default_value: ''
-            masked: false
-            name: Notes
-            unique_name: notes
-            type: large-text
-            mandatory: false
-            id: '17202020414617773604009000'
-          - default_value: '0'
-            masked: false
-            name: Employee ID
-            unique_name: empid
-            type: number
-            mandatory: true
-            id: '17202020414617773604009001'
-          - default_value: ''
-            masked: false
-            name: Employee Name
-            unique_name: empname
-            type: limited-text
-            mandatory: true
-            id: '17202020414617773604009002'
-          - default_value: 'true'
-            masked: false
-            name: Active Status
-            unique_name: isactive
-            type: boolean
-            mandatory: false
-            id: '17202020414617773604009003'
-          type: custom
-          description: V3 API test datastore
-          unique_keys:
-          - - empid
-          scope: personal
-    base64_regex:
-      type: string
-      description: Base64-encoded pagination or sync token used for cursor-based pagination and incremental data sync.
-    editplatformdatabase_v2:
-      type: object
-      description: Payload for updating datastore metadata.
-      properties:
-        unique_name:
-          type: string
-          maxLength: 20
-          description: 'Updated datastore unique name.<br>
-
-            Accepts lowercase letters, numbers, and underscores only, and must start with a letter. This is used in API endpoints and should be unique across datastores.<br>
-
-            <b>Maximum length</b>: 20 characters.
-
-            '
-        name:
-          type: string
-          maxLength: 20
-          description: 'Updated datastore display name.<br>
-
-            Can contain letters, numbers, and spaces. This is used for display purposes in the UI and can be non-unique.<br>
-
-            <b>Maximum length</b>: 20 characters.
-
-            '
-        description:
-          type: string
-          maxLength: 250
-          description: 'Updated datastore description.<br>
-
-            A brief description about the datastore''s purpose or contents.<br>
-
-            <b>Maximum length</b>: 250 characters.
-
-            '
-        unique_keys:
-          type: array
-          maxItems: 4
-          description: "Updated unique key constraints for the datastore. Replaces the existing set of constraints entirely.<br>\n<ul>\n  <li>A maximum of <b>4</b> unique key constraints can be defined per datastore.</li>\n  <li>Each constraint is an array of one or more field <code>unique_name</code> values that must be collectively unique across all records.</li>\n  <li>Fields of type <b>encrypted-text</b> or <b>large-text</b> cannot be included in a unique key constraint.</li>\n</ul>\n"
-          items:
-            type: array
-            description: 'An array of field unique_names that form a single unique key constraint. Each unique key constraint ensures that the combination of values in the specified fields is unique across all records in the datastore.
-
-              '
-            items:
-              type: string
-      example:
-        unique_name: empdir
-        name: Employee Directory
-        description: Tracks employee records and department data
-        unique_keys:
-        - - empid
-          - empname
-    updaterecord_response:
-      type: object
-      description: Response envelope returned when a datastore record is retrieved or updated.
-      properties:
-        url:
-          type: string
-          description: API endpoint URL for the record resource.
-          example: /api/v3/datastores/shejbwfz/records/227828000000128010
-        type:
-          type: string
-          description: Resource type identifier.
-          example: datastore_record
-        data:
-          type: object
-          description: The record's field values along with system-managed metadata fields.
-          properties:
-            modified_time:
-              type: string
-              description: Unix epoch timestamp (ms) when the record was last modified.
-              example: '1777360403455'
-            added_time:
-              type: string
-              description: Unix epoch timestamp (ms) when the record was first created.
-              example: '1777360402254'
-            id:
-              type: string
-              description: Unique numeric identifier of the record.
-              example: '227828000000128010'
-          additionalProperties: true
-      example:
-        url: /api/v3/datastores/shejbwfz/records/227828000000128010
-        type: datastore_record
-        data:
-          modified_time: '1777360403455'
-          empid: '1001'
-          isactive: false
-          salary: '0'
-          department: ''
-          id: '227828000000128010'
-          empname: John Doe Jr.
-          added_time: '1777360402254'
-          notes: Senior Engineer in Platform Team
-    platformstorage_records_export:
-      type: object
-      description: Configuration payload for a Datastore bulk export operation. Specifies the fields to include, filter criteria, and output format.
-      required:
-      - file_type
-      properties:
-        file_type:
-          type: string
-          description: "Format of the exported file.<br>\n<ul>\n <li><b>csv</b>: Comma-separated values format, suitable for spreadsheets and data analysis tools.</li>\n <li><b>xlsx</b>: Microsoft Excel format, supports multiple sheets, formatting, and larger data volumes.</li>\n <li><b>pdf</b>: Portable Document Format, ideal for sharing and printing.</li>\n</ul>\n"
-          enum:
-          - csv
-          - xlsx
-          - pdf
-        password_protected:
-          type: boolean
-          description: 'Indicates whether the exported file should be protected with a password. If true, the <code>password</code> field must be provided to specify the password to use for protecting the file.
-
-            '
-        password:
-          type: string
-          minLength: 8
-          maxLength: 20
-          description: 'Password to protect the exported file. This field is required if <code>password_protected</code> is true.<br>
-
-            Must be between 8 and 20 characters in length and should include a mix of letters, numbers, and special characters for better security.
-
-            <br><b>Minimum length</b>: 8 characters<br>
-
-            <b>Maximum length</b>: 20 characters
-
-            '
-    encryptedappkey_regex:
-      type: string
-      description: Encrypted application key (appkey or EXTENSION_KEY) issued to a bot or extension, used as an alternative to OAuth for webhook-style authentication.
     createplatformdatabase_v2:
       type: object
       description: Payload for creating a new datastore.
@@ -2787,25 +3750,9 @@ components:
           instock: true
           productsecretcode: secretkey897
           productdescription: zylker description
-    datastores_records_add:
-      type: object
-      description: Payload for inserting or updating a single datastore record.
-      required:
-      - values
-      properties:
-        values:
-          type: object
-          description: 'Key-value pairs of field unique_name and the new value to update.
-
-            '
-          additionalProperties: true
-          example:
-            empid: '1001'
-            empname: John Doe
-            isactive: true
-            salary: '50000'
-            department: Engineering
-            notes: Senior Engineer in Platform Team
+    multiplelong_regex:
+      type: string
+      description: Comma-separated list of numeric long integer IDs (e.g. record IDs or field IDs) used in bulk delete operations.
     edit_platform_db_fields:
       type: object
       description: Payload for editing existing datastore fields.
@@ -2879,9 +3826,70 @@ components:
           unique_name: empid
           mandatory: true
           default_value: '0'
-    multiplelong_regex:
+    DatastoreResponse:
+      type: object
+      description: Datastores API response envelope.
+      properties:
+        url:
+          type: string
+          example: /api/v3/datastores
+        type:
+          type: string
+          example: datastore
+        data:
+          type: object
+          additionalProperties: true
+      example:
+        url: /api/v3/datastores
+        type: datastore
+        data:
+          unique_name: empdir
+          name: Employee Directory
+          id: '227828000000132001'
+          creator:
+            name: NP NTC
+            id: '119440882'
+          status: enabled
+          fields:
+          - default_value: ''
+            masked: false
+            name: Notes
+            unique_name: notes
+            type: large-text
+            mandatory: false
+            id: '17202020414617773604009000'
+          - default_value: '0'
+            masked: false
+            name: Employee ID
+            unique_name: empid
+            type: number
+            mandatory: true
+            id: '17202020414617773604009001'
+          - default_value: ''
+            masked: false
+            name: Employee Name
+            unique_name: empname
+            type: limited-text
+            mandatory: true
+            id: '17202020414617773604009002'
+          - default_value: 'true'
+            masked: false
+            name: Active Status
+            unique_name: isactive
+            type: boolean
+            mandatory: false
+            id: '17202020414617773604009003'
+          type: custom
+          description: V3 API test datastore
+          unique_keys:
+          - - empid
+          scope: personal
+    base64_regex:
       type: string
-      description: Comma-separated list of numeric long integer IDs (e.g. record IDs or field IDs) used in bulk delete operations.
+      description: Base64-encoded pagination or sync token used for cursor-based pagination and incremental data sync.
+    encryptedappkey_regex:
+      type: string
+      description: Encrypted application key (appkey or EXTENSION_KEY) issued to a bot or extension, used as an alternative to OAuth for webhook-style authentication.
     longid_regex:
       type: string
       description: Numeric long integer identifier used to reference platform components such as Commands, Functions, Widgets, Message Actions, Schedulers, and Extensions.
@@ -2893,13 +3901,12 @@ components:
         implicit:
           authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
           scopes:
-            ZohoCliq.Bots.READ: Read Bot Information
-            ZohoCliq.Bots.CREATE: Create Bots
-            ZohoCliq.Bots.UPDATE: Update Bots
-            ZohoCliq.Bots.DELETE: Delete Bots
-            ZohoCliq.Webhooks.CREATE: Post messages to conversations via webhooks
-            ZohoCliq.BotMessages.CREATE: Send messages via bot incoming webhooks
-            ZohoCliq.Channels.UPDATE: Update Channel Settings
-externalDocs:
-  description: Find out more about Zoho Cliq APIs V3
-  url: https://www.zoho.com/cliq/help/restapi/v3/
+            ZohoCliq.Datastores.ALL: Create, Read, Update and Delete Datastores
+            ZohoCliq.Datastores.CREATE: Create new Datastores with schema definitions.
+            ZohoCliq.Datastores.READ: Read Datastore metadata, field schemas, and execution logs.
+            ZohoCliq.Datastores.UPDATE: Update Datastore metadata and field schema definitions.
+            ZohoCliq.Datastores.DELETE: Permanently delete Datastores and all their records.
+            ZohoCliq.DatastoreRecords.CREATE: Insert new records into Datastores.
+            ZohoCliq.DatastoreRecords.READ: Read and query records from Datastores.
+            ZohoCliq.DatastoreRecords.UPDATE: Update existing records in Datastores.
+            ZohoCliq.DatastoreRecords.DELETE: Delete records from Datastores.

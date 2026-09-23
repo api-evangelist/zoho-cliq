@@ -1,23 +1,35 @@
 openapi: 3.2.0
 info:
-  title: Bots Scheduledmessages API
-  description: "<p>Bots are conversational assistants designed to automate repetitive tasks and manage simple user interactions. Their behavior is fully customizable through predefined Bot Handlers, which are activated by specific actions or through Webhooks that communicate with your own external server.</p> <p>For more information about Bots, please refer to the <b><a href=\"https://www.zoho.com/cliq/help/platform/bots.html\" target=\"_blank\">Bots Help Documentation</a></b>.</p> <p><b>Bot Handlers</b></p> <ul>\n  <li>Bot Handlers are the building blocks of a bot's functionality. Each handler is associated with a specific trigger event, such as receiving a direct message, being @mentioned in a channel, or a user subscribing to the bot.</li>\n  <li>When the trigger event occurs, the corresponding handler executes it's script to perform actions like sending messages, making API calls, or updating data.</li>\n  <li>By configuring different handlers, you can create bots that respond intelligently to various user interactions and automate complex workflows within Zoho Cliq.</li>\n</ul> <p><b>Types of Bot Handlers</b></p> <table style=\"border-collapse: collapse; width: 100%;\">\n  <tr>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Handler</th>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Description</th>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Menu Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Adds up to 5 quick-action items to the bot's chat menu. Triggered when a user interacts with the menu.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Message Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot receives a message.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Welcome Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Defines the greeting message sent when a user subscribes to the bot.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Mention Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot is @mentioned in a chat or channel.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Incoming Webhook Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Allows external services to post messages into the bot via outgoing webhooks.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Context Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Manages multi-turn conversations, maintaining context across a user's interaction with the bot.</td>\n  </tr>\n</table> <p><b>What you can do with the Bots API?</b></p> <p>With the Bots API, you can retrieve information about a specific bot, list all bots within your organization, manage configurations specific to handlers, trigger bot calls programmatically, manage subscribers, and much more.</p> <p>Each bot has an <code>execution_type</code> that defines how its handlers run when a trigger event occurs. The Bots API allows developers to create two types of bots:</p> <p id=\"deluge-bots\"><b>Deluge Bots (default)</b><br> Deluge bot executes handler logic using Zoho's Deluge scripting language, hosted entirely within the Zoho Cliq Developer platform, where no external server is required.</p> <ul>\n  <li>If <code>execution_type</code> is not specified during bot creation, it defaults to deluge.</li>\n  <li>Handler logic is defined as a script field (Deluge source code) when creating or updating handlers.</li>\n  <li>Suitable for teams that want to build and manage bot logic entirely within Zoho's ecosystem.</li>\n</ul> <p id=\"webhook-bots\"><b>Webhook Bots</b><br> A Webhook bot delegates all handler execution to your own external server. When a trigger event fires, Zoho Cliq sends an HTTP POST request to the <code>execution_url</code> you configure, and your server processes the event and returns a response.</p> <ul>\n  <li>To create a Webhook bot, set <code>execution_type</code> to webhook during bot creation and provide the <code>execution_url</code> where event payloads should be sent.</li>\n  <li>Your server must be publicly accessible and able to handle incoming POST requests from Zoho Cliq.</li>\n  <li>Ideal for teams seeking complete control over bot logic and possessing the resources to manage an external server. Also suitable for integrations requiring access to external databases, third-party APIs, or custom business logic that cannot be executed in Deluge.</li>\n</ul>\n"
+  title: Scheduled Messages Scheduledmessages API
+  description: The Scheduled Messages API gets a powerful upgrade with v3, giving developers full lifecycle control over message delivery to build time-aware and context-driven communication workflows.
   contact: {}
   version: 1.0.0
 servers:
 - url: https://cliq.zoho.com/api/v3
   description: Zoho Cliq US DC
 tags:
-- name: scheduledmessages
+- name: Scheduled Messages
   description: Scheduled Messages Module
 paths:
   /scheduledmessages:
     get:
       summary: List all scheduled messages
       operationId: listAllScheduledMessagesV3
-      description: "Retrieves all scheduled messages across all chats for the authenticated user. Use this to get a consolidated view of all pending time-based and status-based scheduled messages, with support for pagination and incremental updates.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>\n  Wait time before consecutive API requests.\n</p>\n"
+      description: 'Retrieves all scheduled messages across all chats for the authenticated user. Use this to get a consolidated view of all pending time-based and status-based scheduled messages, with support for pagination and incremental updates.
+
+
+        Threshold limit: 20 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 10 minutes
+
+
+        Wait time before consecutive API requests.'
       tags:
-      - scheduledmessages
+      - Scheduled Messages
       parameters:
       - name: limit
         in: query
@@ -152,9 +164,21 @@ paths:
     get:
       summary: List scheduled messages in a chat
       operationId: listScheduledMessagesInChatV3
-      description: "Retrieves all scheduled messages within a specific chat or channel. Use this to inspect pending time-based and status-based messages for a particular conversation, with support for pagination and incremental updates.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>\n  Wait time before consecutive API requests.\n</p>\n"
+      description: 'Retrieves all scheduled messages within a specific chat or channel. Use this to inspect pending time-based and status-based messages for a particular conversation, with support for pagination and incremental updates.
+
+
+        Threshold limit: 20 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 10 minutes
+
+
+        Wait time before consecutive API requests.'
       tags:
-      - scheduledmessages
+      - Scheduled Messages
       parameters:
       - name: CHAT_ID
         in: path
@@ -294,9 +318,55 @@ paths:
     post:
       summary: Send scheduled messages now
       operationId: sendScheduledMessagesNowV3
-      description: "Immediately sends one or all pending scheduled messages in a chat without waiting for the scheduled time. Use this to manually trigger delivery of a specific message by ID, or all pending messages in the chat at once.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>\n  Wait time before consecutive API requests.\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">scheduled_msg_no_pending_msgs</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">No pending scheduled messages exist in this chat.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">param_missing</span></td>\n            <td style=\"padding:10px 18px;\">A required parameter is missing from the request.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Immediately sends one or all pending scheduled messages in a chat without waiting for the scheduled time. Use this to manually trigger delivery of a specific message by ID, or all pending messages in the chat at once.
+
+
+        Threshold limit: 50 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 10 minutes
+
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        scheduled_msg_no_pending_msgs
+
+        No pending scheduled messages exist in this chat.
+
+
+        param_missing
+
+        A required parameter is missing from the request.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       tags:
-      - scheduledmessages
+      - Scheduled Messages
       parameters:
       - name: CHAT_ID
         in: path
@@ -415,9 +485,65 @@ paths:
     put:
       summary: Bulk reschedule scheduled messages
       operationId: bulkRescheduleScheduledMessagesV3
-      description: "Reschedules all time-based or status-based scheduled messages in a chat in a single operation. Use this to update delivery times or change status triggers across multiple messages at once without editing them individually.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>\n  Wait time before consecutive API requests.\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">param_missing</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">A required parameter is missing from the request.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">scheduled_msg_no_pending_msgs</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">No pending scheduled messages exist in this chat.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">scheduled_msg_invalid_time_format</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Invalid <code>schedule_time</code> format. Expected epoch milliseconds.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">input_pattern_mismatch</span></td>\n            <td style=\"padding:10px 18px;\">An unrecognized value was passed for an enum field.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Reschedules all time-based or status-based scheduled messages in a chat in a single operation. Use this to update delivery times or change status triggers across multiple messages at once without editing them individually.
+
+
+        Threshold limit: 20 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 10 minutes
+
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        param_missing
+
+        A required parameter is missing from the request.
+
+
+        scheduled_msg_no_pending_msgs
+
+        No pending scheduled messages exist in this chat.
+
+
+        scheduled_msg_invalid_time_format
+
+        Invalid schedule_time format. Expected epoch milliseconds.
+
+
+        input_pattern_mismatch
+
+        An unrecognized value was passed for an enum field.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       tags:
-      - scheduledmessages
+      - Scheduled Messages
       parameters:
       - name: CHAT_ID
         in: path
@@ -606,9 +732,21 @@ paths:
     delete:
       summary: Delete all scheduled messages in a chat
       operationId: deleteAllScheduledMessagesInChatV3
-      description: "Deletes all scheduled messages in a chat in a single operation. Use this to clear all pending scheduled messages from a conversation at once without deleting them individually.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>\n  Wait time before consecutive API requests.\n</p>\n"
+      description: 'Deletes all scheduled messages in a chat in a single operation. Use this to clear all pending scheduled messages from a conversation at once without deleting them individually.
+
+
+        Threshold limit: 20 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 10 minutes
+
+
+        Wait time before consecutive API requests.'
       tags:
-      - scheduledmessages
+      - Scheduled Messages
       parameters:
       - name: CHAT_ID
         in: path
@@ -671,9 +809,65 @@ paths:
     put:
       summary: Edit a scheduled message
       operationId: editScheduledMessageV3
-      description: "Updates the text, scheduled time, timezone, status trigger, or file attachment of an existing scheduled message. Use this to modify a specific scheduled message before it is delivered, including switching between time-based and status-based scheduling.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>\n  Wait time before consecutive API requests.\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">scheduled_msg_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The requested scheduled message could not be found.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">scheduled_msg_invalid_time_format</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Invalid <code>schedule_time</code> format. Expected epoch milliseconds.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">checkin_status_message_restricted</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The <code>check_in</code> status trigger is not supported for this chat type (e.g. direct messages).</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">extra_key_found</span></td>\n            <td style=\"padding:10px 18px;\">An unsupported key was included in the request body.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Updates the text, scheduled time, timezone, status trigger, or file attachment of an existing scheduled message. Use this to modify a specific scheduled message before it is delivered, including switching between time-based and status-based scheduling.
+
+
+        Threshold limit: 20 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 10 minutes
+
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        scheduled_msg_not_found
+
+        The requested scheduled message could not be found.
+
+
+        scheduled_msg_invalid_time_format
+
+        Invalid schedule_time format. Expected epoch milliseconds.
+
+
+        checkin_status_message_restricted
+
+        The check_in status trigger is not supported for this chat type (e.g. direct messages).
+
+
+        extra_key_found
+
+        An unsupported key was included in the request body.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       tags:
-      - scheduledmessages
+      - Scheduled Messages
       parameters:
       - name: CHAT_ID
         in: path
@@ -882,9 +1076,50 @@ paths:
     delete:
       summary: Delete a scheduled message
       operationId: deleteScheduledMessageV3
-      description: "Deletes a specific scheduled message by its ID. Use this to remove a single pending message from a chat without affecting other scheduled messages in the same conversation.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 20 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>\n  Wait time before consecutive API requests.\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">scheduled_msg_not_found</span></td>\n            <td style=\"padding:10px 18px;\">The requested scheduled message could not be found.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Deletes a specific scheduled message by its ID. Use this to remove a single pending message from a chat without affecting other scheduled messages in the same conversation.
+
+
+        Threshold limit: 20 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 10 minutes
+
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        scheduled_msg_not_found
+
+        The requested scheduled message could not be found.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       tags:
-      - scheduledmessages
+      - Scheduled Messages
       parameters:
       - name: CHAT_ID
         in: path
@@ -978,13 +1213,10 @@ components:
         implicit:
           authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
           scopes:
-            ZohoCliq.Bots.READ: Read Bot Information
-            ZohoCliq.Bots.CREATE: Create Bots
-            ZohoCliq.Bots.UPDATE: Update Bots
-            ZohoCliq.Bots.DELETE: Delete Bots
-            ZohoCliq.Webhooks.CREATE: Post messages to conversations via webhooks
-            ZohoCliq.BotMessages.CREATE: Send messages via bot incoming webhooks
-            ZohoCliq.Channels.UPDATE: Update Channel Settings
+            ZohoCliq.Messages.READ: Read scheduled messages
+            ZohoCliq.Messages.CREATE: Send scheduled messages now
+            ZohoCliq.Messages.UPDATE: Edit and reschedule scheduled messages
+            ZohoCliq.Messages.DELETE: Delete scheduled messages
 externalDocs:
   description: Find out more about Zoho Cliq APIs V3
   url: https://www.zoho.com/cliq/help/restapi/v3/

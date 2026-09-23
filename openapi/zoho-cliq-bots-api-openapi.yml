@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Bots API
-  description: "<p>Bots are conversational assistants designed to automate repetitive tasks and manage simple user interactions. Their behavior is fully customizable through predefined Bot Handlers, which are activated by specific actions or through Webhooks that communicate with your own external server.</p> <p>For more information about Bots, please refer to the <b><a href=\"https://www.zoho.com/cliq/help/platform/bots.html\" target=\"_blank\">Bots Help Documentation</a></b>.</p> <p><b>Bot Handlers</b></p> <ul>\n  <li>Bot Handlers are the building blocks of a bot's functionality. Each handler is associated with a specific trigger event, such as receiving a direct message, being @mentioned in a channel, or a user subscribing to the bot.</li>\n  <li>When the trigger event occurs, the corresponding handler executes it's script to perform actions like sending messages, making API calls, or updating data.</li>\n  <li>By configuring different handlers, you can create bots that respond intelligently to various user interactions and automate complex workflows within Zoho Cliq.</li>\n</ul> <p><b>Types of Bot Handlers</b></p> <table style=\"border-collapse: collapse; width: 100%;\">\n  <tr>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Handler</th>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Description</th>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Menu Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Adds up to 5 quick-action items to the bot's chat menu. Triggered when a user interacts with the menu.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Message Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot receives a message.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Welcome Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Defines the greeting message sent when a user subscribes to the bot.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Mention Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot is @mentioned in a chat or channel.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Incoming Webhook Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Allows external services to post messages into the bot via outgoing webhooks.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Context Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Manages multi-turn conversations, maintaining context across a user's interaction with the bot.</td>\n  </tr>\n</table> <p><b>What you can do with the Bots API?</b></p> <p>With the Bots API, you can retrieve information about a specific bot, list all bots within your organization, manage configurations specific to handlers, trigger bot calls programmatically, manage subscribers, and much more.</p> <p>Each bot has an <code>execution_type</code> that defines how its handlers run when a trigger event occurs. The Bots API allows developers to create two types of bots:</p> <p id=\"deluge-bots\"><b>Deluge Bots (default)</b><br> Deluge bot executes handler logic using Zoho's Deluge scripting language, hosted entirely within the Zoho Cliq Developer platform, where no external server is required.</p> <ul>\n  <li>If <code>execution_type</code> is not specified during bot creation, it defaults to deluge.</li>\n  <li>Handler logic is defined as a script field (Deluge source code) when creating or updating handlers.</li>\n  <li>Suitable for teams that want to build and manage bot logic entirely within Zoho's ecosystem.</li>\n</ul> <p id=\"webhook-bots\"><b>Webhook Bots</b><br> A Webhook bot delegates all handler execution to your own external server. When a trigger event fires, Zoho Cliq sends an HTTP POST request to the <code>execution_url</code> you configure, and your server processes the event and returns a response.</p> <ul>\n  <li>To create a Webhook bot, set <code>execution_type</code> to webhook during bot creation and provide the <code>execution_url</code> where event payloads should be sent.</li>\n  <li>Your server must be publicly accessible and able to handle incoming POST requests from Zoho Cliq.</li>\n  <li>Ideal for teams seeking complete control over bot logic and possessing the resources to manage an external server. Also suitable for integrations requiring access to external databases, third-party APIs, or custom business logic that cannot be executed in Deluge.</li>\n</ul>\n"
+  description: Bots are conversational assistants designed to automate repetitive tasks and manage simple user interactions.
   contact: {}
   version: 1.0.0
 servers:
@@ -14,7 +14,47 @@ paths:
     post:
       summary: Trigger Bot Calls
       operationId: Trigger Bot Calls
-      description: "Utilize this API to send a voice alert to specific users via the bot.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per 5 min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 30 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">bot_alert_not_enabled</span></td>\n            <td style=\"padding:10px 18px;\">Voice call or alert is not enabled for this bot.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Utilize this API to send a voice alert to specific users via the bot.
+
+
+        Threshold limit: 10 requests per 5 min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 30 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        bot_alert_not_enabled
+
+        Voice call or alert is not enabled for this bot.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: BOT_UNIQUE_NAME
         in: path
@@ -126,7 +166,78 @@ paths:
     post:
       summary: Create a bot
       operationId: create_a_new_bot
-      description: "Create a new bot in Cliq by specifying the bot's display name, description, and access level (organization or team). Upon creation, Cliq auto-assigns a <code>unique_name</code> as a permanent identifier for the bot - this cannot be changed even if the display name is updated later.<br><br>After creation, add handlers to define the bot's behaviour for each trigger event.<br>\nWith this API, you can create both <a href=\"/cliq/help/restapi/v3/bots/#deluge-bots\">Deluge bots</a> (which run handler logic within Zoho's platform) and <a href=\"/cliq/help/restapi/v3/bots/#webhook-bots\">Webhook bots</a> (which delegate execution to your own server).\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">bot_creation_limit_exceeded</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Organization has reached the maximum number of bots.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">bot_name_already_exists</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">A bot with this name already exists.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">invalid_inputs</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Request body validation failed.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">execution_url_required</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\"><code>execution_url</code> is required when <code>execution_type</code> is set to <code>webhook</code>.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">execution_url_not_allowed</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\"><code>execution_url</code> is not allowed when <code>execution_type</code> is set to <code>deluge</code>.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">invalid_scope</span></td>\n            <td style=\"padding:10px 18px;\">The provided <code>scope</code> value is invalid. Allowed values are <code>organization</code>, <code>team</code>, and <code>personal</code>.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Create a new bot in Cliq by specifying the bot''s display name, description, and access level (organization or team). Upon creation, Cliq auto-assigns a unique_name as a permanent identifier for the bot - this cannot be changed even if the display name is updated later.
+
+
+        After creation, add handlers to define the bot''s behaviour for each trigger event.
+
+
+        With this API, you can create both Deluge bots (which run handler logic within Zoho''s platform) and Webhook bots (which delegate execution to your own server).
+
+
+        Threshold limit: 10 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        bot_creation_limit_exceeded
+
+        Organization has reached the maximum number of bots.
+
+
+        bot_name_already_exists
+
+        A bot with this name already exists.
+
+
+        invalid_inputs
+
+        Request body validation failed.
+
+
+        execution_url_required
+
+        execution_url is required when execution_type is set to webhook.
+
+
+        execution_url_not_allowed
+
+        execution_url is not allowed when execution_type is set to deluge.
+
+
+        invalid_scope
+
+        The provided scope value is invalid. Allowed values are organization, team, and personal.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       requestBody:
         description: Creates a bot. Provide `name` (display name) and `description`; use `scope` and optional fields to control visibility and behavior. The `unique_name` is auto-assigned by Cliq as a permanent identifier and cannot be provided or changed.
         content:
@@ -316,7 +427,21 @@ paths:
     get:
       summary: List all bots
       operationId: list_all_bots
-      description: "Retrieves a paginated list of all Bots available to the user.<br><br>\nUse <b>limit</b> and <b>next_token</b> for cursor-based pagination, <b>sync_token</b> for incremental sync, and <b>search</b> and <b>scope</b> to filter results when browsing the Marketplace catalogue.\n<br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n"
+      description: 'Retrieves a paginated list of all Bots available to the user.
+
+
+        Use limit and next_token for cursor-based pagination, sync_token for incremental sync, and search and scope to filter results when browsing the Marketplace catalogue.
+
+
+        Threshold limit: 30 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.'
       parameters:
       - name: limit
         in: query
@@ -475,7 +600,66 @@ paths:
     patch:
       summary: Update an existing bot
       operationId: update_an_existing_bot
-      description: "Update the details and configuration of an existing bot. You can change the bot's display name, description, access level (organization-wide, team, or personal), and logo.<br>\n<br><b>Note:</b>\n<ul>\n  <li>The bot's <code>unique_name</code> is auto-assigned by Cliq upon creation and serves as a permanent identifier. It cannot be changed even if the display name is updated.</li>\n  <li>For <b>Webhook bots</b>, the <code>execution_url</code> can be updated independently - you can point the bot to a new server endpoint without changing any other configuration.</li>\n</ul>\n<br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">bot_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Bot with the specified ID does not exist.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">bot_name_already_exists</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Another bot with this name already exists.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">bot_permission_denied</span></td>\n            <td style=\"padding:10px 18px;\">Insufficient permissions to edit this bot.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Update the details and configuration of an existing bot. You can change the bot''s display name, description, access level (organization-wide, team, or personal), and logo.
+
+
+        Note:
+
+
+        The bot''s unique_name is auto-assigned by Cliq upon creation and serves as a permanent identifier. It cannot be changed even if the display name is updated.
+
+
+        For Webhook bots, the execution_url can be updated independently - you can point the bot to a new server endpoint without changing any other configuration.
+
+
+        Threshold limit: 10 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        bot_not_found
+
+        Bot with the specified ID does not exist.
+
+
+        bot_name_already_exists
+
+        Another bot with this name already exists.
+
+
+        bot_permission_denied
+
+        Insufficient permissions to edit this bot.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: BOT_ID
         in: path
@@ -652,7 +836,50 @@ paths:
     get:
       summary: Retrieve details of a specific bot
       operationId: get_details_of_a_specific_bot
-      description: "Retrieves the full configuration and details of a specific bot, including its name, description, unique name, access level, and handler summary.<br>\nUse the <code>fields</code> query parameter to fetch additional details such as subscriber count or handler code.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">bot_not_found</span></td>\n            <td style=\"padding:10px 18px;\">Bot with the specified ID does not exist.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Retrieves the full configuration and details of a specific bot, including its name, description, unique name, access level, and handler summary.
+
+
+        Use the fields query parameter to fetch additional details such as subscriber count or handler code.
+
+
+        Threshold limit: 30 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        bot_not_found
+
+        Bot with the specified ID does not exist.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: BOT_ID
         in: path
@@ -802,7 +1029,52 @@ paths:
     delete:
       summary: Delete a specific bot
       operationId: delete_a_specific_bot
-      description: "Permanently delete a bot and all its associated handlers and configuration. All subscribers will lose access to the bot and any channel associations will be removed. This action is irreversible.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">bot_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Bot with the specified ID does not exist.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">bot_permission_denied</span></td>\n            <td style=\"padding:10px 18px;\">Insufficient permissions to delete this bot.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Permanently delete a bot and all its associated handlers and configuration. All subscribers will lose access to the bot and any channel associations will be removed. This action is irreversible.
+
+
+        Threshold limit: 10 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        bot_not_found
+
+        Bot with the specified ID does not exist.
+
+
+        bot_permission_denied
+
+        Insufficient permissions to delete this bot.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: BOT_ID
         in: path
@@ -913,7 +1185,62 @@ paths:
     post:
       summary: Send a bot message
       operationId: send_a_bot_message
-      description: "Send a message from the bot to specific users, a channel, or all subscribers.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">botmessage_sending_failed</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Bot message sending failed.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">botmessage_no_valid_users</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">No valid users found for the bot message.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">bot_unauthorized_message_access</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Bot does not have permission to message these users.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">bot_message_forbidden</span></td>\n            <td style=\"padding:10px 18px;\">Bot message access is forbidden.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Send a message from the bot to specific users, a channel, or all subscribers.
+
+
+        Threshold limit: 50 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 10 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        botmessage_sending_failed
+
+        Bot message sending failed.
+
+
+        botmessage_no_valid_users
+
+        No valid users found for the bot message.
+
+
+        bot_unauthorized_message_access
+
+        Bot does not have permission to message these users.
+
+
+        bot_message_forbidden
+
+        Bot message access is forbidden.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: BOT_UNIQUE_NAME
         in: path
@@ -1021,7 +1348,65 @@ paths:
     post:
       summary: Send an incoming webhook message to a bot
       operationId: send_an_incoming_webhook_message
-      description: "Post a message to a bot using its incoming webhook URL. This endpoint allows external systems to push notifications into Cliq through a bot.\n<br><br>\n<b>Note:</b> Up to 50 additional custom parameters can be passed as query parameters (max 10,000 characters each).\n<br><br>\n<p>\n  <b>Threshold limit</b>: 50 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">botmessage_sending_failed</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Incoming webhook message delivery failed.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">botmessage_no_valid_users</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">No valid users found for delivery.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">bot_unauthorized_message_access</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Bot does not have permission to message these users.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">bot_message_forbidden</span></td>\n            <td style=\"padding:10px 18px;\">Bot message access is forbidden.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Post a message to a bot using its incoming webhook URL. This endpoint allows external systems to push notifications into Cliq through a bot.
+
+
+        Note: Up to 50 additional custom parameters can be passed as query parameters (max 10,000 characters each).
+
+
+        Threshold limit: 50 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 10 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        botmessage_sending_failed
+
+        Incoming webhook message delivery failed.
+
+
+        botmessage_no_valid_users
+
+        No valid users found for delivery.
+
+
+        bot_unauthorized_message_access
+
+        Bot does not have permission to message these users.
+
+
+        bot_message_forbidden
+
+        Bot message access is forbidden.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: BOT_UNIQUE_NAME
         in: path
@@ -1168,7 +1553,252 @@ paths:
     post:
       summary: Create a handler for a specific bot
       operationId: create_a_handler_for_a_bot
-      description: "<a id=\"create_a_handler_for_a_bot\"></a>\n<p>\n  Create a handler for a specific bot by providing the handler type and the execution logic for that event.<br>\n  Handlers define the bot's behavior for different trigger events. Refer <b><a href=\"https://www.zoho.com/cliq/help/platform/bots.html\">introduction to bot handlers</a></b> in the documentation for more details on each handler type and when it is triggered.\n</p>\n<p>\n  The way you define a handler depends on the bot's execution type:\n</p>\n<ul>\n  <li><b>Deluge bot</b>: Provide the <code>script</code> attribute containing the Deluge source code to execute when the handler fires.</li>\n  <li><b>Webhook bot</b>: Provide the <code>permissions</code> attribute - an array of data attributes that your external server needs to receive in the webhook payload when the handler is triggered. These define what contextual information Zoho Cliq includes in the POST request sent to your <code>execution_url</code>.</li>\n</ul>\n<p><b>Webhook Bots - Using <code>permissions</code></b></p>\n<p>\n  For <b>Webhook bots</b>, the <code>permissions</code> array controls what contextual data Zoho Cliq appends to the POST request sent to your server when a handler fires. Only include permissions that are relevant to your server's logic.<br>\n  <b>Maximum:</b> 5 permissions per handler.\n</p>\n<p><b>Allowed values for <code>permissions</code></b></p>\n<table style=\"border-collapse: collapse; width: 100%; font-family: inherit;\">\n  <tr>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd; font-family: inherit;\">Permission</th>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd; font-family: inherit;\">Data provided to your webhook</th>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>chat</code></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Chat context (chat ID, type, participants)</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>message</code></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Message content and metadata</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>user</code></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Sender's user profile details</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>location</code></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Sender's location data</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>attachments</code></td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Attachment metadata and download info</td>\n  </tr>\n</table>\n<p>\n  <b>Permissions availability per handler type</b><br>\n  Not all permissions are applicable to every handler. Passing a permission marked <code>-</code> will result in a validation error.\n</p>\n<table style=\"border-collapse: collapse; width: 100%; font-family: inherit;\">\n  <tr>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd; font-family: inherit;\">Handler</th>\n    <th style=\"padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;\"><code>attachments</code></th>\n    <th style=\"padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;\"><code>chat</code></th>\n    <th style=\"padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;\"><code>location</code></th>\n    <th style=\"padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;\"><code>message</code></th>\n    <th style=\"padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;\"><code>user</code></th>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>welcome_handler</code></td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">-</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">-</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">-</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">-</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">✓</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>message_handler</code></td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">✓</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">✓</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">✓</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">✓</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">✓</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>mention_handler</code></td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">-</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">✓</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">✓</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">✓</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">✓</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>context_handler</code></td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">✓</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">✓</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">-</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">-</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">✓</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>incoming_webhook_handler</code></td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">-</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">-</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">-</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">-</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">✓</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>participation_handler</code></td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">-</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">✓</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">-</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">-</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">✓</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>menu_handler</code></td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">-</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">✓</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">✓</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">-</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">✓</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>alert_handler</code></td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">-</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">-</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">-</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">-</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">&#10003;</td>\n  </tr>\n</table>\n<p><b>Bot Menu Actions (<code>menu_handler</code>)</b></p>\n<p>\n  Both Deluge and Webhook bots support menu handlers, which add quick-action items to the bot's chat menu. When creating a <code>menu_handler</code>, two additional fields apply regardless of execution type:\n</p>\n<ul>\n  <li><code>name</code> (required): Label shown in the menu. Max 15 characters.</li>\n  <li><code>icon</code> (optional): Icon in <code>{icon-name}/{HEX_COLOR}</code> format. Example: <code>wand/FF5733</code>.</li>\n</ul>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>\n  Wait time before consecutive API requests.\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">execution_handler_create_failed</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Failed to create the execution handler.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">execution_handler_data_required</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Required handler data is missing.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">execution_handler_data_invalid</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Provided handler data is invalid.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">invalid_inputs</span></td>\n            <td style=\"padding:10px 18px;\">Invalid handler type or malformed request body.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Create a handler for a specific bot by providing the handler type and the execution logic for that event.
+
+
+        Handlers define the bot''s behavior for different trigger events. Refer introduction to bot handlers in the documentation for more details on each handler type and when it is triggered.
+
+
+        The way you define a handler depends on the bot''s execution type:
+
+
+        Deluge bot: Provide the script attribute containing the Deluge source code to execute when the handler fires.
+
+
+        Webhook bot: Provide the permissions attribute - an array of data attributes that your external server needs to receive in the webhook payload when the handler is triggered. These define what contextual information Zoho Cliq includes in the POST request sent to your execution_url.
+
+
+        Webhook Bots - Using permissions
+
+
+        For Webhook bots, the permissions array controls what contextual data Zoho Cliq appends to the POST request sent to your server when a handler fires. Only include permissions that are relevant to your server''s logic.
+
+
+        Maximum: 5 permissions per handler.
+
+
+        Allowed values for permissions
+
+
+        Permission
+
+        Data provided to your webhook
+
+
+        chat
+
+        Chat context (chat ID, type, participants)
+
+
+        message
+
+        Message content and metadata
+
+
+        user
+
+        Sender''s user profile details
+
+
+        location
+
+        Sender''s location data
+
+
+        attachments
+
+        Attachment metadata and download info
+
+
+        Permissions availability per handler type
+
+
+        Not all permissions are applicable to every handler. Passing a permission marked - will result in a validation error.
+
+
+        Handler
+
+        attachments
+
+        chat
+
+        location
+
+        message
+
+        user
+
+
+        welcome_handler
+
+        -
+
+        -
+
+        -
+
+        -
+
+        ✓
+
+
+        message_handler
+
+        ✓
+
+        ✓
+
+        ✓
+
+        ✓
+
+        ✓
+
+
+        mention_handler
+
+        -
+
+        ✓
+
+        ✓
+
+        ✓
+
+        ✓
+
+
+        context_handler
+
+        ✓
+
+        ✓
+
+        -
+
+        -
+
+        ✓
+
+
+        incoming_webhook_handler
+
+        -
+
+        -
+
+        -
+
+        -
+
+        ✓
+
+
+        participation_handler
+
+        -
+
+        ✓
+
+        -
+
+        -
+
+        ✓
+
+
+        menu_handler
+
+        -
+
+        ✓
+
+        ✓
+
+        -
+
+        ✓
+
+
+        alert_handler
+
+        -
+
+        -
+
+        -
+
+        -
+
+        ✓
+
+
+        Bot Menu Actions (menu_handler)
+
+
+        Both Deluge and Webhook bots support menu handlers, which add quick-action items to the bot''s chat menu. When creating a menu_handler, two additional fields apply regardless of execution type:
+
+
+        name (required): Label shown in the menu. Max 15 characters.
+
+
+        icon (optional): Icon in {icon-name}/{HEX_COLOR} format. Example: wand/FF5733.
+
+
+        Threshold limit: 10 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        execution_handler_create_failed
+
+        Failed to create the execution handler.
+
+
+        execution_handler_data_required
+
+        Required handler data is missing.
+
+
+        execution_handler_data_invalid
+
+        Provided handler data is invalid.
+
+
+        invalid_inputs
+
+        Invalid handler type or malformed request body.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: BOT_ID
         in: path
@@ -1400,7 +2030,68 @@ paths:
     patch:
       summary: Update a handler for a specific bot
       operationId: update_a_handler_for_a_bot
-      description: "<p>\n  Update a handler for a specific bot by providing the handler type and the revised execution logic or configuration to apply for that event.<br>\n  Handlers define the bot's behavior for different trigger events. Refer <b><a href=\"https://www.zoho.com/cliq/help/platform/bots.html\">introduction to bot handlers</a></b> in the documentation for more details on each handler type and when it is triggered.\n</p>\n<p>\n  What you can update depends on the bot's execution type:\n</p>\n<ul>\n  <li><b>Deluge bot</b>: Update the <code>script</code> attribute with the revised Deluge source code to execute when the handler fires.</li>\n  <li><b>Webhook bot</b>: Update the <code>permissions</code> attribute - the array of data attributes your external server needs to receive in the webhook payload. This replaces the existing permissions for the handler.</li>\n  <li><b>Menu handler (both types)</b>: Update the <code>name</code> and/or <code>icon</code> display properties. Use the optional <code>handler_id</code> query parameter to target a specific variant of a multi-variant menu handler.</li>\n</ul>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>\n  Wait time before consecutive API requests.\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">execution_handler_update_failed</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Failed to update the execution handler.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">execution_handler_not_found</span></td>\n            <td style=\"padding:10px 18px;\">Specified handler was not found for this bot.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Update a handler for a specific bot by providing the handler type and the revised execution logic or configuration to apply for that event.
+
+
+        Handlers define the bot''s behavior for different trigger events. Refer introduction to bot handlers in the documentation for more details on each handler type and when it is triggered.
+
+
+        What you can update depends on the bot''s execution type:
+
+
+        Deluge bot: Update the script attribute with the revised Deluge source code to execute when the handler fires.
+
+
+        Webhook bot: Update the permissions attribute - the array of data attributes your external server needs to receive in the webhook payload. This replaces the existing permissions for the handler.
+
+
+        Menu handler (both types): Update the name and/or icon display properties. Use the optional handler_id query parameter to target a specific variant of a multi-variant menu handler.
+
+
+        Threshold limit: 10 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        execution_handler_update_failed
+
+        Failed to update the execution handler.
+
+
+        execution_handler_not_found
+
+        Specified handler was not found for this bot.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: BOT_ID
         in: path
@@ -1588,7 +2279,52 @@ paths:
     get:
       summary: Get details of a specific bot handler
       operationId: get_details_of_a_specific_bot_handler
-      description: "Retrieve the details and configuration of a specific handler for a bot, including the Deluge source code and any associated menu action configuration. \n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">execution_handler_get_failed</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Failed to fetch the execution handler.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">execution_handler_not_found</span></td>\n            <td style=\"padding:10px 18px;\">Specified handler was not found for this bot.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Retrieve the details and configuration of a specific handler for a bot, including the Deluge source code and any associated menu action configuration.
+
+
+        Threshold limit: 10 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        execution_handler_get_failed
+
+        Failed to fetch the execution handler.
+
+
+        execution_handler_not_found
+
+        Specified handler was not found for this bot.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: BOT_ID
         in: path
@@ -1715,7 +2451,57 @@ paths:
     delete:
       summary: Delete a handler from a specific bot
       operationId: delete_a_handler_from_a_bot
-      description: "Permanently remove a handler from a bot. Once deleted, the associated Deluge code and configuration are lost and the handler will no longer respond to its trigger event.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">execution_handler_delete_failed</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Failed to delete the execution handler.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">default_handler_delete_not_allowed</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Default handlers cannot be deleted.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">execution_handler_not_found</span></td>\n            <td style=\"padding:10px 18px;\">Specified handler was not found for this bot.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Permanently remove a handler from a bot. Once deleted, the associated Deluge code and configuration are lost and the handler will no longer respond to its trigger event.
+
+
+        Threshold limit: 10 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        execution_handler_delete_failed
+
+        Failed to delete the execution handler.
+
+
+        default_handler_delete_not_allowed
+
+        Default handlers cannot be deleted.
+
+
+        execution_handler_not_found
+
+        Specified handler was not found for this bot.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: BOT_ID
         in: path
@@ -1842,7 +2628,52 @@ paths:
     post:
       summary: Associate bot to a channel
       operationId: associate_bot_to_channel
-      description: "Add a bot to a specific channel by providing the bot's unique name and the target channel ID. Once associated, the bot can interact with users in that channel based on its configured handlers and permissions.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 5 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">bot_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Bot with the specified ID or unique name does not exist.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">bot_already_member</span></td>\n            <td style=\"padding:10px 18px;\">Bot is already a member of the target channel.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Add a bot to a specific channel by providing the bot''s unique name and the target channel ID. Once associated, the bot can interact with users in that channel based on its configured handlers and permissions.
+
+
+        Threshold limit: 5 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        bot_not_found
+
+        Bot with the specified ID or unique name does not exist.
+
+
+        bot_already_member
+
+        Bot is already a member of the target channel.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - name: BOT_UNIQUE_NAME
         in: path
@@ -1884,7 +2715,21 @@ paths:
     get:
       summary: List all subscribers of a specific bot
       operationId: list_all_subscribers_of_a_bot
-      description: "Retrieve a paginated list of users who have subscribed to a specific bot, identified by its bot ID or unique bot name. Access to bot subscribers is limited to the bot creator or the administrator of the organization.<br><br>\nUse <b>limit</b> and <b>next_token</b> for cursor-based pagination. Use <b>sync_token</b> for incremental sync to receive only changes since the last request. \n<br><br>\n<p>\n  <b>Threshold limit</b>: 100 requests per min per user<br>\n  Number of API calls allowed within a minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Wait time before consecutive API requests.<br>\n</p>\n"
+      description: 'Retrieve a paginated list of users who have subscribed to a specific bot, identified by its bot ID or unique bot name. Access to bot subscribers is limited to the bot creator or the administrator of the organization.
+
+
+        Use limit and next_token for cursor-based pagination. Use sync_token for incremental sync to receive only changes since the last request.
+
+
+        Threshold limit: 100 requests per min per user
+
+
+        Number of API calls allowed within a minute.
+
+
+        Lock period: 5 minutes
+
+        Wait time before consecutive API requests.'
       parameters:
       - name: BOT_ID_OR_UNIQUE_NAME
         in: path
@@ -2019,140 +2864,6 @@ paths:
       - Bots
 components:
   schemas:
-    BotListResponse:
-      type: object
-      description: Response schema for listing bots.
-      properties:
-        url:
-          type: string
-          description: API endpoint URL for the listed resources.
-          example: /api/v3/bots
-        type:
-          type: string
-          description: Resource type.
-          example: bot
-        next_token:
-          type: string
-          description: Pagination token to fetch the next page of results.
-          example: NTB8MTc1NjM2MjA5MzQ5OHw1MzcxOTAwMDAwMTYyMDAwMw==
-        sync_token:
-          type: string
-          description: Token used for incremental synchronization to fetch changes since the last sync.
-          example: NTB8MTc3NzM0MjEyNzQ3OHw1MzcxOTAwMDAwMTg3ODAxMQ==
-        deleted:
-          type: array
-          description: IDs of deleted bots returned during incremental sync.
-          items:
-            type: string
-        data:
-          type: array
-          description: List of bot objects.
-          items:
-            type: object
-            properties:
-              unique_name:
-                type: string
-                description: Unique identifier of the bot.
-                example: supportbot
-              name:
-                type: string
-                description: Display name of the bot.
-                example: Support Bot
-              id:
-                type: string
-                description: Numeric ID of the bot.
-                example: '53719000001878011'
-              description:
-                type: string
-                description: Description of the bot.
-                example: Handles support workflows
-              scope:
-                type: string
-                description: Access level of the bot.
-                example: organization
-              channel_participation:
-                type: array
-                description: Channel interaction capabilities of the bot.
-                items:
-                  type: string
-                example:
-                - listen_message
-                - send_message
-                - auto_follow_thread
-              handlers:
-                type: array
-                description: Handlers configured for the bot.
-                items:
-                  type: object
-                  properties:
-                    type:
-                      type: string
-                      description: Handler type.
-                      example: menu_handler
-                    id:
-                      type: string
-                      description: Unique ID of the handler (present for menu_handler).
-                      example: '53719000001878017'
-                    name:
-                      type: string
-                      description: Display name of the menu action (present for menu_handler).
-                      example: Action
-                    icon:
-                      type: string
-                      description: Icon reference for the menu action (present for menu_handler).
-                      example: wand/627282
-                    position:
-                      type: integer
-                      description: Display position of the menu action (present for menu_handler).
-                      example: 1
-                    sub_actions:
-                      type: array
-                      description: Sub-actions under the menu handler.
-                      items:
-                        type: object
-                        properties:
-                          name:
-                            type: string
-                            example: Sub Action
-                          icon:
-                            type: string
-                            example: wand/627282
-              creator:
-                type: object
-                description: User who created the bot.
-                properties:
-                  name:
-                    type: string
-                    description: Name of the creator.
-                    example: James
-                  id:
-                    type: string
-                    description: ZUID of the creator.
-                    example: '65113112'
-              execution_type:
-                type: string
-                description: Script execution engine used by the bot.
-                example: deluge
-              status:
-                type: string
-                description: Current operational status of the bot.
-                example: enabled
-              type:
-                type: string
-                description: Bot category. Always custom for user-created bots.
-                example: custom
-              default:
-                type: boolean
-                description: Indicates whether this is the default bot.
-                example: false
-              subscriber_count:
-                type: integer
-                description: Number of users subscribed to the bot.
-                example: 1
-              calls:
-                type: string
-                description: Indicates whether bot calls are enabled or disabled.
-                example: disabled
     Bot-call-response:
       type: object
       description: Represents the response returned after triggering a bot call, including the alert instance ID and associated users.
@@ -2171,167 +2882,285 @@ components:
         - '55622727'
         - '55743307'
         id: dfb91610-296f-4f7a-b2b2-3b4436f2f5f0
-    BotEdit:
+    Trigger-Bot-Call-Request:
       type: object
-      description: Payload for updating an existing bot. All fields are optional.
+      description: Represents the request body for triggering a bot call with a message, recipients, retries, loops, and optional actions.
+      required:
+      - text
       properties:
-        name:
+        text:
           type: string
-          maxLength: 20
-          description: 'Updated display name of the bot. Must be unique across the platform.<br>
-
-            <b>Note:</b> Updating the display name does not affect the <code>unique_name</code>, which is permanently assigned by Cliq and cannot be changed.<br>
-
-            <b>Maximum length:</b> 20 characters.
+          maxLength: 500
+          description: 'The message to be dictated during the call.<br> <b>Limit:</b> 500 characters.
 
             '
-          example: CRM Bot
-        description:
-          type: string
-          maxLength: 300
-          description: 'Updated bot description.<br>
-
-            <b>Maximum length:</b> 300 characters.
-
-            '
-          example: Your CRM co-pilot providing instant access to customer data and insights within Cliq.
-        scope:
-          type: string
-          enum:
-          - organization
-          - team
-          - personal
-          description: "Updated access level.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>organization</code>: Bot is available to all users in the organization.</li>\n  <li><code>team</code>: Bot is available only to specified teams within the organization.</li>\n  <li><code>personal</code>: Bot is available only to the creator but can be shared with other users.</li>  \n</ul> \n"
-          example: organization
-        team_ids:
-          type: array
-          maxItems: 4
-          description: 'List of <a href="/cliq/help/restapi/v3/glossary/#TEAM_ID">team_ids</a> that are allowed to access the bot when <code>scope</code> is set to <code>team</code>.<br>
-
-            <b>Maximum limit:</b> 4 team IDs can be provided, and this is mandatory when the bot''s scope is set to <code>team</code>.
-
-            '
-          items:
-            type: integer
-        status_messages:
+        user_ids:
           type: array
           maxItems: 10
-          description: 'Status messages shown for the bot. These messages will be displayed in the bot''s profile or when users interact with the bot.<br>
-
-            <b>Maximum limit:</b> 10 messages.
-
-            <b>Maximum length:</b> Each message can be up to 50 characters long.
+          description: 'List of user ZUIDs or emails.<br> <b>Limit:</b> 10 entries.
 
             '
           items:
             type: string
-            maxLength: 50
-            example: Here to help you with CRM support!
-        image:
-          type: string
-          description: 'Updated Base64-encoded avatar image.
+            description: User identifier, which can be either a ZUID or an email address.
+        retry:
+          type: integer
+          maximum: 3
+          description: 'Number of retries if the user misses the call. System will retry after 2 minutes.<br> <b>Maximum Attempts:</b> 3
 
             '
-          example: https://www.zoho.com/cliq/help/restapi/images/poll_icon.png
-        channel_participation:
+        loop:
+          type: integer
+          maximum: 3
+          description: 'Number of times the message will be dictated.<br> <b>Maximum:</b> 3
+
+            '
+        actions:
           type: array
-          maxItems: 10
-          description: "Updated channel participation capabilities of the bot. Defines how the bot can interact in channels.<br>\n<b>Maximum limit</b>: 3.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>listen_message</code>: Bot can listen to messages in channels.</li>\n  <li><code>send_message</code>: Bot can send messages to channels.</li>\n  <li><code>auto_follow_thread</code>: Bot will automatically follow threads it participates in.</li>\n</ul>\n"
-          items:
-            type: string
-            enum:
-            - listen_message
-            - send_message
-            - auto_follow_thread
-        execution_url:
-          type: string
-          format: uri
-          description: 'The server URL where the bot''s webhook events are sent. Applicable only for <b>Webhook bots</b>.<br>
-
-            This field can be updated independently to redirect the bot to a new endpoint without modifying any other configuration.
+          maxItems: 5
+          description: 'List of actions to be displayed as buttons during the call. <br>Each action includes a label, icon, and a specific action with its associated data. <br><b>Limit:</b> 5
 
             '
-          example: https://example.com/webhook/bot-handler
-        calls:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Enables or disables the Bot Calls feature for this bot. When set to <code>enable</code>, the bot can initiate voice alerts to users and its <b>Call Handler</b> becomes active, firing on call state events: <code>ringing</code>, <code>answered</code>, <code>ended</code>, <code>declined</code>, <code>missed</code>, <code>offline</code>, and <code>busy</code>.<br><br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Bot can initiate voice calls. Calls override the recipient's Do Not Disturb setting.</li>\n  <li><code>disabled</code>: Bot cannot initiate voice calls.</li>\n</ul>\n<b>Notes</b>:\n<ul>\n  <li>Individual subscribers can toggle bot calls on or off from their Bots and Tools settings.</li>\n  <li>Org admins can override and lock this setting for all users via the Admin Panel.</li>\n</ul>\n"
+          items:
+            type: object
+            description: Defines the structure of an action button shown during the bot call.
+            required:
+            - label
+            - action
+            properties:
+              label:
+                type: string
+                description: 'Text displayed on the button.<br>
+
+                  <b>Maximum Length:</b> 20 characters.
+
+                  '
+              icon:
+                type: string
+                description: 'Icon identifier for the button. Can be an image URL or a supported icon keyword (e.g., <code>tick</code>, <code>preview</code>, <code>url</code>).
+
+                  <a href="../icons/#overview">View supported icons</a>
+
+                  '
+              hint:
+                type: string
+                maxLength: 100
+                description: "Tooltip or additional message (optional).<br>\n <b>Maximum Length:</b> 100 characters.\n"
+              key:
+                type: string
+                maxLength: 100
+                description: 'Optional key reference.
+
+                  This can be used to identify the button in the bot handler when the action is triggered.
+
+                  <b>Maximum Length:</b> 100 characters.
+
+                  '
+              action:
+                type: object
+                description: 'An object containing the type of action the button should perform.
+
+                  '
+                required:
+                - type
+                - data
+                properties:
+                  type:
+                    type: string
+                    description: 'The action type for a button.<br>Refer to <a href="../buttons/#message-card-buttons">Message Card Buttons</a> for allowed action types and their corresponding data requirements.
+
+                      '
+                  data:
+                    type: object
+                    additionalProperties: true
+                    description: 'An object with properties for each action type. The required properties depend on the action type specified.<br>
+
+                      Refer to <a href="../buttons/#message-card-buttons">Message Card Buttons</a> for details on the expected data structure for each action type.
+
+                      '
       example:
-        name: CRM Bot
-        description: Your CRM co-pilot providing instant access to customer data and insights within Cliq.
-        scope: organization
-        status_messages:
-        - Here to help you with CRM support!
-        image: https://www.zoho.com/cliq/help/restapi/images/poll_icon.png
-        channel_participation:
-        - listen_message
-        calls: enabled
-    BotUpdateResponse:
+        text: We've detected an issue with Zylker Servers. Our team is working to resolve it at the earliest.
+        user_ids:
+        - '55743327'
+        - '55642727'
+        retry: 3
+        loop: 2
+        actions:
+        - label: View details
+          icon: url
+          action:
+            type: open.url
+            data:
+              web: https://cliq.zoho.com
+        - label: Acknowledge
+          icon: tick
+          hint: ''
+          action:
+            type: invoke.function
+            data:
+              name: test
+          key: ''
+        - label: Delegate
+          icon: preview
+          hint: ''
+          action:
+            type: system.api
+            data:
+              api: audiocall/1234
+    BotIncomingWebhookRequest:
       type: object
-      description: Response returned after successfully updating a bot.
+      description: 'Request body for the incoming webhook endpoint. Accepts any number of custom key-value parameters that are passed directly to the bot''s <code>incoming_webhook_handler</code> Deluge script. Up to 50 additional parameters are supported, each with a maximum value length of 10,000 characters. There are no fixed or required fields.
+
+        '
+      properties:
+        custom_parameters:
+          type: object
+          description: "Pass additional key-value pairs in the request body to provide context to the bot's handler. These parameters are user-defined and can carry any metadata relevant to your integration.\n<br><br>\n<b>Rules for Custom Parameters</b>\n<ul>\n  <li>Up to 50 custom parameters are supported per request.</li>\n  <li>Each parameter value can be up to 10,000 characters.</li>\n  <li>All values must be of type string.</li>\n  <li>Parameter keys should be unique to avoid overwriting values in the bot handler.</li>\n</ul>\n<b>Common Use Cases</b>\n<ul>\n  <li>Webhook Verification: Some platforms send a challenge_key during webhook registration to confirm that the endpoint is reachable. Your bot handler should echo it back in the response to complete the handshake.</li>\n  <li>CI/CD & Monitoring:  Pass parameters like alert_type, build_status, or environment to notify teams about pipeline failures or infrastructure incidents in real time.</li>\n  <li>CRM & E-commerce: Send deal updates, order status changes, and customer activity metadata to keep sales and support teams informed without manual intervention.</li>\n</ul>\n"
+      additionalProperties:
+        type: string
+      example:
+        alert_type: deployment
+        environment: production
+        service_name: payment-gateway
+        severity: critical
+        triggered_by: CI/CD pipeline
+    BotHandlerCreateResponse:
+      type: object
+      description: Response schema returned when a new bot handler is created successfully.
       properties:
         url:
           type: string
-          description: API endpoint URL for the updated bot resource.
-          example: /api/v3/bots/b-53719000002124012
+          description: Endpoint URL of the newly created handler resource.
+        type:
+          type: string
+          description: Resource type identifier.
+          example: execution_handler
+        data:
+          type: object
+          description: Configuration details of the created handler.
+          properties:
+            script:
+              type: string
+              description: Deluge source code of the handler.
+            return_type:
+              type: string
+              description: Return type expected from the handler script.
+              example: MAP
+            params:
+              type: array
+              description: List of runtime parameters passed to the handler script.
+              items:
+                type: object
+                properties:
+                  param_name:
+                    type: string
+                    description: Name of the parameter.
+                  param_type:
+                    type: string
+                    description: Data type of the parameter (e.g., MAP, STRING, BOOLEAN).
+          additionalProperties: true
+      example:
+        url: /api/v3/bots/b-53719000001887001/handlers
+        type: execution_handler
+        data:
+          script: 'response = Map();
+
+            response.put("text", "Welcome! I''m your assistant bot. Send me a message to get started.");
+
+            return response;'
+          return_type: MAP
+          params:
+          - param_name: access
+            param_type: MAP
+          - param_name: environment
+            param_type: MAP
+          - param_name: user
+            param_type: MAP
+          - param_name: newuser
+            param_type: BOOLEAN
+    BotGetResponse:
+      type: object
+      description: Response returned when retrieving the details of a specific bot.
+      properties:
+        url:
+          type: string
+          description: API endpoint URL for the retrieved bot resource.
+          example: /api/v3/bots/b-53719000001878011
         type:
           type: string
           description: Resource type.
           example: bot
         data:
           type: object
-          description: The updated bot object reflecting all applied changes.
+          description: Full configuration and details of the bot.
           properties:
             unique_name:
               type: string
-              description: Unique identifier of the bot (cannot be changed after creation).
-              example: crmbot
+              description: Unique identifier of the bot.
+              example: supportbot
             name:
               type: string
-              description: Updated display name of the bot.
-              example: CRM Bot
+              description: Display name of the bot.
+              example: Support Bot
             id:
               type: string
               description: Numeric ID of the bot.
-              example: '53719000002124012'
+              example: '53719000001878011'
             description:
               type: string
-              description: Updated description of the bot.
-              example: Your CRM co-pilot providing instant access to customer data and insights within Cliq.
+              description: Description of the bot.
+              example: Handles support workflows
             scope:
               type: string
-              description: Updated access level of the bot.
+              description: Access level of the bot.
               example: organization
-            status_messages:
-              type: array
-              description: Updated status messages for the bot.
-              items:
-                type: string
-              example:
-              - Here to help you with CRM support!
             channel_participation:
               type: array
-              description: Updated channel interaction capabilities.
+              description: Channel interaction capabilities of the bot.
               items:
                 type: string
               example:
               - listen_message
-            calls:
-              type: string
-              description: Indicates whether bot calls are enabled or disabled.
-              example: enable
+              - send_message
+              - auto_follow_thread
             handlers:
               type: array
-              description: Handlers currently configured for the bot.
+              description: Handlers configured for the bot.
               items:
                 type: object
                 properties:
                   type:
                     type: string
                     description: Handler type.
-                    example: welcome_handler
+                    example: menu_handler
+                  id:
+                    type: string
+                    description: Unique ID of the handler (present for menu_handler).
+                    example: '53719000001878017'
+                  name:
+                    type: string
+                    description: Display name of the menu action (present for menu_handler).
+                    example: Action
+                  icon:
+                    type: string
+                    description: Icon reference for the menu action (present for menu_handler).
+                    example: wand/627282
+                  position:
+                    type: integer
+                    description: Display position of the menu action (present for menu_handler).
+                    example: 1
+                  sub_actions:
+                    type: array
+                    description: Sub-actions under the menu handler.
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: Sub Action
+                        icon:
+                          type: string
+                          example: wand/627282
             creator:
               type: object
               description: User who created the bot.
@@ -2364,6 +3193,34 @@ components:
               type: integer
               description: Number of users subscribed to the bot.
               example: 1
+            calls:
+              type: string
+              description: Indicates whether bot calls are enabled or disabled.
+              example: disabled
+    BotHandlerResponse:
+      type: object
+      description: Response schema for bot handler create, update, and fetch operations.
+      properties:
+        url:
+          type: string
+          description: Endpoint URL for the handler resource.
+        type:
+          type: string
+          description: Resource type.
+          example: execution_handler
+        data:
+          type: object
+          description: Handler payload.
+          additionalProperties: true
+      example:
+        url: /api/v3/bots/b-4000000010001/handlers/menu
+        type: execution_handler
+        data:
+          display_props:
+            position: 2
+            name: a123
+            icon: wand/627282
+          id: '53719000001973033'
     BotMessage:
       type: object
       description: 'Payload for sending a message from a bot. At least one of <code>text</code>, <code>card</code>, or <code>slides</code> must be provided.
@@ -2587,60 +3444,14 @@ components:
         broadcast: false
         user_ids: 55743307,55622727
         sync_message: true
-    BotHandlerCreateResponse:
+    NoResponse:
       type: object
-      description: Response schema returned when a new bot handler is created successfully.
+      description: Represents an empty successful response where no payload is returned.
       properties:
-        url:
+        Response Code:
           type: string
-          description: Endpoint URL of the newly created handler resource.
-        type:
-          type: string
-          description: Resource type identifier.
-          example: execution_handler
-        data:
-          type: object
-          description: Configuration details of the created handler.
-          properties:
-            script:
-              type: string
-              description: Deluge source code of the handler.
-            return_type:
-              type: string
-              description: Return type expected from the handler script.
-              example: MAP
-            params:
-              type: array
-              description: List of runtime parameters passed to the handler script.
-              items:
-                type: object
-                properties:
-                  param_name:
-                    type: string
-                    description: Name of the parameter.
-                  param_type:
-                    type: string
-                    description: Data type of the parameter (e.g., MAP, STRING, BOOLEAN).
-          additionalProperties: true
-      example:
-        url: /api/v3/bots/b-53719000001887001/handlers
-        type: execution_handler
-        data:
-          script: 'response = Map();
-
-            response.put("text", "Welcome! I''m your assistant bot. Send me a message to get started.");
-
-            return response;'
-          return_type: MAP
-          params:
-          - param_name: access
-            param_type: MAP
-          - param_name: environment
-            param_type: MAP
-          - param_name: user
-            param_type: MAP
-          - param_name: newuser
-            param_type: BOOLEAN
+          description: HTTP response code indicating no content is returned.
+          example: 204 No response
     HandlerCreate:
       type: object
       description: Payload for creating a new handler.
@@ -2833,134 +3644,70 @@ components:
               type: integer
               description: Number of users subscribed to the bot.
               example: 1
-    BotHandlerResponse:
+    BotUpdateResponse:
       type: object
-      description: Response schema for bot handler create, update, and fetch operations.
+      description: Response returned after successfully updating a bot.
       properties:
         url:
           type: string
-          description: Endpoint URL for the handler resource.
-        type:
-          type: string
-          description: Resource type.
-          example: execution_handler
-        data:
-          type: object
-          description: Handler payload.
-          additionalProperties: true
-      example:
-        url: /api/v3/bots/b-4000000010001/handlers/menu
-        type: execution_handler
-        data:
-          display_props:
-            position: 2
-            name: a123
-            icon: wand/627282
-          id: '53719000001973033'
-    SubAction:
-      type: object
-      description: Sub-action definition for menu handlers.
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          maxLength: 15
-          description: 'Sub-action name.<br>
-
-            <b>Maximum length:</b> 15 characters.
-
-            '
-        icon:
-          type: string
-          description: 'Custom icon reference for the sub-action.<br>
-
-            Refer to <b><a href="icons/#overview">icons</a></b> for supported icons that can be used to enhance the UI of the sub-action.
-
-            '
-    BotGetResponse:
-      type: object
-      description: Response returned when retrieving the details of a specific bot.
-      properties:
-        url:
-          type: string
-          description: API endpoint URL for the retrieved bot resource.
-          example: /api/v3/bots/b-53719000001878011
+          description: API endpoint URL for the updated bot resource.
+          example: /api/v3/bots/b-53719000002124012
         type:
           type: string
           description: Resource type.
           example: bot
         data:
           type: object
-          description: Full configuration and details of the bot.
+          description: The updated bot object reflecting all applied changes.
           properties:
             unique_name:
               type: string
-              description: Unique identifier of the bot.
-              example: supportbot
+              description: Unique identifier of the bot (cannot be changed after creation).
+              example: crmbot
             name:
               type: string
-              description: Display name of the bot.
-              example: Support Bot
+              description: Updated display name of the bot.
+              example: CRM Bot
             id:
               type: string
               description: Numeric ID of the bot.
-              example: '53719000001878011'
+              example: '53719000002124012'
             description:
               type: string
-              description: Description of the bot.
-              example: Handles support workflows
+              description: Updated description of the bot.
+              example: Your CRM co-pilot providing instant access to customer data and insights within Cliq.
             scope:
               type: string
-              description: Access level of the bot.
+              description: Updated access level of the bot.
               example: organization
+            status_messages:
+              type: array
+              description: Updated status messages for the bot.
+              items:
+                type: string
+              example:
+              - Here to help you with CRM support!
             channel_participation:
               type: array
-              description: Channel interaction capabilities of the bot.
+              description: Updated channel interaction capabilities.
               items:
                 type: string
               example:
               - listen_message
-              - send_message
-              - auto_follow_thread
+            calls:
+              type: string
+              description: Indicates whether bot calls are enabled or disabled.
+              example: enable
             handlers:
               type: array
-              description: Handlers configured for the bot.
+              description: Handlers currently configured for the bot.
               items:
                 type: object
                 properties:
                   type:
                     type: string
                     description: Handler type.
-                    example: menu_handler
-                  id:
-                    type: string
-                    description: Unique ID of the handler (present for menu_handler).
-                    example: '53719000001878017'
-                  name:
-                    type: string
-                    description: Display name of the menu action (present for menu_handler).
-                    example: Action
-                  icon:
-                    type: string
-                    description: Icon reference for the menu action (present for menu_handler).
-                    example: wand/627282
-                  position:
-                    type: integer
-                    description: Display position of the menu action (present for menu_handler).
-                    example: 1
-                  sub_actions:
-                    type: array
-                    description: Sub-actions under the menu handler.
-                    items:
-                      type: object
-                      properties:
-                        name:
-                          type: string
-                          example: Sub Action
-                        icon:
-                          type: string
-                          example: wand/627282
+                    example: welcome_handler
             creator:
               type: object
               description: User who created the bot.
@@ -2993,220 +3740,20 @@ components:
               type: integer
               description: Number of users subscribed to the bot.
               example: 1
-            calls:
-              type: string
-              description: Indicates whether bot calls are enabled or disabled.
-              example: disabled
-    HandlerEdit:
+    BotAssociateChannelRequest:
       type: object
-      description: Payload for updating an existing handler.
+      description: Payload to associate bot with a channel.
       properties:
-        script:
+        channel_unique_name:
           type: string
-          description: 'Updated Deluge script source code for the handler.<br>
+          description: 'Unique name of the channel to associate with the bot. This is the identifier used in API calls to specify the channel for bot association.<br>
 
-            <b>Maximum size is 250KB.</b><br>
-
-            <b>Note:</b> Applicable only for <b>Deluge bots</b>.
+            To retrieve the unique name of a channel, refer to <a href="/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME">CHANNEL_UNIQUE_NAME</a> in the Glossary.
 
             '
-        permissions:
-          type: array
-          maxItems: 5
-          description: "Updated list of data attributes to forward to your server in the webhook payload.<br>\n<b>Note:</b> Applicable only for <b>Webhook bots</b>.<br>\n<b>Maximum:</b> 5 permissions per handler.<br>\n<b>Allowed values</b>: \n<ul>\n  <li><code>chat</code>: Chat context (chat ID, type, participants).</li>\n  <li><code>message</code>: Message content and metadata.</li>\n  <li><code>user</code>: Sender's user profile details.</li>\n  <li><code>location</code>: Sender's location data.</li>\n  <li><code>attachments</code>: Attachment metadata and download info.</li>\n</ul>\nNot all permissions are valid for every handler type. Refer to the permissions availability table in the <a href=\"#create_a_handler_for_a_bot\">Create a handler</a> endpoint description.\n"
-          items:
-            type: string
-            enum:
-            - chat
-            - message
-            - user
-            - location
-            - attachments
-        name:
-          type: string
-          maxLength: 15
-          description: 'Updated display name for the menu action.<br>
-
-            <b>Maximum length:</b> 15 characters.<br>
-
-            <b>Note:</b> Applicable only for <code>menu_handler</code> type.
-
-            '
-        icon:
-          type: string
-          description: 'Updated custom icon reference for menu handler variants.<br>
-
-            <b>Note:</b> Applicable only for <code>menu_handler</code> type.
-
-            '
-        sub_actions:
-          type: array
-          maxItems: 5
-          description: 'Updated list of sub-actions for menu handlers.
-
-            <ul>
-
-            <li>Sub-actions allow you to create nested menu options under a main menu action, providing a structured and organized way to present multiple related actions to users.</li>
-
-            <li><b>Maximum limit:</b> 5 sub-actions can be defined for a menu handler.</li>
-
-            <li>Each sub-action includes a name, optional icon, and its own action definition, allowing for complex interaction flows within the bot''s menu system.</li>
-
-            </ul>
-
-            <b>Note:</b> Applicable only for <code>menu_handler</code> type.
-
-            '
-          items:
-            $ref: '#/components/schemas/SubAction'
+      additionalProperties: true
       example:
-        script: 'response = Map();
-
-          response.put("text", "👋 Welcome to the IT Help Desk! Select an option to get started.");
-
-          return response;'
-        name: IT Help Desk
-        icon: wand/627282
-        sub_actions:
-        - name: Raise Ticket
-          icon: wand/627290
-        - name: Track Status
-          icon: wand/627291
-        - name: Request Access
-          icon: wand/627292
-    Trigger-Bot-Call-Request:
-      type: object
-      description: Represents the request body for triggering a bot call with a message, recipients, retries, loops, and optional actions.
-      required:
-      - text
-      properties:
-        text:
-          type: string
-          maxLength: 500
-          description: 'The message to be dictated during the call.<br> <b>Limit:</b> 500 characters.
-
-            '
-        user_ids:
-          type: array
-          maxItems: 10
-          description: 'List of user ZUIDs or emails.<br> <b>Limit:</b> 10 entries.
-
-            '
-          items:
-            type: string
-            description: User identifier, which can be either a ZUID or an email address.
-        retry:
-          type: integer
-          maximum: 3
-          description: 'Number of retries if the user misses the call. System will retry after 2 minutes.<br> <b>Maximum Attempts:</b> 3
-
-            '
-        loop:
-          type: integer
-          maximum: 3
-          description: 'Number of times the message will be dictated.<br> <b>Maximum:</b> 3
-
-            '
-        actions:
-          type: array
-          maxItems: 5
-          description: 'List of actions to be displayed as buttons during the call. <br>Each action includes a label, icon, and a specific action with its associated data. <br><b>Limit:</b> 5
-
-            '
-          items:
-            type: object
-            description: Defines the structure of an action button shown during the bot call.
-            required:
-            - label
-            - action
-            properties:
-              label:
-                type: string
-                description: 'Text displayed on the button.<br>
-
-                  <b>Maximum Length:</b> 20 characters.
-
-                  '
-              icon:
-                type: string
-                description: 'Icon identifier for the button. Can be an image URL or a supported icon keyword (e.g., <code>tick</code>, <code>preview</code>, <code>url</code>).
-
-                  <a href="../icons/#overview">View supported icons</a>
-
-                  '
-              hint:
-                type: string
-                maxLength: 100
-                description: "Tooltip or additional message (optional).<br>\n <b>Maximum Length:</b> 100 characters.\n"
-              key:
-                type: string
-                maxLength: 100
-                description: 'Optional key reference.
-
-                  This can be used to identify the button in the bot handler when the action is triggered.
-
-                  <b>Maximum Length:</b> 100 characters.
-
-                  '
-              action:
-                type: object
-                description: 'An object containing the type of action the button should perform.
-
-                  '
-                required:
-                - type
-                - data
-                properties:
-                  type:
-                    type: string
-                    description: 'The action type for a button.<br>Refer to <a href="../buttons/#message-card-buttons">Message Card Buttons</a> for allowed action types and their corresponding data requirements.
-
-                      '
-                  data:
-                    type: object
-                    additionalProperties: true
-                    description: 'An object with properties for each action type. The required properties depend on the action type specified.<br>
-
-                      Refer to <a href="../buttons/#message-card-buttons">Message Card Buttons</a> for details on the expected data structure for each action type.
-
-                      '
-      example:
-        text: We've detected an issue with Zylker Servers. Our team is working to resolve it at the earliest.
-        user_ids:
-        - '55743327'
-        - '55642727'
-        retry: 3
-        loop: 2
-        actions:
-        - label: View details
-          icon: url
-          action:
-            type: open.url
-            data:
-              web: https://cliq.zoho.com
-        - label: Acknowledge
-          icon: tick
-          hint: ''
-          action:
-            type: invoke.function
-            data:
-              name: test
-          key: ''
-        - label: Delegate
-          icon: preview
-          hint: ''
-          action:
-            type: system.api
-            data:
-              api: audiocall/1234
-    NoResponse:
-      type: object
-      description: Represents an empty successful response where no payload is returned.
-      properties:
-        Response Code:
-          type: string
-          description: HTTP response code indicating no content is returned.
-          example: 204 No response
+        channel_unique_name: announcements
     BotCreate:
       type: object
       description: Payload for creating a new bot.
@@ -3300,23 +3847,6 @@ components:
           - disable
           description: "Enables or disables the Bot Calls feature for this bot. Bot Calls let the bot initiate voice alerts to targeted users for urgent, high-priority notifications.\nWhen set to <code>enabled</code>, the bot's <b>Call Handler</b> becomes active and triggers on call state events: <code>ringing</code>, <code>answered</code>, <code>ended</code>, <code>declined</code>, <code>missed</code>, <code>offline</code>, and <code>busy</code>.<br><br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Bot can initiate voice calls to users. Bot calls override the recipient's Do Not Disturb setting, ensuring delivery of critical alerts.</li>\n  <li><code>disabled</code>: Bot cannot initiate voice calls.</li>\n</ul>\n<b>Notes</b>:\n<ul>\n  <li>Individual subscribers can toggle bot calls on or off from their own Bots and Tools settings.</li>\n  <li>Organization admins can override and lock this setting for all users via Resource Management in the Admin Panel.</li>\n  <li>When <code>calls</code> is <code>enabled</code>, you can optionally add a <code>call_handler</code> to the bot to handle call state events programmatically.</li>\n</ul>\n"
           example: enable
-    BotIncomingWebhookRequest:
-      type: object
-      description: 'Request body for the incoming webhook endpoint. Accepts any number of custom key-value parameters that are passed directly to the bot''s <code>incoming_webhook_handler</code> Deluge script. Up to 50 additional parameters are supported, each with a maximum value length of 10,000 characters. There are no fixed or required fields.
-
-        '
-      properties:
-        custom_parameters:
-          type: object
-          description: "Pass additional key-value pairs in the request body to provide context to the bot's handler. These parameters are user-defined and can carry any metadata relevant to your integration.\n<br><br>\n<b>Rules for Custom Parameters</b>\n<ul>\n  <li>Up to 50 custom parameters are supported per request.</li>\n  <li>Each parameter value can be up to 10,000 characters.</li>\n  <li>All values must be of type string.</li>\n  <li>Parameter keys should be unique to avoid overwriting values in the bot handler.</li>\n</ul>\n<b>Common Use Cases</b>\n<ul>\n  <li>Webhook Verification: Some platforms send a challenge_key during webhook registration to confirm that the endpoint is reachable. Your bot handler should echo it back in the response to complete the handshake.</li>\n  <li>CI/CD & Monitoring:  Pass parameters like alert_type, build_status, or environment to notify teams about pipeline failures or infrastructure incidents in real time.</li>\n  <li>CRM & E-commerce: Send deal updates, order status changes, and customer activity metadata to keep sales and support teams informed without manual intervention.</li>\n</ul>\n"
-      additionalProperties:
-        type: string
-      example:
-        alert_type: deployment
-        environment: production
-        service_name: payment-gateway
-        severity: critical
-        triggered_by: CI/CD pipeline
     BotSubscriber:
       type: object
       description: Detailed information about an individual subscriber of the bot.
@@ -3333,41 +3863,201 @@ components:
           type: string
           description: The full name of the subscriber.
           example: Scott Fisher
-    BotAssociateChannelRequest:
+    HandlerEdit:
       type: object
-      description: Payload to associate bot with a channel.
+      description: Payload for updating an existing handler.
       properties:
-        channel_unique_name:
+        script:
           type: string
-          description: 'Unique name of the channel to associate with the bot. This is the identifier used in API calls to specify the channel for bot association.<br>
+          description: 'Updated Deluge script source code for the handler.<br>
 
-            To retrieve the unique name of a channel, refer to <a href="/cliq/help/restapi/v3/glossary/#CHANNEL_UNIQUE_NAME">CHANNEL_UNIQUE_NAME</a> in the Glossary.
+            <b>Maximum size is 250KB.</b><br>
+
+            <b>Note:</b> Applicable only for <b>Deluge bots</b>.
 
             '
-      additionalProperties: true
-      example:
-        channel_unique_name: announcements
-    BotSubscribersResponse:
-      type: object
-      description: Represents the response structure for fetching subscribers of a specific bot. Contains metadata and a list of subscriber details.
-      properties:
-        url:
-          type: string
-          description: The API endpoint URL to retrieve the list of subscribers for the specified bot.
-          example: /api/v3/bots/{BOT_UNIQUE_NAME}/subscribers
-        type:
-          type: string
-          description: The type of the response object. Typically indicates the resource or entity being described.
-          example: bot_subscriber
-        sync_token:
-          type: string
-          description: A token used to synchronize and track the state of the subscribers list across requests.
-          example: NTB8MTcyMjcwMDXwxNzIyNzA5MzQ0NDM5
-        data:
+        permissions:
           type: array
-          description: An array containing subscriber details associated with the bot.
+          maxItems: 5
+          description: "Updated list of data attributes to forward to your server in the webhook payload.<br>\n<b>Note:</b> Applicable only for <b>Webhook bots</b>.<br>\n<b>Maximum:</b> 5 permissions per handler.<br>\n<b>Allowed values</b>: \n<ul>\n  <li><code>chat</code>: Chat context (chat ID, type, participants).</li>\n  <li><code>message</code>: Message content and metadata.</li>\n  <li><code>user</code>: Sender's user profile details.</li>\n  <li><code>location</code>: Sender's location data.</li>\n  <li><code>attachments</code>: Attachment metadata and download info.</li>\n</ul>\nNot all permissions are valid for every handler type. Refer to the permissions availability table in the <a href=\"#create_a_handler_for_a_bot\">Create a handler</a> endpoint description.\n"
           items:
-            $ref: '#/components/schemas/BotSubscriber'
+            type: string
+            enum:
+            - chat
+            - message
+            - user
+            - location
+            - attachments
+        name:
+          type: string
+          maxLength: 15
+          description: 'Updated display name for the menu action.<br>
+
+            <b>Maximum length:</b> 15 characters.<br>
+
+            <b>Note:</b> Applicable only for <code>menu_handler</code> type.
+
+            '
+        icon:
+          type: string
+          description: 'Updated custom icon reference for menu handler variants.<br>
+
+            <b>Note:</b> Applicable only for <code>menu_handler</code> type.
+
+            '
+        sub_actions:
+          type: array
+          maxItems: 5
+          description: 'Updated list of sub-actions for menu handlers.
+
+            <ul>
+
+            <li>Sub-actions allow you to create nested menu options under a main menu action, providing a structured and organized way to present multiple related actions to users.</li>
+
+            <li><b>Maximum limit:</b> 5 sub-actions can be defined for a menu handler.</li>
+
+            <li>Each sub-action includes a name, optional icon, and its own action definition, allowing for complex interaction flows within the bot''s menu system.</li>
+
+            </ul>
+
+            <b>Note:</b> Applicable only for <code>menu_handler</code> type.
+
+            '
+          items:
+            $ref: '#/components/schemas/SubAction'
+      example:
+        script: 'response = Map();
+
+          response.put("text", "👋 Welcome to the IT Help Desk! Select an option to get started.");
+
+          return response;'
+        name: IT Help Desk
+        icon: wand/627282
+        sub_actions:
+        - name: Raise Ticket
+          icon: wand/627290
+        - name: Track Status
+          icon: wand/627291
+        - name: Request Access
+          icon: wand/627292
+    SubAction:
+      type: object
+      description: Sub-action definition for menu handlers.
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          maxLength: 15
+          description: 'Sub-action name.<br>
+
+            <b>Maximum length:</b> 15 characters.
+
+            '
+        icon:
+          type: string
+          description: 'Custom icon reference for the sub-action.<br>
+
+            Refer to <b><a href="icons/#overview">icons</a></b> for supported icons that can be used to enhance the UI of the sub-action.
+
+            '
+    BotEdit:
+      type: object
+      description: Payload for updating an existing bot. All fields are optional.
+      properties:
+        name:
+          type: string
+          maxLength: 20
+          description: 'Updated display name of the bot. Must be unique across the platform.<br>
+
+            <b>Note:</b> Updating the display name does not affect the <code>unique_name</code>, which is permanently assigned by Cliq and cannot be changed.<br>
+
+            <b>Maximum length:</b> 20 characters.
+
+            '
+          example: CRM Bot
+        description:
+          type: string
+          maxLength: 300
+          description: 'Updated bot description.<br>
+
+            <b>Maximum length:</b> 300 characters.
+
+            '
+          example: Your CRM co-pilot providing instant access to customer data and insights within Cliq.
+        scope:
+          type: string
+          enum:
+          - organization
+          - team
+          - personal
+          description: "Updated access level.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>organization</code>: Bot is available to all users in the organization.</li>\n  <li><code>team</code>: Bot is available only to specified teams within the organization.</li>\n  <li><code>personal</code>: Bot is available only to the creator but can be shared with other users.</li>  \n</ul> \n"
+          example: organization
+        team_ids:
+          type: array
+          maxItems: 4
+          description: 'List of <a href="/cliq/help/restapi/v3/glossary/#TEAM_ID">team_ids</a> that are allowed to access the bot when <code>scope</code> is set to <code>team</code>.<br>
+
+            <b>Maximum limit:</b> 4 team IDs can be provided, and this is mandatory when the bot''s scope is set to <code>team</code>.
+
+            '
+          items:
+            type: integer
+        status_messages:
+          type: array
+          maxItems: 10
+          description: 'Status messages shown for the bot. These messages will be displayed in the bot''s profile or when users interact with the bot.<br>
+
+            <b>Maximum limit:</b> 10 messages.
+
+            <b>Maximum length:</b> Each message can be up to 50 characters long.
+
+            '
+          items:
+            type: string
+            maxLength: 50
+            example: Here to help you with CRM support!
+        image:
+          type: string
+          description: 'Updated Base64-encoded avatar image.
+
+            '
+          example: https://www.zoho.com/cliq/help/restapi/images/poll_icon.png
+        channel_participation:
+          type: array
+          maxItems: 10
+          description: "Updated channel participation capabilities of the bot. Defines how the bot can interact in channels.<br>\n<b>Maximum limit</b>: 3.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>listen_message</code>: Bot can listen to messages in channels.</li>\n  <li><code>send_message</code>: Bot can send messages to channels.</li>\n  <li><code>auto_follow_thread</code>: Bot will automatically follow threads it participates in.</li>\n</ul>\n"
+          items:
+            type: string
+            enum:
+            - listen_message
+            - send_message
+            - auto_follow_thread
+        execution_url:
+          type: string
+          format: uri
+          description: 'The server URL where the bot''s webhook events are sent. Applicable only for <b>Webhook bots</b>.<br>
+
+            This field can be updated independently to redirect the bot to a new endpoint without modifying any other configuration.
+
+            '
+          example: https://example.com/webhook/bot-handler
+        calls:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Enables or disables the Bot Calls feature for this bot. When set to <code>enable</code>, the bot can initiate voice alerts to users and its <b>Call Handler</b> becomes active, firing on call state events: <code>ringing</code>, <code>answered</code>, <code>ended</code>, <code>declined</code>, <code>missed</code>, <code>offline</code>, and <code>busy</code>.<br><br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Bot can initiate voice calls. Calls override the recipient's Do Not Disturb setting.</li>\n  <li><code>disabled</code>: Bot cannot initiate voice calls.</li>\n</ul>\n<b>Notes</b>:\n<ul>\n  <li>Individual subscribers can toggle bot calls on or off from their Bots and Tools settings.</li>\n  <li>Org admins can override and lock this setting for all users via the Admin Panel.</li>\n</ul>\n"
+      example:
+        name: CRM Bot
+        description: Your CRM co-pilot providing instant access to customer data and insights within Cliq.
+        scope: organization
+        status_messages:
+        - Here to help you with CRM support!
+        image: https://www.zoho.com/cliq/help/restapi/images/poll_icon.png
+        channel_participation:
+        - listen_message
+        calls: enabled
     BotHandlerDetailsResponse:
       type: object
       description: Response schema returned when fetching the full details of a specific bot handler.
@@ -3451,6 +4141,161 @@ components:
             param_type: MAP
           - param_name: sub_action
             param_type: STRING
+    BotSubscribersResponse:
+      type: object
+      description: Represents the response structure for fetching subscribers of a specific bot. Contains metadata and a list of subscriber details.
+      properties:
+        url:
+          type: string
+          description: The API endpoint URL to retrieve the list of subscribers for the specified bot.
+          example: /api/v3/bots/{BOT_UNIQUE_NAME}/subscribers
+        type:
+          type: string
+          description: The type of the response object. Typically indicates the resource or entity being described.
+          example: bot_subscriber
+        sync_token:
+          type: string
+          description: A token used to synchronize and track the state of the subscribers list across requests.
+          example: NTB8MTcyMjcwMDXwxNzIyNzA5MzQ0NDM5
+        data:
+          type: array
+          description: An array containing subscriber details associated with the bot.
+          items:
+            $ref: '#/components/schemas/BotSubscriber'
+    BotListResponse:
+      type: object
+      description: Response schema for listing bots.
+      properties:
+        url:
+          type: string
+          description: API endpoint URL for the listed resources.
+          example: /api/v3/bots
+        type:
+          type: string
+          description: Resource type.
+          example: bot
+        next_token:
+          type: string
+          description: Pagination token to fetch the next page of results.
+          example: NTB8MTc1NjM2MjA5MzQ5OHw1MzcxOTAwMDAwMTYyMDAwMw==
+        sync_token:
+          type: string
+          description: Token used for incremental synchronization to fetch changes since the last sync.
+          example: NTB8MTc3NzM0MjEyNzQ3OHw1MzcxOTAwMDAwMTg3ODAxMQ==
+        deleted:
+          type: array
+          description: IDs of deleted bots returned during incremental sync.
+          items:
+            type: string
+        data:
+          type: array
+          description: List of bot objects.
+          items:
+            type: object
+            properties:
+              unique_name:
+                type: string
+                description: Unique identifier of the bot.
+                example: supportbot
+              name:
+                type: string
+                description: Display name of the bot.
+                example: Support Bot
+              id:
+                type: string
+                description: Numeric ID of the bot.
+                example: '53719000001878011'
+              description:
+                type: string
+                description: Description of the bot.
+                example: Handles support workflows
+              scope:
+                type: string
+                description: Access level of the bot.
+                example: organization
+              channel_participation:
+                type: array
+                description: Channel interaction capabilities of the bot.
+                items:
+                  type: string
+                example:
+                - listen_message
+                - send_message
+                - auto_follow_thread
+              handlers:
+                type: array
+                description: Handlers configured for the bot.
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      description: Handler type.
+                      example: menu_handler
+                    id:
+                      type: string
+                      description: Unique ID of the handler (present for menu_handler).
+                      example: '53719000001878017'
+                    name:
+                      type: string
+                      description: Display name of the menu action (present for menu_handler).
+                      example: Action
+                    icon:
+                      type: string
+                      description: Icon reference for the menu action (present for menu_handler).
+                      example: wand/627282
+                    position:
+                      type: integer
+                      description: Display position of the menu action (present for menu_handler).
+                      example: 1
+                    sub_actions:
+                      type: array
+                      description: Sub-actions under the menu handler.
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            example: Sub Action
+                          icon:
+                            type: string
+                            example: wand/627282
+              creator:
+                type: object
+                description: User who created the bot.
+                properties:
+                  name:
+                    type: string
+                    description: Name of the creator.
+                    example: James
+                  id:
+                    type: string
+                    description: ZUID of the creator.
+                    example: '65113112'
+              execution_type:
+                type: string
+                description: Script execution engine used by the bot.
+                example: deluge
+              status:
+                type: string
+                description: Current operational status of the bot.
+                example: enabled
+              type:
+                type: string
+                description: Bot category. Always custom for user-created bots.
+                example: custom
+              default:
+                type: boolean
+                description: Indicates whether this is the default bot.
+                example: false
+              subscriber_count:
+                type: integer
+                description: Number of users subscribed to the bot.
+                example: 1
+              calls:
+                type: string
+                description: Indicates whether bot calls are enabled or disabled.
+                example: disabled
   securitySchemes:
     Cliq_Auth:
       type: oauth2

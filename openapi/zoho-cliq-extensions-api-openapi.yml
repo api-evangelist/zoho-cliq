@@ -1,9 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Bots Extensions API
-  description: "<p>Bots are conversational assistants designed to automate repetitive tasks and manage simple user interactions. Their behavior is fully customizable through predefined Bot Handlers, which are activated by specific actions or through Webhooks that communicate with your own external server.</p> <p>For more information about Bots, please refer to the <b><a href=\"https://www.zoho.com/cliq/help/platform/bots.html\" target=\"_blank\">Bots Help Documentation</a></b>.</p> <p><b>Bot Handlers</b></p> <ul>\n  <li>Bot Handlers are the building blocks of a bot's functionality. Each handler is associated with a specific trigger event, such as receiving a direct message, being @mentioned in a channel, or a user subscribing to the bot.</li>\n  <li>When the trigger event occurs, the corresponding handler executes it's script to perform actions like sending messages, making API calls, or updating data.</li>\n  <li>By configuring different handlers, you can create bots that respond intelligently to various user interactions and automate complex workflows within Zoho Cliq.</li>\n</ul> <p><b>Types of Bot Handlers</b></p> <table style=\"border-collapse: collapse; width: 100%;\">\n  <tr>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Handler</th>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Description</th>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Menu Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Adds up to 5 quick-action items to the bot's chat menu. Triggered when a user interacts with the menu.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Message Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot receives a message.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Welcome Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Defines the greeting message sent when a user subscribes to the bot.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Mention Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot is @mentioned in a chat or channel.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Incoming Webhook Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Allows external services to post messages into the bot via outgoing webhooks.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Context Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Manages multi-turn conversations, maintaining context across a user's interaction with the bot.</td>\n  </tr>\n</table> <p><b>What you can do with the Bots API?</b></p> <p>With the Bots API, you can retrieve information about a specific bot, list all bots within your organization, manage configurations specific to handlers, trigger bot calls programmatically, manage subscribers, and much more.</p> <p>Each bot has an <code>execution_type</code> that defines how its handlers run when a trigger event occurs. The Bots API allows developers to create two types of bots:</p> <p id=\"deluge-bots\"><b>Deluge Bots (default)</b><br> Deluge bot executes handler logic using Zoho's Deluge scripting language, hosted entirely within the Zoho Cliq Developer platform, where no external server is required.</p> <ul>\n  <li>If <code>execution_type</code> is not specified during bot creation, it defaults to deluge.</li>\n  <li>Handler logic is defined as a script field (Deluge source code) when creating or updating handlers.</li>\n  <li>Suitable for teams that want to build and manage bot logic entirely within Zoho's ecosystem.</li>\n</ul> <p id=\"webhook-bots\"><b>Webhook Bots</b><br> A Webhook bot delegates all handler execution to your own external server. When a trigger event fires, Zoho Cliq sends an HTTP POST request to the <code>execution_url</code> you configure, and your server processes the event and returns a response.</p> <ul>\n  <li>To create a Webhook bot, set <code>execution_type</code> to webhook during bot creation and provide the <code>execution_url</code> where event payloads should be sent.</li>\n  <li>Your server must be publicly accessible and able to handle incoming POST requests from Zoho Cliq.</li>\n  <li>Ideal for teams seeking complete control over bot logic and possessing the resources to manage an external server. Also suitable for integrations requiring access to external databases, third-party APIs, or custom business logic that cannot be executed in Deluge.</li>\n</ul>\n"
-  contact: {}
-  version: 1.0.0
+  title: Extensions API
+  version: '3.0'
+  description: The Extensions API gives you programmatic control over the full lifecycle of Zoho Cliq Extension installations.
 servers:
 - url: https://cliq.zoho.com/api/v3
   description: Zoho Cliq US DC
@@ -15,7 +14,62 @@ paths:
     post:
       summary: Install an extension
       operationId: install_an_extension
-      description: "Install a Cliq extension in an organisation. After installation, the extension's bundled platform components (bots, commands, message actions, etc.) become available to users.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">extension_plan_limit_exceeded</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Extension plan installation limit has been reached.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">extension_install_restricted_non_marketplace</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Organization policy restricts installing non-marketplace extensions.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">extension_install_restricted</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">User is not allowed to install this extension.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">operation_failed</span></td>\n            <td style=\"padding:10px 18px;\">General installation failure.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Install a Cliq extension in an organisation. After installation, the extension''s bundled platform components (bots, commands, message actions, etc.) become available to users.
+
+
+        Threshold limit: 10 requests per min per user
+
+
+        Maximum API calls allowed within one minute.
+
+
+        Lock period: 5 minutes
+
+        Cooldown period applied after threshold exhaustion.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        extension_plan_limit_exceeded
+
+        Extension plan installation limit has been reached.
+
+
+        extension_install_restricted_non_marketplace
+
+        Organization policy restricts installing non-marketplace extensions.
+
+
+        extension_install_restricted
+
+        User is not allowed to install this extension.
+
+
+        operation_failed
+
+        General installation failure.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - schema:
           description: ''
@@ -142,7 +196,72 @@ paths:
     put:
       summary: Upgrade an extension
       operationId: update_extension
-      description: "Upgrade an already-installed Cliq Extension to a newer version.\n<br><br> \n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 10 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">extension_error_not_installed</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Extension is not installed.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">app_disabled_by_owner</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Extension is disabled by owner/developer.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">extension_disabled</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Extension is disabled by organization admin.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">extension_already_installed</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Extension is already installed at organization scope.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">extension_install_restricted</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">User is not allowed to upgrade this extension.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">operation_failed</span></td>\n            <td style=\"padding:10px 18px;\">General upgrade failure.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Upgrade an already-installed Cliq Extension to a newer version.
+
+
+        Threshold limit: 10 requests per min per user
+
+
+        Maximum API calls allowed within one minute.
+
+
+        Lock period: 10 minutes
+
+        Cooldown period applied after threshold exhaustion.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        extension_error_not_installed
+
+        Extension is not installed.
+
+
+        app_disabled_by_owner
+
+        Extension is disabled by owner/developer.
+
+
+        extension_disabled
+
+        Extension is disabled by organization admin.
+
+
+        extension_already_installed
+
+        Extension is already installed at organization scope.
+
+
+        extension_install_restricted
+
+        User is not allowed to upgrade this extension.
+
+
+        operation_failed
+
+        General upgrade failure.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - schema:
           description: ''
@@ -267,7 +386,47 @@ paths:
     patch:
       summary: Add or update extension properties
       operationId: add_or_update_extension_proper
-      description: "Add new or update existing configuration properties for an installed Extension. Extension properties are key-value pairs used to store extension-level settings (e.g. API keys, configuration flags) that are accessible to the extension's platform components. The `extension_key` parameter is required.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">extension_property_key_length_exceeded</span></td>\n            <td style=\"padding:10px 18px;\">Property key length exceeds the allowed limit.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Add new or update existing configuration properties for an installed Extension. Extension properties are key-value pairs used to store extension-level settings (e.g. API keys, configuration flags) that are accessible to the extension''s platform components. The `extension_key` parameter is required.
+
+
+        Threshold limit: 30 requests per min per user
+
+
+        Maximum API calls allowed within one minute.
+
+
+        Lock period: 5 minutes
+
+        Cooldown period applied after threshold exhaustion.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        extension_property_key_length_exceeded
+
+        Property key length exceeds the allowed limit.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - schema:
           description: ''
@@ -402,7 +561,53 @@ paths:
     get:
       summary: Get extension properties
       operationId: get_extension_properties
-      description: "Retrieve one or more application properties of an installed Extension.<br><br>\n<b>What are extension properties?</b><br>\n<p>\n  Extension properties are values associated with the extension. They are quite similar to regular data properties, wherein you map a key of type string with a value string.  The main purpose is to store data configurations for the extension. They can be added, retrieved for use and deleted and even the Organization admin does not have access to view these configurations. These properties should be created and updated during extension installation and used in the extension code. Cliq supports a maximum of 10 properties per extension.<br><br>\n</p>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">invalid_inputs</span></td>\n            <td style=\"padding:10px 18px;\">No valid property keys were supplied.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Retrieve one or more application properties of an installed Extension.
+
+
+        What are extension properties?
+
+
+        Extension properties are values associated with the extension. They are quite similar to regular data properties, wherein you map a key of type string with a value string. The main purpose is to store data configurations for the extension. They can be added, retrieved for use and deleted and even the Organization admin does not have access to view these configurations. These properties should be created and updated during extension installation and used in the extension code. Cliq supports a maximum of 10 properties per extension.
+
+
+        Threshold limit: 30 requests per min per user
+
+
+        Maximum API calls allowed within one minute.
+
+
+        Lock period: 5 minutes
+
+        Cooldown period applied after threshold exhaustion.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        invalid_inputs
+
+        No valid property keys were supplied.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - schema:
           description: ''
@@ -514,7 +719,47 @@ paths:
     get:
       summary: Get a specific extension property
       operationId: get_extension_property
-      description: "Retrieve a single extension property of an installed extension.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">extension_property_invalid_key</span></td>\n            <td style=\"padding:10px 18px;\">Property key is invalid, empty, or does not exist.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Retrieve a single extension property of an installed extension.
+
+
+        Threshold limit: 30 requests per min per user
+
+
+        Maximum API calls allowed within one minute.
+
+
+        Lock period: 5 minutes
+
+        Cooldown period applied after threshold exhaustion.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        extension_property_invalid_key
+
+        Property key is invalid, empty, or does not exist.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - schema:
           description: ''
@@ -626,7 +871,50 @@ paths:
     delete:
       summary: Delete a specific extension property
       operationId: delete_extension_property
-      description: "Permanently delete a single extension property of an installed extension.<br>\nDeleted properties cannot be recovered, but new properties with the same key can be created after deletion.\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">extension_property_invalid_key</span></td>\n            <td style=\"padding:10px 18px;\">Property key is invalid or empty.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Permanently delete a single extension property of an installed extension.
+
+
+        Deleted properties cannot be recovered, but new properties with the same key can be created after deletion.
+
+
+        Threshold limit: 30 requests per min per user
+
+
+        Maximum API calls allowed within one minute.
+
+
+        Lock period: 5 minutes
+
+        Cooldown period applied after threshold exhaustion.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        extension_property_invalid_key
+
+        Property key is invalid or empty.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - schema:
           description: ''
@@ -733,38 +1021,22 @@ paths:
       - Extensions
 components:
   schemas:
-    extensioninstall_V3:
-      type: object
-      description: Payload for installing an extension.
-      required:
-      - scope
-      properties:
-        scope:
-          type: string
-          enum:
-          - organization
-          - team
-          description: "Installlation scope for the extension.<br>\n<b>Allowable values</b>:<br>\n<ul>\n  <li><code>organization</code>: Extension will be available to all users within the organization. Requires admin consent.</li>\n  <li><code>team</code>: Extension will be available only to users within specified teams. Requires admin consent for each team.</li>\n</ul>\n"
-        team_ids:
-          type: array
-          maxItems: 4
-          description: 'List of <a href="/cliq/help/restapi/v3/glossary/#TEAM_ID">team_ids</a> to which the extension should be installed. Required if scope is set to <code>team</code>. Maximum of 4 team IDs allowed.
-
-            '
-          items:
-            type: integer
-    ExtensionPropertySingleResponse:
-      type: object
-      description: Response returned when retrieving a single extension property.
-      properties:
-        api_key:
-          type: string
-          example: my_secret_api_key_value
-      example:
-        api_key: my_secret_api_key_value
-    encryptedappkey_regex:
+    smallalphawithspl_regex:
       type: string
-      description: Encrypted application key (appkey or EXTENSION_KEY) issued to a bot or extension, used as an alternative to OAuth for webhook-style authentication.
+      description: Lowercase alphanumeric string with allowed special characters (hyphens and underscores) used as extension property keys.
+    appproperties:
+      type: object
+      description: Payload for setting extension properties.
+      required:
+      - properties
+      properties:
+        properties:
+          type: object
+          description: Map of extension property keys to values.
+          properties:
+            api_key:
+              type: string
+              example: my_secret_api_key_value
     extensionupgrade_V3:
       type: object
       description: Payload for upgrading an installed extension.
@@ -777,6 +1049,15 @@ components:
           - organization
           - team
           description: Upgrade scope for the extension.
+    ExtensionPropertySingleResponse:
+      type: object
+      description: Response returned when retrieving a single extension property.
+      properties:
+        api_key:
+          type: string
+          example: my_secret_api_key_value
+      example:
+        api_key: my_secret_api_key_value
     ExtensionPropertiesGetResponse:
       type: object
       description: Response returned when retrieving multiple extension properties. Keys are property names; values are their current string values.
@@ -801,40 +1082,43 @@ components:
         type: string
       example:
         api_key: my_secret_api_key_value
-    smallalphawithspl_regex:
+    extensioninstall_V3:
+      type: object
+      description: Payload for installing an extension.
+      required:
+      - scope
+      properties:
+        scope:
+          type: string
+          enum:
+          - organization
+          - team
+          description: "Installlation scope for the extension.<br>\n<b>Allowable values</b>:<br>\n<ul>\n  <li><code>organization</code>: Extension will be available to all users within the organization. Requires admin consent.</li>\n  <li><code>team</code>: Extension will be available only to users within specified teams. Requires admin consent for each team.</li>\n</ul>\n"
+        team_ids:
+          type: array
+          maxItems: 4
+          description: 'List of <a href="/cliq/help/restapi/v3/glossary/#TEAM_ID">team_ids</a> to which the extension should be installed. Required if scope is set to <code>team</code>. Maximum of 4 team IDs allowed.
+
+            '
+          items:
+            type: integer
+    encryptedappkey_regex:
       type: string
-      description: Lowercase alphanumeric string with allowed special characters (hyphens and underscores) used as extension property keys.
+      description: Encrypted application key (appkey or EXTENSION_KEY) issued to a bot or extension, used as an alternative to OAuth for webhook-style authentication.
     longid_regex:
       type: string
       description: Numeric long integer identifier used to reference platform components such as Commands, Functions, Widgets, Message Actions, Schedulers, and Extensions.
-    appproperties:
-      type: object
-      description: Payload for setting extension properties.
-      required:
-      - properties
-      properties:
-        properties:
-          type: object
-          description: Map of extension property keys to values.
-          properties:
-            api_key:
-              type: string
-              example: my_secret_api_key_value
   securitySchemes:
     Cliq_Auth:
       type: oauth2
       x-authorization-example: Bearer 1000.41d9xxxxxxxxxxxxxxxxxxxxxxxxc2d1.8fccxxxxxxxxxxxxxxxxxxxxxxxx125f
       flows:
         implicit:
-          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          authorizationUrl: ''
           scopes:
-            ZohoCliq.Bots.READ: Read Bot Information
-            ZohoCliq.Bots.CREATE: Create Bots
-            ZohoCliq.Bots.UPDATE: Update Bots
-            ZohoCliq.Bots.DELETE: Delete Bots
-            ZohoCliq.Webhooks.CREATE: Post messages to conversations via webhooks
-            ZohoCliq.BotMessages.CREATE: Send messages via bot incoming webhooks
-            ZohoCliq.Channels.UPDATE: Update Channel Settings
+            ZohoCliq.Extensions.UPDATE: Update extension configurations, handlers, and properties; manage extension lifecycle.
+            ZohoCliq.Extensions.CREATE: Install Extensions (Applications) into an organisation or network scope.
+            ZohoCliq.Extensions.READ: Read extension configurations, handlers, properties, and execution logs.
 externalDocs:
-  description: Find out more about Zoho Cliq APIs V3
-  url: https://www.zoho.com/cliq/help/restapi/v3/
+  description: Find out more about Zoho Cliq Platform APIs
+  url: https://www.zoho.com/cliq/help/platform/getting-started-with-cliq-platform.html

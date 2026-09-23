@@ -1,9 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Bots Slashcommands API
-  description: "<p>Bots are conversational assistants designed to automate repetitive tasks and manage simple user interactions. Their behavior is fully customizable through predefined Bot Handlers, which are activated by specific actions or through Webhooks that communicate with your own external server.</p> <p>For more information about Bots, please refer to the <b><a href=\"https://www.zoho.com/cliq/help/platform/bots.html\" target=\"_blank\">Bots Help Documentation</a></b>.</p> <p><b>Bot Handlers</b></p> <ul>\n  <li>Bot Handlers are the building blocks of a bot's functionality. Each handler is associated with a specific trigger event, such as receiving a direct message, being @mentioned in a channel, or a user subscribing to the bot.</li>\n  <li>When the trigger event occurs, the corresponding handler executes it's script to perform actions like sending messages, making API calls, or updating data.</li>\n  <li>By configuring different handlers, you can create bots that respond intelligently to various user interactions and automate complex workflows within Zoho Cliq.</li>\n</ul> <p><b>Types of Bot Handlers</b></p> <table style=\"border-collapse: collapse; width: 100%;\">\n  <tr>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Handler</th>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd;\">Description</th>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Menu Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Adds up to 5 quick-action items to the bot's chat menu. Triggered when a user interacts with the menu.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Message Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot receives a message.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Welcome Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Defines the greeting message sent when a user subscribes to the bot.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Mention Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Triggered when the bot is @mentioned in a chat or channel.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Incoming Webhook Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Allows external services to post messages into the bot via outgoing webhooks.</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Context Handler</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">Manages multi-turn conversations, maintaining context across a user's interaction with the bot.</td>\n  </tr>\n</table> <p><b>What you can do with the Bots API?</b></p> <p>With the Bots API, you can retrieve information about a specific bot, list all bots within your organization, manage configurations specific to handlers, trigger bot calls programmatically, manage subscribers, and much more.</p> <p>Each bot has an <code>execution_type</code> that defines how its handlers run when a trigger event occurs. The Bots API allows developers to create two types of bots:</p> <p id=\"deluge-bots\"><b>Deluge Bots (default)</b><br> Deluge bot executes handler logic using Zoho's Deluge scripting language, hosted entirely within the Zoho Cliq Developer platform, where no external server is required.</p> <ul>\n  <li>If <code>execution_type</code> is not specified during bot creation, it defaults to deluge.</li>\n  <li>Handler logic is defined as a script field (Deluge source code) when creating or updating handlers.</li>\n  <li>Suitable for teams that want to build and manage bot logic entirely within Zoho's ecosystem.</li>\n</ul> <p id=\"webhook-bots\"><b>Webhook Bots</b><br> A Webhook bot delegates all handler execution to your own external server. When a trigger event fires, Zoho Cliq sends an HTTP POST request to the <code>execution_url</code> you configure, and your server processes the event and returns a response.</p> <ul>\n  <li>To create a Webhook bot, set <code>execution_type</code> to webhook during bot creation and provide the <code>execution_url</code> where event payloads should be sent.</li>\n  <li>Your server must be publicly accessible and able to handle incoming POST requests from Zoho Cliq.</li>\n  <li>Ideal for teams seeking complete control over bot logic and possessing the resources to manage an external server. Also suitable for integrations requiring access to external databases, third-party APIs, or custom business logic that cannot be executed in Deluge.</li>\n</ul>\n"
-  contact: {}
-  version: 1.0.0
+  title: Slash Commands Slashcommands API
+  version: '3.0'
+  description: Slash Commands are custom commands that users invoke directly from the Zoho Cliq message compose bar by typing a forward slash followed by the command name (e.g.
 servers:
 - url: https://cliq.zoho.com/api/v3
   description: Zoho Cliq US DC
@@ -15,7 +14,109 @@ paths:
     post:
       summary: Create a slash command
       operationId: creating_extension_command
-      description: "<a id=\"creating_extension_command\"></a>\n<p>\n  Create a new slash command. Commands are invoked by users from the message compose bar by typing a forward slash followed by the command name (e.g. <b>/report</b>).\n</p>\n<p>\n  Slash Commands support two execution types:\n</p>\n<ul>\n  <li><b>Deluge</b> (default): Handler logic runs on Zoho's platform via Deluge scripts. No external server needed. Best for Zoho-native integrations.</li>\n  <li><b>Webhook</b>: When the command is invoked, Cliq sends a POST request to your <code>execution_url</code>. Your server processes the event and returns the response. Best for commands that need to reach external APIs or custom backends.</li>\n</ul>\n<p>\n  Pass <code>execution_type: \"webhook\"</code> and a valid <code>execution_url</code> to create a Webhook command. If <code>execution_type</code> is omitted, it defaults to <code>deluge</code>.\n</p>\n<br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">Security validation error</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The <code>name</code> field is required.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">Security validation error</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The <code>hint</code> field is required.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">Security validation error</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The <code>scope</code> field is required.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">Security validation error</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The <code>name</code> must not exceed 30 characters.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">Security validation error</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The <code>hint</code> must not exceed 128 characters.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">Security validation error</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The <code>description</code> must not exceed 300 characters.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">Security validation error</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">A command cannot have more than 5 options.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">Security validation error</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Each option value must not exceed 100 characters.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">command_name_already_exists</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">A command with this name already exists.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">command_creation_limit_exceeded</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">The maximum number of slash commands allowed has been reached.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">command_not_valid</span></td>\n            <td style=\"padding:10px 18px;\">The provided command data is invalid or malformed.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Create a new slash command. Commands are invoked by users from the message compose bar by typing a forward slash followed by the command name (e.g. /report).
+
+
+        Slash Commands support two execution types:
+
+
+        Deluge (default): Handler logic runs on Zoho''s platform via Deluge scripts. No external server needed. Best for Zoho-native integrations.
+
+
+        Webhook: When the command is invoked, Cliq sends a POST request to your execution_url. Your server processes the event and returns the response. Best for commands that need to reach external APIs or custom backends.
+
+
+        Pass execution_type: "webhook" and a valid execution_url to create a Webhook command. If execution_type is omitted, it defaults to deluge.
+
+
+        Threshold limit: 10 requests per min per user
+
+
+        Maximum API calls allowed within one minute.
+
+
+        Lock period: 5 minutes
+
+        Cooldown period applied after threshold exhaustion.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        Security validation error
+
+        The name field is required.
+
+
+        Security validation error
+
+        The hint field is required.
+
+
+        Security validation error
+
+        The scope field is required.
+
+
+        Security validation error
+
+        The name must not exceed 30 characters.
+
+
+        Security validation error
+
+        The hint must not exceed 128 characters.
+
+
+        Security validation error
+
+        The description must not exceed 300 characters.
+
+
+        Security validation error
+
+        A command cannot have more than 5 options.
+
+
+        Security validation error
+
+        Each option value must not exceed 100 characters.
+
+
+        command_name_already_exists
+
+        A command with this name already exists.
+
+
+        command_creation_limit_exceeded
+
+        The maximum number of slash commands allowed has been reached.
+
+
+        command_not_valid
+
+        The provided command data is invalid or malformed.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters: []
       requestBody:
         description: Creates a slash command. Provide `name`, `hint`, and `scope`. Set `execution_type` to `webhook` and include `execution_url` for a Webhook command.
@@ -177,7 +278,18 @@ paths:
     get:
       summary: List all commands
       operationId: get_list_of_commands
-      description: "Retrieve a paginated list of all slash commands.\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n"
+      description: 'Retrieve a paginated list of all slash commands.
+
+
+        Threshold limit: 30 requests per min per user
+
+
+        Maximum API calls allowed within one minute.
+
+
+        Lock period: 5 minutes
+
+        Cooldown period applied after threshold exhaustion.'
       parameters:
       - schema:
           description: ''
@@ -341,7 +453,63 @@ paths:
     patch:
       summary: Update a slash command
       operationId: editing_extension_command
-      description: "Update the configuration of an existing slash command.\n<p>\n  All fields are optional. Only the fields you provide will be updated; omitted fields remain unchanged.\n</p>\n<p>\n  For <b>Webhook commands</b>, you can update the <code>execution_url</code> independently at any time to redirect the command to a new server endpoint without recreating it.\n</p>\n<br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">command_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Command with the specified ID does not exist.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">command_name_already_exists</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">A command with this name already exists.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">command_not_valid</span></td>\n            <td style=\"padding:10px 18px;\">The provided command data is invalid or malformed.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Update the configuration of an existing slash command.
+
+
+        All fields are optional. Only the fields you provide will be updated; omitted fields remain unchanged.
+
+
+        For Webhook commands, you can update the execution_url independently at any time to redirect the command to a new server endpoint without recreating it.
+
+
+        Threshold limit: 10 requests per min per user
+
+
+        Maximum API calls allowed within one minute.
+
+
+        Lock period: 5 minutes
+
+        Cooldown period applied after threshold exhaustion.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        command_not_found
+
+        Command with the specified ID does not exist.
+
+
+        command_name_already_exists
+
+        A command with this name already exists.
+
+
+        command_not_valid
+
+        The provided command data is invalid or malformed.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - schema:
           description: ''
@@ -505,7 +673,52 @@ paths:
     get:
       summary: Get a command
       operationId: get_a_command
-      description: "Retrieve details of a specific slash command.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 30 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">command_not_found</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Command with the specified ID was not found.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">command_not_found</span></td>\n            <td style=\"padding:10px 18px;\">You do not have permission to view this command.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Retrieve details of a specific slash command.
+
+
+        Threshold limit: 30 requests per min per user
+
+
+        Maximum API calls allowed within one minute.
+
+
+        Lock period: 5 minutes
+
+        Cooldown period applied after threshold exhaustion.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        command_not_found
+
+        Command with the specified ID was not found.
+
+
+        command_not_found
+
+        You do not have permission to view this command.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - schema:
           description: ''
@@ -631,7 +844,47 @@ paths:
     delete:
       summary: Delete a slash command
       operationId: deleting_extension_command
-      description: "Permanently delete a custom Slash Command and all its associated handlers. The command will be removed from all accessible scopes and can no longer be invoked by users. This action is irreversible.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">command_not_found</span></td>\n            <td style=\"padding:10px 18px;\">Command with the specified ID was not found.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Permanently delete a custom Slash Command and all its associated handlers. The command will be removed from all accessible scopes and can no longer be invoked by users. This action is irreversible.
+
+
+        Threshold limit: 10 requests per min per user
+
+
+        Maximum API calls allowed within one minute.
+
+
+        Lock period: 5 minutes
+
+        Cooldown period applied after threshold exhaustion.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        command_not_found
+
+        Command with the specified ID was not found.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - schema:
           description: ''
@@ -733,7 +986,116 @@ paths:
     post:
       summary: Create a handler for a specific command
       operationId: createCommandHandler
-      description: "<a id=\"createCommandHandler\"></a>\n<p>\n  Add a new handler to an existing slash command. Commands support two handler types:\n</p>\n<ul>\n  <li><b>Execution handler</b>: Executes the command's primary function when invoked.</li>\n  <li><b>Suggestion handler</b>: Provides dynamic autocomplete suggestions as users type the command.</li>\n</ul>\n<p>\n  The field you provide depends on the command's execution type:\n</p>\n<ul>\n  <li><b>Deluge command</b>: Provide the <code>script</code> field with the Deluge source code to execute when the handler fires.</li>\n  <li><b>Webhook command</b>: Provide the <code>permissions</code> field - an array of data attributes your server needs to receive in the webhook payload. Do not pass <code>script</code> for Webhook commands.</li>\n</ul>\n<p><b>Permissions availability by handler type</b></p>\n<table style=\"border-collapse: collapse; width: 100%; font-family: inherit;\">\n  <tr>\n    <th style=\"padding: 8px; text-align: left; border: 1px solid #ddd; font-family: inherit;\">Handler</th>\n    <th style=\"padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit; white-space: nowrap;\"><code>attachments</code></th>\n    <th style=\"padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;\"><code>chat</code></th>\n    <th style=\"padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;\"><code>location</code></th>\n    <th style=\"padding: 8px; text-align: center; border: 1px solid #ddd; font-family: inherit;\"><code>user</code></th>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>execution_handler</code></td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">&#10003;</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">&#10003;</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">&#10003;</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">&#10003;</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\"><code>suggestion_handler</code></td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">-</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">&#10003;</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">&#10003;</td>\n    <td style=\"padding: 8px; text-align: center; border: 1px solid #ddd;\">&#10003;</td>\n  </tr>\n</table>\n<p>Note: <code>attachments</code> is not available for <code>suggestion_handler</code>. All permissions are available for <code>execution_handler</code>.</p>\n<br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">execution_handler_create_failed</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Failed to create the handler.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">execution_handler_data_required</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Required field missing.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">execution_handler_data_invalid</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Handler data is invalid.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">invalid_inputs</span></td>\n            <td style=\"padding:10px 18px;\">Invalid handler type or bad request body.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Add a new handler to an existing slash command. Commands support two handler types:
+
+
+        Execution handler: Executes the command''s primary function when invoked.
+
+
+        Suggestion handler: Provides dynamic autocomplete suggestions as users type the command.
+
+
+        The field you provide depends on the command''s execution type:
+
+
+        Deluge command: Provide the script field with the Deluge source code to execute when the handler fires.
+
+
+        Webhook command: Provide the permissions field - an array of data attributes your server needs to receive in the webhook payload. Do not pass script for Webhook commands.
+
+
+        Permissions availability by handler type
+
+
+        Handler
+
+        attachments
+
+        chat
+
+        location
+
+        user
+
+
+        execution_handler
+
+        ✓
+
+        ✓
+
+        ✓
+
+        ✓
+
+
+        suggestion_handler
+
+        -
+
+        ✓
+
+        ✓
+
+        ✓
+
+
+        Note: attachments is not available for suggestion_handler. All permissions are available for execution_handler.
+
+
+        Threshold limit: 10 requests per min per user
+
+
+        Maximum API calls allowed within one minute.
+
+
+        Lock period: 5 minutes
+
+        Cooldown period applied after threshold exhaustion.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        execution_handler_create_failed
+
+        Failed to create the handler.
+
+
+        execution_handler_data_required
+
+        Required field missing.
+
+
+        execution_handler_data_invalid
+
+        Handler data is invalid.
+
+
+        invalid_inputs
+
+        Invalid handler type or bad request body.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - schema:
           description: ''
@@ -952,7 +1314,58 @@ paths:
     patch:
       summary: Update a handler for a specific command
       operationId: updateCommandHandler
-      description: "Update a handler for a specific slash command. What you provide depends on the command's execution type:\n<ul>\n  <li><b>Deluge command</b>: Update the <code>script</code> attribute with the revised Deluge source code.</li>\n  <li><b>Webhook command</b>: Update the <code>permissions</code> array to change which data attributes are forwarded to your server.</li>\n</ul>\n<br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">execution_handler_update_failed</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Failed to update the handler.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">execution_handler_not_found</span></td>\n            <td style=\"padding:10px 18px;\">Handler not found for this component.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Update a handler for a specific slash command. What you provide depends on the command''s execution type:
+
+
+        Deluge command: Update the script attribute with the revised Deluge source code.
+
+
+        Webhook command: Update the permissions array to change which data attributes are forwarded to your server.
+
+
+        Threshold limit: 10 requests per min per user
+
+
+        Maximum API calls allowed within one minute.
+
+
+        Lock period: 5 minutes
+
+        Cooldown period applied after threshold exhaustion.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        execution_handler_update_failed
+
+        Failed to update the handler.
+
+
+        execution_handler_not_found
+
+        Handler not found for this component.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - schema:
           description: ''
@@ -1124,7 +1537,52 @@ paths:
     get:
       summary: Get details of a specific command handler
       operationId: get_details_of_a_specific_comm
-      description: "Retrieve the configuration and deluge source code of a specific handler associated with a slash command.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">execution_handler_get_failed</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Failed to fetch the handler.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">execution_handler_not_found</span></td>\n            <td style=\"padding:10px 18px;\">Handler was not found for this command.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Retrieve the configuration and deluge source code of a specific handler associated with a slash command.
+
+
+        Threshold limit: 10 requests per min per user
+
+
+        Maximum API calls allowed within one minute.
+
+
+        Lock period: 5 minutes
+
+        Cooldown period applied after threshold exhaustion.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        execution_handler_get_failed
+
+        Failed to fetch the handler.
+
+
+        execution_handler_not_found
+
+        Handler was not found for this command.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - schema:
           description: ''
@@ -1256,7 +1714,57 @@ paths:
     delete:
       summary: Delete a handler from a specific command
       operationId: deleteCommandHandler
-      description: "Permanently remove a specified handler from a slash command. This action is irreversible, and once removed, the associated deluge code is lost, and the handler will no longer activate on its trigger event.\n<br><br>\n<p>\n  <b>Threshold limit</b>: 10 requests per min per user<br>\n  Maximum API calls allowed within one minute.<br><br>\n  <b>Lock period</b>: 5 minutes<br>Cooldown period applied after threshold exhaustion.<br>\n</p>\n<details style=\"margin:16px 0 8px 0; border:1px solid rgba(148,163,184,0.5); border-radius:8px; font-family:inherit;\" ontoggle=\"this.querySelector('.err-toggle-hint').textContent=this.open?'Click to collapse':'Click to expand'\">\n  <summary style=\"cursor:pointer; padding:11px 16px; font-weight:600; background:rgba(148,163,184,0.1); list-style:none; display:flex; align-items:center; gap:8px; user-select:none; border-radius:8px;\">\n    <span style=\"display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:rgba(239,68,68,0.15); border-radius:50%; font-size:12px; font-weight:700; color:#ef4444; flex-shrink:0;\">!</span>\n    Possible Error Codes\n    <span class=\"err-toggle-hint\" style=\"margin-left:auto; font-weight:400; opacity:0.45; font-size:0.8em; letter-spacing:0.01em;\">Click to expand</span>\n  </summary>\n  <div style=\"padding:14px 16px 16px 16px;\">\n    <div style=\"border-radius:6px; border:1px solid rgba(148,163,184,0.35);\">\n      <table style=\"border-collapse:collapse; width:100%; font-family:inherit; font-size:0.9em;\">\n        <thead>\n          <tr>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); border-right:1px solid rgba(148,163,184,0.35); font-weight:600; width:45%;\">Error Code</th>\n            <th style=\"padding:10px 18px; text-align:center; background:rgba(148,163,184,0.15); border-bottom:1px solid rgba(148,163,184,0.35); font-weight:600; width:55%;\">Description</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">execution_handler_delete_failed</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Failed to delete the handler.</td>\n          </tr>\n          <tr style=\"background:rgba(148,163,184,0.05);\">\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2); border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">default_handler_delete_not_allowed</span></td>\n            <td style=\"padding:10px 18px; border-bottom:1px solid rgba(148,163,184,0.2);\">Default handlers cannot be deleted.</td>\n          </tr>\n          <tr>\n            <td style=\"padding:10px 18px; border-right:1px solid rgba(148,163,184,0.25); vertical-align:middle;\"><span style=\"display:inline-block; background:rgba(239,68,68,0.12); color:#ef4444; padding:3px 10px; border-radius:4px; font-family:monospace; font-size:0.82em; line-height:1.6; word-break:break-all;\">execution_handler_not_found</span></td>\n            <td style=\"padding:10px 18px;\">Handler was not found for this command.</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <div style=\"background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.4); border-left:4px solid #f59e0b; padding:12px 16px; border-radius:0 6px 6px 0; margin-top:14px; overflow:hidden;\">\n      <b style=\"color:#d97706; font-size:0.88em; display:block; margin-bottom:6px;\">Error Response Format</b>\n      <p style=\"margin:0 0 8px 0; font-size:0.85em; opacity:0.75;\">When an error occurs, the API returns a JSON response in this format:</p>\n      <code style=\"display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); padding:8px 12px; border-radius:4px; font-size:0.75em; word-break:break-all;\">{\"message\": \"A human-readable description of the error.\", \"code\": \"error_code\"}</code>\n      <p style=\"margin:8px 0 0 0; font-size:0.85em; opacity:0.75;\">where <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">code</code> is the error identifier (as listed above) and <code style=\"background:rgba(245,158,11,0.1); padding:1px 5px; border-radius:3px;\">message</code> is a human-readable explanation of what went wrong.</p>\n    </div>\n  </div>\n</details>\n"
+      description: 'Permanently remove a specified handler from a slash command. This action is irreversible, and once removed, the associated deluge code is lost, and the handler will no longer activate on its trigger event.
+
+
+        Threshold limit: 10 requests per min per user
+
+
+        Maximum API calls allowed within one minute.
+
+
+        Lock period: 5 minutes
+
+        Cooldown period applied after threshold exhaustion.
+
+
+        !
+
+        Possible Error Codes
+
+        Click to expand
+
+
+        Error Code
+
+        Description
+
+
+        execution_handler_delete_failed
+
+        Failed to delete the handler.
+
+
+        default_handler_delete_not_allowed
+
+        Default handlers cannot be deleted.
+
+
+        execution_handler_not_found
+
+        Handler was not found for this command.
+
+
+        Error Response Format
+
+
+        When an error occurs, the API returns a JSON response in this format:
+
+
+        {"message": "A human-readable description of the error.", "code": "error_code"}
+
+
+        where code is the error identifier (as listed above) and message is a human-readable explanation of what went wrong.'
       parameters:
       - schema:
           description: ''
@@ -1372,38 +1880,6 @@ components:
       description: 'Name of a slash command handler. Accepted values: <code>execution_handler</code> (fires on command invocation), <code>suggestion_handler</code> (fires to generate autocomplete suggestions).
 
         '
-    SlashCommandResponse:
-      type: object
-      description: Slash Commands API response envelope.
-      properties:
-        url:
-          type: string
-        type:
-          type: string
-        data:
-          type: object
-          additionalProperties: true
-      example:
-        url: /api/v3/commands/227828000000128009
-        type: command
-        data:
-          name: greet
-          id: '227828000000128009'
-          handlers:
-          - type: execution_handler
-          creator:
-            name: Ryan West
-            id: '119440882'
-          execution_type: deluge
-          hint: Send a greeting message
-          status: enabled
-          max_suggestions: 5
-          type: custom
-          description: Sends a customizable greeting to a user or channel
-          scope: organization
-          options:
-            user: The user to greet
-            msg: Custom greeting message
     v3-exehandler-create:
       type: object
       description: Payload for creating a new handler. For Deluge commands, provide `type` and `script`. For Webhook commands, provide `type` and `permissions`.
@@ -1436,6 +1912,104 @@ components:
             - chat
             - location
             - user
+    create-slash-command-request-body:
+      type: object
+      description: Payload for creating a new slash command.
+      required:
+      - name
+      - hint
+      - scope
+      properties:
+        execution_type:
+          type: string
+          enum:
+          - deluge
+          - webhook
+          description: "Defines how the command executes its handlers.<br>\n<ul>\n  <li><code>deluge</code>: Handler logic runs on Zoho's platform via Deluge scripts. Default when omitted.</li>\n  <li><code>webhook</code>: Handler events are forwarded to your <code>execution_url</code> as POST requests.</li>\n</ul>\n"
+          example: deluge
+        execution_url:
+          type: string
+          maxLength: 225
+          description: 'The URL that Zoho Cliq will POST handler events to when the command is invoked.<br>
+
+            <b>Required</b> when <code>execution_type</code> is <code>webhook</code>.<br>
+
+            <b>Maximum length</b>: 225 characters.
+
+            '
+          example: https://api.yourcompany.com/cliq/commands/handler
+        name:
+          type: string
+          maxLength: 30
+          description: 'Name of the slash command. This is the text that users will type after the "/" to invoke the command. Must be unique within the command''s scope.<br>
+
+            <b>Maximum length</b>: 30 characters<br>
+
+            <b>Allowed characters</b>: Only lowercase letters.
+
+            '
+        hint:
+          type: string
+          maxLength: 128
+          description: 'Hint shown in the slash command picker to help users understand the command''s purpose. Should be concise and descriptive.<br>
+
+            <b>Maximum length</b>: 128 characters
+
+            '
+        description:
+          type: string
+          maxLength: 300
+          description: 'Detailed description of the slash command''s functionality. This can provide more in-depth information than the hint and may be shown in command documentation or tooltips.<br>
+
+            <b>Maximum length</b>: 300 characters
+
+            '
+        options:
+          type: object
+          description: "Options are additional properties which can alter the output of a /command based on the user's requirements.<br>\n<b>Maximum size</b>: 5 key-value pairs.<br>\n<ul>\n  <li><b>Key</b>: Option name - identifies the option (e.g. <code>location</code>, <code>unit</code>).</li>\n  <li><b>Value</b>: Option description - explains what the option does (e.g. <code>\"City to check weather for\"</code>).</li>\n</ul>\n<b>Example syntax</b>:<br>\n<pre><code>{\"options\": {\"location\": \"City to check weather for\", \"unit\": \"Temperature unit: celsius or fahrenheit\"}}</code></pre>\n"
+          additionalProperties:
+            type: string
+            maxLength: 100
+        scope:
+          type: string
+          enum:
+          - organization
+          - team
+          - personal
+          description: "Access scope of the slash command. Determines who can see and use the command.<br>\n<b>Allowed values</b>:<br>\n<ul>\n  <li><code>organization</code>: Command is available to all users in the organization.</li>\n  <li><code>team</code>: Command is restricted to specific teams. Requires <a href=\"/cliq/help/restapi/v3/glossary/#TEAM_ID\"><code>team_ids</code></a> field.</li>\n  <li><code>personal</code>: Command is only available to the creator.</li>\n</ul> \n"
+        team_ids:
+          type: array
+          maxItems: 4
+          description: 'List of <a href="/cliq/help/restapi/v3/glossary/#TEAM_ID">team_ids</a> that are allowed to access the command when <code>scope</code> is set to <code>team</code>. Each ID corresponds to a team within the organization.<br>
+
+            <b>Maximum items</b>: 4 team IDs can be specified.<br>
+
+            This field is required if <code>scope</code> is <code>team</code>.
+
+            '
+          items:
+            type: integer
+        image:
+          type: string
+          maxLength: 204800000
+          description: "Base64 encoded image used as the command icon. This icon will be displayed next to the command in the slash command picker and can help users visually identify the command.<br>\n<b>Image requirements</b>:<br>\n<ul>\n  <li>Format: PNG or JPEG</li>\n  <li>Maximum size: 100 KB</li>\n  <li>Recommended dimensions: 64x64 pixels for optimal display</li>\n</ul>\n"
+        max_suggestions:
+          type: integer
+          maximum: 5
+          description: 'Maximum number of autocomplete suggestions that can be selected by the user when the command is typed.<br>
+
+            <br><b>Maximum value</b>: 5 suggestions
+
+            '
+      example:
+        name: greet
+        hint: Send a greeting message
+        description: Sends a customizable greeting to a user or channel
+        scope: organization
+        options:
+          user: The user to greet
+          msg: Custom greeting message
+        max_suggestions: 5
     list-all-slash-commands-response:
       type: object
       description: Response schema for listing slash commands.
@@ -1540,107 +2114,38 @@ components:
           options:
             action: Action to perform (create or lookup)
             priority: Ticket priority (low, medium, high, critical)
-    base64_regex:
-      type: string
-      description: Base64-encoded pagination or sync token used for cursor-based pagination and incremental data sync.
-    create-slash-command-request-body:
+    SlashCommandResponse:
       type: object
-      description: Payload for creating a new slash command.
-      required:
-      - name
-      - hint
-      - scope
+      description: Slash Commands API response envelope.
       properties:
-        execution_type:
+        url:
           type: string
-          enum:
-          - deluge
-          - webhook
-          description: "Defines how the command executes its handlers.<br>\n<ul>\n  <li><code>deluge</code>: Handler logic runs on Zoho's platform via Deluge scripts. Default when omitted.</li>\n  <li><code>webhook</code>: Handler events are forwarded to your <code>execution_url</code> as POST requests.</li>\n</ul>\n"
-          example: deluge
-        execution_url:
+        type:
           type: string
-          maxLength: 225
-          description: 'The URL that Zoho Cliq will POST handler events to when the command is invoked.<br>
-
-            <b>Required</b> when <code>execution_type</code> is <code>webhook</code>.<br>
-
-            <b>Maximum length</b>: 225 characters.
-
-            '
-          example: https://api.yourcompany.com/cliq/commands/handler
-        name:
-          type: string
-          maxLength: 30
-          description: 'Name of the slash command. This is the text that users will type after the "/" to invoke the command. Must be unique within the command''s scope.<br>
-
-            <b>Maximum length</b>: 30 characters<br>
-
-            <b>Allowed characters</b>: Only lowercase letters.
-
-            '
-        hint:
-          type: string
-          maxLength: 128
-          description: 'Hint shown in the slash command picker to help users understand the command''s purpose. Should be concise and descriptive.<br>
-
-            <b>Maximum length</b>: 128 characters
-
-            '
-        description:
-          type: string
-          maxLength: 300
-          description: 'Detailed description of the slash command''s functionality. This can provide more in-depth information than the hint and may be shown in command documentation or tooltips.<br>
-
-            <b>Maximum length</b>: 300 characters
-
-            '
-        options:
+        data:
           type: object
-          description: "Options are additional properties which can alter the output of a /command based on the user's requirements.<br>\n<b>Maximum size</b>: 5 key-value pairs.<br>\n<ul>\n  <li><b>Key</b>: Option name - identifies the option (e.g. <code>location</code>, <code>unit</code>).</li>\n  <li><b>Value</b>: Option description - explains what the option does (e.g. <code>\"City to check weather for\"</code>).</li>\n</ul>\n<b>Example syntax</b>:<br>\n<pre><code>{\"options\": {\"location\": \"City to check weather for\", \"unit\": \"Temperature unit: celsius or fahrenheit\"}}</code></pre>\n"
-          additionalProperties:
-            type: string
-            maxLength: 100
-        scope:
-          type: string
-          enum:
-          - organization
-          - team
-          - personal
-          description: "Access scope of the slash command. Determines who can see and use the command.<br>\n<b>Allowed values</b>:<br>\n<ul>\n  <li><code>organization</code>: Command is available to all users in the organization.</li>\n  <li><code>team</code>: Command is restricted to specific teams. Requires <a href=\"/cliq/help/restapi/v3/glossary/#TEAM_ID\"><code>team_ids</code></a> field.</li>\n  <li><code>personal</code>: Command is only available to the creator.</li>\n</ul> \n"
-        team_ids:
-          type: array
-          maxItems: 4
-          description: 'List of <a href="/cliq/help/restapi/v3/glossary/#TEAM_ID">team_ids</a> that are allowed to access the command when <code>scope</code> is set to <code>team</code>. Each ID corresponds to a team within the organization.<br>
-
-            <b>Maximum items</b>: 4 team IDs can be specified.<br>
-
-            This field is required if <code>scope</code> is <code>team</code>.
-
-            '
-          items:
-            type: integer
-        image:
-          type: string
-          maxLength: 204800000
-          description: "Base64 encoded image used as the command icon. This icon will be displayed next to the command in the slash command picker and can help users visually identify the command.<br>\n<b>Image requirements</b>:<br>\n<ul>\n  <li>Format: PNG or JPEG</li>\n  <li>Maximum size: 100 KB</li>\n  <li>Recommended dimensions: 64x64 pixels for optimal display</li>\n</ul>\n"
-        max_suggestions:
-          type: integer
-          maximum: 5
-          description: 'Maximum number of autocomplete suggestions that can be selected by the user when the command is typed.<br>
-
-            <br><b>Maximum value</b>: 5 suggestions
-
-            '
+          additionalProperties: true
       example:
-        name: greet
-        hint: Send a greeting message
-        description: Sends a customizable greeting to a user or channel
-        scope: organization
-        options:
-          user: The user to greet
-          msg: Custom greeting message
-        max_suggestions: 5
+        url: /api/v3/commands/227828000000128009
+        type: command
+        data:
+          name: greet
+          id: '227828000000128009'
+          handlers:
+          - type: execution_handler
+          creator:
+            name: Ryan West
+            id: '119440882'
+          execution_type: deluge
+          hint: Send a greeting message
+          status: enabled
+          max_suggestions: 5
+          type: custom
+          description: Sends a customizable greeting to a user or channel
+          scope: organization
+          options:
+            user: The user to greet
+            msg: Custom greeting message
     update-slash-command-request-body:
       type: object
       description: Payload for updating a slash command. All fields are optional; only the fields provided will be updated.
@@ -1757,6 +2262,9 @@ components:
             - chat
             - location
             - user
+    base64_regex:
+      type: string
+      description: Base64-encoded pagination or sync token used for cursor-based pagination and incremental data sync.
     longid_regex:
       type: string
       description: Numeric long integer identifier used to reference platform components such as Commands, Functions, Widgets, Message Actions, Schedulers, and Extensions.
@@ -1766,15 +2274,12 @@ components:
       x-authorization-example: Bearer 1000.41d9xxxxxxxxxxxxxxxxxxxxxxxxc2d1.8fccxxxxxxxxxxxxxxxxxxxxxxxx125f
       flows:
         implicit:
-          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          authorizationUrl: ''
           scopes:
-            ZohoCliq.Bots.READ: Read Bot Information
-            ZohoCliq.Bots.CREATE: Create Bots
-            ZohoCliq.Bots.UPDATE: Update Bots
-            ZohoCliq.Bots.DELETE: Delete Bots
-            ZohoCliq.Webhooks.CREATE: Post messages to conversations via webhooks
-            ZohoCliq.BotMessages.CREATE: Send messages via bot incoming webhooks
-            ZohoCliq.Channels.UPDATE: Update Channel Settings
+            Commands.UPDATE: Update slash command configurations and manage command handlers.
+            Commands.READ: Read slash command configurations, handlers, and execution logs.
+            Commands.DELETE: Permanently delete slash commands and their handlers.
+            Commands.CREATE: Create new custom Slash Commands.
 externalDocs:
-  description: Find out more about Zoho Cliq APIs V3
-  url: https://www.zoho.com/cliq/help/restapi/v3/
+  description: Find out more about Zoho Cliq Platform APIs
+  url: https://www.zoho.com/cliq/help/platform/getting-started-with-cliq-platform.html
