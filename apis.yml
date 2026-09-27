@@ -75,7 +75,7 @@ apis:
   - type: Vocabulary
     url: vocabulary/zoho-cliq.yml
 - aid: zoho-cliq:zoho-cliq-chats-api
-  name: Zoho Cliq chats API
+  name: Zoho Cliq Chats API
   description: Chats Module
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
@@ -103,7 +103,7 @@ apis:
   - type: Vocabulary
     url: vocabulary/zoho-cliq.yml
 - aid: zoho-cliq:zoho-cliq-dndsettings-api
-  name: Zoho Cliq dndsettings API
+  name: Zoho Cliq Dndsettings API
   description: DND Settings Module
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
@@ -181,7 +181,7 @@ apis:
   - type: Vocabulary
     url: vocabulary/zoho-cliq.yml
 - aid: zoho-cliq:zoho-cliq-keyboardshortcuts-api
-  name: Zoho Cliq keyboardshortcuts API
+  name: Zoho Cliq Keyboardshortcuts API
   description: Keyboard Shortcuts Module
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
@@ -207,7 +207,7 @@ apis:
   - type: Vocabulary
     url: vocabulary/zoho-cliq.yml
 - aid: zoho-cliq:zoho-cliq-mentions-api
-  name: Zoho Cliq mentions API
+  name: Zoho Cliq Mentions API
   description: Mentions Module
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
@@ -235,7 +235,7 @@ apis:
   - type: Vocabulary
     url: vocabulary/zoho-cliq.yml
 - aid: zoho-cliq:zoho-cliq-messageactions-api
-  name: Zoho Cliq messageactions API
+  name: Zoho Cliq Messageactions API
   description: Message Actions Module
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
@@ -261,7 +261,7 @@ apis:
   - type: Vocabulary
     url: vocabulary/zoho-cliq.yml
 - aid: zoho-cliq:zoho-cliq-messagecards-api
-  name: Zoho Cliq messagecards API
+  name: Zoho Cliq Messagecards API
   description: >-
     APIs for sending structured interactive message cards (Poll, Modern Inline, and Prompt) inside Zoho
     Cliq conversations.
@@ -289,7 +289,7 @@ apis:
   - type: Vocabulary
     url: vocabulary/zoho-cliq.yml
 - aid: zoho-cliq:zoho-cliq-messageformat-api
-  name: Zoho Cliq messageformat API
+  name: Zoho Cliq Messageformat API
   description: Message Format Module
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
@@ -315,7 +315,7 @@ apis:
   - type: Vocabulary
     url: vocabulary/zoho-cliq.yml
 - aid: zoho-cliq:zoho-cliq-messages-api
-  name: Zoho Cliq messages API
+  name: Zoho Cliq Messages API
   description: Messages Module
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
@@ -343,7 +343,7 @@ apis:
   - type: Vocabulary
     url: vocabulary/zoho-cliq.yml
 - aid: zoho-cliq:zoho-cliq-mobilesettings-api
-  name: Zoho Cliq mobilesettings API
+  name: Zoho Cliq Mobilesettings API
   description: Mobile Settings Module
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
@@ -369,7 +369,7 @@ apis:
   - type: Vocabulary
     url: vocabulary/zoho-cliq.yml
 - aid: zoho-cliq:zoho-cliq-mypins-api
-  name: Zoho Cliq mypins API
+  name: Zoho Cliq Mypins API
   description: My Pins and Chat Folders Module
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
@@ -395,7 +395,7 @@ apis:
   - type: Vocabulary
     url: vocabulary/zoho-cliq.yml
 - aid: zoho-cliq:zoho-cliq-pinmessages-api
-  name: Zoho Cliq pinmessages API
+  name: Zoho Cliq Pinmessages API
   description: Pin Messages Module
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
@@ -451,7 +451,7 @@ apis:
   - type: Vocabulary
     url: vocabulary/zoho-cliq.yml
 - aid: zoho-cliq:zoho-cliq-reminders-api
-  name: Zoho Cliq reminders API
+  name: Zoho Cliq Reminders API
   description: Reminders Module
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
@@ -479,7 +479,7 @@ apis:
   - type: Vocabulary
     url: vocabulary/zoho-cliq.yml
 - aid: zoho-cliq:zoho-cliq-slashcommands-api
-  name: Zoho Cliq slashcommands API
+  name: Zoho Cliq Slashcommands API
   description: Slash Commands Module
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3
@@ -533,7 +533,7 @@ apis:
   - type: Vocabulary
     url: vocabulary/zoho-cliq.yml
 - aid: zoho-cliq:zoho-cliq-threads-api
-  name: Zoho Cliq threads API
+  name: Zoho Cliq Threads API
   description: Threads Module
   humanURL: https://www.zoho.com/cliq/help/restapi/v3/introduction/
   baseURL: https://cliq.zoho.com/api/v3

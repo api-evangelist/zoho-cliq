@@ -592,7 +592,7 @@ paths:
   /chats/{CHAT_ID}/messages:
     post:
       summary: Post message in chat
-      operationId: Post message in chat
+      operationId: PostMessageInChat
       description: 'To post message in a chat (or thread), the chat_id (thread_id in case of threads) can be used in the request URL.
 
 
@@ -713,10 +713,12 @@ paths:
         - ZohoCliq.Webhooks.CREATE
       tags:
       - Messages
+      x-operation-id-source: normalized
+      x-operation-id-original: Post message in chat
   /messages:
     post:
       summary: Forward Messages
-      operationId: Forward Messages
+      operationId: ForwardMessages
       description: 'Forwards one or more messages from a source chat to other chats or users.
 
 
@@ -861,6 +863,8 @@ paths:
         - ZohoCliq.Messages.CREATE
       tags:
       - Messages
+      x-operation-id-source: normalized
+      x-operation-id-original: Forward Messages
   /messages/search:
     get:
       summary: Search Messages
@@ -1224,6 +1228,29 @@ paths:
       - Messages
 components:
   schemas:
+    post-message-in-chat-request:
+      type: object
+      description: Request object to send a message in a chat.
+      required:
+      - text
+      properties:
+        text:
+          type: string
+          description: 'Text content to send in chat. Maximum length: 5000.'
+          maxLength: 5000
+          example: Hey!
+        reply_to:
+          type: string
+          description: Message ID to reply to in chat.
+          example: '55743307'
+        sync_message:
+          type: boolean
+          description: Post message in synchronous thread; returns message ID.
+          example: true
+        mark_as_read:
+          type: boolean
+          description: Mark the message as read for the user.
+          example: true
     forward-messages-response:
       type: object
       description: Response object after forwarding messages. Uses a partial-success model.
@@ -1280,29 +1307,6 @@ components:
                         type: string
                         description: Error message.
                         example: Chat with other org users is disabled
-    post-message-in-chat-request:
-      type: object
-      description: Request object to send a message in a chat.
-      required:
-      - text
-      properties:
-        text:
-          type: string
-          description: 'Text content to send in chat. Maximum length: 5000.'
-          maxLength: 5000
-          example: Hey!
-        reply_to:
-          type: string
-          description: Message ID to reply to in chat.
-          example: '55743307'
-        sync_message:
-          type: boolean
-          description: Post message in synchronous thread; returns message ID.
-          example: true
-        mark_as_read:
-          type: boolean
-          description: Mark the message as read for the user.
-          example: true
     search-messages-response:
       type: object
       description: Response object for message search results containing matching messages and pagination information.
@@ -1416,41 +1420,6 @@ components:
           type: string
           description: The query value that was searched. Included when query was provided.
           example: proposal
-    post-message-in-a-channel-response:
-      type: object
-      description: Response object after posting a message in a channel.
-      properties:
-        Response Code:
-          type: string
-          description: HTTP response code for the operation.
-          example: 204 No response
-    post-message-in-a-channel-request:
-      type: object
-      description: Request object to post a message in a channel.
-      required:
-      - text
-      properties:
-        text:
-          type: string
-          description: 'Message text to be sent in the channel. Maximum length: 5000.'
-          maxLength: 5000
-          example: Hello team, please review the project status update and share your feedback by EOD.
-        reply_to:
-          type: string
-          description: Message ID to reply to in the channel.
-          example: '72374289911'
-        sync_message:
-          type: boolean
-          description: Whether to post the message in a synchronous thread.
-          example: true
-    post-message-in-a-chat-response:
-      type: object
-      description: Response object for posting messages in a chat/user
-      properties:
-        message_id:
-          type: string
-          description: Unique identifier of the newly posted message
-          example: '1599387839188_229293271789'
     forward-messages-request:
       type: object
       description: Request object to forward one or more messages from a source chat to other chats or users.
@@ -1530,6 +1499,41 @@ components:
                 '
               maxLength: 255
               example: Group Title 1
+    post-message-in-a-channel-response:
+      type: object
+      description: Response object after posting a message in a channel.
+      properties:
+        Response Code:
+          type: string
+          description: HTTP response code for the operation.
+          example: 204 No response
+    post-message-in-a-channel-request:
+      type: object
+      description: Request object to post a message in a channel.
+      required:
+      - text
+      properties:
+        text:
+          type: string
+          description: 'Message text to be sent in the channel. Maximum length: 5000.'
+          maxLength: 5000
+          example: Hello team, please review the project status update and share your feedback by EOD.
+        reply_to:
+          type: string
+          description: Message ID to reply to in the channel.
+          example: '72374289911'
+        sync_message:
+          type: boolean
+          description: Whether to post the message in a synchronous thread.
+          example: true
+    post-message-in-a-chat-response:
+      type: object
+      description: Response object for posting messages in a chat/user
+      properties:
+        message_id:
+          type: string
+          description: Unique identifier of the newly posted message
+          example: '1599387839188_229293271789'
   securitySchemes:
     Cliq_Auth:
       type: oauth2

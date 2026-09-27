@@ -175,18 +175,6 @@ paths:
       - dndsettings
 components:
   schemas:
-    dnd-preferences-response:
-      type: object
-      description: Current DND preference settings for the user.
-      properties:
-        quiet_hours:
-          type: string
-          description: Time range for quiet hours in HH:MM-HH:MM format.
-          example: 18:00-09:00
-        quiet_days:
-          type: string
-          description: Comma-separated list of days when DND is active.
-          example: sunday,monday
     update-dnd-preferences-request:
       type: object
       description: Request payload for updating DND preferences. Omitted fields remain unchanged.
@@ -211,6 +199,18 @@ components:
         message:
           type: string
           example: Operation completed successfully.
+    dnd-preferences-response:
+      type: object
+      description: Current DND preference settings for the user.
+      properties:
+        quiet_hours:
+          type: string
+          description: Time range for quiet hours in HH:MM-HH:MM format.
+          example: 18:00-09:00
+        quiet_days:
+          type: string
+          description: Comma-separated list of days when DND is active.
+          example: sunday,monday
   securitySchemes:
     Cliq_Auth:
       type: oauth2

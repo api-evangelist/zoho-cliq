@@ -440,7 +440,7 @@ paths:
   /chats/{THREAD_CHAT_ID}/messages:
     post:
       summary: Send a message to an existing thread
-      operationId: Send a message to an existing thread
+      operationId: SendAMessageToAnExistingThread
       description: 'Use this API to send a message to an existing thread.
 
 
@@ -567,10 +567,12 @@ paths:
         - ZohoCliq.Webhooks.CREATE
       tags:
       - Threads
+      x-operation-id-source: normalized
+      x-operation-id-original: Send a message to an existing thread
   /threads/{THREAD_CHAT_ID}:
     put:
       summary: Update the state of a thread
-      operationId: Update the state of a thread
+      operationId: UpdateTheStateOfAThread
       description: 'Use this API to update the state or follow status of a thread.
 
 
@@ -703,10 +705,12 @@ paths:
         - ZohoCliq.Chats.UPDATE
       tags:
       - Threads
+      x-operation-id-source: normalized
+      x-operation-id-original: Update the state of a thread
   /threads/{THREAD_CHAT_ID}/messages/main:
     get:
       summary: Get main message of a thread
-      operationId: Get main message of a thread
+      operationId: GetMainMessageOfAThread
       description: 'Use this API to retrieve the main message from which the thread was created.
 
 
@@ -848,10 +852,12 @@ paths:
         - ZohoCliq.Messages.READ
       tags:
       - Threads
+      x-operation-id-source: normalized
+      x-operation-id-original: Get main message of a thread
   /threads/{THREAD_CHAT_ID}/followers:
     get:
       summary: Get thread followers
-      operationId: Get thread followers
+      operationId: GetThreadFollowers
       description: Use this API to get the followers of the thread.
       parameters:
       - name: THREAD_CHAT_ID
@@ -964,9 +970,11 @@ paths:
         - ZohoCliq.Chats.READ
       tags:
       - Threads
+      x-operation-id-source: normalized
+      x-operation-id-original: Get thread followers
     post:
       summary: Add followers to a thread
-      operationId: Add followers to a thread
+      operationId: AddFollowersToAThread
       description: 'Use this API to add one or more users as followers to an existing thread.
 
 
@@ -1081,9 +1089,11 @@ paths:
         - ZohoCliq.Chats.UPDATE
       tags:
       - Threads
+      x-operation-id-source: normalized
+      x-operation-id-original: Add followers to a thread
     delete:
       summary: Remove followers from a thread
-      operationId: Remove followers from a thread
+      operationId: RemoveFollowersFromAThread
       description: 'Removes one or more specified users from the followers list of a given thread.
 
 
@@ -1198,10 +1208,12 @@ paths:
         - ZohoCliq.Chats.DELETE
       tags:
       - Threads
+      x-operation-id-source: normalized
+      x-operation-id-original: Remove followers from a thread
   /threads/{THREAD_CHAT_ID}/nonfollowers:
     get:
       summary: Get non-followers of a thread
-      operationId: Get non-followers of a thread
+      operationId: GetNon-followersOfAThread
       description: 'Use this API to retrieve the list of channel members who are not currently following the specified thread.
 
 
@@ -1322,10 +1334,12 @@ paths:
         - ZohoCliq.Chats.READ
       tags:
       - Threads
+      x-operation-id-source: normalized
+      x-operation-id-original: Get non-followers of a thread
   /threads/{THREAD_CHAT_ID}/follow:
     post:
       summary: Join (follow) a thread
-      operationId: Join-follow a thread
+      operationId: Join-followAThread
       description: 'Allows the authenticated user to join a thread as a follower.
 
 
@@ -1434,10 +1448,12 @@ paths:
         - ZohoCliq.Chats.UPDATE
       tags:
       - Threads
+      x-operation-id-source: normalized
+      x-operation-id-original: Join-follow a thread
   /threads/{THREAD_CHAT_ID}/unfollow:
     post:
       summary: Leave (unfollow) a thread
-      operationId: Leave-unfollow a thread
+      operationId: Leave-unfollowAThread
       description: 'Allows the authenticated user to leave a thread they are currently following.
 
 
@@ -1546,10 +1562,12 @@ paths:
         - ZohoCliq.Chats.UPDATE
       tags:
       - Threads
+      x-operation-id-source: normalized
+      x-operation-id-original: Leave-unfollow a thread
   /chats/{THREAD_CHAT_ID}/members:
     get:
       summary: Retrieve members of a thread
-      operationId: Retrieve members of a thread
+      operationId: RetrieveMembersOfAThread
       description: 'Use this API to fetch participants of a specific thread conversation.
 
         This is useful when you want to display who is currently involved in a focused topic discussion without scanning the parent channel.
@@ -1682,10 +1700,12 @@ paths:
         - ZohoCliq.Chats.READ
       tags:
       - Threads
+      x-operation-id-source: normalized
+      x-operation-id-original: Retrieve members of a thread
   /chats/{THREAD_CHAT_ID}/leave:
     post:
       summary: Leave a thread
-      operationId: Leave a thread
+      operationId: LeaveAThread
       description: 'Use this API to remove the authenticated user from a thread conversation.
 
         After leaving, the user is no longer an active participant in that thread context.
@@ -1803,10 +1823,12 @@ paths:
         - ZohoCliq.Chats.UPDATE
       tags:
       - Threads
+      x-operation-id-source: normalized
+      x-operation-id-original: Leave a thread
   /chats/{THREAD_CHAT_ID}/mute:
     post:
       summary: Mute a thread
-      operationId: Mute a thread
+      operationId: MuteAThread
       description: 'Use this API to mute notifications for a thread while still keeping the thread accessible.
 
         Muting is ideal for high-volume threads where the user wants to stay in the conversation but avoid immediate notification interruptions.
@@ -1924,10 +1946,12 @@ paths:
         - ZohoCliq.Chats.UPDATE
       tags:
       - Threads
+      x-operation-id-source: normalized
+      x-operation-id-original: Mute a thread
   /chats/{THREAD_CHAT_ID}/unmute:
     post:
       summary: Unmute a thread
-      operationId: Unmute a thread
+      operationId: UnmuteAThread
       description: 'Use this API to restore notifications for a previously muted thread.
 
         Once unmuted, the user starts receiving thread updates again according to their notification settings.
@@ -2045,34 +2069,10 @@ paths:
         - ZohoCliq.Chats.UPDATE
       tags:
       - Threads
+      x-operation-id-source: normalized
+      x-operation-id-original: Unmute a thread
 components:
   schemas:
-    Members:
-      type: object
-      description: Detailed information about a chat member.
-      properties:
-        user_id:
-          type: string
-          description: Unique identifier of the user.
-          example: '431930546'
-        email_id:
-          type: string
-          format: email
-          description: Email address of the user.
-          example: olivia.palmer@zylcal.com
-        name:
-          type: string
-          description: Full name of the user.
-          example: Olivia - Content Writer
-    retrieve-chat-members:
-      type: object
-      description: Response object containing members of a chat.
-      properties:
-        members:
-          type: array
-          description: List of members in the chat with detailed user information.
-          items:
-            $ref: '#/components/schemas/Members'
     thread-creation-payload:
       type: object
       description: Request body to create a new thread from an existing message.
@@ -2103,6 +2103,23 @@ components:
           type: boolean
           description: Optional. If true, posts the message synchronously and returns the message ID.
           example: true
+    Members:
+      type: object
+      description: Detailed information about a chat member.
+      properties:
+        user_id:
+          type: string
+          description: Unique identifier of the user.
+          example: '431930546'
+        email_id:
+          type: string
+          format: email
+          description: Email address of the user.
+          example: olivia.palmer@zylcal.com
+        name:
+          type: string
+          description: Full name of the user.
+          example: Olivia - Content Writer
     add-followers-payload:
       type: object
       description: Request body to add followers to a thread.
@@ -2119,6 +2136,60 @@ components:
           - '15067889'
           - '35068981'
           - '5120923'
+    send-message-in-thread-payload:
+      type: object
+      description: Request body to send a message in an existing thread.
+      required:
+      - text
+      properties:
+        text:
+          type: string
+          description: 'Text to post in the thread. Maximum length: 5000 characters.'
+          example: Let's automate these cases so we can address them during testing.
+        reply_to:
+          type: string
+          description: Optional. Message ID to reply to within the thread.
+        post_in_parent:
+          type: boolean
+          description: Optional. If true, posts the message in the parent chat as well.
+          example: true
+        sync_message:
+          type: boolean
+          description: Optional. If true, posts the message synchronously and returns the message ID.
+          example: true
+    get-thread-followers-response:
+      type: object
+      description: Response containing the list of followers for a particular thread.
+      properties:
+        data:
+          type: array
+          description: List of users following the thread.
+          items:
+            type: object
+            properties:
+              user_id:
+                type: string
+                description: Unique identifier of the user.
+                example: '855727961'
+              email_id:
+                type: string
+                format: email
+                description: Email ID of the user.
+                example: ryan.west@zylker.com
+              name:
+                type: string
+                description: Name of the user.
+                example: Ryan West
+          example:
+          - user_id: '855727961'
+            email_id: ryan.west@zylker.com
+            name: Ryan West
+          - user_id: '855727962'
+            email_id: scott.fisher@zylker.com
+            name: Scott Fisher
+          - user_id: '855727963'
+            email_id: tim.harrison@zylker.com
+            name: Tim Harrison
     thread-creation-response:
       type: object
       description: Response returned after creating a thread.
@@ -2127,16 +2198,39 @@ components:
           type: string
           description: ID of the created thread message.
           example: '1275417686584_20804595296'
-    update-state-of-thread-request:
+    no-response:
       type: object
-      description: Request body to update the state of a thread (open or closed).
-      required:
-      - action
+      description: Response object returned when no content is available.
       properties:
-        action:
+        Response Code:
           type: string
-          description: "Action to update the thread state.<br>\n<b>Allowed values</b>:<br>\n <ul>\n  <li>reopen - Reopen a closed thread.</li>\n  <li>close - Close an open thread to prevent new messages from being added.</li>\n  <li>follow - Follow the thread to receive notifications for new messages.</li>\n  <li>unfollow - Unfollow the thread to stop receiving notifications for new messages.</li>\n</ul> \n"
-          example: close
+          description: HTTP response code and message indicating no content.
+          example: 204 No response
+    remove-followers-payload:
+      type: object
+      description: Request body to remove followers from a thread.
+      required:
+      - user_ids
+      properties:
+        user_ids:
+          type: array
+          description: List of user IDs to remove from followers of the thread.
+          items:
+            type: string
+            description: Unique identifier of a user to be removed from the thread.
+          example:
+          - '15067889'
+          - '35068981'
+          - '5120923'
+    retrieve-chat-members:
+      type: object
+      description: Response object containing members of a chat.
+      properties:
+        members:
+          type: array
+          description: List of members in the chat with detailed user information.
+          items:
+            $ref: '#/components/schemas/Members'
     get-main-message-response:
       type: object
       description: Response containing the details of a main message and its thread information.
@@ -2214,84 +2308,16 @@ components:
         is_pinned:
           type: boolean
           example: false
-    remove-followers-payload:
+    update-state-of-thread-request:
       type: object
-      description: Request body to remove followers from a thread.
+      description: Request body to update the state of a thread (open or closed).
       required:
-      - user_ids
+      - action
       properties:
-        user_ids:
-          type: array
-          description: List of user IDs to remove from followers of the thread.
-          items:
-            type: string
-            description: Unique identifier of a user to be removed from the thread.
-          example:
-          - '15067889'
-          - '35068981'
-          - '5120923'
-    get-thread-followers-response:
-      type: object
-      description: Response containing the list of followers for a particular thread.
-      properties:
-        data:
-          type: array
-          description: List of users following the thread.
-          items:
-            type: object
-            properties:
-              user_id:
-                type: string
-                description: Unique identifier of the user.
-                example: '855727961'
-              email_id:
-                type: string
-                format: email
-                description: Email ID of the user.
-                example: ryan.west@zylker.com
-              name:
-                type: string
-                description: Name of the user.
-                example: Ryan West
-          example:
-          - user_id: '855727961'
-            email_id: ryan.west@zylker.com
-            name: Ryan West
-          - user_id: '855727962'
-            email_id: scott.fisher@zylker.com
-            name: Scott Fisher
-          - user_id: '855727963'
-            email_id: tim.harrison@zylker.com
-            name: Tim Harrison
-    no-response:
-      type: object
-      description: Response object returned when no content is available.
-      properties:
-        Response Code:
+        action:
           type: string
-          description: HTTP response code and message indicating no content.
-          example: 204 No response
-    send-message-in-thread-payload:
-      type: object
-      description: Request body to send a message in an existing thread.
-      required:
-      - text
-      properties:
-        text:
-          type: string
-          description: 'Text to post in the thread. Maximum length: 5000 characters.'
-          example: Let's automate these cases so we can address them during testing.
-        reply_to:
-          type: string
-          description: Optional. Message ID to reply to within the thread.
-        post_in_parent:
-          type: boolean
-          description: Optional. If true, posts the message in the parent chat as well.
-          example: true
-        sync_message:
-          type: boolean
-          description: Optional. If true, posts the message synchronously and returns the message ID.
-          example: true
+          description: "Action to update the thread state.<br>\n<b>Allowed values</b>:<br>\n <ul>\n  <li>reopen - Reopen a closed thread.</li>\n  <li>close - Close an open thread to prevent new messages from being added.</li>\n  <li>follow - Follow the thread to receive notifications for new messages.</li>\n  <li>unfollow - Unfollow the thread to stop receiving notifications for new messages.</li>\n</ul> \n"
+          example: close
   securitySchemes:
     Cliq_Auth:
       type: oauth2

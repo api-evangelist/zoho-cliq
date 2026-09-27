@@ -14,7 +14,7 @@ paths:
   /chats:
     get:
       summary: Retrieve all direct chats
-      operationId: Retrieve all direct chats
+      operationId: RetrieveAllDirectChats
       description: 'Use this API to get details of all direct chats.
 
 
@@ -294,6 +294,8 @@ paths:
         - ZohoCliq.Chats.READ
       tags:
       - Chats
+      x-operation-id-source: normalized
+      x-operation-id-original: Retrieve all direct chats
     post:
       summary: Create chat
       operationId: createChatV3
@@ -2027,7 +2029,7 @@ paths:
   /chats/{CHAT_ID}/members:
     get:
       summary: Retrieve members of a chat
-      operationId: Retrieve members of a chat
+      operationId: RetrieveMembersOfAChat
       description: 'Use this API to retrieve the list of members participating in a channel or group chat.
 
 
@@ -2138,6 +2140,8 @@ paths:
         - ZohoCliq.Chats.READ
       tags:
       - Chats
+      x-operation-id-source: normalized
+      x-operation-id-original: Retrieve members of a chat
     post:
       summary: Add members to a chat
       operationId: addMembersToChatV3
@@ -2794,7 +2798,7 @@ paths:
   /chats/{CHAT_ID}/leave:
     post:
       summary: Leave a chat
-      operationId: Leave a chat
+      operationId: LeaveAChat
       description: 'Use this API to remove the authenticated user from a group chat or channel.
 
         After leaving, the user is no longer an active participant in that chat.
@@ -2882,13 +2886,15 @@ paths:
         - ZohoCliq.Chats.UPDATE
       tags:
       - Chats
+      x-operation-id-source: normalized
+      x-operation-id-original: Leave a chat
     servers:
     - url: https://cliq.zoho.com/api/v3
       description: Zoho Cliq US DC
   /chats/{CHAT_ID}/mute:
     post:
       summary: Mute a chat
-      operationId: Mute a chat
+      operationId: MuteAChat
       description: 'Use this API to mute notifications for any given chat while still keeping it accessible.
 
         Muting is ideal for high-volume group chats or channels where the user wants to stay in the conversation but avoid constant notification interruptions.
@@ -2976,13 +2982,15 @@ paths:
         - ZohoCliq.Chats.UPDATE
       tags:
       - Chats
+      x-operation-id-source: normalized
+      x-operation-id-original: Mute a chat
     servers:
     - url: https://cliq.zoho.com/api/v3
       description: Zoho Cliq US DC
   /chats/{CHAT_ID}/unmute:
     post:
       summary: Unmute a chat
-      operationId: Unmute a chat
+      operationId: UnmuteAChat
       description: 'Use this API to restore notifications for any given previously muted chat.
 
         Once unmuted, the user starts receiving chat updates again according to their notification settings.
@@ -3070,6 +3078,8 @@ paths:
         - ZohoCliq.Chats.UPDATE
       tags:
       - Chats
+      x-operation-id-source: normalized
+      x-operation-id-original: Unmute a chat
     servers:
     - url: https://cliq.zoho.com/api/v3
       description: Zoho Cliq US DC
@@ -3376,6 +3386,31 @@ paths:
       description: Zoho Cliq US DC
 components:
   schemas:
+    Members:
+      type: object
+      description: Detailed information about a chat member.
+      properties:
+        user_id:
+          type: string
+          description: Unique identifier of the user.
+          example: '431930546'
+        email_id:
+          type: string
+          format: email
+          description: Email address of the user.
+          example: olivia.palmer@zylcal.com
+        name:
+          type: string
+          description: Full name of the user.
+          example: Olivia - Content Writer
+    NoResponse:
+      type: object
+      description: Response object returned when no content is available.
+      properties:
+        Response Code:
+          type: string
+          description: HTTP response code and message indicating no content.
+          example: 204 No response
     v3-create-chat-request:
       type: object
       description: 'For direct chat, send `chat_type: direct_message` with `user_id`.
@@ -3418,44 +3453,6 @@ components:
 
             '
           maxLength: 255
-    Members:
-      type: object
-      description: Detailed information about a chat member.
-      properties:
-        user_id:
-          type: string
-          description: Unique identifier of the user.
-          example: '431930546'
-        email_id:
-          type: string
-          format: email
-          description: Email address of the user.
-          example: olivia.palmer@zylcal.com
-        name:
-          type: string
-          description: Full name of the user.
-          example: Olivia - Content Writer
-    retrieve-chat-members:
-      type: object
-      description: Response object containing members of a chat.
-      properties:
-        members:
-          type: array
-          description: List of members in the chat with detailed user information.
-          items:
-            $ref: '#/components/schemas/Members'
-    v3-typing-activity-request:
-      type: object
-      required:
-      - action
-      properties:
-        action:
-          type: string
-          description: "The typing activity to send to the chat.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>typing</code>: Indicates that the user is currently typing a message.</li>\n  <li><code>text_entered</code>: Indicates that the user has entered text but has not yet sent the message.</li>\n  <li><code>text_cleared</code>: Indicates that the user has cleared the entered text.</li>\n</ul>\n"
-          enum:
-          - typing
-          - text_entered
-          - text_cleared
     v3-fork-chat-request:
       type: object
       required:
@@ -3488,71 +3485,18 @@ components:
 
             '
           example: Discussion on Q3 Marketing Strategy
-    v3-bulk-chat-update-request:
+    v3-typing-activity-request:
       type: object
-      description: "Supports two payload modes, selected by the <code>operation</code> field:\n<ul>\n  <li><b>Mark as read</b> (<code>read_status_update</code>): Set <code>operation</code> to <code>read_status_update</code>, <code>read_status</code> to <code>read</code>, and provide a <code>chats</code> array with each chat's <code>chat_id</code> and <code>last_message_id</code>. Returns <code>200 OK</code>.</li>\n  <li><b>Clear unread</b> (<code>clear_unread</code>): Set <code>operation</code> to <code>clear_unread</code> and provide a <code>chat_ids</code> array. Returns <code>204 No Content</code>.</li>\n</ul>\n"
       required:
-      - operation
+      - action
       properties:
-        operation:
+        action:
           type: string
-          description: "The bulk operation to perform on the specified chats.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>read_status_update</code>: Marks the specified chats as read up to the given <code>last_message_id</code>. Requires <code>read_status</code> and <code>chats</code> fields.</li>\n  <li><code>clear_unread</code>: Clears the unread message count or status to zero for the specified chats. Requires <code>chat_ids</code> field.</li>\n</ul>\n"
+          description: "The typing activity to send to the chat.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>typing</code>: Indicates that the user is currently typing a message.</li>\n  <li><code>text_entered</code>: Indicates that the user has entered text but has not yet sent the message.</li>\n  <li><code>text_cleared</code>: Indicates that the user has cleared the entered text.</li>\n</ul>\n"
           enum:
-          - read_status_update
-          - clear_unread
-        read_status:
-          type: string
-          description: 'The read status to apply to the specified chats.<br>
-
-            Applicable for the <code>read_status_update</code> operation only.<br>
-
-            <b>Allowed value</b>:<br>
-
-            <code>read</code> - Marks the specified chats as read.
-
-            '
-          enum:
-          - read
-        chats:
-          type: array
-          description: 'List of chats to mark as read. Applicable for the <code>read_status_update</code> operation only.<br>
-
-            Maximum of <b>100</b> chats per request.
-
-            '
-          maxItems: 100
-          items:
-            type: object
-            required:
-            - chat_id
-            - last_message_id
-            properties:
-              chat_id:
-                type: string
-                description: Unique identifier of the chat to mark as read.
-              last_message_id:
-                type: string
-                description: The message ID up to which the chat should be marked as read. All messages up to and including this message will be marked read.
-        chat_ids:
-          type: array
-          description: 'List of chat IDs for which to clear the unread count. Applicable for the <code>clear_unread</code> operation only.<br>
-
-            Chats that do not have any unread entries will be skipped without error.<br>
-
-            <b>Maximum items</b>: 100 chat IDs.
-
-            '
-          maxItems: 100
-          items:
-            type: string
-    NoResponse:
-      type: object
-      description: Response object returned when no content is available.
-      properties:
-        Response Code:
-          type: string
-          description: HTTP response code and message indicating no content.
-          example: 204 No response
+          - typing
+          - text_entered
+          - text_cleared
     v3-chat:
       type: object
       description: Represents a chat object with comprehensive details including metadata, participants, and message information.
@@ -3622,6 +3566,63 @@ components:
         parent_chat_id:
           type: string
           description: Chat ID of the parent. Present only for thread chats.
+    v3-bulk-chat-update-request:
+      type: object
+      description: "Supports two payload modes, selected by the <code>operation</code> field:\n<ul>\n  <li><b>Mark as read</b> (<code>read_status_update</code>): Set <code>operation</code> to <code>read_status_update</code>, <code>read_status</code> to <code>read</code>, and provide a <code>chats</code> array with each chat's <code>chat_id</code> and <code>last_message_id</code>. Returns <code>200 OK</code>.</li>\n  <li><b>Clear unread</b> (<code>clear_unread</code>): Set <code>operation</code> to <code>clear_unread</code> and provide a <code>chat_ids</code> array. Returns <code>204 No Content</code>.</li>\n</ul>\n"
+      required:
+      - operation
+      properties:
+        operation:
+          type: string
+          description: "The bulk operation to perform on the specified chats.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>read_status_update</code>: Marks the specified chats as read up to the given <code>last_message_id</code>. Requires <code>read_status</code> and <code>chats</code> fields.</li>\n  <li><code>clear_unread</code>: Clears the unread message count or status to zero for the specified chats. Requires <code>chat_ids</code> field.</li>\n</ul>\n"
+          enum:
+          - read_status_update
+          - clear_unread
+        read_status:
+          type: string
+          description: 'The read status to apply to the specified chats.<br>
+
+            Applicable for the <code>read_status_update</code> operation only.<br>
+
+            <b>Allowed value</b>:<br>
+
+            <code>read</code> - Marks the specified chats as read.
+
+            '
+          enum:
+          - read
+        chats:
+          type: array
+          description: 'List of chats to mark as read. Applicable for the <code>read_status_update</code> operation only.<br>
+
+            Maximum of <b>100</b> chats per request.
+
+            '
+          maxItems: 100
+          items:
+            type: object
+            required:
+            - chat_id
+            - last_message_id
+            properties:
+              chat_id:
+                type: string
+                description: Unique identifier of the chat to mark as read.
+              last_message_id:
+                type: string
+                description: The message ID up to which the chat should be marked as read. All messages up to and including this message will be marked read.
+        chat_ids:
+          type: array
+          description: 'List of chat IDs for which to clear the unread count. Applicable for the <code>clear_unread</code> operation only.<br>
+
+            Chats that do not have any unread entries will be skipped without error.<br>
+
+            <b>Maximum items</b>: 100 chat IDs.
+
+            '
+          maxItems: 100
+          items:
+            type: string
     v3-add-members-request:
       type: object
       required:
@@ -3636,6 +3637,15 @@ components:
           maxItems: 100
           items:
             type: string
+    retrieve-chat-members:
+      type: object
+      description: Response object containing members of a chat.
+      properties:
+        members:
+          type: array
+          description: List of members in the chat with detailed user information.
+          items:
+            $ref: '#/components/schemas/Members'
     empty-response:
       type: object
       description: Response returned when there is no content.

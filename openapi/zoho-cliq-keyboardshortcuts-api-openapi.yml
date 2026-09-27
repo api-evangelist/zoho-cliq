@@ -616,55 +616,6 @@ components:
           $ref: '#/components/schemas/keyboard-shortcuts-object'
       required:
       - keyboard_shortcuts
-    keyboard-shortcuts-object:
-      type: object
-      additionalProperties: true
-      properties:
-        basic:
-          type: object
-          description: Basic navigation shortcuts (e.g., interacting with elements, moving sections, moving focus).
-          additionalProperties:
-            $ref: '#/components/schemas/os-shortcut'
-        composer:
-          type: object
-          description: Message composer shortcuts (e.g., bold, italic, underline).
-          additionalProperties:
-            $ref: '#/components/schemas/os-shortcut'
-        message_action:
-          type: object
-          description: Message action shortcuts (e.g., star message, add reaction, go to writing assistant).
-          additionalProperties:
-            $ref: '#/components/schemas/os-shortcut'
-        annotate:
-          type: object
-          description: Annotation tool shortcuts (e.g., rectangle, add line, text).
-          additionalProperties:
-            $ref: '#/components/schemas/os-shortcut'
-        media:
-          type: object
-          description: Media call shortcuts (e.g., mute/unmute, video on/off, temporary unmute).
-          additionalProperties:
-            $ref: '#/components/schemas/os-shortcut'
-        networks:
-          type: object
-          description: Network navigation shortcuts (e.g., navigate between networks).
-          additionalProperties:
-            $ref: '#/components/schemas/os-shortcut'
-        custom:
-          type: object
-          properties:
-            chat:
-              type: array
-              items:
-                $ref: '#/components/schemas/custom-chat-or-widget-entry'
-            widget:
-              type: array
-              items:
-                $ref: '#/components/schemas/custom-chat-or-widget-entry'
-            snippet:
-              type: array
-              items:
-                $ref: '#/components/schemas/custom-snippet-entry'
     delete-keyboard-shortcuts-request:
       type: object
       additionalProperties: true
@@ -714,44 +665,6 @@ components:
 
             '
           example: custom
-    no-response:
-      type: object
-      properties:
-        status:
-          type: string
-          example: success
-    custom-chat-or-widget-entry:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the chat or widget.
-          example: Support Team
-        id:
-          type: string
-          description: Chat or widget identifier.
-          example: support-team
-        mac:
-          type: string
-          description: Shortcut mapping for Mac (e.g., <code>cmd+option+c</code>).
-          example: cmd+option+c
-        windows:
-          type: string
-          description: Shortcut mapping for Windows (e.g., <code>ctrl+alt+c</code>).
-          example: ctrl+alt+c
-      required:
-      - id
-    os-shortcut:
-      type: object
-      properties:
-        windows:
-          type: string
-          description: Shortcut mapping for Windows (e.g., <code>ctrl+k</code>, <code>ctrl+shift+m</code>).
-          example: ctrl+k
-        mac:
-          type: string
-          description: Shortcut mapping for Mac (e.g., <code>cmd+k</code>, <code>cmd+shift+m</code>).
-          example: cmd+k
     update-keyboard-shortcuts-request:
       type: object
       additionalProperties: true
@@ -790,6 +703,23 @@ components:
           type: object
           description: "Custom shortcuts to update. To update a custom shortcut, provide the complete details of the shortcut (including the new key mapping and associated chat/widget/snippet information). Partial updates are not supported for custom shortcuts.\n<b>Allowed custom shortcut types:</b>\n<ul>\n  <li><code>chat</code>: Requires an <code>id</code> (chat ID) along with the new shortcut key mapping.</li>\n  <li><code>widget</code>: Requires an <code>id</code> (widget ID) along with the new shortcut key mapping.</li>\n  <li><code>snippet</code>: Requires a <code>name</code>, <code>message</code>, and the new shortcut key mapping.</li>\n</ul>\n"
           additionalProperties: true
+    os-shortcut:
+      type: object
+      properties:
+        windows:
+          type: string
+          description: Shortcut mapping for Windows (e.g., <code>ctrl+k</code>, <code>ctrl+shift+m</code>).
+          example: ctrl+k
+        mac:
+          type: string
+          description: Shortcut mapping for Mac (e.g., <code>cmd+k</code>, <code>cmd+shift+m</code>).
+          example: cmd+k
+    no-response:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
     custom-snippet-entry:
       type: object
       properties:
@@ -812,6 +742,76 @@ components:
       required:
       - name
       - message
+    keyboard-shortcuts-object:
+      type: object
+      additionalProperties: true
+      properties:
+        basic:
+          type: object
+          description: Basic navigation shortcuts (e.g., interacting with elements, moving sections, moving focus).
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        composer:
+          type: object
+          description: Message composer shortcuts (e.g., bold, italic, underline).
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        message_action:
+          type: object
+          description: Message action shortcuts (e.g., star message, add reaction, go to writing assistant).
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        annotate:
+          type: object
+          description: Annotation tool shortcuts (e.g., rectangle, add line, text).
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        media:
+          type: object
+          description: Media call shortcuts (e.g., mute/unmute, video on/off, temporary unmute).
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        networks:
+          type: object
+          description: Network navigation shortcuts (e.g., navigate between networks).
+          additionalProperties:
+            $ref: '#/components/schemas/os-shortcut'
+        custom:
+          type: object
+          properties:
+            chat:
+              type: array
+              items:
+                $ref: '#/components/schemas/custom-chat-or-widget-entry'
+            widget:
+              type: array
+              items:
+                $ref: '#/components/schemas/custom-chat-or-widget-entry'
+            snippet:
+              type: array
+              items:
+                $ref: '#/components/schemas/custom-snippet-entry'
+    custom-chat-or-widget-entry:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the chat or widget.
+          example: Support Team
+        id:
+          type: string
+          description: Chat or widget identifier.
+          example: support-team
+        mac:
+          type: string
+          description: Shortcut mapping for Mac (e.g., <code>cmd+option+c</code>).
+          example: cmd+option+c
+        windows:
+          type: string
+          description: Shortcut mapping for Windows (e.g., <code>ctrl+alt+c</code>).
+          example: ctrl+alt+c
+      required:
+      - id
   securitySchemes:
     Cliq_Auth:
       type: oauth2

@@ -747,6 +747,41 @@ components:
           type: string
           description: The user ID of the message receiver (for direct chats).
           example: '2000000012345'
+    StarInformation:
+      type: object
+      description: Information about the star applied to a message.
+      properties:
+        star_type:
+          type: string
+          description: The category of the star.
+          enum:
+          - important
+          - to_do
+          - note
+          - manager
+          - follow_up
+          example: important
+        old_star_type:
+          type: string
+          description: The previous star type if the message was already starred (returned only on updates).
+          example: note
+        starred_message_time:
+          type: string
+          format: date-time
+          description: The timestamp when the message was starred (<a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format).
+          example: '2026-03-25T10:30:00.000Z'
+        file_permission:
+          type: object
+          description: File permissions associated with the starred message (if applicable).
+          properties:
+            cross_org_policy:
+              type: boolean
+              description: Indicates if cross-organization access is allowed.
+              example: true
+            file_scope:
+              type: string
+              description: The scope identifier for file access.
+              example: '60005678901'
     StarMessageResponse:
       type: object
       properties:
@@ -827,41 +862,6 @@ components:
           - manager
           - follow_up
           example: important
-    StarInformation:
-      type: object
-      description: Information about the star applied to a message.
-      properties:
-        star_type:
-          type: string
-          description: The category of the star.
-          enum:
-          - important
-          - to_do
-          - note
-          - manager
-          - follow_up
-          example: important
-        old_star_type:
-          type: string
-          description: The previous star type if the message was already starred (returned only on updates).
-          example: note
-        starred_message_time:
-          type: string
-          format: date-time
-          description: The timestamp when the message was starred (<a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format).
-          example: '2026-03-25T10:30:00.000Z'
-        file_permission:
-          type: object
-          description: File permissions associated with the starred message (if applicable).
-          properties:
-            cross_org_policy:
-              type: boolean
-              description: Indicates if cross-organization access is allowed.
-              example: true
-            file_scope:
-              type: string
-              description: The scope identifier for file access.
-              example: '60005678901'
   securitySchemes:
     Cliq_Auth:
       type: oauth2

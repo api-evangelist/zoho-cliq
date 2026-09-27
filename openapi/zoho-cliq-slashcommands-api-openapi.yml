@@ -1880,6 +1880,9 @@ components:
       description: 'Name of a slash command handler. Accepted values: <code>execution_handler</code> (fires on command invocation), <code>suggestion_handler</code> (fires to generate autocomplete suggestions).
 
         '
+    base64_regex:
+      type: string
+      description: Base64-encoded pagination or sync token used for cursor-based pagination and incremental data sync.
     v3-exehandler-create:
       type: object
       description: Payload for creating a new handler. For Deluge commands, provide `type` and `script`. For Webhook commands, provide `type` and `permissions`.
@@ -1905,6 +1908,140 @@ components:
           type: array
           maxItems: 5
           description: "List of data attributes to forward to your server in the webhook payload when the handler fires.<br>\n<b>Note:</b> Applicable only for <b>Webhook commands</b>. Do not pass <code>permissions</code> for Deluge commands - use <code>script</code> instead.<br>\n<b>Maximum:</b> 5 permissions per handler.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>attachments</code>: File attachment metadata. Not available for <code>suggestion_handler</code>.</li>\n  <li><code>chat</code>: Chat context (chat ID, type, participants).</li>\n  <li><code>location</code>: Sender's location data.</li>\n  <li><code>user</code>: Sender's user profile details.</li>\n</ul>\nRefer to the permissions availability table in the <a href=\"/cliq/help/restapi/v3/slashcommands/#createCommandHandler\">Create a handler</a> endpoint for per-handler availability.\n"
+          items:
+            type: string
+            enum:
+            - attachments
+            - chat
+            - location
+            - user
+    list-all-slash-commands-response:
+      type: object
+      description: Response schema for listing slash commands.
+      properties:
+        url:
+          type: string
+          example: /api/v3/commands
+        type:
+          type: string
+          example: command
+        sync_token:
+          type: string
+          description: Token for incremental sync. Pass this in the next request to retrieve only commands updated since this response.
+          example: MTB8MTc3NzM2MDM5OTQ5Mnw=
+        next_token:
+          type: string
+          description: Pagination token for the next page of results.
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              id:
+                type: string
+              handlers:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+              creator:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  id:
+                    type: string
+              execution_type:
+                type: string
+                example: deluge
+              hint:
+                type: string
+              status:
+                type: string
+                example: enabled
+              type:
+                type: string
+                example: custom
+              description:
+                type: string
+              scope:
+                type: string
+                enum:
+                - organization
+                - team
+                - personal
+              max_suggestions:
+                type: integer
+              options:
+                type: object
+                additionalProperties:
+                  type: string
+      example:
+        url: /api/v3/commands
+        type: command
+        sync_token: MTB8MTc3NzM2MDM5OTQ5Mnw=
+        data:
+        - name: report
+          id: '227828000000128011'
+          handlers:
+          - type: execution_handler
+          creator:
+            name: Ryan West
+            id: '119440882'
+          execution_type: deluge
+          hint: Generate a sales or activity report
+          status: enabled
+          type: custom
+          description: Generates a report for the specified date range and team
+          scope: organization
+          options:
+            type: Report type (e.g. sales, activity, attendance)
+            period: Date range (e.g. today, this_week, last_month)
+        - name: ticket
+          id: '227828000000128009'
+          handlers:
+          - type: execution_handler
+          - type: suggestion_handler
+          creator:
+            name: Ryan West
+            id: '119440882'
+          execution_type: deluge
+          hint: Create or look up a support ticket
+          status: enabled
+          max_suggestions: 5
+          type: custom
+          description: Creates a new support ticket or retrieves an existing one by ID
+          scope: team
+          options:
+            action: Action to perform (create or lookup)
+            priority: Ticket priority (low, medium, high, critical)
+    v3-exehandler-edit:
+      type: object
+      description: Payload for updating an existing handler. For Deluge commands, provide `script`. For Webhook commands, provide `permissions`.
+      properties:
+        script:
+          type: string
+          description: 'Updated Deluge script source code for the handler.<br>
+
+            <b>Maximum size:</b> 250KB<br>
+
+            <b>Note:</b> Applicable only for <b>Deluge commands</b>.
+
+            '
+        permissions:
+          type: array
+          maxItems: 5
+          description: 'Updated list of data attributes to forward to your server in the webhook payload.<br>
+
+            <b>Note:</b> Applicable only for <b>Webhook commands</b>.<br>
+
+            <b>Allowed values</b>: <code>attachments</code>, <code>chat</code>, <code>location</code>, <code>user</code>. Note: <code>attachments</code> is not available for <code>suggestion_handler</code>.
+
+            '
           items:
             type: string
             enum:
@@ -2010,142 +2147,6 @@ components:
           user: The user to greet
           msg: Custom greeting message
         max_suggestions: 5
-    list-all-slash-commands-response:
-      type: object
-      description: Response schema for listing slash commands.
-      properties:
-        url:
-          type: string
-          example: /api/v3/commands
-        type:
-          type: string
-          example: command
-        sync_token:
-          type: string
-          description: Token for incremental sync. Pass this in the next request to retrieve only commands updated since this response.
-          example: MTB8MTc3NzM2MDM5OTQ5Mnw=
-        next_token:
-          type: string
-          description: Pagination token for the next page of results.
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-              id:
-                type: string
-              handlers:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    type:
-                      type: string
-              creator:
-                type: object
-                properties:
-                  name:
-                    type: string
-                  id:
-                    type: string
-              execution_type:
-                type: string
-                example: deluge
-              hint:
-                type: string
-              status:
-                type: string
-                example: enabled
-              type:
-                type: string
-                example: custom
-              description:
-                type: string
-              scope:
-                type: string
-                enum:
-                - organization
-                - team
-                - personal
-              max_suggestions:
-                type: integer
-              options:
-                type: object
-                additionalProperties:
-                  type: string
-      example:
-        url: /api/v3/commands
-        type: command
-        sync_token: MTB8MTc3NzM2MDM5OTQ5Mnw=
-        data:
-        - name: report
-          id: '227828000000128011'
-          handlers:
-          - type: execution_handler
-          creator:
-            name: Ryan West
-            id: '119440882'
-          execution_type: deluge
-          hint: Generate a sales or activity report
-          status: enabled
-          type: custom
-          description: Generates a report for the specified date range and team
-          scope: organization
-          options:
-            type: Report type (e.g. sales, activity, attendance)
-            period: Date range (e.g. today, this_week, last_month)
-        - name: ticket
-          id: '227828000000128009'
-          handlers:
-          - type: execution_handler
-          - type: suggestion_handler
-          creator:
-            name: Ryan West
-            id: '119440882'
-          execution_type: deluge
-          hint: Create or look up a support ticket
-          status: enabled
-          max_suggestions: 5
-          type: custom
-          description: Creates a new support ticket or retrieves an existing one by ID
-          scope: team
-          options:
-            action: Action to perform (create or lookup)
-            priority: Ticket priority (low, medium, high, critical)
-    SlashCommandResponse:
-      type: object
-      description: Slash Commands API response envelope.
-      properties:
-        url:
-          type: string
-        type:
-          type: string
-        data:
-          type: object
-          additionalProperties: true
-      example:
-        url: /api/v3/commands/227828000000128009
-        type: command
-        data:
-          name: greet
-          id: '227828000000128009'
-          handlers:
-          - type: execution_handler
-          creator:
-            name: Ryan West
-            id: '119440882'
-          execution_type: deluge
-          hint: Send a greeting message
-          status: enabled
-          max_suggestions: 5
-          type: custom
-          description: Sends a customizable greeting to a user or channel
-          scope: organization
-          options:
-            user: The user to greet
-            msg: Custom greeting message
     update-slash-command-request-body:
       type: object
       description: Payload for updating a slash command. All fields are optional; only the fields provided will be updated.
@@ -2232,39 +2233,38 @@ components:
           user: The user to greet
           msg: Custom greeting message
         max_suggestions: 5
-    v3-exehandler-edit:
+    SlashCommandResponse:
       type: object
-      description: Payload for updating an existing handler. For Deluge commands, provide `script`. For Webhook commands, provide `permissions`.
+      description: Slash Commands API response envelope.
       properties:
-        script:
+        url:
           type: string
-          description: 'Updated Deluge script source code for the handler.<br>
-
-            <b>Maximum size:</b> 250KB<br>
-
-            <b>Note:</b> Applicable only for <b>Deluge commands</b>.
-
-            '
-        permissions:
-          type: array
-          maxItems: 5
-          description: 'Updated list of data attributes to forward to your server in the webhook payload.<br>
-
-            <b>Note:</b> Applicable only for <b>Webhook commands</b>.<br>
-
-            <b>Allowed values</b>: <code>attachments</code>, <code>chat</code>, <code>location</code>, <code>user</code>. Note: <code>attachments</code> is not available for <code>suggestion_handler</code>.
-
-            '
-          items:
-            type: string
-            enum:
-            - attachments
-            - chat
-            - location
-            - user
-    base64_regex:
-      type: string
-      description: Base64-encoded pagination or sync token used for cursor-based pagination and incremental data sync.
+        type:
+          type: string
+        data:
+          type: object
+          additionalProperties: true
+      example:
+        url: /api/v3/commands/227828000000128009
+        type: command
+        data:
+          name: greet
+          id: '227828000000128009'
+          handlers:
+          - type: execution_handler
+          creator:
+            name: Ryan West
+            id: '119440882'
+          execution_type: deluge
+          hint: Send a greeting message
+          status: enabled
+          max_suggestions: 5
+          type: custom
+          description: Sends a customizable greeting to a user or channel
+          scope: organization
+          options:
+            user: The user to greet
+            msg: Custom greeting message
     longid_regex:
       type: string
       description: Numeric long integer identifier used to reference platform components such as Commands, Functions, Widgets, Message Actions, Schedulers, and Extensions.
