@@ -870,6 +870,60 @@ paths:
         - ZohoCliq.Chats.READ
 components:
   schemas:
+    delete-pinned-messages-request:
+      type: object
+      description: Request body for deleting specific pinned messages.
+      required:
+      - message_ids
+      properties:
+        message_ids:
+          type: array
+          description: 'List of message IDs to unpin. These messages must currently be pinned in the chat. If this field is omitted or an empty array is provided, all pinned messages in the chat are removed.
+
+            <br><b>Maximum 25 message IDs can be provided in a single request.</b>
+
+            '
+          minItems: 1
+          maxItems: 25
+          items:
+            type: string
+      example:
+        message_ids:
+        - '17719462_4731836509'
+        - '17737286_1295818047'
+        - '17732346_9876543210'
+    get-primary-pinned-message-response:
+      type: object
+      description: Response envelope when fetching the primary pinned message.
+      properties:
+        url:
+          type: string
+        type:
+          type: string
+          example: pinmessages
+        data:
+          $ref: '#/components/schemas/pinned-message'
+      example:
+        url: /company/16557244/v3/chats/1488288613043522033/pin-messages
+        type: pinmessages
+        data:
+          type: text
+          id: '1746000123456789001'
+          time: '2026-04-30T09:00:00Z'
+          sender:
+            id: '1234567890'
+            name: Alice Johnson
+          content:
+            text: Please review the Q2 report before Friday.
+          is_pinned: true
+          pin_information:
+            expiry_time: -1
+            creator:
+              id: '9876543210'
+              name: Bob Smith
+            created_time: '2026-04-30T09:15:00Z'
+            last_modified_time: '2026-04-30T09:15:00Z'
+            is_primary: true
     reorder-pinned-message-request:
       type: object
       description: Request body for reordering a pinned message in the list.
@@ -894,38 +948,6 @@ components:
         message_id: '1773894772896_12958180473'
         pin_above: '1773895219462_47318365091'
         last_sync_time: 1745068184000
-    add-pinned-message-response:
-      type: object
-      description: Response envelope after pinning a message.
-      properties:
-        url:
-          type: string
-        type:
-          type: string
-          example: pinmessages
-        data:
-          $ref: '#/components/schemas/pinned-message'
-      example:
-        url: /v3/chats/1488288613043522033/pin-messages
-        type: pinmessages
-        data:
-          pin_information:
-            expiry_time: '2026-04-19T19:09:44+05:30'
-            creator:
-              name: Tim Harrison
-              id: '16557777'
-            created_time: '2026-03-19T19:08:32+05:30'
-            last_modified_time: '2026-03-19T19:08:32+05:30'
-            is_primary: false
-          is_pinned: true
-          sender:
-            name: Tim Harrison
-            id: '16557777'
-          type: text
-          content:
-            text: Please review the deployment checklist before the release.
-          time: '2026-03-19T10:02:52+05:30'
-          id: '1773894772896_12958180473'
     pin-information:
       type: object
       description: Metadata about the pin itself.
@@ -989,6 +1011,38 @@ components:
         message_id: '1773894772896_12958180473'
         expiry_time: '2026-04-19T19:09:44+05:30'
         notify: false
+    add-pinned-message-response:
+      type: object
+      description: Response envelope after pinning a message.
+      properties:
+        url:
+          type: string
+        type:
+          type: string
+          example: pinmessages
+        data:
+          $ref: '#/components/schemas/pinned-message'
+      example:
+        url: /v3/chats/1488288613043522033/pin-messages
+        type: pinmessages
+        data:
+          pin_information:
+            expiry_time: '2026-04-19T19:09:44+05:30'
+            creator:
+              name: Tim Harrison
+              id: '16557777'
+            created_time: '2026-03-19T19:08:32+05:30'
+            last_modified_time: '2026-03-19T19:08:32+05:30'
+            is_primary: false
+          is_pinned: true
+          sender:
+            name: Tim Harrison
+            id: '16557777'
+          type: text
+          content:
+            text: Please review the deployment checklist before the release.
+          time: '2026-03-19T10:02:52+05:30'
+          id: '1773894772896_12958180473'
     pinned-message:
       type: object
       description: A pinned message object. Contains the original message fields (id, type, content, sender, time, mentions) along with pin-specific fields.
@@ -1030,75 +1084,6 @@ components:
           description: Always <code>true</code> for pinned messages.
         pin_information:
           $ref: '#/components/schemas/pin-information'
-    error-response:
-      type: object
-      description: Error response returned by the Pin Messages API.
-      properties:
-        message:
-          type: string
-          description: Human-readable error description.
-        code:
-          type: string
-          description: Machine-readable error code.
-          enum:
-          - operation_not_allowed
-          - operation_failed
-          - client_not_synced
-          - pinned_message_limit_reached
-    delete-pinned-messages-request:
-      type: object
-      description: Request body for deleting specific pinned messages.
-      required:
-      - message_ids
-      properties:
-        message_ids:
-          type: array
-          description: 'List of message IDs to unpin. These messages must currently be pinned in the chat. If this field is omitted or an empty array is provided, all pinned messages in the chat are removed.
-
-            <br><b>Maximum 25 message IDs can be provided in a single request.</b>
-
-            '
-          minItems: 1
-          maxItems: 25
-          items:
-            type: string
-      example:
-        message_ids:
-        - '17719462_4731836509'
-        - '17737286_1295818047'
-        - '17732346_9876543210'
-    get-primary-pinned-message-response:
-      type: object
-      description: Response envelope when fetching the primary pinned message.
-      properties:
-        url:
-          type: string
-        type:
-          type: string
-          example: pinmessages
-        data:
-          $ref: '#/components/schemas/pinned-message'
-      example:
-        url: /company/16557244/v3/chats/1488288613043522033/pin-messages
-        type: pinmessages
-        data:
-          type: text
-          id: '1746000123456789001'
-          time: '2026-04-30T09:00:00Z'
-          sender:
-            id: '1234567890'
-            name: Alice Johnson
-          content:
-            text: Please review the Q2 report before Friday.
-          is_pinned: true
-          pin_information:
-            expiry_time: -1
-            creator:
-              id: '9876543210'
-              name: Bob Smith
-            created_time: '2026-04-30T09:15:00Z'
-            last_modified_time: '2026-04-30T09:15:00Z'
-            is_primary: true
     get-pinned-messages-response:
       type: object
       description: Response envelope for listing all pinned messages.
@@ -1141,6 +1126,21 @@ components:
           - name: '@sharan 203'
             id: '16557498'
             type: user
+    error-response:
+      type: object
+      description: Error response returned by the Pin Messages API.
+      properties:
+        message:
+          type: string
+          description: Human-readable error description.
+        code:
+          type: string
+          description: Machine-readable error code.
+          enum:
+          - operation_not_allowed
+          - operation_failed
+          - client_not_synced
+          - pinned_message_limit_reached
   securitySchemes:
     Cliq_Auth:
       type: oauth2

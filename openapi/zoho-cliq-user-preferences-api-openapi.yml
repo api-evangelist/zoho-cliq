@@ -203,11 +203,6 @@ paths:
       - User Preferences
 components:
   schemas:
-    user-preferences-response:
-      type: object
-      properties:
-        userpreferences:
-          $ref: '#/components/schemas/user-preferences-object'
     user-preferences-object:
       type: object
       description: Complete user preference object returned by the API.
@@ -461,16 +456,11 @@ components:
           - enabled
           - disabled
           description: Notify participants when a huddle message is sent.
-    NoResponse:
+    user-preferences-response:
       type: object
-      description: Response envelope for successful operations with no payload.
       properties:
-        status:
-          type: string
-          example: success
-        message:
-          type: string
-          example: Operation completed successfully.
+        userpreferences:
+          $ref: '#/components/schemas/user-preferences-object'
     update-user-preferences-request:
       type: object
       description: Provide only the preference fields that must be updated.
@@ -573,6 +563,16 @@ components:
           - enabled
           - disabled
           description: "Toggles URL link previews in messages.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Link previews are shown in messages.</li>\n  <li><code>disabled</code>: Link previews are hidden.</li>\n</ul>\n"
+    NoResponse:
+      type: object
+      description: Response envelope for successful operations with no payload.
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Operation completed successfully.
   securitySchemes:
     Cliq_Auth:
       type: oauth2

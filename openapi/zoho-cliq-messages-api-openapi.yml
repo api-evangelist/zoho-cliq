@@ -1228,6 +1228,33 @@ paths:
       - Messages
 components:
   schemas:
+    post-message-in-a-channel-request:
+      type: object
+      description: Request object to post a message in a channel.
+      required:
+      - text
+      properties:
+        text:
+          type: string
+          description: 'Message text to be sent in the channel. Maximum length: 5000.'
+          maxLength: 5000
+          example: Hello team, please review the project status update and share your feedback by EOD.
+        reply_to:
+          type: string
+          description: Message ID to reply to in the channel.
+          example: '72374289911'
+        sync_message:
+          type: boolean
+          description: Whether to post the message in a synchronous thread.
+          example: true
+    post-message-in-a-channel-response:
+      type: object
+      description: Response object after posting a message in a channel.
+      properties:
+        Response Code:
+          type: string
+          description: HTTP response code for the operation.
+          example: 204 No response
     post-message-in-chat-request:
       type: object
       description: Request object to send a message in a chat.
@@ -1251,62 +1278,85 @@ components:
           type: boolean
           description: Mark the message as read for the user.
           example: true
-    forward-messages-response:
+    forward-messages-request:
       type: object
-      description: Response object after forwarding messages. Uses a partial-success model.
+      description: Request object to forward one or more messages from a source chat to other chats or users.
+      required:
+      - source
+      - recipients
       properties:
-        data:
+        source:
           type: object
-          description: Forwarding results data.
+          description: 'Source chat and messages to forward. You can specify 1 to 25 message IDs from a single chat to forward in one request.
+
+            '
+          required:
+          - chat_id
+          - message_ids
           properties:
-            source_chat_id:
+            chat_id:
               type: string
-              description: Source chat ID from which messages were forwarded.
+              description: 'Chat ID from which messages will be forwarded. All message IDs must belong to this chat.
+
+                '
               example: C_987654321
-            forwarded:
-              type: object
-              description: Successfully forwarded recipients.
-              properties:
-                chat_ids:
-                  type: array
-                  description: List of chat IDs where messages were successfully forwarded.
-                  items:
-                    type: string
-                  example:
-                  - C_111111111
-                user_ids:
-                  type: array
-                  description: List of user IDs to whom messages were successfully forwarded.
-                  items:
-                    type: string
-                  example:
-                  - '60025012345'
-            failures:
+            message_ids:
               type: array
-              description: List of per-recipient failures with specific error details.
+              description: 'List of message IDs to forward. All messages must be from the same source chat specified by <code>chat_id</code>. You can <b>forward a minimum of 1 message and a maximum of 25 messages</b> in a single request.
+
+                '
+              minItems: 1
+              maxItems: 25
               items:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    description: Chat ID or user ID that failed.
-                    example: C_222222222
-                  status:
-                    type: string
-                    description: Status of the forward attempt.
-                    example: failed
-                  error:
-                    type: object
-                    description: Error details for the failure.
-                    properties:
-                      code:
-                        type: string
-                        description: Error code.
-                        example: chat_with_other_org_users_disabled
-                      message:
-                        type: string
-                        description: Error message.
-                        example: Chat with other org users is disabled
+                type: string
+              example:
+              - '1742000000000001'
+              - '1742000000000002'
+        recipients:
+          type: object
+          description: 'Recipients to forward the messages to. You can specify up to 100 chat IDs and/or user IDs as recipients. Messages will be forwarded to all specified recipients based on the provided options.
+
+            '
+          properties:
+            chat_ids:
+              type: string
+              description: 'Comma-separated list of chat IDs to forward messages to.<br>
+
+                <b>Maximum of 100 chat IDs allowed.</b>
+
+                '
+              example: C_111111111,C_222222222
+            user_ids:
+              type: string
+              description: 'Comma-separated list of user IDs to forward messages to.<br>
+
+                <b>Maximum of 100 user IDs allowed.</b>
+
+                '
+              example: 60025012345,60025012346
+            forward_as_group:
+              type: boolean
+              description: 'When true, messages will be forwarded as a single combined message in the recipient chats, rather than individual messages. The content of the forwarded message will include all original messages grouped together. If false or not provided, each message will be forwarded separately in the recipient chats.<br>
+
+                <b>Note:</b> If forwarding to multiple recipients, it''s recommended to set this to true to avoid spamming recipients with multiple messages.
+
+                '
+              example: false
+            show_original_sender:
+              type: boolean
+              description: 'When true, the forwarded message will include the name of the original sender for each message. This is applicable when <code>forward_as_group</code> is true to provide context about who sent each message in the group forward. If false or not provided, the original sender''s name will not be displayed in the forwarded message content.
+
+                '
+              example: true
+            title:
+              type: string
+              description: 'Optional title to include with the forwarded message when <code>forward_as_group</code> is true. This title will be displayed at the top of the grouped forwarded message in the recipient chats. If not provided, no title will be shown.
+
+                <br><b>Maximum length:</b> 255 characters.
+
+                '
+              maxLength: 255
+              example: Group Title 1
     search-messages-response:
       type: object
       description: Response object for message search results containing matching messages and pagination information.
@@ -1420,112 +1470,62 @@ components:
           type: string
           description: The query value that was searched. Included when query was provided.
           example: proposal
-    forward-messages-request:
+    forward-messages-response:
       type: object
-      description: Request object to forward one or more messages from a source chat to other chats or users.
-      required:
-      - source
-      - recipients
+      description: Response object after forwarding messages. Uses a partial-success model.
       properties:
-        source:
+        data:
           type: object
-          description: 'Source chat and messages to forward. You can specify 1 to 25 message IDs from a single chat to forward in one request.
-
-            '
-          required:
-          - chat_id
-          - message_ids
+          description: Forwarding results data.
           properties:
-            chat_id:
+            source_chat_id:
               type: string
-              description: 'Chat ID from which messages will be forwarded. All message IDs must belong to this chat.
-
-                '
+              description: Source chat ID from which messages were forwarded.
               example: C_987654321
-            message_ids:
+            forwarded:
+              type: object
+              description: Successfully forwarded recipients.
+              properties:
+                chat_ids:
+                  type: array
+                  description: List of chat IDs where messages were successfully forwarded.
+                  items:
+                    type: string
+                  example:
+                  - C_111111111
+                user_ids:
+                  type: array
+                  description: List of user IDs to whom messages were successfully forwarded.
+                  items:
+                    type: string
+                  example:
+                  - '60025012345'
+            failures:
               type: array
-              description: 'List of message IDs to forward. All messages must be from the same source chat specified by <code>chat_id</code>. You can <b>forward a minimum of 1 message and a maximum of 25 messages</b> in a single request.
-
-                '
-              minItems: 1
-              maxItems: 25
+              description: List of per-recipient failures with specific error details.
               items:
-                type: string
-              example:
-              - '1742000000000001'
-              - '1742000000000002'
-        recipients:
-          type: object
-          description: 'Recipients to forward the messages to. You can specify up to 100 chat IDs and/or user IDs as recipients. Messages will be forwarded to all specified recipients based on the provided options.
-
-            '
-          properties:
-            chat_ids:
-              type: string
-              description: 'Comma-separated list of chat IDs to forward messages to.<br>
-
-                <b>Maximum of 100 chat IDs allowed.</b>
-
-                '
-              example: C_111111111,C_222222222
-            user_ids:
-              type: string
-              description: 'Comma-separated list of user IDs to forward messages to.<br>
-
-                <b>Maximum of 100 user IDs allowed.</b>
-
-                '
-              example: 60025012345,60025012346
-            forward_as_group:
-              type: boolean
-              description: 'When true, messages will be forwarded as a single combined message in the recipient chats, rather than individual messages. The content of the forwarded message will include all original messages grouped together. If false or not provided, each message will be forwarded separately in the recipient chats.<br>
-
-                <b>Note:</b> If forwarding to multiple recipients, it''s recommended to set this to true to avoid spamming recipients with multiple messages.
-
-                '
-              example: false
-            show_original_sender:
-              type: boolean
-              description: 'When true, the forwarded message will include the name of the original sender for each message. This is applicable when <code>forward_as_group</code> is true to provide context about who sent each message in the group forward. If false or not provided, the original sender''s name will not be displayed in the forwarded message content.
-
-                '
-              example: true
-            title:
-              type: string
-              description: 'Optional title to include with the forwarded message when <code>forward_as_group</code> is true. This title will be displayed at the top of the grouped forwarded message in the recipient chats. If not provided, no title will be shown.
-
-                <br><b>Maximum length:</b> 255 characters.
-
-                '
-              maxLength: 255
-              example: Group Title 1
-    post-message-in-a-channel-response:
-      type: object
-      description: Response object after posting a message in a channel.
-      properties:
-        Response Code:
-          type: string
-          description: HTTP response code for the operation.
-          example: 204 No response
-    post-message-in-a-channel-request:
-      type: object
-      description: Request object to post a message in a channel.
-      required:
-      - text
-      properties:
-        text:
-          type: string
-          description: 'Message text to be sent in the channel. Maximum length: 5000.'
-          maxLength: 5000
-          example: Hello team, please review the project status update and share your feedback by EOD.
-        reply_to:
-          type: string
-          description: Message ID to reply to in the channel.
-          example: '72374289911'
-        sync_message:
-          type: boolean
-          description: Whether to post the message in a synchronous thread.
-          example: true
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Chat ID or user ID that failed.
+                    example: C_222222222
+                  status:
+                    type: string
+                    description: Status of the forward attempt.
+                    example: failed
+                  error:
+                    type: object
+                    description: Error details for the failure.
+                    properties:
+                      code:
+                        type: string
+                        description: Error code.
+                        example: chat_with_other_org_users_disabled
+                      message:
+                        type: string
+                        description: Error message.
+                        example: Chat with other org users is disabled
     post-message-in-a-chat-response:
       type: object
       description: Response object for posting messages in a chat/user

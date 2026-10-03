@@ -3386,23 +3386,6 @@ paths:
       description: Zoho Cliq US DC
 components:
   schemas:
-    Members:
-      type: object
-      description: Detailed information about a chat member.
-      properties:
-        user_id:
-          type: string
-          description: Unique identifier of the user.
-          example: '431930546'
-        email_id:
-          type: string
-          format: email
-          description: Email address of the user.
-          example: olivia.palmer@zylcal.com
-        name:
-          type: string
-          description: Full name of the user.
-          example: Olivia - Content Writer
     NoResponse:
       type: object
       description: Response object returned when no content is available.
@@ -3485,18 +3468,6 @@ components:
 
             '
           example: Discussion on Q3 Marketing Strategy
-    v3-typing-activity-request:
-      type: object
-      required:
-      - action
-      properties:
-        action:
-          type: string
-          description: "The typing activity to send to the chat.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>typing</code>: Indicates that the user is currently typing a message.</li>\n  <li><code>text_entered</code>: Indicates that the user has entered text but has not yet sent the message.</li>\n  <li><code>text_cleared</code>: Indicates that the user has cleared the entered text.</li>\n</ul>\n"
-          enum:
-          - typing
-          - text_entered
-          - text_cleared
     v3-chat:
       type: object
       description: Represents a chat object with comprehensive details including metadata, participants, and message information.
@@ -3623,6 +3594,44 @@ components:
           maxItems: 100
           items:
             type: string
+    v3-typing-activity-request:
+      type: object
+      required:
+      - action
+      properties:
+        action:
+          type: string
+          description: "The typing activity to send to the chat.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>typing</code>: Indicates that the user is currently typing a message.</li>\n  <li><code>text_entered</code>: Indicates that the user has entered text but has not yet sent the message.</li>\n  <li><code>text_cleared</code>: Indicates that the user has cleared the entered text.</li>\n</ul>\n"
+          enum:
+          - typing
+          - text_entered
+          - text_cleared
+    retrieve-chat-members:
+      type: object
+      description: Response object containing members of a chat.
+      properties:
+        members:
+          type: array
+          description: List of members in the chat with detailed user information.
+          items:
+            $ref: '#/components/schemas/Members'
+    Members:
+      type: object
+      description: Detailed information about a chat member.
+      properties:
+        user_id:
+          type: string
+          description: Unique identifier of the user.
+          example: '431930546'
+        email_id:
+          type: string
+          format: email
+          description: Email address of the user.
+          example: olivia.palmer@zylcal.com
+        name:
+          type: string
+          description: Full name of the user.
+          example: Olivia - Content Writer
     v3-add-members-request:
       type: object
       required:
@@ -3637,15 +3646,6 @@ components:
           maxItems: 100
           items:
             type: string
-    retrieve-chat-members:
-      type: object
-      description: Response object containing members of a chat.
-      properties:
-        members:
-          type: array
-          description: List of members in the chat with detailed user information.
-          items:
-            $ref: '#/components/schemas/Members'
     empty-response:
       type: object
       description: Response returned when there is no content.

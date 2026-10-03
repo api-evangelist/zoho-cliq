@@ -3341,6 +3341,73 @@ paths:
       - Platform_storage
 components:
   schemas:
+    listrecords_response:
+      type: object
+      description: Response schema for listing records from a datastore, including pagination information and a list of records.
+      properties:
+        url:
+          type: string
+          description: API endpoint URL for the records resource.
+        type:
+          type: string
+          description: Resource type identifier.
+        sync_token:
+          type: string
+          description: Opaque token encoding the current sync position; pass as next_token in subsequent requests for incremental sync.
+        list:
+          type: array
+          description: Array of record objects returned from the datastore.
+          items:
+            type: object
+            additionalProperties: true
+      example:
+        url: /api/v3/datastores/empdir/records
+        type: datastore_record
+        sync_token: MTB8MTc3NzM2MDQwMzQ1NXw=
+        list:
+        - productcateogry: zylker
+          id: '14756000000008008'
+          productid: '1004'
+          instock: true
+          productsecretcode: secretkey234
+          productdescription: zylker description
+        - productcateogry: zylcal
+          id: '14756000000008003'
+          productid: '1003'
+          instock: false
+          productsecretcode: secretkey123
+          productdescription: zylcal description
+        - productcateogry: zylker
+          id: '14756000000008004'
+          productid: '1002'
+          instock: true
+          productsecretcode: secretkey123
+          productdescription: zylker description
+        - productcateogry: zylker
+          id: '14756000000008005'
+          productid: '1001'
+          instock: true
+          productsecretcode: secretkey897
+          productdescription: zylker description
+    datastores_records_add:
+      type: object
+      description: Payload for inserting or updating a single datastore record.
+      required:
+      - values
+      properties:
+        values:
+          type: object
+          description: 'Key-value pairs of field unique_name and the new value to update.
+
+            '
+          additionalProperties: true
+          example:
+            empid: '1001'
+            empname: John Doe
+            isactive: true
+            salary: '50000'
+            department: Engineering
+            notes: Senior Engineer in Platform Team
     editplatformdatabase_v2:
       type: object
       description: Payload for updating datastore metadata.
@@ -3393,6 +3460,137 @@ components:
         unique_keys:
         - - empid
           - empname
+    edit_platform_db_fields:
+      type: object
+      description: Payload for editing existing datastore fields.
+      required:
+      - fields
+      properties:
+        fields:
+          type: array
+          minItems: 1
+          maxItems: 10
+          description: "<ul>\n  <li>List of existing fields to edit in the datastore schema.</li>\n  <li>Each field must be identified by its numeric ID and can have its name, mandatory status, masked status, and default value updated. The field type cannot be changed.</li>\n  <li><b>Maximum of 10 fields</b> can be edited in a single request.</li>\n</ul>\n"
+          items:
+            type: object
+            required:
+            - id
+            properties:
+              id:
+                type: string
+                description: 'Unique identifier of the field to be edited. This is assigned by the system when the field is created and cannot be changed.
+
+                  '
+              unique_name:
+                type: string
+                maxLength: 20
+                description: 'Unique name of the field.<br>
+
+                  Accepts lowercase letters, numbers, and underscores only, and must start with a letter. This is used in API endpoints to reference the field.<br>
+
+                  <b>Maximum length</b>: 20 characters.
+
+                  '
+              name:
+                type: string
+                maxLength: 20
+                description: 'Display name of the field.<br>
+
+                  Can contain letters, numbers, and spaces. This is used for display purposes in the UI.<br>
+
+                  <b>Maximum length</b>: 20 characters.
+
+                  '
+              mandatory:
+                type: boolean
+                description: 'Indicates whether this field is mandatory for each record. If true, a value must be provided for this field when creating or updating records.
+
+                  '
+              masked:
+                type: boolean
+                description: 'Indicates whether this field''s value should be masked (e.g., for sensitive information).<br>
+
+                  <b>Note</b>: Masking is not supported for <b>encrypted-text</b> fields. Encrypted fields are already stored in protected form and cannot be additionally masked.
+
+                  '
+              default_value:
+                type: string
+                maxLength: 100
+                description: 'Default value for the field when creating new records. Must be a string representation of a value compatible with the field''s data type. For example, "true" for boolean, "123" for number, etc.<br>
+
+                  <b>Maximum length</b>: 100 characters.
+
+                  '
+      example:
+        fields:
+        - id: '17202020414617773604009000'
+          name: Notes
+          unique_name: notes
+          mandatory: false
+          default_value: ''
+        - id: '17202020414617773604009001'
+          name: Employee ID
+          unique_name: empid
+          mandatory: true
+          default_value: '0'
+    DatastoreResponse:
+      type: object
+      description: Datastores API response envelope.
+      properties:
+        url:
+          type: string
+          example: /api/v3/datastores
+        type:
+          type: string
+          example: datastore
+        data:
+          type: object
+          additionalProperties: true
+      example:
+        url: /api/v3/datastores
+        type: datastore
+        data:
+          unique_name: empdir
+          name: Employee Directory
+          id: '227828000000132001'
+          creator:
+            name: NP NTC
+            id: '119440882'
+          status: enabled
+          fields:
+          - default_value: ''
+            masked: false
+            name: Notes
+            unique_name: notes
+            type: large-text
+            mandatory: false
+            id: '17202020414617773604009000'
+          - default_value: '0'
+            masked: false
+            name: Employee ID
+            unique_name: empid
+            type: number
+            mandatory: true
+            id: '17202020414617773604009001'
+          - default_value: ''
+            masked: false
+            name: Employee Name
+            unique_name: empname
+            type: limited-text
+            mandatory: true
+            id: '17202020414617773604009002'
+          - default_value: 'true'
+            masked: false
+            name: Active Status
+            unique_name: isactive
+            type: boolean
+            mandatory: false
+            id: '17202020414617773604009003'
+          type: custom
+          description: V3 API test datastore
+          unique_keys:
+          - - empid
+          scope: personal
     createplatformdatabase_v2:
       type: object
       description: Payload for creating a new datastore.
@@ -3531,244 +3729,15 @@ components:
           mandatory: false
         unique_keys:
         - - empid
-    edit_platform_db_fields:
-      type: object
-      description: Payload for editing existing datastore fields.
-      required:
-      - fields
-      properties:
-        fields:
-          type: array
-          minItems: 1
-          maxItems: 10
-          description: "<ul>\n  <li>List of existing fields to edit in the datastore schema.</li>\n  <li>Each field must be identified by its numeric ID and can have its name, mandatory status, masked status, and default value updated. The field type cannot be changed.</li>\n  <li><b>Maximum of 10 fields</b> can be edited in a single request.</li>\n</ul>\n"
-          items:
-            type: object
-            required:
-            - id
-            properties:
-              id:
-                type: string
-                description: 'Unique identifier of the field to be edited. This is assigned by the system when the field is created and cannot be changed.
-
-                  '
-              unique_name:
-                type: string
-                maxLength: 20
-                description: 'Unique name of the field.<br>
-
-                  Accepts lowercase letters, numbers, and underscores only, and must start with a letter. This is used in API endpoints to reference the field.<br>
-
-                  <b>Maximum length</b>: 20 characters.
-
-                  '
-              name:
-                type: string
-                maxLength: 20
-                description: 'Display name of the field.<br>
-
-                  Can contain letters, numbers, and spaces. This is used for display purposes in the UI.<br>
-
-                  <b>Maximum length</b>: 20 characters.
-
-                  '
-              mandatory:
-                type: boolean
-                description: 'Indicates whether this field is mandatory for each record. If true, a value must be provided for this field when creating or updating records.
-
-                  '
-              masked:
-                type: boolean
-                description: 'Indicates whether this field''s value should be masked (e.g., for sensitive information).<br>
-
-                  <b>Note</b>: Masking is not supported for <b>encrypted-text</b> fields. Encrypted fields are already stored in protected form and cannot be additionally masked.
-
-                  '
-              default_value:
-                type: string
-                maxLength: 100
-                description: 'Default value for the field when creating new records. Must be a string representation of a value compatible with the field''s data type. For example, "true" for boolean, "123" for number, etc.<br>
-
-                  <b>Maximum length</b>: 100 characters.
-
-                  '
-      example:
-        fields:
-        - id: '17202020414617773604009000'
-          name: Notes
-          unique_name: notes
-          mandatory: false
-          default_value: ''
-        - id: '17202020414617773604009001'
-          name: Employee ID
-          unique_name: empid
-          mandatory: true
-          default_value: '0'
-    base64_regex:
+    multiplelong_regex:
       type: string
-      description: Base64-encoded pagination or sync token used for cursor-based pagination and incremental data sync.
-    DatastoreResponse:
-      type: object
-      description: Datastores API response envelope.
-      properties:
-        url:
-          type: string
-          example: /api/v3/datastores
-        type:
-          type: string
-          example: datastore
-        data:
-          type: object
-          additionalProperties: true
-      example:
-        url: /api/v3/datastores
-        type: datastore
-        data:
-          unique_name: empdir
-          name: Employee Directory
-          id: '227828000000132001'
-          creator:
-            name: NP NTC
-            id: '119440882'
-          status: enabled
-          fields:
-          - default_value: ''
-            masked: false
-            name: Notes
-            unique_name: notes
-            type: large-text
-            mandatory: false
-            id: '17202020414617773604009000'
-          - default_value: '0'
-            masked: false
-            name: Employee ID
-            unique_name: empid
-            type: number
-            mandatory: true
-            id: '17202020414617773604009001'
-          - default_value: ''
-            masked: false
-            name: Employee Name
-            unique_name: empname
-            type: limited-text
-            mandatory: true
-            id: '17202020414617773604009002'
-          - default_value: 'true'
-            masked: false
-            name: Active Status
-            unique_name: isactive
-            type: boolean
-            mandatory: false
-            id: '17202020414617773604009003'
-          type: custom
-          description: V3 API test datastore
-          unique_keys:
-          - - empid
-          scope: personal
-    datastores_records_add:
-      type: object
-      description: Payload for inserting or updating a single datastore record.
-      required:
-      - values
-      properties:
-        values:
-          type: object
-          description: 'Key-value pairs of field unique_name and the new value to update.
-
-            '
-          additionalProperties: true
-          example:
-            empid: '1001'
-            empname: John Doe
-            isactive: true
-            salary: '50000'
-            department: Engineering
-            notes: Senior Engineer in Platform Team
-    encryptedappkey_regex:
-      type: string
-      description: Encrypted application key (appkey or EXTENSION_KEY) issued to a bot or extension, used as an alternative to OAuth for webhook-style authentication.
-    listrecords_response:
-      type: object
-      description: Response schema for listing records from a datastore, including pagination information and a list of records.
-      properties:
-        url:
-          type: string
-          description: API endpoint URL for the records resource.
-        type:
-          type: string
-          description: Resource type identifier.
-        sync_token:
-          type: string
-          description: Opaque token encoding the current sync position; pass as next_token in subsequent requests for incremental sync.
-        list:
-          type: array
-          description: Array of record objects returned from the datastore.
-          items:
-            type: object
-            additionalProperties: true
-      example:
-        url: /api/v3/datastores/empdir/records
-        type: datastore_record
-        sync_token: MTB8MTc3NzM2MDQwMzQ1NXw=
-        list:
-        - productcateogry: zylker
-          id: '14756000000008008'
-          productid: '1004'
-          instock: true
-          productsecretcode: secretkey234
-          productdescription: zylker description
-        - productcateogry: zylcal
-          id: '14756000000008003'
-          productid: '1003'
-          instock: false
-          productsecretcode: secretkey123
-          productdescription: zylcal description
-        - productcateogry: zylker
-          id: '14756000000008004'
-          productid: '1002'
-          instock: true
-          productsecretcode: secretkey123
-          productdescription: zylker description
-        - productcateogry: zylker
-          id: '14756000000008005'
-          productid: '1001'
-          instock: true
-          productsecretcode: secretkey897
-          productdescription: zylker description
-    platformstorage_records_export:
-      type: object
-      description: Configuration payload for a Datastore bulk export operation. Specifies the fields to include, filter criteria, and output format.
-      required:
-      - file_type
-      properties:
-        file_type:
-          type: string
-          description: "Format of the exported file.<br>\n<ul>\n <li><b>csv</b>: Comma-separated values format, suitable for spreadsheets and data analysis tools.</li>\n <li><b>xlsx</b>: Microsoft Excel format, supports multiple sheets, formatting, and larger data volumes.</li>\n <li><b>pdf</b>: Portable Document Format, ideal for sharing and printing.</li>\n</ul>\n"
-          enum:
-          - csv
-          - xlsx
-          - pdf
-        password_protected:
-          type: boolean
-          description: 'Indicates whether the exported file should be protected with a password. If true, the <code>password</code> field must be provided to specify the password to use for protecting the file.
-
-            '
-        password:
-          type: string
-          minLength: 8
-          maxLength: 20
-          description: 'Password to protect the exported file. This field is required if <code>password_protected</code> is true.<br>
-
-            Must be between 8 and 20 characters in length and should include a mix of letters, numbers, and special characters for better security.
-
-            <br><b>Minimum length</b>: 8 characters<br>
-
-            <b>Maximum length</b>: 20 characters
-
-            '
+      description: Comma-separated list of numeric long integer IDs (e.g. record IDs or field IDs) used in bulk delete operations.
     longid_regex:
       type: string
       description: Numeric long integer identifier used to reference platform components such as Commands, Functions, Widgets, Message Actions, Schedulers, and Extensions.
+    base64_regex:
+      type: string
+      description: Base64-encoded pagination or sync token used for cursor-based pagination and incremental data sync.
     updaterecord_response:
       type: object
       description: Response envelope returned when a datastore record is retrieved or updated.
@@ -3811,9 +3780,40 @@ components:
           empname: John Doe Jr.
           added_time: '1777360402254'
           notes: Senior Engineer in Platform Team
-    multiplelong_regex:
+    platformstorage_records_export:
+      type: object
+      description: Configuration payload for a Datastore bulk export operation. Specifies the fields to include, filter criteria, and output format.
+      required:
+      - file_type
+      properties:
+        file_type:
+          type: string
+          description: "Format of the exported file.<br>\n<ul>\n <li><b>csv</b>: Comma-separated values format, suitable for spreadsheets and data analysis tools.</li>\n <li><b>xlsx</b>: Microsoft Excel format, supports multiple sheets, formatting, and larger data volumes.</li>\n <li><b>pdf</b>: Portable Document Format, ideal for sharing and printing.</li>\n</ul>\n"
+          enum:
+          - csv
+          - xlsx
+          - pdf
+        password_protected:
+          type: boolean
+          description: 'Indicates whether the exported file should be protected with a password. If true, the <code>password</code> field must be provided to specify the password to use for protecting the file.
+
+            '
+        password:
+          type: string
+          minLength: 8
+          maxLength: 20
+          description: 'Password to protect the exported file. This field is required if <code>password_protected</code> is true.<br>
+
+            Must be between 8 and 20 characters in length and should include a mix of letters, numbers, and special characters for better security.
+
+            <br><b>Minimum length</b>: 8 characters<br>
+
+            <b>Maximum length</b>: 20 characters
+
+            '
+    encryptedappkey_regex:
       type: string
-      description: Comma-separated list of numeric long integer IDs (e.g. record IDs or field IDs) used in bulk delete operations.
+      description: Encrypted application key (appkey or EXTENSION_KEY) issued to a bot or extension, used as an alternative to OAuth for webhook-style authentication.
     add_platform_db_fields:
       type: object
       description: Payload for adding new fields to a datastore schema.

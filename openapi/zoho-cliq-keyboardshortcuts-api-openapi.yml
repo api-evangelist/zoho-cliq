@@ -609,13 +609,6 @@ paths:
       - keyboardshortcuts
 components:
   schemas:
-    keyboard-shortcuts-response:
-      type: object
-      properties:
-        keyboard_shortcuts:
-          $ref: '#/components/schemas/keyboard-shortcuts-object'
-      required:
-      - keyboard_shortcuts
     delete-keyboard-shortcuts-request:
       type: object
       additionalProperties: true
@@ -665,6 +658,12 @@ components:
 
             '
           example: custom
+    no-response:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
     update-keyboard-shortcuts-request:
       type: object
       additionalProperties: true
@@ -703,45 +702,6 @@ components:
           type: object
           description: "Custom shortcuts to update. To update a custom shortcut, provide the complete details of the shortcut (including the new key mapping and associated chat/widget/snippet information). Partial updates are not supported for custom shortcuts.\n<b>Allowed custom shortcut types:</b>\n<ul>\n  <li><code>chat</code>: Requires an <code>id</code> (chat ID) along with the new shortcut key mapping.</li>\n  <li><code>widget</code>: Requires an <code>id</code> (widget ID) along with the new shortcut key mapping.</li>\n  <li><code>snippet</code>: Requires a <code>name</code>, <code>message</code>, and the new shortcut key mapping.</li>\n</ul>\n"
           additionalProperties: true
-    os-shortcut:
-      type: object
-      properties:
-        windows:
-          type: string
-          description: Shortcut mapping for Windows (e.g., <code>ctrl+k</code>, <code>ctrl+shift+m</code>).
-          example: ctrl+k
-        mac:
-          type: string
-          description: Shortcut mapping for Mac (e.g., <code>cmd+k</code>, <code>cmd+shift+m</code>).
-          example: cmd+k
-    no-response:
-      type: object
-      properties:
-        status:
-          type: string
-          example: success
-    custom-snippet-entry:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of snippet shortcut.
-          example: OOO Snippet
-        message:
-          type: string
-          description: Snippet content to be sent when the shortcut is triggered.
-          example: I'm currently out of office. Will get back to you soon!
-        mac:
-          type: string
-          description: Shortcut mapping for Mac (e.g., <code>cmd+option+o</code>).
-          example: cmd+option+o
-        windows:
-          type: string
-          description: Shortcut mapping for Windows (e.g., <code>ctrl+alt+o</code>).
-          example: ctrl+alt+o
-      required:
-      - name
-      - message
     keyboard-shortcuts-object:
       type: object
       additionalProperties: true
@@ -812,6 +772,46 @@ components:
           example: ctrl+alt+c
       required:
       - id
+    custom-snippet-entry:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of snippet shortcut.
+          example: OOO Snippet
+        message:
+          type: string
+          description: Snippet content to be sent when the shortcut is triggered.
+          example: I'm currently out of office. Will get back to you soon!
+        mac:
+          type: string
+          description: Shortcut mapping for Mac (e.g., <code>cmd+option+o</code>).
+          example: cmd+option+o
+        windows:
+          type: string
+          description: Shortcut mapping for Windows (e.g., <code>ctrl+alt+o</code>).
+          example: ctrl+alt+o
+      required:
+      - name
+      - message
+    keyboard-shortcuts-response:
+      type: object
+      properties:
+        keyboard_shortcuts:
+          $ref: '#/components/schemas/keyboard-shortcuts-object'
+      required:
+      - keyboard_shortcuts
+    os-shortcut:
+      type: object
+      properties:
+        windows:
+          type: string
+          description: Shortcut mapping for Windows (e.g., <code>ctrl+k</code>, <code>ctrl+shift+m</code>).
+          example: ctrl+k
+        mac:
+          type: string
+          description: Shortcut mapping for Mac (e.g., <code>cmd+k</code>, <code>cmd+shift+m</code>).
+          example: cmd+k
   securitySchemes:
     Cliq_Auth:
       type: oauth2

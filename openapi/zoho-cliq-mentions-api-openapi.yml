@@ -823,6 +823,39 @@ paths:
       - Mentions
 components:
   schemas:
+    mention-message:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Message ID.
+        type:
+          type: string
+          description: text, file, audio, card, etc.
+        time:
+          type: string
+          format: date-time
+          description: <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> timestamp.
+        content:
+          type: object
+          description: Message content.
+          additionalProperties: true
+        sender:
+          $ref: '#/components/schemas/mention-sender'
+        replied_to:
+          type: object
+          description: Original message details if this is a reply.
+          properties:
+            id:
+              type: string
+            time:
+              type: string
+              format: date-time
+            content:
+              type: object
+              additionalProperties: true
+            sender:
+              $ref: '#/components/schemas/mention-sender'
     mention-chat:
       type: object
       properties:
@@ -878,77 +911,6 @@ components:
           $ref: '#/components/schemas/mention-message'
         mention:
           $ref: '#/components/schemas/mention-metadata'
-    mention-metadata:
-      type: object
-      properties:
-        recipient_id:
-          type: string
-          description: ID of the mentioned user.
-        mentioned_users:
-          type: array
-          description: List of mentioned users or entities.
-          items:
-            $ref: '#/components/schemas/mentioned-user'
-    mentions-error-response:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code identifier.
-          example: INVALID_PARAMS
-        message:
-          type: string
-          description: Human-readable error message.
-          example: Invalid query parameter value.
-    mention-sender:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Sender ID.
-        name:
-          type: string
-          description: Sender name.
-    empty-response:
-      type: object
-      description: Response returned when there is no content.
-      properties:
-        Response_Code:
-          type: string
-          example: 204 No response
-    mention-message:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Message ID.
-        type:
-          type: string
-          description: text, file, audio, card, etc.
-        time:
-          type: string
-          format: date-time
-          description: <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> timestamp.
-        content:
-          type: object
-          description: Message content.
-          additionalProperties: true
-        sender:
-          $ref: '#/components/schemas/mention-sender'
-        replied_to:
-          type: object
-          description: Original message details if this is a reply.
-          properties:
-            id:
-              type: string
-            time:
-              type: string
-              format: date-time
-            content:
-              type: object
-              additionalProperties: true
-            sender:
-              $ref: '#/components/schemas/mention-sender'
     get-mentions-response:
       type: object
       required:
@@ -1075,6 +1037,22 @@ components:
               name: Ryan West
               display_name: '@Ryan West'
               type: user
+    mention-sender:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Sender ID.
+        name:
+          type: string
+          description: Sender name.
+    empty-response:
+      type: object
+      description: Response returned when there is no content.
+      properties:
+        Response_Code:
+          type: string
+          example: 204 No response
     mentioned-user:
       type: object
       properties:
@@ -1097,6 +1075,28 @@ components:
           - bot
           - participants
           - available
+    mentions-error-response:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code identifier.
+          example: INVALID_PARAMS
+        message:
+          type: string
+          description: Human-readable error message.
+          example: Invalid query parameter value.
+    mention-metadata:
+      type: object
+      properties:
+        recipient_id:
+          type: string
+          description: ID of the mentioned user.
+        mentioned_users:
+          type: array
+          description: List of mentioned users or entities.
+          items:
+            $ref: '#/components/schemas/mentioned-user'
   securitySchemes:
     Cliq_Auth:
       type: oauth2

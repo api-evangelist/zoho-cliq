@@ -719,6 +719,31 @@ paths:
       - Stars
 components:
   schemas:
+    StarMessageRequest:
+      type: object
+      required:
+      - chat_id
+      - message_id
+      - star_type
+      properties:
+        chat_id:
+          type: string
+          description: The unique identifier of the chat containing the message to be starred.
+          example: CT_1894736520184930172_847291635
+        message_id:
+          type: string
+          description: The unique identifier of the message to be starred.
+          example: '1746000123456789001'
+        star_type:
+          type: string
+          description: "The category of the star to apply to the message. This determines how the message will be organized and retrieved in starred messages lists.\n<br><br>\n<b>Allowed values:</b><br>\n<ul>\n  <li><code>important</code>: Mark messages that require special attention or contain critical information.</li>\n  <li><code>to_do</code>: Flag messages representing tasks or action items that need to be completed.</li>\n  <li><code>note</code>: Save messages for future reference or as reminders of important information.</li>\n  <li><code>manager</code>: Highlight messages related to managerial communications or approvals.</li>\n  <li><code>follow_up</code>: Identify messages that require follow-up actions or responses.</li>\n</ul>\n"
+          enum:
+          - important
+          - to_do
+          - note
+          - manager
+          - follow_up
+          example: important
     ChatInformation:
       type: object
       description: Information about the chat containing the starred message.
@@ -837,31 +862,6 @@ components:
           chat_type: chat
           title: Alice Johnson
           joined: true
-    StarMessageRequest:
-      type: object
-      required:
-      - chat_id
-      - message_id
-      - star_type
-      properties:
-        chat_id:
-          type: string
-          description: The unique identifier of the chat containing the message to be starred.
-          example: CT_1894736520184930172_847291635
-        message_id:
-          type: string
-          description: The unique identifier of the message to be starred.
-          example: '1746000123456789001'
-        star_type:
-          type: string
-          description: "The category of the star to apply to the message. This determines how the message will be organized and retrieved in starred messages lists.\n<br><br>\n<b>Allowed values:</b><br>\n<ul>\n  <li><code>important</code>: Mark messages that require special attention or contain critical information.</li>\n  <li><code>to_do</code>: Flag messages representing tasks or action items that need to be completed.</li>\n  <li><code>note</code>: Save messages for future reference or as reminders of important information.</li>\n  <li><code>manager</code>: Highlight messages related to managerial communications or approvals.</li>\n  <li><code>follow_up</code>: Identify messages that require follow-up actions or responses.</li>\n</ul>\n"
-          enum:
-          - important
-          - to_do
-          - note
-          - manager
-          - follow_up
-          example: important
   securitySchemes:
     Cliq_Auth:
       type: oauth2
