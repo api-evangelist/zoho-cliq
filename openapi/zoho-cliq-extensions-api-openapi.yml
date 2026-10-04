@@ -1021,19 +1021,45 @@ paths:
       - Extensions
 components:
   schemas:
-    appproperties:
+    longid_regex:
+      type: string
+      description: Numeric long integer identifier used to reference platform components such as Commands, Functions, Widgets, Message Actions, Schedulers, and Extensions.
+    ExtensionPropertiesUpdateResponse:
       type: object
-      description: Payload for setting extension properties.
-      required:
-      - properties
+      description: Response returned after adding or updating extension properties. Contains only the key-value pairs that were submitted in the request.
+      additionalProperties:
+        type: string
+      example:
+        api_key: my_secret_api_key_value
+    smallalphawithspl_regex:
+      type: string
+      description: Lowercase alphanumeric string with allowed special characters (hyphens and underscores) used as extension property keys.
+    ExtensionPropertySingleResponse:
+      type: object
+      description: Response returned when retrieving a single extension property.
       properties:
-        properties:
-          type: object
-          description: Map of extension property keys to values.
-          properties:
-            api_key:
-              type: string
-              example: my_secret_api_key_value
+        api_key:
+          type: string
+          example: my_secret_api_key_value
+      example:
+        api_key: my_secret_api_key_value
+    ExtensionPropertiesGetResponse:
+      type: object
+      description: Response returned when retrieving multiple extension properties. Keys are property names; values are their current string values.
+      properties:
+        api_key:
+          type: string
+          example: my_secret_api_key_value
+        region:
+          type: string
+          example: us-east
+        max_retries:
+          type: string
+          example: '3'
+      example:
+        api_key: my_secret_api_key_value
+        region: us-east
+        max_retries: '3'
     extensioninstall_V3:
       type: object
       description: Payload for installing an extension.
@@ -1066,48 +1092,22 @@ components:
           - organization
           - team
           description: Upgrade scope for the extension.
-    ExtensionPropertiesGetResponse:
-      type: object
-      description: Response returned when retrieving multiple extension properties. Keys are property names; values are their current string values.
-      properties:
-        api_key:
-          type: string
-          example: my_secret_api_key_value
-        region:
-          type: string
-          example: us-east
-        max_retries:
-          type: string
-          example: '3'
-      example:
-        api_key: my_secret_api_key_value
-        region: us-east
-        max_retries: '3'
-    ExtensionPropertiesUpdateResponse:
-      type: object
-      description: Response returned after adding or updating extension properties. Contains only the key-value pairs that were submitted in the request.
-      additionalProperties:
-        type: string
-      example:
-        api_key: my_secret_api_key_value
-    smallalphawithspl_regex:
-      type: string
-      description: Lowercase alphanumeric string with allowed special characters (hyphens and underscores) used as extension property keys.
-    longid_regex:
-      type: string
-      description: Numeric long integer identifier used to reference platform components such as Commands, Functions, Widgets, Message Actions, Schedulers, and Extensions.
-    ExtensionPropertySingleResponse:
-      type: object
-      description: Response returned when retrieving a single extension property.
-      properties:
-        api_key:
-          type: string
-          example: my_secret_api_key_value
-      example:
-        api_key: my_secret_api_key_value
     encryptedappkey_regex:
       type: string
       description: Encrypted application key (appkey or EXTENSION_KEY) issued to a bot or extension, used as an alternative to OAuth for webhook-style authentication.
+    appproperties:
+      type: object
+      description: Payload for setting extension properties.
+      required:
+      - properties
+      properties:
+        properties:
+          type: object
+          description: Map of extension property keys to values.
+          properties:
+            api_key:
+              type: string
+              example: my_secret_api_key_value
   securitySchemes:
     Cliq_Auth:
       type: oauth2

@@ -203,6 +203,123 @@ paths:
       - User Preferences
 components:
   schemas:
+    NoResponse:
+      type: object
+      description: Response envelope for successful operations with no payload.
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Operation completed successfully.
+    user-preferences-response:
+      type: object
+      properties:
+        userpreferences:
+          $ref: '#/components/schemas/user-preferences-object'
+    update-user-preferences-request:
+      type: object
+      description: Provide only the preference fields that must be updated.
+      properties:
+        dark_mode:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Toggles dark mode for the Cliq interface.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Dark mode is active.</li>\n  <li><code>disabled</code>: Dark mode is turned off.</li>\n</ul>\n"
+        ui_theme:
+          type: string
+          description: Active UI theme identifier.
+          example: '4'
+        lhs_theme:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Toggles the left-hand sidebar theme.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Left-hand sidebar theme is applied.</li>\n  <li><code>disabled</code>: Left-hand sidebar theme is turned off.</li>\n</ul>\n"
+        smileys:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Toggles emoji display in messages.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Emojis are rendered in messages.</li>\n  <li><code>disabled</code>: Emojis are shown as text.</li>\n</ul>\n"
+        translation_mode:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Toggles automatic message translation.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Auto-translation is active.</li>\n  <li><code>disabled</code>: Auto-translation is turned off.</li>\n</ul>\n"
+        av_noise_cancellation:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Toggles noise cancellation during audio/video calls.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Noise cancellation is active.</li>\n  <li><code>disabled</code>: Noise cancellation is turned off.</li>\n</ul>\n"
+        av_hd_video:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Toggles HD video during calls.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: HD video is active.</li>\n  <li><code>disabled</code>: HD video is turned off.</li>\n</ul>\n"
+        sound_notification:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Master toggle for all sound notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Sound notifications are active.</li>\n  <li><code>disabled</code>: All sound notifications are muted.</li>\n</ul>\n"
+        desktop_notification:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Toggles desktop push notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Desktop notifications are active.</li>\n  <li><code>disabled</code>: Desktop notifications are turned off.</li>\n</ul>\n"
+        reading_mask:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Toggles reading mask for accessibility.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Reading mask is active.</li>\n  <li><code>disabled</code>: Reading mask is turned off.</li>\n</ul>\n"
+        vision_assistive:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Toggles vision assistive features.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Vision assistive features are active.</li>\n  <li><code>disabled</code>: Vision assistive features are turned off.</li>\n</ul>\n"
+        cliq_font:
+          type: string
+          description: Selected font identifier. -1 means default.
+          example: '-1'
+        cliq_font_size:
+          type: string
+          description: Font size level.
+          example: '2'
+        conference_recording:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Toggles conference call recording.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Conference recording is permitted.</li>\n  <li><code>disabled</code>: Conference recording is not permitted.</li>\n</ul>\n"
+        video_background:
+          type: string
+          description: Virtual background identifier for video calls.
+          example: none
+        video_filter:
+          type: string
+          description: Video filter identifier applied during calls.
+          example: none
+        last_seen:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Controls the visibility of the user's last seen status.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Last seen is visible to contacts.</li>\n  <li><code>disabled</code>: Last seen is hidden from contacts.</li>\n</ul>\n"
+        linkpreview_status:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Toggles URL link previews in messages.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Link previews are shown in messages.</li>\n  <li><code>disabled</code>: Link previews are hidden.</li>\n</ul>\n"
     user-preferences-object:
       type: object
       description: Complete user preference object returned by the API.
@@ -456,123 +573,6 @@ components:
           - enabled
           - disabled
           description: Notify participants when a huddle message is sent.
-    user-preferences-response:
-      type: object
-      properties:
-        userpreferences:
-          $ref: '#/components/schemas/user-preferences-object'
-    update-user-preferences-request:
-      type: object
-      description: Provide only the preference fields that must be updated.
-      properties:
-        dark_mode:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Toggles dark mode for the Cliq interface.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Dark mode is active.</li>\n  <li><code>disabled</code>: Dark mode is turned off.</li>\n</ul>\n"
-        ui_theme:
-          type: string
-          description: Active UI theme identifier.
-          example: '4'
-        lhs_theme:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Toggles the left-hand sidebar theme.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Left-hand sidebar theme is applied.</li>\n  <li><code>disabled</code>: Left-hand sidebar theme is turned off.</li>\n</ul>\n"
-        smileys:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Toggles emoji display in messages.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Emojis are rendered in messages.</li>\n  <li><code>disabled</code>: Emojis are shown as text.</li>\n</ul>\n"
-        translation_mode:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Toggles automatic message translation.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Auto-translation is active.</li>\n  <li><code>disabled</code>: Auto-translation is turned off.</li>\n</ul>\n"
-        av_noise_cancellation:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Toggles noise cancellation during audio/video calls.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Noise cancellation is active.</li>\n  <li><code>disabled</code>: Noise cancellation is turned off.</li>\n</ul>\n"
-        av_hd_video:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Toggles HD video during calls.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: HD video is active.</li>\n  <li><code>disabled</code>: HD video is turned off.</li>\n</ul>\n"
-        sound_notification:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Master toggle for all sound notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Sound notifications are active.</li>\n  <li><code>disabled</code>: All sound notifications are muted.</li>\n</ul>\n"
-        desktop_notification:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Toggles desktop push notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Desktop notifications are active.</li>\n  <li><code>disabled</code>: Desktop notifications are turned off.</li>\n</ul>\n"
-        reading_mask:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Toggles reading mask for accessibility.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Reading mask is active.</li>\n  <li><code>disabled</code>: Reading mask is turned off.</li>\n</ul>\n"
-        vision_assistive:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Toggles vision assistive features.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Vision assistive features are active.</li>\n  <li><code>disabled</code>: Vision assistive features are turned off.</li>\n</ul>\n"
-        cliq_font:
-          type: string
-          description: Selected font identifier. -1 means default.
-          example: '-1'
-        cliq_font_size:
-          type: string
-          description: Font size level.
-          example: '2'
-        conference_recording:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Toggles conference call recording.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Conference recording is permitted.</li>\n  <li><code>disabled</code>: Conference recording is not permitted.</li>\n</ul>\n"
-        video_background:
-          type: string
-          description: Virtual background identifier for video calls.
-          example: none
-        video_filter:
-          type: string
-          description: Video filter identifier applied during calls.
-          example: none
-        last_seen:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Controls the visibility of the user's last seen status.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Last seen is visible to contacts.</li>\n  <li><code>disabled</code>: Last seen is hidden from contacts.</li>\n</ul>\n"
-        linkpreview_status:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Toggles URL link previews in messages.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Link previews are shown in messages.</li>\n  <li><code>disabled</code>: Link previews are hidden.</li>\n</ul>\n"
-    NoResponse:
-      type: object
-      description: Response envelope for successful operations with no payload.
-      properties:
-        status:
-          type: string
-          example: success
-        message:
-          type: string
-          example: Operation completed successfully.
   securitySchemes:
     Cliq_Auth:
       type: oauth2

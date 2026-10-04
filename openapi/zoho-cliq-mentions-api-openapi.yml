@@ -823,94 +823,6 @@ paths:
       - Mentions
 components:
   schemas:
-    mention-message:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Message ID.
-        type:
-          type: string
-          description: text, file, audio, card, etc.
-        time:
-          type: string
-          format: date-time
-          description: <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> timestamp.
-        content:
-          type: object
-          description: Message content.
-          additionalProperties: true
-        sender:
-          $ref: '#/components/schemas/mention-sender'
-        replied_to:
-          type: object
-          description: Original message details if this is a reply.
-          properties:
-            id:
-              type: string
-            time:
-              type: string
-              format: date-time
-            content:
-              type: object
-              additionalProperties: true
-            sender:
-              $ref: '#/components/schemas/mention-sender'
-    mention-chat:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Chat ID.
-        title:
-          type: string
-          description: Chat or channel title.
-        type:
-          type: string
-          description: channel, direct, group, bot, or thread.
-          enum:
-          - channel
-          - direct
-          - group
-          - bot
-          - thread
-        channel_type:
-          type: string
-          description: open, closed, public, external, or team.
-          enum:
-          - open
-          - closed
-          - public
-          - external
-          - team
-        channel_display_name:
-          type: string
-          description: Display name of the channel.
-    mention-entry:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique mention entry ID.
-        status:
-          type: string
-          description: unread, read, or deleted.
-          enum:
-          - unread
-          - read
-          - deleted
-        activity_type:
-          type: string
-          description: mentions or replies.
-          enum:
-          - mentions
-          - replies
-        chat:
-          $ref: '#/components/schemas/mention-chat'
-        message:
-          $ref: '#/components/schemas/mention-message'
-        mention:
-          $ref: '#/components/schemas/mention-metadata'
     get-mentions-response:
       type: object
       required:
@@ -1037,6 +949,39 @@ components:
               name: Ryan West
               display_name: '@Ryan West'
               type: user
+    mention-message:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Message ID.
+        type:
+          type: string
+          description: text, file, audio, card, etc.
+        time:
+          type: string
+          format: date-time
+          description: <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> timestamp.
+        content:
+          type: object
+          description: Message content.
+          additionalProperties: true
+        sender:
+          $ref: '#/components/schemas/mention-sender'
+        replied_to:
+          type: object
+          description: Original message details if this is a reply.
+          properties:
+            id:
+              type: string
+            time:
+              type: string
+              format: date-time
+            content:
+              type: object
+              additionalProperties: true
+            sender:
+              $ref: '#/components/schemas/mention-sender'
     mention-sender:
       type: object
       properties:
@@ -1053,6 +998,36 @@ components:
         Response_Code:
           type: string
           example: 204 No response
+    mention-chat:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Chat ID.
+        title:
+          type: string
+          description: Chat or channel title.
+        type:
+          type: string
+          description: channel, direct, group, bot, or thread.
+          enum:
+          - channel
+          - direct
+          - group
+          - bot
+          - thread
+        channel_type:
+          type: string
+          description: open, closed, public, external, or team.
+          enum:
+          - open
+          - closed
+          - public
+          - external
+          - team
+        channel_display_name:
+          type: string
+          description: Display name of the channel.
     mentioned-user:
       type: object
       properties:
@@ -1075,17 +1050,31 @@ components:
           - bot
           - participants
           - available
-    mentions-error-response:
+    mention-entry:
       type: object
       properties:
-        code:
+        id:
           type: string
-          description: Error code identifier.
-          example: INVALID_PARAMS
+          description: Unique mention entry ID.
+        status:
+          type: string
+          description: unread, read, or deleted.
+          enum:
+          - unread
+          - read
+          - deleted
+        activity_type:
+          type: string
+          description: mentions or replies.
+          enum:
+          - mentions
+          - replies
+        chat:
+          $ref: '#/components/schemas/mention-chat'
         message:
-          type: string
-          description: Human-readable error message.
-          example: Invalid query parameter value.
+          $ref: '#/components/schemas/mention-message'
+        mention:
+          $ref: '#/components/schemas/mention-metadata'
     mention-metadata:
       type: object
       properties:
@@ -1097,6 +1086,17 @@ components:
           description: List of mentioned users or entities.
           items:
             $ref: '#/components/schemas/mentioned-user'
+    mentions-error-response:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code identifier.
+          example: INVALID_PARAMS
+        message:
+          type: string
+          description: Human-readable error message.
+          example: Invalid query parameter value.
   securitySchemes:
     Cliq_Auth:
       type: oauth2

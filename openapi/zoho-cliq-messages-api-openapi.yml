@@ -1228,33 +1228,6 @@ paths:
       - Messages
 components:
   schemas:
-    post-message-in-a-channel-request:
-      type: object
-      description: Request object to post a message in a channel.
-      required:
-      - text
-      properties:
-        text:
-          type: string
-          description: 'Message text to be sent in the channel. Maximum length: 5000.'
-          maxLength: 5000
-          example: Hello team, please review the project status update and share your feedback by EOD.
-        reply_to:
-          type: string
-          description: Message ID to reply to in the channel.
-          example: '72374289911'
-        sync_message:
-          type: boolean
-          description: Whether to post the message in a synchronous thread.
-          example: true
-    post-message-in-a-channel-response:
-      type: object
-      description: Response object after posting a message in a channel.
-      properties:
-        Response Code:
-          type: string
-          description: HTTP response code for the operation.
-          example: 204 No response
     post-message-in-chat-request:
       type: object
       description: Request object to send a message in a chat.
@@ -1357,6 +1330,89 @@ components:
                 '
               maxLength: 255
               example: Group Title 1
+    post-message-in-a-channel-request:
+      type: object
+      description: Request object to post a message in a channel.
+      required:
+      - text
+      properties:
+        text:
+          type: string
+          description: 'Message text to be sent in the channel. Maximum length: 5000.'
+          maxLength: 5000
+          example: Hello team, please review the project status update and share your feedback by EOD.
+        reply_to:
+          type: string
+          description: Message ID to reply to in the channel.
+          example: '72374289911'
+        sync_message:
+          type: boolean
+          description: Whether to post the message in a synchronous thread.
+          example: true
+    post-message-in-a-channel-response:
+      type: object
+      description: Response object after posting a message in a channel.
+      properties:
+        Response Code:
+          type: string
+          description: HTTP response code for the operation.
+          example: 204 No response
+    forward-messages-response:
+      type: object
+      description: Response object after forwarding messages. Uses a partial-success model.
+      properties:
+        data:
+          type: object
+          description: Forwarding results data.
+          properties:
+            source_chat_id:
+              type: string
+              description: Source chat ID from which messages were forwarded.
+              example: C_987654321
+            forwarded:
+              type: object
+              description: Successfully forwarded recipients.
+              properties:
+                chat_ids:
+                  type: array
+                  description: List of chat IDs where messages were successfully forwarded.
+                  items:
+                    type: string
+                  example:
+                  - C_111111111
+                user_ids:
+                  type: array
+                  description: List of user IDs to whom messages were successfully forwarded.
+                  items:
+                    type: string
+                  example:
+                  - '60025012345'
+            failures:
+              type: array
+              description: List of per-recipient failures with specific error details.
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Chat ID or user ID that failed.
+                    example: C_222222222
+                  status:
+                    type: string
+                    description: Status of the forward attempt.
+                    example: failed
+                  error:
+                    type: object
+                    description: Error details for the failure.
+                    properties:
+                      code:
+                        type: string
+                        description: Error code.
+                        example: chat_with_other_org_users_disabled
+                      message:
+                        type: string
+                        description: Error message.
+                        example: Chat with other org users is disabled
     search-messages-response:
       type: object
       description: Response object for message search results containing matching messages and pagination information.
@@ -1470,62 +1526,6 @@ components:
           type: string
           description: The query value that was searched. Included when query was provided.
           example: proposal
-    forward-messages-response:
-      type: object
-      description: Response object after forwarding messages. Uses a partial-success model.
-      properties:
-        data:
-          type: object
-          description: Forwarding results data.
-          properties:
-            source_chat_id:
-              type: string
-              description: Source chat ID from which messages were forwarded.
-              example: C_987654321
-            forwarded:
-              type: object
-              description: Successfully forwarded recipients.
-              properties:
-                chat_ids:
-                  type: array
-                  description: List of chat IDs where messages were successfully forwarded.
-                  items:
-                    type: string
-                  example:
-                  - C_111111111
-                user_ids:
-                  type: array
-                  description: List of user IDs to whom messages were successfully forwarded.
-                  items:
-                    type: string
-                  example:
-                  - '60025012345'
-            failures:
-              type: array
-              description: List of per-recipient failures with specific error details.
-              items:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    description: Chat ID or user ID that failed.
-                    example: C_222222222
-                  status:
-                    type: string
-                    description: Status of the forward attempt.
-                    example: failed
-                  error:
-                    type: object
-                    description: Error details for the failure.
-                    properties:
-                      code:
-                        type: string
-                        description: Error code.
-                        example: chat_with_other_org_users_disabled
-                      message:
-                        type: string
-                        description: Error message.
-                        example: Chat with other org users is disabled
     post-message-in-a-chat-response:
       type: object
       description: Response object for posting messages in a chat/user

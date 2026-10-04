@@ -2073,59 +2073,6 @@ paths:
       x-operation-id-original: Unmute a thread
 components:
   schemas:
-    no-response:
-      type: object
-      description: Response object returned when no content is available.
-      properties:
-        Response Code:
-          type: string
-          description: HTTP response code and message indicating no content.
-          example: 204 No response
-    add-followers-payload:
-      type: object
-      description: Request body to add followers to a thread.
-      required:
-      - user_ids
-      properties:
-        user_ids:
-          type: array
-          description: List of user IDs to add as followers to the thread.
-          items:
-            type: string
-            description: Unique identifier of a user to be added as a follower.
-          example:
-          - '15067889'
-          - '35068981'
-          - '5120923'
-    send-message-in-thread-payload:
-      type: object
-      description: Request body to send a message in an existing thread.
-      required:
-      - text
-      properties:
-        text:
-          type: string
-          description: 'Text to post in the thread. Maximum length: 5000 characters.'
-          example: Let's automate these cases so we can address them during testing.
-        reply_to:
-          type: string
-          description: Optional. Message ID to reply to within the thread.
-        post_in_parent:
-          type: boolean
-          description: Optional. If true, posts the message in the parent chat as well.
-          example: true
-        sync_message:
-          type: boolean
-          description: Optional. If true, posts the message synchronously and returns the message ID.
-          example: true
-    thread-creation-response:
-      type: object
-      description: Response returned after creating a thread.
-      properties:
-        message_id:
-          type: string
-          description: ID of the created thread message.
-          example: '1275417686584_20804595296'
     get-thread-followers-response:
       type: object
       description: Response containing the list of followers for a particular thread.
@@ -2159,6 +2106,132 @@ components:
           - user_id: '855727963'
             email_id: tim.harrison@zylker.com
             name: Tim Harrison
+    update-state-of-thread-request:
+      type: object
+      description: Request body to update the state of a thread (open or closed).
+      required:
+      - action
+      properties:
+        action:
+          type: string
+          description: "Action to update the thread state.<br>\n<b>Allowed values</b>:<br>\n <ul>\n  <li>reopen - Reopen a closed thread.</li>\n  <li>close - Close an open thread to prevent new messages from being added.</li>\n  <li>follow - Follow the thread to receive notifications for new messages.</li>\n  <li>unfollow - Unfollow the thread to stop receiving notifications for new messages.</li>\n</ul> \n"
+          example: close
+    thread-creation-response:
+      type: object
+      description: Response returned after creating a thread.
+      properties:
+        message_id:
+          type: string
+          description: ID of the created thread message.
+          example: '1275417686584_20804595296'
+    Members:
+      type: object
+      description: Detailed information about a chat member.
+      properties:
+        user_id:
+          type: string
+          description: Unique identifier of the user.
+          example: '431930546'
+        email_id:
+          type: string
+          format: email
+          description: Email address of the user.
+          example: olivia.palmer@zylcal.com
+        name:
+          type: string
+          description: Full name of the user.
+          example: Olivia - Content Writer
+    add-followers-payload:
+      type: object
+      description: Request body to add followers to a thread.
+      required:
+      - user_ids
+      properties:
+        user_ids:
+          type: array
+          description: List of user IDs to add as followers to the thread.
+          items:
+            type: string
+            description: Unique identifier of a user to be added as a follower.
+          example:
+          - '15067889'
+          - '35068981'
+          - '5120923'
+    remove-followers-payload:
+      type: object
+      description: Request body to remove followers from a thread.
+      required:
+      - user_ids
+      properties:
+        user_ids:
+          type: array
+          description: List of user IDs to remove from followers of the thread.
+          items:
+            type: string
+            description: Unique identifier of a user to be removed from the thread.
+          example:
+          - '15067889'
+          - '35068981'
+          - '5120923'
+    thread-creation-payload:
+      type: object
+      description: Request body to create a new thread from an existing message.
+      required:
+      - text
+      - thread_message_id
+      properties:
+        text:
+          type: string
+          description: 'Text to post as the initial message in the thread. Maximum length: 5000 characters.'
+          example: Follow this thread for daily updates on ticket resolutions.
+        thread_message_id:
+          type: string
+          description: ID of the parent message from which the thread should be created.
+          example: '1599044334698_117280617320'
+        reply_to:
+          type: string
+          description: Optional. ID of a message to reply to within the thread.
+        post_in_parent:
+          type: boolean
+          description: Optional. If true, posts the thread message in the parent chat as well.
+          example: true
+        thread_title:
+          type: string
+          description: Optional. Title for the thread.
+          example: Ticket Resolution Summary for the Day
+        sync_message:
+          type: boolean
+          description: Optional. If true, posts the message synchronously and returns the message ID.
+          example: true
+    no-response:
+      type: object
+      description: Response object returned when no content is available.
+      properties:
+        Response Code:
+          type: string
+          description: HTTP response code and message indicating no content.
+          example: 204 No response
+    send-message-in-thread-payload:
+      type: object
+      description: Request body to send a message in an existing thread.
+      required:
+      - text
+      properties:
+        text:
+          type: string
+          description: 'Text to post in the thread. Maximum length: 5000 characters.'
+          example: Let's automate these cases so we can address them during testing.
+        reply_to:
+          type: string
+          description: Optional. Message ID to reply to within the thread.
+        post_in_parent:
+          type: boolean
+          description: Optional. If true, posts the message in the parent chat as well.
+          example: true
+        sync_message:
+          type: boolean
+          description: Optional. If true, posts the message synchronously and returns the message ID.
+          example: true
     get-main-message-response:
       type: object
       description: Response containing the details of a main message and its thread information.
@@ -2236,46 +2309,6 @@ components:
         is_pinned:
           type: boolean
           example: false
-    thread-creation-payload:
-      type: object
-      description: Request body to create a new thread from an existing message.
-      required:
-      - text
-      - thread_message_id
-      properties:
-        text:
-          type: string
-          description: 'Text to post as the initial message in the thread. Maximum length: 5000 characters.'
-          example: Follow this thread for daily updates on ticket resolutions.
-        thread_message_id:
-          type: string
-          description: ID of the parent message from which the thread should be created.
-          example: '1599044334698_117280617320'
-        reply_to:
-          type: string
-          description: Optional. ID of a message to reply to within the thread.
-        post_in_parent:
-          type: boolean
-          description: Optional. If true, posts the thread message in the parent chat as well.
-          example: true
-        thread_title:
-          type: string
-          description: Optional. Title for the thread.
-          example: Ticket Resolution Summary for the Day
-        sync_message:
-          type: boolean
-          description: Optional. If true, posts the message synchronously and returns the message ID.
-          example: true
-    update-state-of-thread-request:
-      type: object
-      description: Request body to update the state of a thread (open or closed).
-      required:
-      - action
-      properties:
-        action:
-          type: string
-          description: "Action to update the thread state.<br>\n<b>Allowed values</b>:<br>\n <ul>\n  <li>reopen - Reopen a closed thread.</li>\n  <li>close - Close an open thread to prevent new messages from being added.</li>\n  <li>follow - Follow the thread to receive notifications for new messages.</li>\n  <li>unfollow - Unfollow the thread to stop receiving notifications for new messages.</li>\n</ul> \n"
-          example: close
     retrieve-chat-members:
       type: object
       description: Response object containing members of a chat.
@@ -2285,39 +2318,6 @@ components:
           description: List of members in the chat with detailed user information.
           items:
             $ref: '#/components/schemas/Members'
-    Members:
-      type: object
-      description: Detailed information about a chat member.
-      properties:
-        user_id:
-          type: string
-          description: Unique identifier of the user.
-          example: '431930546'
-        email_id:
-          type: string
-          format: email
-          description: Email address of the user.
-          example: olivia.palmer@zylcal.com
-        name:
-          type: string
-          description: Full name of the user.
-          example: Olivia - Content Writer
-    remove-followers-payload:
-      type: object
-      description: Request body to remove followers from a thread.
-      required:
-      - user_ids
-      properties:
-        user_ids:
-          type: array
-          description: List of user IDs to remove from followers of the thread.
-          items:
-            type: string
-            description: Unique identifier of a user to be removed from the thread.
-          example:
-          - '15067889'
-          - '35068981'
-          - '5120923'
   securitySchemes:
     Cliq_Auth:
       type: oauth2

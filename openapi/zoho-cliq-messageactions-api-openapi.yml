@@ -1535,96 +1535,6 @@ components:
           - text
           - link
           scope: organization
-    v3-msgaction-edit:
-      type: object
-      description: Payload for updating a message action. All fields are optional; only the fields provided will be updated.
-      properties:
-        execution_url:
-          type: string
-          maxLength: 225
-          description: 'Updated server URL where Cliq will forward handler events. Applicable only for <b>Webhook message actions</b>.<br>
-
-            This field can be updated independently to redirect the action to a new endpoint.<br>
-
-            <b>Maximum length</b>: 225 characters.
-
-            '
-          example: https://api.yourcompany.com/cliq/messageactions/updated-handler
-        name:
-          type: string
-          maxLength: 30
-          description: 'Updated name of the message action shown to users in the message action menu.<br>
-
-            <b>Maximum length:</b> 30 characters.
-
-            '
-        hint:
-          type: string
-          maxLength: 128
-          description: 'Updated hint text displayed below the message action name in the menu to provide additional context to users.<br>
-
-            <b>Maximum length:</b> 128 characters.
-
-            '
-        scope:
-          type: string
-          enum:
-          - organization
-          - team
-          - personal
-          description: "Updated access level for the message action, determining its visibility and availability to users.<br>\nAllowed values are:<br>\n<ul>\n  <li><code>organization</code>: Visible and accessible to all users within the organization.</li>\n  <li><code>team</code>: Visible and accessible only to members of specified teams. Requires <a href=\"/cliq/help/restapi/v3/glossary/#TEAM_ID\"><code>team_ids</code></a> field.</li>\n  <li><code>personal</code>: Visible and accessible only to the creator, but can be shared with other users by adding them as collaborators.</li>\n</ul>\n"
-        team_ids:
-          type: array
-          maxItems: 4
-          description: 'Updated list of <a href="/cliq/help/restapi/v3/glossary/#TEAM_ID">team_ids</a> that have access to the message action when <code>scope</code> is set to <code>team</code>. Each ID corresponds to a team within the organization.<br>
-
-            <b>Maximum items:</b> 4 team IDs can be specified when <code>scope</code> is <code>team</code>.
-
-            '
-          items:
-            type: integer
-        multi_selectable:
-          type: boolean
-          description: 'Updated multi-selection behavior. If set to <code>true</code>, users can select multiple messages and invoke the action on all selected messages simultaneously. If <code>false</code>, the action can only be applied to one message at a time.
-
-            '
-        image:
-          type: string
-          description: 'Updated Base64-encoded string representing a custom icon image for the message action. This icon is displayed in the message action menu alongside the action name.
-
-            '
-        message_types:
-          type: array
-          minItems: 1
-          maxItems: 3
-          description: "Updated list of message types that the message action supports. Allowed values are:<br>\n<ul>\n  <li><code>text</code>: The action can be applied to text messages.</li>\n  <li><code>link</code>: The action can be applied to messages containing links.</li>\n  <li><code>attachment</code>: The action can be applied to messages with attachments.</li>\n</ul>\n<b>Minimum items:</b> At least 1 message type must be specified.<br>\n"
-          items:
-            type: string
-            enum:
-            - text
-            - link
-            - attachment
-      example:
-        name: Create Ticket
-        hint: Convert this message into a support ticket
-        scope: organization
-        multi_selectable: false
-        message_types:
-        - text
-        - link
-        - attachment
-    MessageActionHandlerResponse:
-      type: object
-      description: Response schema for message action handler operations.
-      properties:
-        url:
-          type: string
-        type:
-          type: string
-          example: execution_handler
-        data:
-          type: object
-          additionalProperties: true
     v3-msgaction-create:
       type: object
       description: Payload for creating a message action.
@@ -1743,82 +1653,21 @@ components:
 
             '
           function_id: '53719000002124010'
-    MessageActionUpdateResponse:
-      type: object
-      description: Response schema for message action update operations.
-      properties:
-        url:
-          type: string
-          description: API endpoint URL for the updated message action resource.
-          example: /api/v3/messageactions/53719000002124010
-        type:
-          type: string
-          description: Resource type.
-          example: messageaction
-        data:
-          type: object
-          description: Updated message action details.
-          properties:
-            name:
-              type: string
-            id:
-              type: string
-            hint:
-              type: string
-            scope:
-              type: string
-            multi_selectable:
-              type: boolean
-            message_types:
-              type: array
-              items:
-                type: string
-            team_ids:
-              type: array
-              items:
-                type: integer
-            handlers:
-              type: array
-            creator:
-              type: object
-            execution_type:
-              type: string
-            status:
-              type: string
-            type:
-              type: string
-      example:
-        url: /api/v3/messageactions/53719000002124010
-        type: messageaction
-        data:
-          name: Create Ticket
-          id: '53719000002124010'
-          hint: Convert this message into a support ticket
-          scope: organization
-          multi_selectable: false
-          message_types:
-          - text
-          - link
-          - attachment
-          handlers:
-          - type: execution_handler
-          creator:
-            name: James
-            id: '65113112'
-          execution_type: deluge
-          status: enabled
-          type: custom
-    HANDLER_TYPE_regex:
-      type: string
-      description: Type of the message action handler. Message actions support only one handler type&#58; <code>execution_handler</code>, which is triggered when the action is invoked.
-      enum:
-      - execution_handler
     longid_regex:
       type: string
       description: Numeric long integer identifier used to reference platform components such as Commands, Functions, Widgets, Message Actions, Schedulers, and Extensions.
-    base64_regex:
-      type: string
-      description: Base64-encoded pagination or sync token used for cursor-based pagination and incremental data sync.
+    MessageActionHandlerResponse:
+      type: object
+      description: Response schema for message action handler operations.
+      properties:
+        url:
+          type: string
+        type:
+          type: string
+          example: execution_handler
+        data:
+          type: object
+          additionalProperties: true
     v3-exehandler-edit:
       type: object
       description: Payload for updating the message action execution handler. For Deluge actions, provide `script`. For Webhook actions, provide `permissions`.
@@ -1844,6 +1693,92 @@ components:
             - user
             - location
             - attachments
+    base64_regex:
+      type: string
+      description: Base64-encoded pagination or sync token used for cursor-based pagination and incremental data sync.
+    v3-msgaction-edit:
+      type: object
+      description: Payload for updating a message action. All fields are optional; only the fields provided will be updated.
+      properties:
+        execution_url:
+          type: string
+          maxLength: 225
+          description: 'Updated server URL where Cliq will forward handler events. Applicable only for <b>Webhook message actions</b>.<br>
+
+            This field can be updated independently to redirect the action to a new endpoint.<br>
+
+            <b>Maximum length</b>: 225 characters.
+
+            '
+          example: https://api.yourcompany.com/cliq/messageactions/updated-handler
+        name:
+          type: string
+          maxLength: 30
+          description: 'Updated name of the message action shown to users in the message action menu.<br>
+
+            <b>Maximum length:</b> 30 characters.
+
+            '
+        hint:
+          type: string
+          maxLength: 128
+          description: 'Updated hint text displayed below the message action name in the menu to provide additional context to users.<br>
+
+            <b>Maximum length:</b> 128 characters.
+
+            '
+        scope:
+          type: string
+          enum:
+          - organization
+          - team
+          - personal
+          description: "Updated access level for the message action, determining its visibility and availability to users.<br>\nAllowed values are:<br>\n<ul>\n  <li><code>organization</code>: Visible and accessible to all users within the organization.</li>\n  <li><code>team</code>: Visible and accessible only to members of specified teams. Requires <a href=\"/cliq/help/restapi/v3/glossary/#TEAM_ID\"><code>team_ids</code></a> field.</li>\n  <li><code>personal</code>: Visible and accessible only to the creator, but can be shared with other users by adding them as collaborators.</li>\n</ul>\n"
+        team_ids:
+          type: array
+          maxItems: 4
+          description: 'Updated list of <a href="/cliq/help/restapi/v3/glossary/#TEAM_ID">team_ids</a> that have access to the message action when <code>scope</code> is set to <code>team</code>. Each ID corresponds to a team within the organization.<br>
+
+            <b>Maximum items:</b> 4 team IDs can be specified when <code>scope</code> is <code>team</code>.
+
+            '
+          items:
+            type: integer
+        multi_selectable:
+          type: boolean
+          description: 'Updated multi-selection behavior. If set to <code>true</code>, users can select multiple messages and invoke the action on all selected messages simultaneously. If <code>false</code>, the action can only be applied to one message at a time.
+
+            '
+        image:
+          type: string
+          description: 'Updated Base64-encoded string representing a custom icon image for the message action. This icon is displayed in the message action menu alongside the action name.
+
+            '
+        message_types:
+          type: array
+          minItems: 1
+          maxItems: 3
+          description: "Updated list of message types that the message action supports. Allowed values are:<br>\n<ul>\n  <li><code>text</code>: The action can be applied to text messages.</li>\n  <li><code>link</code>: The action can be applied to messages containing links.</li>\n  <li><code>attachment</code>: The action can be applied to messages with attachments.</li>\n</ul>\n<b>Minimum items:</b> At least 1 message type must be specified.<br>\n"
+          items:
+            type: string
+            enum:
+            - text
+            - link
+            - attachment
+      example:
+        name: Create Ticket
+        hint: Convert this message into a support ticket
+        scope: organization
+        multi_selectable: false
+        message_types:
+        - text
+        - link
+        - attachment
+    HANDLER_TYPE_regex:
+      type: string
+      description: Type of the message action handler. Message actions support only one handler type&#58; <code>execution_handler</code>, which is triggered when the action is invoked.
+      enum:
+      - execution_handler
     MessageActionListItemsResponse:
       type: object
       description: Response schema for listing message actions.
@@ -1925,6 +1860,71 @@ components:
           message_types:
           - text
           scope: personal
+    MessageActionUpdateResponse:
+      type: object
+      description: Response schema for message action update operations.
+      properties:
+        url:
+          type: string
+          description: API endpoint URL for the updated message action resource.
+          example: /api/v3/messageactions/53719000002124010
+        type:
+          type: string
+          description: Resource type.
+          example: messageaction
+        data:
+          type: object
+          description: Updated message action details.
+          properties:
+            name:
+              type: string
+            id:
+              type: string
+            hint:
+              type: string
+            scope:
+              type: string
+            multi_selectable:
+              type: boolean
+            message_types:
+              type: array
+              items:
+                type: string
+            team_ids:
+              type: array
+              items:
+                type: integer
+            handlers:
+              type: array
+            creator:
+              type: object
+            execution_type:
+              type: string
+            status:
+              type: string
+            type:
+              type: string
+      example:
+        url: /api/v3/messageactions/53719000002124010
+        type: messageaction
+        data:
+          name: Create Ticket
+          id: '53719000002124010'
+          hint: Convert this message into a support ticket
+          scope: organization
+          multi_selectable: false
+          message_types:
+          - text
+          - link
+          - attachment
+          handlers:
+          - type: execution_handler
+          creator:
+            name: James
+            id: '65113112'
+          execution_type: deluge
+          status: enabled
+          type: custom
   securitySchemes:
     Cliq_Auth:
       type: oauth2

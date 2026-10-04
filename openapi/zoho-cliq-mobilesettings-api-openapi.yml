@@ -252,6 +252,96 @@ paths:
       - mobilesettings
 components:
   schemas:
+    media-gallery-settings:
+      type: object
+      description: Controls whether downloaded media is saved to the device gallery.
+      x-enum-descriptions:
+      - enabled: Enables saving media to gallery.
+      - disabled: Disables saving media to gallery.
+      properties:
+        images:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Controls whether downloaded images are saved to the device gallery.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Downloaded images are automatically saved to the gallery.</li>\n  <li><code>disabled</code>: Downloaded images are not saved to the gallery.</li>\n</ul>\n"
+        camera_captures:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Controls whether photos taken within the app are saved to the device gallery.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Camera captures are automatically saved to the gallery.</li>\n  <li><code>disabled</code>: Camera captures are not saved to the gallery.</li>\n</ul>\n"
+        videos:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          description: "Controls whether downloaded videos are saved to the device gallery.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Downloaded videos are automatically saved to the gallery.</li>\n  <li><code>disabled</code>: Downloaded videos are not saved to the gallery.</li>\n</ul>\n"
+    mobile-settings-response:
+      type: object
+      description: Full mobile settings object returned by the GET endpoint.
+      x-enum-descriptions:
+      - enabled: Setting is turned on.
+      - disabled: Setting is turned off.
+      properties:
+        av_noise_cancellation:
+          type: string
+          enum:
+          - enabled
+          - disabled
+        media_to_gallery:
+          $ref: '#/components/schemas/media-gallery-settings'
+        conference_recording:
+          type: string
+          enum:
+          - enabled
+          - disabled
+        last_seen:
+          type: string
+          enum:
+          - enabled
+          - disabled
+        file_summary:
+          type: string
+          enum:
+          - enabled
+          - disabled
+        media_upload_quality:
+          type: string
+          enum:
+          - enabled
+          - disabled
+        notification:
+          $ref: '#/components/schemas/notification-settings'
+        media_auto_download:
+          $ref: '#/components/schemas/media-auto-download-settings'
+        media_auto_download_android:
+          $ref: '#/components/schemas/media-auto-download-settings'
+        huddle_join_video_muted:
+          type: string
+          enum:
+          - enabled
+          - disabled
+        av_hd_video:
+          type: string
+          enum:
+          - enabled
+          - disabled
+        av_speech_detection:
+          type: string
+          enum:
+          - enabled
+          - disabled
+        unread_summary:
+          type: string
+          enum:
+          - enabled
+          - disabled
+        chat_summary:
+          type: string
+          enum:
+          - enabled
+          - disabled
     media-auto-download-settings:
       type: object
       description: Controls automatic media download behavior based on media type or network mode.
@@ -332,106 +422,6 @@ components:
           - enabled
           - disabled
           description: "Controls whether chat summaries are shown for conversations.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Chat summaries are displayed.</li>\n  <li><code>disabled</code>: Chat summaries are hidden.</li>\n</ul>\n"
-    media-gallery-settings:
-      type: object
-      description: Controls whether downloaded media is saved to the device gallery.
-      x-enum-descriptions:
-      - enabled: Enables saving media to gallery.
-      - disabled: Disables saving media to gallery.
-      properties:
-        images:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Controls whether downloaded images are saved to the device gallery.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Downloaded images are automatically saved to the gallery.</li>\n  <li><code>disabled</code>: Downloaded images are not saved to the gallery.</li>\n</ul>\n"
-        camera_captures:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Controls whether photos taken within the app are saved to the device gallery.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Camera captures are automatically saved to the gallery.</li>\n  <li><code>disabled</code>: Camera captures are not saved to the gallery.</li>\n</ul>\n"
-        videos:
-          type: string
-          enum:
-          - enabled
-          - disabled
-          description: "Controls whether downloaded videos are saved to the device gallery.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Downloaded videos are automatically saved to the gallery.</li>\n  <li><code>disabled</code>: Downloaded videos are not saved to the gallery.</li>\n</ul>\n"
-    NoResponse:
-      type: object
-      description: Response envelope for successful operations with no payload.
-      properties:
-        status:
-          type: string
-          example: success
-        message:
-          type: string
-          example: Operation completed successfully.
-    mobile-settings-response:
-      type: object
-      description: Full mobile settings object returned by the GET endpoint.
-      x-enum-descriptions:
-      - enabled: Setting is turned on.
-      - disabled: Setting is turned off.
-      properties:
-        av_noise_cancellation:
-          type: string
-          enum:
-          - enabled
-          - disabled
-        media_to_gallery:
-          $ref: '#/components/schemas/media-gallery-settings'
-        conference_recording:
-          type: string
-          enum:
-          - enabled
-          - disabled
-        last_seen:
-          type: string
-          enum:
-          - enabled
-          - disabled
-        file_summary:
-          type: string
-          enum:
-          - enabled
-          - disabled
-        media_upload_quality:
-          type: string
-          enum:
-          - enabled
-          - disabled
-        notification:
-          $ref: '#/components/schemas/notification-settings'
-        media_auto_download:
-          $ref: '#/components/schemas/media-auto-download-settings'
-        media_auto_download_android:
-          $ref: '#/components/schemas/media-auto-download-settings'
-        huddle_join_video_muted:
-          type: string
-          enum:
-          - enabled
-          - disabled
-        av_hd_video:
-          type: string
-          enum:
-          - enabled
-          - disabled
-        av_speech_detection:
-          type: string
-          enum:
-          - enabled
-          - disabled
-        unread_summary:
-          type: string
-          enum:
-          - enabled
-          - disabled
-        chat_summary:
-          type: string
-          enum:
-          - enabled
-          - disabled
     notification-settings:
       type: object
       description: Notification controls by conversation type and notification mode (alert, sound, and preview).
@@ -583,6 +573,16 @@ components:
           - enabled
           - disabled
           description: "Toggles message preview for MT notifications.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>enabled</code>: Message content is shown in the MT notification preview.</li>\n  <li><code>disabled</code>: Message content is hidden in the MT notification preview.</li>\n</ul>\n"
+    NoResponse:
+      type: object
+      description: Response envelope for successful operations with no payload.
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Operation completed successfully.
   securitySchemes:
     Cliq_Auth:
       type: oauth2
