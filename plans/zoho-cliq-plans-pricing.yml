@@ -1,3 +1,7 @@
+# Provenance stamped 2026-10-07 (roadmap#943): written by an API Evangelist sweep (undated — the file carries no date and git cannot supply one), not
+# harvested from the provider. `method: generated` so the economics campaign may replace it with a
+# dated, verbatim transcription; every figure below is unverified until it does.
+method: generated
 name: Zoho Cliq Plans and Pricing
 description: Zoho Cliq offers four pricing tiers ranging from a free plan to an enterprise plan. Pricing is per user per month with discounts available for annual billing. All paid plans require a minimum of 10 users.
 url: https://www.zoho.com/cliq/pricing.html
@@ -180,3 +184,38 @@ addOns:
   - name: Phone System
     description: Integrated phone system and calling credits.
     url: https://www.zoho.com/cliq/pricing.html
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  units: []
+  plans:
+  - name: Free
+    access: other
+    model: free
+    model_how: derived
+    units:
+    - other
+    periods: []
+  - name: Standard
+    access: other
+    model: unstated
+    model_how: derived
+    units:
+    - other
+    periods: []
+  - name: Professional
+    access: other
+    model: unstated
+    model_how: derived
+    units:
+    - other
+    periods: []
+  - name: Enterprise
+    access: other
+    model: unstated
+    model_how: derived
+    units:
+    - other
+    periods: []

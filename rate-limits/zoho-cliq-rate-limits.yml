@@ -1,3 +1,7 @@
+# Provenance stamped 2026-10-07 (roadmap#943): written by an API Evangelist sweep (undated — the file carries no date and git cannot supply one), not
+# harvested from the provider. `method: generated` so the economics campaign may replace it with a
+# dated, verbatim transcription; every figure below is unverified until it does.
+method: generated
 name: Zoho Cliq API Rate Limits
 description: Zoho Cliq API rate limiting policy. Zoho states there is no hard usage limit on the API, but system-level throttling exists to protect against denial of service (DOS) attacks. Users may encounter URL throttle limit errors (HTTP 400) under high request volumes. Specific numeric thresholds are not publicly disclosed.
 url: https://help.zoho.com/portal/en/community/topic/zoho-cliq-api-rate-limit
