@@ -1872,49 +1872,6 @@ paths:
       - slashcommands
 components:
   schemas:
-    longid_regex:
-      type: string
-      description: Numeric long integer identifier used to reference platform components such as Commands, Functions, Widgets, Message Actions, Schedulers, and Extensions.
-    COMMAND_HANDLER_TYPE_regex:
-      type: string
-      enum:
-      - execution_handler
-      - suggestion_handler
-      description: 'Name of a slash command handler. Accepted values: <code>execution_handler</code> (fires on command invocation), <code>suggestion_handler</code> (fires to generate autocomplete suggestions).
-
-        '
-    v3-exehandler-create:
-      type: object
-      description: Payload for creating a new handler. For Deluge commands, provide `type` and `script`. For Webhook commands, provide `type` and `permissions`.
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - execution_handler
-          - suggestion_handler
-          description: "Type of the handler to create. Accepted values:<br>\n<ul>\n  <li><code>execution_handler</code>: Executes on command invocation.</li>\n  <li><code>suggestion_handler</code>: Executes to provide autocomplete suggestions as users type the command.</li>\n</ul>\n"
-        script:
-          type: string
-          description: 'Deluge script source code for the handler.<br>
-
-            <b>Maximum size:</b> 250KB<br>
-
-            <b>Note:</b> Applicable only for <b>Deluge commands</b>. Do not pass <code>script</code> for Webhook commands - use <code>permissions</code> instead.
-
-            '
-        permissions:
-          type: array
-          maxItems: 5
-          description: "List of data attributes to forward to your server in the webhook payload when the handler fires.<br>\n<b>Note:</b> Applicable only for <b>Webhook commands</b>. Do not pass <code>permissions</code> for Deluge commands - use <code>script</code> instead.<br>\n<b>Maximum:</b> 5 permissions per handler.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>attachments</code>: File attachment metadata. Not available for <code>suggestion_handler</code>.</li>\n  <li><code>chat</code>: Chat context (chat ID, type, participants).</li>\n  <li><code>location</code>: Sender's location data.</li>\n  <li><code>user</code>: Sender's user profile details.</li>\n</ul>\nRefer to the permissions availability table in the <a href=\"/cliq/help/restapi/v3/slashcommands/#createCommandHandler\">Create a handler</a> endpoint for per-handler availability.\n"
-          items:
-            type: string
-            enum:
-            - attachments
-            - chat
-            - location
-            - user
     update-slash-command-request-body:
       type: object
       description: Payload for updating a slash command. All fields are optional; only the fields provided will be updated.
@@ -2031,41 +1988,6 @@ components:
             - chat
             - location
             - user
-    base64_regex:
-      type: string
-      description: Base64-encoded pagination or sync token used for cursor-based pagination and incremental data sync.
-    SlashCommandResponse:
-      type: object
-      description: Slash Commands API response envelope.
-      properties:
-        url:
-          type: string
-        type:
-          type: string
-        data:
-          type: object
-          additionalProperties: true
-      example:
-        url: /api/v3/commands/227828000000128009
-        type: command
-        data:
-          name: greet
-          id: '227828000000128009'
-          handlers:
-          - type: execution_handler
-          creator:
-            name: Ryan West
-            id: '119440882'
-          execution_type: deluge
-          hint: Send a greeting message
-          status: enabled
-          max_suggestions: 5
-          type: custom
-          description: Sends a customizable greeting to a user or channel
-          scope: organization
-          options:
-            user: The user to greet
-            msg: Custom greeting message
     create-slash-command-request-body:
       type: object
       description: Payload for creating a new slash command.
@@ -2164,6 +2086,84 @@ components:
           user: The user to greet
           msg: Custom greeting message
         max_suggestions: 5
+    longid_regex:
+      type: string
+      description: Numeric long integer identifier used to reference platform components such as Commands, Functions, Widgets, Message Actions, Schedulers, and Extensions.
+    SlashCommandResponse:
+      type: object
+      description: Slash Commands API response envelope.
+      properties:
+        url:
+          type: string
+        type:
+          type: string
+        data:
+          type: object
+          additionalProperties: true
+      example:
+        url: /api/v3/commands/227828000000128009
+        type: command
+        data:
+          name: greet
+          id: '227828000000128009'
+          handlers:
+          - type: execution_handler
+          creator:
+            name: Ryan West
+            id: '119440882'
+          execution_type: deluge
+          hint: Send a greeting message
+          status: enabled
+          max_suggestions: 5
+          type: custom
+          description: Sends a customizable greeting to a user or channel
+          scope: organization
+          options:
+            user: The user to greet
+            msg: Custom greeting message
+    v3-exehandler-create:
+      type: object
+      description: Payload for creating a new handler. For Deluge commands, provide `type` and `script`. For Webhook commands, provide `type` and `permissions`.
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - execution_handler
+          - suggestion_handler
+          description: "Type of the handler to create. Accepted values:<br>\n<ul>\n  <li><code>execution_handler</code>: Executes on command invocation.</li>\n  <li><code>suggestion_handler</code>: Executes to provide autocomplete suggestions as users type the command.</li>\n</ul>\n"
+        script:
+          type: string
+          description: 'Deluge script source code for the handler.<br>
+
+            <b>Maximum size:</b> 250KB<br>
+
+            <b>Note:</b> Applicable only for <b>Deluge commands</b>. Do not pass <code>script</code> for Webhook commands - use <code>permissions</code> instead.
+
+            '
+        permissions:
+          type: array
+          maxItems: 5
+          description: "List of data attributes to forward to your server in the webhook payload when the handler fires.<br>\n<b>Note:</b> Applicable only for <b>Webhook commands</b>. Do not pass <code>permissions</code> for Deluge commands - use <code>script</code> instead.<br>\n<b>Maximum:</b> 5 permissions per handler.<br>\n<b>Allowed values</b>:\n<ul>\n  <li><code>attachments</code>: File attachment metadata. Not available for <code>suggestion_handler</code>.</li>\n  <li><code>chat</code>: Chat context (chat ID, type, participants).</li>\n  <li><code>location</code>: Sender's location data.</li>\n  <li><code>user</code>: Sender's user profile details.</li>\n</ul>\nRefer to the permissions availability table in the <a href=\"/cliq/help/restapi/v3/slashcommands/#createCommandHandler\">Create a handler</a> endpoint for per-handler availability.\n"
+          items:
+            type: string
+            enum:
+            - attachments
+            - chat
+            - location
+            - user
+    COMMAND_HANDLER_TYPE_regex:
+      type: string
+      enum:
+      - execution_handler
+      - suggestion_handler
+      description: 'Name of a slash command handler. Accepted values: <code>execution_handler</code> (fires on command invocation), <code>suggestion_handler</code> (fires to generate autocomplete suggestions).
+
+        '
+    base64_regex:
+      type: string
+      description: Base64-encoded pagination or sync token used for cursor-based pagination and incremental data sync.
     list-all-slash-commands-response:
       type: object
       description: Response schema for listing slash commands.

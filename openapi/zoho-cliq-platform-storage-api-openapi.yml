@@ -3341,6 +3341,64 @@ paths:
       - Platform_storage
 components:
   schemas:
+    multiplelong_regex:
+      type: string
+      description: Comma-separated list of numeric long integer IDs (e.g. record IDs or field IDs) used in bulk delete operations.
+    editplatformdatabase_v2:
+      type: object
+      description: Payload for updating datastore metadata.
+      properties:
+        unique_name:
+          type: string
+          maxLength: 20
+          description: 'Updated datastore unique name.<br>
+
+            Accepts lowercase letters, numbers, and underscores only, and must start with a letter. This is used in API endpoints and should be unique across datastores.<br>
+
+            <b>Maximum length</b>: 20 characters.
+
+            '
+        name:
+          type: string
+          maxLength: 20
+          description: 'Updated datastore display name.<br>
+
+            Can contain letters, numbers, and spaces. This is used for display purposes in the UI and can be non-unique.<br>
+
+            <b>Maximum length</b>: 20 characters.
+
+            '
+        description:
+          type: string
+          maxLength: 250
+          description: 'Updated datastore description.<br>
+
+            A brief description about the datastore''s purpose or contents.<br>
+
+            <b>Maximum length</b>: 250 characters.
+
+            '
+        unique_keys:
+          type: array
+          maxItems: 4
+          description: "Updated unique key constraints for the datastore. Replaces the existing set of constraints entirely.<br>\n<ul>\n  <li>A maximum of <b>4</b> unique key constraints can be defined per datastore.</li>\n  <li>Each constraint is an array of one or more field <code>unique_name</code> values that must be collectively unique across all records.</li>\n  <li>Fields of type <b>encrypted-text</b> or <b>large-text</b> cannot be included in a unique key constraint.</li>\n</ul>\n"
+          items:
+            type: array
+            description: 'An array of field unique_names that form a single unique key constraint. Each unique key constraint ensures that the combination of values in the specified fields is unique across all records in the datastore.
+
+              '
+            items:
+              type: string
+      example:
+        unique_name: empdir
+        name: Employee Directory
+        description: Tracks employee records and department data
+        unique_keys:
+        - - empid
+          - empname
+    base64_regex:
+      type: string
+      description: Base64-encoded pagination or sync token used for cursor-based pagination and incremental data sync.
     platformstorage_records_export:
       type: object
       description: Configuration payload for a Datastore bulk export operation. Specifies the fields to include, filter criteria, and output format.
@@ -3372,6 +3430,79 @@ components:
             <b>Maximum length</b>: 20 characters
 
             '
+    edit_platform_db_fields:
+      type: object
+      description: Payload for editing existing datastore fields.
+      required:
+      - fields
+      properties:
+        fields:
+          type: array
+          minItems: 1
+          maxItems: 10
+          description: "<ul>\n  <li>List of existing fields to edit in the datastore schema.</li>\n  <li>Each field must be identified by its numeric ID and can have its name, mandatory status, masked status, and default value updated. The field type cannot be changed.</li>\n  <li><b>Maximum of 10 fields</b> can be edited in a single request.</li>\n</ul>\n"
+          items:
+            type: object
+            required:
+            - id
+            properties:
+              id:
+                type: string
+                description: 'Unique identifier of the field to be edited. This is assigned by the system when the field is created and cannot be changed.
+
+                  '
+              unique_name:
+                type: string
+                maxLength: 20
+                description: 'Unique name of the field.<br>
+
+                  Accepts lowercase letters, numbers, and underscores only, and must start with a letter. This is used in API endpoints to reference the field.<br>
+
+                  <b>Maximum length</b>: 20 characters.
+
+                  '
+              name:
+                type: string
+                maxLength: 20
+                description: 'Display name of the field.<br>
+
+                  Can contain letters, numbers, and spaces. This is used for display purposes in the UI.<br>
+
+                  <b>Maximum length</b>: 20 characters.
+
+                  '
+              mandatory:
+                type: boolean
+                description: 'Indicates whether this field is mandatory for each record. If true, a value must be provided for this field when creating or updating records.
+
+                  '
+              masked:
+                type: boolean
+                description: 'Indicates whether this field''s value should be masked (e.g., for sensitive information).<br>
+
+                  <b>Note</b>: Masking is not supported for <b>encrypted-text</b> fields. Encrypted fields are already stored in protected form and cannot be additionally masked.
+
+                  '
+              default_value:
+                type: string
+                maxLength: 100
+                description: 'Default value for the field when creating new records. Must be a string representation of a value compatible with the field''s data type. For example, "true" for boolean, "123" for number, etc.<br>
+
+                  <b>Maximum length</b>: 100 characters.
+
+                  '
+      example:
+        fields:
+        - id: '17202020414617773604009000'
+          name: Notes
+          unique_name: notes
+          mandatory: false
+          default_value: ''
+        - id: '17202020414617773604009001'
+          name: Employee ID
+          unique_name: empid
+          mandatory: true
+          default_value: '0'
     longid_regex:
       type: string
       description: Numeric long integer identifier used to reference platform components such as Commands, Functions, Widgets, Message Actions, Schedulers, and Extensions.
@@ -3433,6 +3564,9 @@ components:
           unique_keys:
           - - empid
           scope: personal
+    encryptedappkey_regex:
+      type: string
+      description: Encrypted application key (appkey or EXTENSION_KEY) issued to a bot or extension, used as an alternative to OAuth for webhook-style authentication.
     listrecords_response:
       type: object
       description: Response schema for listing records from a datastore, including pagination information and a list of records.
@@ -3481,6 +3615,104 @@ components:
           instock: true
           productsecretcode: secretkey897
           productdescription: zylker description
+    datastores_records_add:
+      type: object
+      description: Payload for inserting or updating a single datastore record.
+      required:
+      - values
+      properties:
+        values:
+          type: object
+          description: 'Key-value pairs of field unique_name and the new value to update.
+
+            '
+          additionalProperties: true
+          example:
+            empid: '1001'
+            empname: John Doe
+            isactive: true
+            salary: '50000'
+            department: Engineering
+            notes: Senior Engineer in Platform Team
+    add_platform_db_fields:
+      type: object
+      description: Payload for adding new fields to a datastore schema.
+      required:
+      - fields
+      properties:
+        fields:
+          type: array
+          minItems: 1
+          maxItems: 10
+          description: "<ul>\n  <li>List of new fields to add to the datastore.</li>\n  <li>Each field must have a unique_name, name, and type. The new fields will be appended to the existing schema and can be used in subsequent record operations.</li>\n  <li><b>Maximum of 10 fields</b> can be added in a single request.</li>\n</ul>\n"
+          items:
+            type: object
+            required:
+            - unique_name
+            - name
+            - type
+            properties:
+              unique_name:
+                type: string
+                maxLength: 20
+                description: 'Unique name of the field.<br>
+
+                  Accepts lowercase letters, numbers, and underscores only, and must start with a letter. This is used in API endpoints to reference the field.<br>
+
+                  <b>Maximum length</b>: 20 characters.
+
+                  '
+              name:
+                type: string
+                maxLength: 20
+                description: 'Display name of the field.<br>
+
+                  Can contain letters, numbers, and spaces. This is used for display purposes in the UI.<br>
+
+                  <b>Maximum length</b>: 20 characters.
+
+                  '
+              type:
+                type: string
+                description: "Data type of the field.<br>\nDetermines the kind of data that can be stored in this field and the operations that can be performed on it.<br>\n Allowed values:\n <ul>\n   <li><b>boolean</b>: Stores true/false values.</li>\n   <li><b>number</b>: Stores numeric values. Can be used for mathematical operations.</li>\n   <li><b>limited-text</b>: Stores short text up to 250 characters. Cannot be used for full-text search.</li>\n   <li><b>encrypted-text</b>: Stores sensitive text data in encrypted form. Cannot be included in unique key constraints and does not support masking. Maximum length: 1000 characters.</li>\n   <li><b>large-text</b>: Stores long text data up to 65,535 characters. Suitable for descriptions, comments, etc. Cannot be included in unique key constraints.</li>\n </ul>\n <b>Note</b>: The field type cannot be changed after the datastore is created\n"
+                enum:
+                - boolean
+                - number
+                - limited-text
+                - encrypted-text
+                - large-text
+              mandatory:
+                type: boolean
+                description: 'Indicates whether this field is mandatory for each record. If true, a value must be provided for this field when creating or updating records.
+
+                  '
+              masked:
+                type: boolean
+                description: 'Indicates whether this field''s value should be masked (e.g., for sensitive information).<br>
+
+                  <b>Note</b>: Masking is not supported for <b>encrypted-text</b> fields. Encrypted fields are already stored in protected form and cannot be additionally masked.
+
+                  '
+              default_value:
+                type: string
+                maxLength: 100
+                description: 'Default value for the field when creating new records. Must be a string representation of a value compatible with the field''s data type. For example, "true" for boolean, "123" for number, etc.<br>
+
+                  <b>Maximum length</b>: 100 characters.
+
+                  '
+      example:
+        fields:
+        - unique_name: join_date
+          name: Join Date
+          type: limited-text
+          mandatory: false
+          default_value: ''
+        - unique_name: location
+          name: Location
+          type: limited-text
+          mandatory: false
+          default_value: ''
     createplatformdatabase_v2:
       type: object
       description: Payload for creating a new datastore.
@@ -3619,186 +3851,6 @@ components:
           mandatory: false
         unique_keys:
         - - empid
-    edit_platform_db_fields:
-      type: object
-      description: Payload for editing existing datastore fields.
-      required:
-      - fields
-      properties:
-        fields:
-          type: array
-          minItems: 1
-          maxItems: 10
-          description: "<ul>\n  <li>List of existing fields to edit in the datastore schema.</li>\n  <li>Each field must be identified by its numeric ID and can have its name, mandatory status, masked status, and default value updated. The field type cannot be changed.</li>\n  <li><b>Maximum of 10 fields</b> can be edited in a single request.</li>\n</ul>\n"
-          items:
-            type: object
-            required:
-            - id
-            properties:
-              id:
-                type: string
-                description: 'Unique identifier of the field to be edited. This is assigned by the system when the field is created and cannot be changed.
-
-                  '
-              unique_name:
-                type: string
-                maxLength: 20
-                description: 'Unique name of the field.<br>
-
-                  Accepts lowercase letters, numbers, and underscores only, and must start with a letter. This is used in API endpoints to reference the field.<br>
-
-                  <b>Maximum length</b>: 20 characters.
-
-                  '
-              name:
-                type: string
-                maxLength: 20
-                description: 'Display name of the field.<br>
-
-                  Can contain letters, numbers, and spaces. This is used for display purposes in the UI.<br>
-
-                  <b>Maximum length</b>: 20 characters.
-
-                  '
-              mandatory:
-                type: boolean
-                description: 'Indicates whether this field is mandatory for each record. If true, a value must be provided for this field when creating or updating records.
-
-                  '
-              masked:
-                type: boolean
-                description: 'Indicates whether this field''s value should be masked (e.g., for sensitive information).<br>
-
-                  <b>Note</b>: Masking is not supported for <b>encrypted-text</b> fields. Encrypted fields are already stored in protected form and cannot be additionally masked.
-
-                  '
-              default_value:
-                type: string
-                maxLength: 100
-                description: 'Default value for the field when creating new records. Must be a string representation of a value compatible with the field''s data type. For example, "true" for boolean, "123" for number, etc.<br>
-
-                  <b>Maximum length</b>: 100 characters.
-
-                  '
-      example:
-        fields:
-        - id: '17202020414617773604009000'
-          name: Notes
-          unique_name: notes
-          mandatory: false
-          default_value: ''
-        - id: '17202020414617773604009001'
-          name: Employee ID
-          unique_name: empid
-          mandatory: true
-          default_value: '0'
-    base64_regex:
-      type: string
-      description: Base64-encoded pagination or sync token used for cursor-based pagination and incremental data sync.
-    add_platform_db_fields:
-      type: object
-      description: Payload for adding new fields to a datastore schema.
-      required:
-      - fields
-      properties:
-        fields:
-          type: array
-          minItems: 1
-          maxItems: 10
-          description: "<ul>\n  <li>List of new fields to add to the datastore.</li>\n  <li>Each field must have a unique_name, name, and type. The new fields will be appended to the existing schema and can be used in subsequent record operations.</li>\n  <li><b>Maximum of 10 fields</b> can be added in a single request.</li>\n</ul>\n"
-          items:
-            type: object
-            required:
-            - unique_name
-            - name
-            - type
-            properties:
-              unique_name:
-                type: string
-                maxLength: 20
-                description: 'Unique name of the field.<br>
-
-                  Accepts lowercase letters, numbers, and underscores only, and must start with a letter. This is used in API endpoints to reference the field.<br>
-
-                  <b>Maximum length</b>: 20 characters.
-
-                  '
-              name:
-                type: string
-                maxLength: 20
-                description: 'Display name of the field.<br>
-
-                  Can contain letters, numbers, and spaces. This is used for display purposes in the UI.<br>
-
-                  <b>Maximum length</b>: 20 characters.
-
-                  '
-              type:
-                type: string
-                description: "Data type of the field.<br>\nDetermines the kind of data that can be stored in this field and the operations that can be performed on it.<br>\n Allowed values:\n <ul>\n   <li><b>boolean</b>: Stores true/false values.</li>\n   <li><b>number</b>: Stores numeric values. Can be used for mathematical operations.</li>\n   <li><b>limited-text</b>: Stores short text up to 250 characters. Cannot be used for full-text search.</li>\n   <li><b>encrypted-text</b>: Stores sensitive text data in encrypted form. Cannot be included in unique key constraints and does not support masking. Maximum length: 1000 characters.</li>\n   <li><b>large-text</b>: Stores long text data up to 65,535 characters. Suitable for descriptions, comments, etc. Cannot be included in unique key constraints.</li>\n </ul>\n <b>Note</b>: The field type cannot be changed after the datastore is created\n"
-                enum:
-                - boolean
-                - number
-                - limited-text
-                - encrypted-text
-                - large-text
-              mandatory:
-                type: boolean
-                description: 'Indicates whether this field is mandatory for each record. If true, a value must be provided for this field when creating or updating records.
-
-                  '
-              masked:
-                type: boolean
-                description: 'Indicates whether this field''s value should be masked (e.g., for sensitive information).<br>
-
-                  <b>Note</b>: Masking is not supported for <b>encrypted-text</b> fields. Encrypted fields are already stored in protected form and cannot be additionally masked.
-
-                  '
-              default_value:
-                type: string
-                maxLength: 100
-                description: 'Default value for the field when creating new records. Must be a string representation of a value compatible with the field''s data type. For example, "true" for boolean, "123" for number, etc.<br>
-
-                  <b>Maximum length</b>: 100 characters.
-
-                  '
-      example:
-        fields:
-        - unique_name: join_date
-          name: Join Date
-          type: limited-text
-          mandatory: false
-          default_value: ''
-        - unique_name: location
-          name: Location
-          type: limited-text
-          mandatory: false
-          default_value: ''
-    encryptedappkey_regex:
-      type: string
-      description: Encrypted application key (appkey or EXTENSION_KEY) issued to a bot or extension, used as an alternative to OAuth for webhook-style authentication.
-    multiplelong_regex:
-      type: string
-      description: Comma-separated list of numeric long integer IDs (e.g. record IDs or field IDs) used in bulk delete operations.
-    datastores_records_add:
-      type: object
-      description: Payload for inserting or updating a single datastore record.
-      required:
-      - values
-      properties:
-        values:
-          type: object
-          description: 'Key-value pairs of field unique_name and the new value to update.
-
-            '
-          additionalProperties: true
-          example:
-            empid: '1001'
-            empname: John Doe
-            isactive: true
-            salary: '50000'
-            department: Engineering
-            notes: Senior Engineer in Platform Team
     updaterecord_response:
       type: object
       description: Response envelope returned when a datastore record is retrieved or updated.
@@ -3841,58 +3893,6 @@ components:
           empname: John Doe Jr.
           added_time: '1777360402254'
           notes: Senior Engineer in Platform Team
-    editplatformdatabase_v2:
-      type: object
-      description: Payload for updating datastore metadata.
-      properties:
-        unique_name:
-          type: string
-          maxLength: 20
-          description: 'Updated datastore unique name.<br>
-
-            Accepts lowercase letters, numbers, and underscores only, and must start with a letter. This is used in API endpoints and should be unique across datastores.<br>
-
-            <b>Maximum length</b>: 20 characters.
-
-            '
-        name:
-          type: string
-          maxLength: 20
-          description: 'Updated datastore display name.<br>
-
-            Can contain letters, numbers, and spaces. This is used for display purposes in the UI and can be non-unique.<br>
-
-            <b>Maximum length</b>: 20 characters.
-
-            '
-        description:
-          type: string
-          maxLength: 250
-          description: 'Updated datastore description.<br>
-
-            A brief description about the datastore''s purpose or contents.<br>
-
-            <b>Maximum length</b>: 250 characters.
-
-            '
-        unique_keys:
-          type: array
-          maxItems: 4
-          description: "Updated unique key constraints for the datastore. Replaces the existing set of constraints entirely.<br>\n<ul>\n  <li>A maximum of <b>4</b> unique key constraints can be defined per datastore.</li>\n  <li>Each constraint is an array of one or more field <code>unique_name</code> values that must be collectively unique across all records.</li>\n  <li>Fields of type <b>encrypted-text</b> or <b>large-text</b> cannot be included in a unique key constraint.</li>\n</ul>\n"
-          items:
-            type: array
-            description: 'An array of field unique_names that form a single unique key constraint. Each unique key constraint ensures that the combination of values in the specified fields is unique across all records in the datastore.
-
-              '
-            items:
-              type: string
-      example:
-        unique_name: empdir
-        name: Employee Directory
-        description: Tracks employee records and department data
-        unique_keys:
-        - - empid
-          - empname
   securitySchemes:
     Cliq_Auth:
       type: oauth2

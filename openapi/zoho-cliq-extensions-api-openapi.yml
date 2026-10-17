@@ -1021,28 +1021,9 @@ paths:
       - Extensions
 components:
   schemas:
-    longid_regex:
-      type: string
-      description: Numeric long integer identifier used to reference platform components such as Commands, Functions, Widgets, Message Actions, Schedulers, and Extensions.
-    ExtensionPropertiesUpdateResponse:
-      type: object
-      description: Response returned after adding or updating extension properties. Contains only the key-value pairs that were submitted in the request.
-      additionalProperties:
-        type: string
-      example:
-        api_key: my_secret_api_key_value
     smallalphawithspl_regex:
       type: string
       description: Lowercase alphanumeric string with allowed special characters (hyphens and underscores) used as extension property keys.
-    ExtensionPropertySingleResponse:
-      type: object
-      description: Response returned when retrieving a single extension property.
-      properties:
-        api_key:
-          type: string
-          example: my_secret_api_key_value
-      example:
-        api_key: my_secret_api_key_value
     ExtensionPropertiesGetResponse:
       type: object
       description: Response returned when retrieving multiple extension properties. Keys are property names; values are their current string values.
@@ -1080,6 +1061,28 @@ components:
             '
           items:
             type: integer
+    ExtensionPropertiesUpdateResponse:
+      type: object
+      description: Response returned after adding or updating extension properties. Contains only the key-value pairs that were submitted in the request.
+      additionalProperties:
+        type: string
+      example:
+        api_key: my_secret_api_key_value
+    ExtensionPropertySingleResponse:
+      type: object
+      description: Response returned when retrieving a single extension property.
+      properties:
+        api_key:
+          type: string
+          example: my_secret_api_key_value
+      example:
+        api_key: my_secret_api_key_value
+    longid_regex:
+      type: string
+      description: Numeric long integer identifier used to reference platform components such as Commands, Functions, Widgets, Message Actions, Schedulers, and Extensions.
+    encryptedappkey_regex:
+      type: string
+      description: Encrypted application key (appkey or EXTENSION_KEY) issued to a bot or extension, used as an alternative to OAuth for webhook-style authentication.
     extensionupgrade_V3:
       type: object
       description: Payload for upgrading an installed extension.
@@ -1092,9 +1095,6 @@ components:
           - organization
           - team
           description: Upgrade scope for the extension.
-    encryptedappkey_regex:
-      type: string
-      description: Encrypted application key (appkey or EXTENSION_KEY) issued to a bot or extension, used as an alternative to OAuth for webhook-style authentication.
     appproperties:
       type: object
       description: Payload for setting extension properties.
